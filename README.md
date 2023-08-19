@@ -1,2 +1,2 @@
-# game_engine
+# Java game
 Java game engine
