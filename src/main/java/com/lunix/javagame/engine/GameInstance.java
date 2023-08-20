@@ -42,10 +42,11 @@ public class GameInstance {
 		// the window or has pressed the ESCAPE key.
 		while (window.isOpened()) {
 			timer.tick();
-			window.update();
+			window.refresh();
 			// TODO: display the mouse state in the window when in dev mode
 			// logger.info("Game FPS: {}", 1 / time.getDeltaTime());
 			scenes.update(timer.getDeltaTime());
+			window.draw();
 			mouse.reset();
 		}
 	}
