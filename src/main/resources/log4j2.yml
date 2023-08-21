@@ -1,0 +1,32 @@
+Configuration:
+  Appenders:
+    Console:
+      name: "Console"
+      target: "SYSTEM_OUT"
+      PatternLayout:
+        pattern: "[%style{%d{ISO8601}}{black}] %highlight{%-5level }[%style{%t}{bright,blue}] %style{%C{1.}}{bright,yellow} - %msg%n%throwable"
+    RollingFile:
+      -
+        name: "RollingFile"
+        fileName: "./logs/java-game.log"
+        filePattern: "./logs/$${date:yyyy-MM-dd}/java-game-%d{dd-MM-yyyy}-%i.log"
+        PatternLayout:
+          pattern: "[%d] %p %C{1.} [%t] - %m%n"
+        Policies:
+          # rollover on startup, daily and when the file reaches 10 MegaBytes
+          OnStartupTriggeringPolicy:
+            minSize: 1
+          SizeBasedTriggeringPolicy:
+            size: "10 MB"
+          TimeBasedTriggeringPolicy:
+            interval: 1
+        DefaultRolloverStrategy:
+            max: 100
+  Loggers:
+    Root:
+      level: "debug"
+      AppenderRef:
+        -
+          ref: "Console"
+        -
+          ref: "RollingFile"

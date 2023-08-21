@@ -5,10 +5,10 @@ spring:
     banner-mode: off
 
 logging:
+  config: classpath:log4j2.yml
   level:
     org:
-      springframework:
-        test: INFO
+      springframework: INFO
 
 window:
   height: 1280

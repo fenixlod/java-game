@@ -22,6 +22,7 @@ dependencies {
 	implementation('org.springframework.boot:spring-boot-starter-log4j2')
 	developmentOnly('org.springframework.boot:spring-boot-devtools')
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
+	implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml")
 	
 	implementation platform('org.lwjgl:lwjgl-bom:3.3.2')
 	implementation('org.lwjgl:lwjgl')

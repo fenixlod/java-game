@@ -44,7 +44,7 @@ public class GameInstance {
 			timer.tick();
 			window.refresh();
 			// TODO: display the mouse state in the window when in dev mode
-			// logger.info("Game FPS: {}", 1 / time.getDeltaTime());
+			logger.info("Game FPS: {}", 1 / timer.getDeltaTime());
 			scenes.update(timer.getDeltaTime());
 			window.draw();
 			mouse.reset();

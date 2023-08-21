@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
 import com.lunix.javagame.engine.GameInstance;
+import com.lunix.javagame.engine.util.StdOutputRedirector;
 
 @SpringBootApplication
 @ConfigurationPropertiesScan
@@ -20,6 +21,7 @@ public class JavaGameApplication implements CommandLineRunner {
 
 	
 	public static void main(String[] args) {
+		StdOutputRedirector.redirectSystemOutAndErrToLog4j();
 		SpringApplication.run(JavaGameApplication.class, args);
 	}
 
