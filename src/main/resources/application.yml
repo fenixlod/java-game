@@ -15,3 +15,7 @@ window:
   width: 720
   title: "Lunix java game"
   maximized: true
+  
+resources:
+  shaders:
+    default: assets/shaders/default.glsl

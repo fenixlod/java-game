@@ -15,24 +15,27 @@ public class GameInstance {
 	private final KeyboardListener keyboard;
 	private final GameTime timer;
 	private final SceneManager scenes;
+	private final ResourceManager resources;
 
-	public GameInstance(GameWindow window) {
+	public GameInstance(GameWindow window, ResourceManager resources) {
 		this.window = window;
 		this.mouse = new MouseListener();
 		this.keyboard = new KeyboardListener();
 		this.timer = new GameTime();
 		this.scenes = new SceneManager(this);
+		this.resources = resources;
 	}
 
-	public void run() {
+	public void run() throws Exception {
 		init();
 		loop();
 		clean();
 	}
 
-	private void init() {
+	private void init() throws Exception {
 		logger.info("Initializing the game engine...");
 		window.create(mouse, keyboard);
+		resources.loadAll();
 		scenes.changeScene(GameSceneType.TEST);
 	}
 
@@ -44,7 +47,7 @@ public class GameInstance {
 			timer.tick();
 			window.refresh();
 			// TODO: display the mouse state in the window when in dev mode
-			logger.info("Game FPS: {}", 1 / timer.getDeltaTime());
+			// logger.info("Game FPS: {}", 1 / timer.getDeltaTime());
 			scenes.update(timer.getDeltaTime());
 			window.draw();
 			mouse.reset();
@@ -74,5 +77,9 @@ public class GameInstance {
 
 	public SceneManager scenes() {
 		return scenes;
+	}
+
+	public ResourceManager getResources() {
+		return resources;
 	}
 }

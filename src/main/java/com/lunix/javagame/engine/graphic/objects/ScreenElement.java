@@ -17,8 +17,9 @@ import com.lunix.javagame.engine.graphic.Shader;
 
 public class ScreenElement {
 	private Shape shape;
-	private Shader shader = new Shader();
+	private Shader shader;
 	private Color color = Color.black;
+	int vertexArrayObjectID, vertexBufferObjectID, elementBufferObjectID;
 
 	public ScreenElement shape(Shape shape) {
 		this.shape = shape;
@@ -35,10 +36,9 @@ public class ScreenElement {
 		return this;
 	}
 
-	public void draw() {
+	public void upload() {
 		float[] vertexArray = shape.getVertexArray(color);
 		int[] elementArray = shape.getElementArray();
-		int vertexArrayObjectID, vertexBufferObjectID, elementBufferObjectID;
 
 		// Generate VAO, VBO and EBO buffer objects and send them to the GPU
 		vertexArrayObjectID = glGenVertexArrays();
@@ -60,6 +60,7 @@ public class ScreenElement {
 		elementBufferObjectID = glGenBuffers();
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferObjectID);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementBuffer, GL_STATIC_DRAW);
+
 		// Add the vertex attribute pointers
 		int positionSize = 3;
 		int colorSize = 4;
@@ -75,7 +76,9 @@ public class ScreenElement {
 		glVertexAttribPointer(2, textureSize, GL_FLOAT, false, vertexSizeInBytes,
 				(positionSize + colorSize) * Float.BYTES);
 		glEnableVertexAttribArray(2);
+	}
 
+	public void draw() {
 		// Bind shader program
 		shader.use();
 
@@ -87,13 +90,13 @@ public class ScreenElement {
 		glEnableVertexAttribArray(1);
 		glEnableVertexAttribArray(2);
 
-		glDrawElements(GL_TRIANGLES, elementArray.length, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, shape.getElementArray().length, GL_UNSIGNED_INT, 0);
 
 		// Unbind everithing
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
 		glDisableVertexAttribArray(2);
 		glBindVertexArray(0);
-		glUseProgram(0);
+		shader.detach();
 	}
 }

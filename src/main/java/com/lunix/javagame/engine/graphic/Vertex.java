@@ -13,6 +13,11 @@ public class Vertex {
 		this.position = new Point(xPos, yPos, zPos);
 	}
 
+	public Vertex(float xPos, float yPos, float zPos, Color color) {
+		this.position = new Point(xPos, yPos, zPos);
+		this.color = color;
+	}
+
 	public Vertex(Point position, Color color) {
 		this.position = position;
 		this.color = color;
