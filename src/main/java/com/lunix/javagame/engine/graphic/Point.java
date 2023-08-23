@@ -1,5 +1,7 @@
 package com.lunix.javagame.engine.graphic;
 
+import org.joml.Vector3f;
+
 public class Point {
 	private float[] coords = new float[3];
 
@@ -11,6 +13,10 @@ public class Point {
 
 	public Point(float xValue, float yValue, float zValue) {
 		coords(xValue, yValue, zValue);
+	}
+
+	public Point(Vector3f point) {
+		coords(point.x, point.y, point.z);
 	}
 
 	public Point(Point point) {

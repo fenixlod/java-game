@@ -12,6 +12,7 @@ import java.nio.IntBuffer;
 
 import org.lwjgl.BufferUtils;
 
+import com.lunix.javagame.engine.Camera;
 import com.lunix.javagame.engine.graphic.Color;
 import com.lunix.javagame.engine.graphic.Shader;
 
@@ -78,9 +79,11 @@ public class ScreenElement {
 		glEnableVertexAttribArray(2);
 	}
 
-	public void draw() {
+	public void draw(Camera camera) {
 		// Bind shader program
 		shader.use();
+		shader.uploadMat4f("projMat", camera.getProjectionMatrix());
+		shader.uploadMat4f("viewMat", camera.getViewMatrix());
 
 		// Bind the VAO that we are using
 		glBindVertexArray(vertexArrayObjectID);

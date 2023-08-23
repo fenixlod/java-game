@@ -4,11 +4,14 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.*;
 
 import java.io.IOException;
+import java.nio.FloatBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.joml.Matrix4f;
+import org.lwjgl.BufferUtils;
 
 public class Shader {
 	private static final Logger logger = LogManager.getLogger(Shader.class);
@@ -100,5 +103,12 @@ public class Shader {
 
 	public void detach() {
 		glUseProgram(0);
+	}
+
+	public void uploadMat4f(String variableName, Matrix4f mat) {
+		int varLocation = glGetUniformLocation(programID, variableName);
+		FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
+		mat.get(matrixBuffer);
+		glUniformMatrix4fv(varLocation, false, matrixBuffer);
 	}
 }

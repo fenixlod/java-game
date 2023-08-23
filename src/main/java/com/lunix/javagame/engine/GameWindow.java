@@ -10,6 +10,7 @@ import java.nio.IntBuffer;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
@@ -128,5 +129,12 @@ public class GameWindow {
 
 	public void setColor(float r, float g, float b, float alpha) {
 		glClearColor(r, g, b, alpha);
+	}
+
+	public float getAspectRatio() {
+		IntBuffer w = BufferUtils.createIntBuffer(1);
+		IntBuffer h = BufferUtils.createIntBuffer(1);
+		glfwGetWindowSize(windowHandle, w, h);
+		return (float) w.get(0) / h.get(0);
 	}
 }

@@ -19,3 +19,8 @@ window:
 resources:
   shaders:
     default: assets/shaders/default.glsl
+    
+camera:
+  x-offset: -100
+  y-offset: 100
+  z-offset: 100

@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
+import com.lunix.javagame.configs.CameraConfigs;
 import com.lunix.javagame.engine.enums.GameSceneType;
 import com.lunix.javagame.engine.util.GameTime;
 
@@ -16,14 +17,16 @@ public class GameInstance {
 	private final GameTime timer;
 	private final SceneManager scenes;
 	private final ResourceManager resources;
+	private final CameraConfigs cameraConfig;
 
-	public GameInstance(GameWindow window, ResourceManager resources) {
+	public GameInstance(GameWindow window, ResourceManager resources, CameraConfigs cameraConfig) {
 		this.window = window;
 		this.mouse = new MouseListener();
 		this.keyboard = new KeyboardListener();
 		this.timer = new GameTime();
 		this.scenes = new SceneManager(this);
 		this.resources = resources;
+		this.cameraConfig = cameraConfig;
 	}
 
 	public void run() throws Exception {
@@ -81,5 +84,9 @@ public class GameInstance {
 
 	public ResourceManager getResources() {
 		return resources;
+	}
+
+	public CameraConfigs getCameraConfig() {
+		return cameraConfig;
 	}
 }
