@@ -3,36 +3,41 @@ package com.lunix.javagame.engine;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
+import com.lunix.javagame.configs.CameraConfigs;
+
 public class Camera {
+	private final CameraConfigs cameraConfig;
 	private Matrix4f projectionMatrix;
 	private Matrix4f viewMatrix;
 	private Vector3f position;
 	private Vector3f offsets;
+	private float zoomFactor;
 
-	public Camera(Vector3f position, Vector3f offsets, float aspect) {
-		this.position = position;
+	public Camera(CameraConfigs cameraConfig) {
+		this.cameraConfig = cameraConfig;
+		this.offsets = new Vector3f(cameraConfig.xOffset(), cameraConfig.yOffset(), cameraConfig.zOffset());
 		this.projectionMatrix = new Matrix4f();
 		this.viewMatrix = new Matrix4f();
-		this.offsets = offsets;
-		adjustProjection(aspect);
+		this.zoomFactor = 1.0f;
 	}
 
-	public void adjustProjection(float aspect) {
+	public void setOrthoProjection() {
 		projectionMatrix.identity();
-		//projectionMatrix.perspective((float) Math.toRadians(60.0f), aspect, 0.01f, 1000.f);
-		projectionMatrix.ortho(0.0f, 400.0f, 0.0f, 250.0f, 0.0f, 500.0f);
+		projectionMatrix.ortho(-cameraConfig.ortho().width() / 2, cameraConfig.ortho().width() / 2,
+				-cameraConfig.ortho().height() / 2, cameraConfig.ortho().height() / 2,
+				cameraConfig.zNear(), cameraConfig.zFar());
+	}
+
+	public void setPerspectiveProjection(float aspect) {
+		projectionMatrix.identity();
+		projectionMatrix.perspective((float) Math.toRadians(cameraConfig.prespective().fieldOfView()), aspect,
+				cameraConfig.zNear(), cameraConfig.zFar());
 	}
 
 	public Matrix4f getViewMatrix() {
-		Vector3f cameraEye = position.add(offsets, new Vector3f());
+		Vector3f cameraEye = position.add(offsets.mul(zoomFactor, new Vector3f()), new Vector3f());
 		viewMatrix.identity();
-		viewMatrix = viewMatrix.lookAt(
-				cameraEye,
-				position,
-				new Vector3f(0.0f, 1.0f, 0.0f));
-
-		// correction for Z axis to be UP
-		viewMatrix.rotate((float) Math.toRadians(-90.0f), new Vector3f(1.0f, 0.0f, 0.0f));
+		viewMatrix = viewMatrix.lookAt(cameraEye, position, new Vector3f(0.0f, 0.0f, 1.0f));
 		return viewMatrix;
 	}
 
@@ -46,5 +51,13 @@ public class Camera {
 
 	public void move(Vector3f change) {
 		position.add(change);
+	}
+
+	public Vector3f position() {
+		return this.position;
+	}
+
+	public void changeZoom(float change) {
+		this.zoomFactor = Math.min(Math.max(zoomFactor + change, 0.1f), 2.0f);
 	}
 }

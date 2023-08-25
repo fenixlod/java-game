@@ -11,16 +11,24 @@ logging:
       springframework: INFO
 
 window:
-  height: 1280
-  width: 720
+  width: 1280
+  height: 720
   title: "Lunix java game"
   maximized: true
   
 resources:
   shaders:
     default: assets/shaders/default.glsl
+    noPerspective: assets/shaders/noPerspective.glsl
     
 camera:
-  x-offset: -100
-  y-offset: 100
+  ortho:
+    width: 320
+    height: 180
+  prespective:
+    field-of-view: 60
+  x-offset: 0
+  y-offset: -100
   z-offset: 100
+  z-near: 0
+  z-far: 500

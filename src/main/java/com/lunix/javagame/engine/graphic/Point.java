@@ -61,6 +61,12 @@ public class Point {
 		return this.coords[2];
 	}
 
+	public void move(float changeX, float changeY, float changeZ) {
+		this.coords[0] += changeX;
+		this.coords[1] += changeY;
+		this.coords[2] += changeZ;
+	}
+
 	@Override
 	public String toString() {
 		return "Point [x=" + coords[0] + ", y=" + coords[1] + ", z=" + coords[2] + "]";

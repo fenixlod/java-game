@@ -1,5 +1,7 @@
 package com.lunix.javagame.engine.graphic.objects;
 
+import org.joml.Vector3f;
+
 import com.lunix.javagame.engine.graphic.Color;
 import com.lunix.javagame.engine.graphic.Vertex;
 
@@ -20,4 +22,14 @@ public abstract class Shape {
 	}
 
 	abstract public int[] getElementArray();
+
+	public void move(Vector3f change) {
+		for (Vertex v : vertices) {
+			v.move(change.x, change.y, change.z);
+		}
+	}
+
+	public Vertex[] vertices() {
+		return this.vertices;
+	}
 }

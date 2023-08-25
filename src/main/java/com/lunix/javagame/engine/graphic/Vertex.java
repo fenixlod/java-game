@@ -44,6 +44,10 @@ public class Vertex {
 		return this;
 	}
 
+	public void move(float changeX, float changeY, float changeZ) {
+		this.position.move(changeX, changeY, changeZ);
+	}
+
 	/**
 	 * Add Vertex to vertexArray for drawing
 	 * 

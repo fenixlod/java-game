@@ -10,15 +10,15 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
+import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 
-import com.lunix.javagame.engine.Camera;
+import com.lunix.javagame.engine.enums.ShaderType;
 import com.lunix.javagame.engine.graphic.Color;
-import com.lunix.javagame.engine.graphic.Shader;
 
 public class ScreenElement {
 	private Shape shape;
-	private Shader shader;
+	private ShaderType shader;
 	private Color color = Color.black;
 	int vertexArrayObjectID, vertexBufferObjectID, elementBufferObjectID;
 
@@ -32,7 +32,7 @@ public class ScreenElement {
 		return this;
 	}
 
-	public ScreenElement shader(Shader shader) {
+	public ScreenElement shader(ShaderType shader) {
 		this.shader = shader;
 		return this;
 	}
@@ -79,12 +79,7 @@ public class ScreenElement {
 		glEnableVertexAttribArray(2);
 	}
 
-	public void draw(Camera camera) {
-		// Bind shader program
-		shader.use();
-		shader.uploadMat4f("projMat", camera.getProjectionMatrix());
-		shader.uploadMat4f("viewMat", camera.getViewMatrix());
-
+	public void draw() {
 		// Bind the VAO that we are using
 		glBindVertexArray(vertexArrayObjectID);
 
@@ -100,6 +95,17 @@ public class ScreenElement {
 		glDisableVertexAttribArray(1);
 		glDisableVertexAttribArray(2);
 		glBindVertexArray(0);
-		shader.detach();
+	}
+
+	public ShaderType shader() {
+		return shader;
+	}
+
+	public void move(Vector3f change) {
+		shape.move(change);
+	}
+
+	public Shape shape() {
+		return this.shape;
 	}
 }

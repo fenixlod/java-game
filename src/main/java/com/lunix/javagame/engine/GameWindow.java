@@ -16,14 +16,13 @@ import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
-import org.springframework.stereotype.Component;
 
 import com.lunix.javagame.configs.WindowConfigs;
 
-@Component
 public class GameWindow {
 	private static final Logger logger = LogManager.getLogger(GameWindow.class);
-	private WindowConfigs windowConfigs;
+	private final WindowConfigs windowConfigs;
+
 	private long windowHandle;// memory address of the window
 
 	public GameWindow(WindowConfigs windowConfigs) {
@@ -49,7 +48,7 @@ public class GameWindow {
 																							// maximized
 
 		// Create the window
-		windowHandle = glfwCreateWindow(windowConfigs.height(), windowConfigs.width(), windowConfigs.title(), NULL,
+		windowHandle = glfwCreateWindow(windowConfigs.width(), windowConfigs.height(), windowConfigs.title(), NULL,
 				NULL);
 		if (windowHandle == NULL)
 			throw new RuntimeException("Failed to create the GLFW window");
@@ -127,7 +126,7 @@ public class GameWindow {
 		return !glfwWindowShouldClose(windowHandle);
 	}
 
-	public void setColor(float r, float g, float b, float alpha) {
+	public void setClearColor(float r, float g, float b, float alpha) {
 		glClearColor(r, g, b, alpha);
 	}
 
