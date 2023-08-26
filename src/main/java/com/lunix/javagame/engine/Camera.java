@@ -18,7 +18,7 @@ public class Camera {
 		this.offsets = new Vector3f(cameraConfig.xOffset(), cameraConfig.yOffset(), cameraConfig.zOffset());
 		this.projectionMatrix = new Matrix4f();
 		this.viewMatrix = new Matrix4f();
-		this.zoomFactor = 1.0f;
+		this.zoomFactor = 1f;
 	}
 
 	public void setOrthoProjection() {
@@ -37,7 +37,7 @@ public class Camera {
 	public Matrix4f getViewMatrix() {
 		Vector3f cameraEye = position.add(offsets.mul(zoomFactor, new Vector3f()), new Vector3f());
 		viewMatrix.identity();
-		viewMatrix = viewMatrix.lookAt(cameraEye, position, new Vector3f(0.0f, 0.0f, 1.0f));
+		viewMatrix = viewMatrix.lookAt(cameraEye, position, new Vector3f(0f, 0f, 1f));
 		return viewMatrix;
 	}
 
@@ -58,6 +58,6 @@ public class Camera {
 	}
 
 	public void changeZoom(float change) {
-		this.zoomFactor = Math.min(Math.max(zoomFactor + change, 0.1f), 2.0f);
+		this.zoomFactor = Math.min(Math.max(zoomFactor + change, 0.1f), 2f);
 	}
 }

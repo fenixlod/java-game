@@ -22,6 +22,16 @@ public class ScreenElement {
 	private Color color = Color.black;
 	int vertexArrayObjectID, vertexBufferObjectID, elementBufferObjectID;
 
+	public static ScreenElement centeredRectangle(Vector3f center, float width, Vector3f widthDirection, float hight,
+			Vector3f hightDirection) {
+		return new ScreenElement().shape(Rectangle.centered(center, width, widthDirection, hight, hightDirection));
+	}
+
+	public static ScreenElement centeredTriangle(Vector3f center, float size, Vector3f widthDirection,
+			Vector3f hightDirection) {
+		return new ScreenElement().shape(Triangle.centered(center, size, widthDirection, hightDirection));
+	}
+
 	public ScreenElement shape(Shape shape) {
 		this.shape = shape;
 		return this;
@@ -37,7 +47,7 @@ public class ScreenElement {
 		return this;
 	}
 
-	public void update() {
+	public ScreenElement update() {
 		float[] vertexArray = shape.getVertexArray(color);
 		int[] elementArray = shape.getElementArray();
 
@@ -77,6 +87,8 @@ public class ScreenElement {
 		glVertexAttribPointer(2, textureSize, GL_FLOAT, false, vertexSizeInBytes,
 				(positionSize + colorSize) * Float.BYTES);
 		glEnableVertexAttribArray(2);
+
+		return this;
 	}
 
 	public void draw() {

@@ -2,7 +2,6 @@ package com.lunix.javagame.engine.graphic.objects;
 
 import org.joml.Vector3f;
 
-import com.lunix.javagame.engine.graphic.Point;
 import com.lunix.javagame.engine.graphic.Vertex;
 
 /**
@@ -15,30 +14,20 @@ public class Rectangle extends Shape {
 		vertices(v1, v2, v3, v4);
 	}
 
-	public static Rectangle sized(Vector3f center, float width, Vector3f widthDirection, float hight,
+	public static Rectangle centered(Vector3f center, float width, Vector3f widthDirection, float hight,
 			Vector3f hightDirection) {
+
 		Vector3f p1 = new Vector3f(center);
 		Vector3f p2 = new Vector3f(center);
 		Vector3f p3 = new Vector3f(center);
 		Vector3f p4 = new Vector3f(center);
 
-		p1.add(widthDirection.x * width * 0.5f, widthDirection.y * width * 0.5f, widthDirection.z * width * 0.5f);
-		p1.add(hightDirection.x * hight * -0.5f, hightDirection.y * hight * -0.5f, hightDirection.z * hight * -0.5f);
+		p1.add(widthDirection.mul(-width / 2, new Vector3f())).add(hightDirection.mul(-hight / 2, new Vector3f()));
+		p2.add(widthDirection.mul(width / 2, new Vector3f())).add(hightDirection.mul(-hight / 2, new Vector3f()));
+		p3.add(widthDirection.mul(width / 2, new Vector3f())).add(hightDirection.mul(hight / 2, new Vector3f()));
+		p4.add(widthDirection.mul(-width / 2, new Vector3f())).add(hightDirection.mul(hight / 2, new Vector3f()));
 
-		p2.add(widthDirection.x * width * 0.5f, widthDirection.y * width * 0.5f, widthDirection.z * width * 0.5f);
-		p2.add(hightDirection.x * hight * 0.5f, hightDirection.y * hight * 0.5f, hightDirection.z * hight * 0.5f);
-
-		p3.add(widthDirection.x * width * -0.5f, widthDirection.y * width * -0.5f, widthDirection.z * width * -0.5f);
-		p3.add(hightDirection.x * hight * 0.5f, hightDirection.y * hight * 0.5f, hightDirection.z * hight * 0.5f);
-
-		p4.add(widthDirection.x * width * -0.5f, widthDirection.y * width * -0.5f, widthDirection.z * width * -0.5f);
-		p4.add(hightDirection.x * hight * -0.5f, hightDirection.y * hight * -0.5f, hightDirection.z * hight * -0.5f);
-
-		return new Rectangle(
-				new Vertex(new Point(p1)), 
-				new Vertex(new Point(p2)), 
-				new Vertex(new Point(p3)),
-				new Vertex(new Point(p4)));
+		return new Rectangle(new Vertex(p1), new Vertex(p2), new Vertex(p3), new Vertex(p4));
 	}
 
 	public Rectangle v1(Vertex v) {

@@ -3,22 +3,22 @@ package com.lunix.javagame.engine.graphic;
 public class Color {
 	private float[] rgba = new float[4];
 
-	public static final Color white = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-	public static final Color lightGray = new Color(0.75f, 0.75f, 0.75f, 1.0f);
-	public static final Color gray = new Color(0.5f, 0.5f, 0.5f, 1.0f);
-	public static final Color darkGray = new Color(0.25f, 0.25f, 0.25f, 1.0f);
-	public static final Color black = new Color(0.0f, 0.0f, 0.0f, 1.0f);
-	public static final Color red = new Color(1.0f, 0.0f, 0.0f, 1.0f);
-	public static final Color pink = new Color(1.0f, 0.69f, 0.69f, 1.0f);
-	public static final Color orange = new Color(1.0f, 0.78f, 0.0f, 1.0f);
-	public static final Color yellow = new Color(1.0f, 1.0f, 0.0f, 1.0f);
-	public static final Color green = new Color(0.0f, 1.0f, 0.0f, 1.0f);
-	public static final Color magenta = new Color(1.0f, 0.0f, 1.0f, 1.0f);
-	public static final Color cyan = new Color(0.0f, 1.0f, 1.0f, 1.0f);
-	public static final Color blue = new Color(0.0f, 0.0f, 1.0f, 1.0f);
+	public static final Color white = new Color(1f, 1f, 1f, 1f);
+	public static final Color lightGray = new Color(0.75f, 0.75f, 0.75f, 1f);
+	public static final Color gray = new Color(0.5f, 0.5f, 0.5f, 1f);
+	public static final Color darkGray = new Color(0.25f, 0.25f, 0.25f, 1f);
+	public static final Color black = new Color(0f, 0f, 0f, 1f);
+	public static final Color red = new Color(1f, 0f, 0f, 1f);
+	public static final Color pink = new Color(1f, 0.69f, 0.69f, 1f);
+	public static final Color orange = new Color(1f, 0.78f, 0f, 1f);
+	public static final Color yellow = new Color(1f, 1f, 0f, 1f);
+	public static final Color green = new Color(0f, 1f, 0f, 1f);
+	public static final Color magenta = new Color(1f, 0f, 1f, 1f);
+	public static final Color cyan = new Color(0f, 1f, 1f, 1f);
+	public static final Color blue = new Color(0f, 0f, 1f, 1f);
 
 	public Color() {
-		this(0.0f, 0.0f, 0.0f, 1.0f);
+		this(0f, 0f, 0f, 1f);
 	}
 
 	public Color(float red, float green, float blue, float alpha) {

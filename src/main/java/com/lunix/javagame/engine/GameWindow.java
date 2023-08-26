@@ -93,7 +93,7 @@ public class GameWindow {
 		GL.createCapabilities();
 
 		// Set the clear color
-		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		glClearColor(1f, 1f, 1f, 1f);
 	}
 
 	public void refresh() {

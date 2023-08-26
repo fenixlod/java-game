@@ -11,7 +11,6 @@ import com.lunix.javagame.engine.GameInstance;
 import com.lunix.javagame.engine.Scene;
 import com.lunix.javagame.engine.enums.ShaderType;
 import com.lunix.javagame.engine.graphic.Color;
-import com.lunix.javagame.engine.graphic.objects.Rectangle;
 import com.lunix.javagame.engine.graphic.objects.ScreenElement;
 
 public class TestScene extends Scene {
@@ -21,118 +20,106 @@ public class TestScene extends Scene {
 	@Override
 	public void init(GameInstance game) {
 		super.init(game);
-		game.display().setWindowClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		game.display().setWindowClearColor(1f, 1f, 1f, 1f);
 		// game.camera().setOrthoProjection();
 		game.camera().setPerspectiveProjection(game.display().windowAspectRatio());
 		game.camera().setPosition(new Vector3f());
 		
 		// draw cuboid with dimensions: x=50, y=30, z=10
 		// front
-		rectangle1 = new ScreenElement();
-		rectangle1.shape(Rectangle.sized(new Vector3f(25.0f, 15.0f, 0.0f),
-				50, new Vector3f(1.0f, 0.0f, 0.0f), 
-				30, new Vector3f(0.0f, 1.0f, 0.0f)))
+		rectangle1 = ScreenElement.centeredRectangle(
+				new Vector3f(25f, 15f, 0f),
+				50, new Vector3f(1f, 0f, 0f),
+				30, new Vector3f(0f, 1f, 0f)
+			)
 			.color(Color.red)
 			.shader(ShaderType.DEFAULT)
 			.update();
 		
 		// right
-		rectangle2 = new ScreenElement();
-		rectangle2.shape(Rectangle.sized(new Vector3f(50.0f, 15.0f, 5.0f),
-				10, new Vector3f(0.0f, 0.0f, -1.0f), 
-				30, new Vector3f(0.0f, 1.0f, 0.0f)))
+		rectangle2 = ScreenElement.centeredRectangle(
+				new Vector3f(50f, 15f, 5f),
+				10, new Vector3f(0f, 0f, -1f), 
+				30, new Vector3f(0f, 1f, 0f)
+			)
 			.color(Color.green)
 			.shader(ShaderType.DEFAULT)
 			.update();
 
 		//back
-		rectangle3 = new ScreenElement();
-		rectangle3.shape(Rectangle.sized(new Vector3f(25.0f, 15.0f, 10.0f),
-				50, new Vector3f(-1.0f, 0.0f, 0.0f), 
-				30, new Vector3f(0.0f, 1.0f, 0.0f)))
+		rectangle3 = ScreenElement.centeredRectangle(
+				new Vector3f(25f, 15f, 10f),
+				50, new Vector3f(-1f, 0f, 0f), 
+				30, new Vector3f(0f, 1f, 0f)
+			)
 			.color(Color.black)
 			.shader(ShaderType.DEFAULT)
 			.update();
 		
 		//left
-		rectangle4 = new ScreenElement();
-		rectangle4.shape(Rectangle.sized(new Vector3f(0.0f, 15.0f, 5.0f),
-				10, new Vector3f(0.0f, 0.0f, 1.0f),
-				30, new Vector3f(0.0f, 1.0f, 0.0f)))
+		rectangle4 = ScreenElement.centeredRectangle(
+				new Vector3f(0f, 15f, 5f),
+				10, new Vector3f(0f, 0f, 1f),
+				30, new Vector3f(0f, 1f, 0f)
+			)
 			.color(Color.blue)
 			.shader(ShaderType.DEFAULT)
 			.update();
 		
 		//top
-		rectangle5 = new ScreenElement();
-		rectangle5.shape(Rectangle.sized(new Vector3f(25.0f, 30.0f, 5.0f),
-				50, new Vector3f(1.0f, 0.0f, 0.0f), 
-				10, new Vector3f(0.0f, 0.0f, -1.0f)))
+		rectangle5 = ScreenElement.centeredRectangle(
+				new Vector3f(25f, 30f, 5f),
+				50, new Vector3f(1f, 0f, 0f), 
+				10, new Vector3f(0f, 0f, -1f)
+			)
 			.color(Color.cyan)
 			.shader(ShaderType.DEFAULT)
 			.update();
 		
-		rectangle6 = new ScreenElement();
-		rectangle6.shape(Rectangle.sized(new Vector3f(25.0f, 0.0f, 5.0f),
-				50, new Vector3f(1.0f, 0.0f, 0.0f),
-				10, new Vector3f(0.0f, 0.0f, 1.0f)))
+		rectangle6 = ScreenElement.centeredRectangle(
+				new Vector3f(25f, 0f, 5f),
+				50, new Vector3f(1f, 0f, 0f),
+				10, new Vector3f(0f, 0f, 1f)
+			)
 			.color(Color.magenta)
 			.shader(ShaderType.DEFAULT)
 			.update();
 		
-		character = new ScreenElement();
-		character.shape(Rectangle.sized(new Vector3f(-50.0f, 100.0f, 20.0f),
-				20, new Vector3f(1.0f, 0.0f, 0.0f),
-				40, new Vector3f(0.0f, 0.0f, 1.0f)))
-			.color(Color.orange)
+		character = ScreenElement.centeredTriangle(
+				new Vector3f(-50f, 100f, 20f),
+				20, new Vector3f(1f, 0f, 0f),
+				new Vector3f(0f, 0f, 1f)
+			)
+			.color(Color.yellow)
 			.shader(ShaderType.DEFAULT)
 			.update();
 		
-		player = new ScreenElement();
-		player.shape(Rectangle.sized(new Vector3f(0.0f, 0.0f, 0.0f),
-				10, new Vector3f(1.0f, 0.0f, 0.0f),
-				10, new Vector3f(0.0f, 0.0f, 1.0f)))
-			.color(Color.green)
-			.shader(ShaderType.NO_PERSPECTIVE)
+		player = ScreenElement.centeredRectangle(
+				new Vector3f(0f, 0f, 20f),
+				20, new Vector3f(1f, 0f, 0f),
+				40, new Vector3f(0f, 0f, 1f)
+			)
+			.color(new Color(0f, 1f, 0f, 0.5f))
+			.shader(ShaderType.DEFAULT)
 			.update();
 
 		staticElements = new ArrayList<>();
-		for (int i = 0; i < 100; i++) {
-			ScreenElement element = new ScreenElement();
-			element.shape(Rectangle.sized(new Vector3f(i * 5.0f, 0.0f, 0.0f),
-					1, new Vector3f(1.0f, 0.0f, 0.0f),
-					1, new Vector3f(0.0f, 1.0f, 0.0f)))
-				.color(new Color(0.0f, 0.0f, 1.0f,1.0f))
-				.shader(ShaderType.DEFAULT)
-				.update();
-			staticElements.add(element);
-			
-			element = new ScreenElement();
-			element.shape(Rectangle.sized(new Vector3f(i * -5.0f, 0.0f, 0.0f),
-					1, new Vector3f(1.0f, 0.0f, 0.0f),
-					1, new Vector3f(0.0f, 1.0f, 0.0f)))
-				.color(new Color(0.0f, 0.0f, 1.0f, 1.0f))
-				.shader(ShaderType.DEFAULT)
-				.update();
-			staticElements.add(element);
-			
-			element = new ScreenElement();
-			element.shape(Rectangle.sized(new Vector3f(0.0f, i * 5.0f, 0.0f),
-					1, new Vector3f(1.0f, 0.0f, 0.0f),
-					1, new Vector3f(0.0f, 1.0f, 0.0f)))
-				.color(new Color(1.0f, 0.0f, 0.0f, 1.0f))
-				.shader(ShaderType.DEFAULT)
-				.update();
-			staticElements.add(element);
-			
-			element = new ScreenElement();
-			element.shape(Rectangle.sized(new Vector3f(0.0f, i * -5.0f, 0.0f),
-					1, new Vector3f(1.0f, 0.0f, 0.0f),
-					1, new Vector3f(0.0f, 1.0f, 0.0f)))
-				.color(new Color(1.0f, 0.0f, 0.0f, 1.0f))
-				.shader(ShaderType.DEFAULT)
-				.update();
-			staticElements.add(element);
+		
+		for (int j = 0; j < 4; j++) {
+			int reverse = j > 1 ? -1 : 1;
+			int isXAxis = j % 2 * reverse;
+			int isYAxis = (1 - Math.abs(isXAxis)) * reverse;
+			for (int i = 0; i < 100; i++) {
+				ScreenElement element = ScreenElement.centeredRectangle(
+						new Vector3f(i * isXAxis * 5f, i * isYAxis * 5f, 0f),
+						1, new Vector3f(1f, 0f, 0f),
+						1, new Vector3f(0f, 1f, 0f)
+					)
+					.color(isXAxis != 0 ? Color.blue : Color.red)
+					.shader(ShaderType.DEFAULT)
+					.update();
+				staticElements.add(element);
+			}
 		}
 	}
 
@@ -141,26 +128,26 @@ public class TestScene extends Scene {
 		Vector3f offset = new Vector3f();
 
 		if (game.keyboard().isKeyPressed(GLFW_KEY_RIGHT))
-			offset.x += 50.0f * deltaTime;
+			offset.x += 50f * deltaTime;
 		
 		if (game.keyboard().isKeyPressed(GLFW_KEY_LEFT))
-			offset.x -= 50.0f * deltaTime;
+			offset.x -= 50f * deltaTime;
 		
 		if (game.keyboard().isKeyPressed(GLFW_KEY_UP))
-			offset.y += 50.0f * deltaTime;
+			offset.y += 50f * deltaTime;
 		
 		if (game.keyboard().isKeyPressed(GLFW_KEY_DOWN))
-			offset.y -= 50.0f * deltaTime;
+			offset.y -= 50f * deltaTime;
 		
 		if (game.keyboard().isKeyPressed(GLFW_KEY_PAGE_UP))
-			offset.z += 50.0f * deltaTime;
+			offset.z += 50f * deltaTime;
 		
 		if (game.keyboard().isKeyPressed(GLFW_KEY_PAGE_DOWN))
-			offset.z -= 50.0f * deltaTime;
+			offset.z -= 50f * deltaTime;
 		
 		float zoomChange = (float) game.mouse().getScrollY() * 0.1f;
 		game.camera().move(offset);
-		if (zoomChange != 0.0f)
+		if (zoomChange != 0f)
 			game.camera().changeZoom(zoomChange);
 		
 		player.move(offset);
@@ -176,8 +163,7 @@ public class TestScene extends Scene {
 			logger.info("Escape button pressed. Close the game window");
 		}
 
-		logger.info("X={}, Y={}, Z={}", game.camera().position().x, game.camera().position().y,
-				game.camera().position().z);
+		//logger.info("X={}, Y={}, Z={}", game.camera().position().x, game.camera().position().y,	game.camera().position().z);
 
 		game.display().drawElement(staticElements.toArray(ScreenElement[]::new));
 

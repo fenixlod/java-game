@@ -92,6 +92,8 @@ public class Display {
 			Matrix4f view = camera.getViewMatrix();
 			if (currentShader.type() == ShaderType.NO_PERSPECTIVE) {
 				// TODO: Move this logic in the shader if possible
+				//The idea is to set the camera to be perpendicular to the plane of the element,
+				// this way it will be desplayed without any prespective
 				//System.out.println("----> \n" + view.toString(NumberFormat.getNumberInstance()));
 				view.translate(camera.position());
 				view.rotate((float) Math.toRadians(-45f), new Vector3f(1f, 0f, 0f));

@@ -1,35 +1,37 @@
 package com.lunix.javagame.engine.graphic;
 
+import org.joml.Vector3f;
+
 public class Vertex {
-	private Point position;
+	private Vector3f position;
 	private Color color;
 	private float[] textureUV;
 
-	public Vertex(Point position) {
+	public Vertex(Vector3f position) {
 		this.position = position;
 	}
 
 	public Vertex(float xPos, float yPos, float zPos) {
-		this.position = new Point(xPos, yPos, zPos);
+		this.position = new Vector3f(xPos, yPos, zPos);
 	}
 
 	public Vertex(float xPos, float yPos, float zPos, Color color) {
-		this.position = new Point(xPos, yPos, zPos);
+		this.position = new Vector3f(xPos, yPos, zPos);
 		this.color = color;
 	}
 
-	public Vertex(Point position, Color color) {
+	public Vertex(Vector3f position, Color color) {
 		this.position = position;
 		this.color = color;
 	}
 
-	public Vertex(Point position, Color color, float[] textureUV) {
+	public Vertex(Vector3f position, Color color, float[] textureUV) {
 		this.position = position;
 		this.color = color;
 		this.textureUV = textureUV;
 	}
 
-	public Vertex position(Point position) {
+	public Vertex position(Vector3f position) {
 		this.position = position;
 		return this;
 	}
@@ -45,7 +47,7 @@ public class Vertex {
 	}
 
 	public void move(float changeX, float changeY, float changeZ) {
-		this.position.move(changeX, changeY, changeZ);
+		this.position.add(changeX, changeY, changeZ);
 	}
 
 	/**
@@ -65,8 +67,8 @@ public class Vertex {
 		vertexArray[offset++] = color == null ? defaultColor.b() : color.b();
 		vertexArray[offset++] = color == null ? defaultColor.a() : color.a();
 
-		vertexArray[offset++] = textureUV == null ? 0.0f : textureUV[0];
-		vertexArray[offset++] = textureUV == null ? 0.0f : textureUV[1];
+		vertexArray[offset++] = textureUV == null ? 0f : textureUV[0];
+		vertexArray[offset++] = textureUV == null ? 0f : textureUV[1];
 		return offset;
 	}
 }
