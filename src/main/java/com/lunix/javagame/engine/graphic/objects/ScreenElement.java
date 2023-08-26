@@ -37,7 +37,7 @@ public class ScreenElement {
 		return this;
 	}
 
-	public void upload() {
+	public void update() {
 		float[] vertexArray = shape.getVertexArray(color);
 		int[] elementArray = shape.getElementArray();
 

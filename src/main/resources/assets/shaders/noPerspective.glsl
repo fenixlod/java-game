@@ -12,12 +12,7 @@ out vec4 fragmentColor;
 void main()
 {
 	fragmentColor = color;
-	mat4 newView = mat4(viewMat);
-	newView[1][1] = 0f;
-	newView[2][1] = 1f;
-	newView[1][2] = -1f;
-	newView[2][2] = 0f;
-	gl_Position = projMat * newView * vec4(position, 1.0);
+	gl_Position = projMat * viewMat * vec4(position, 1.0);
 }
 
 #type fragment

@@ -13,10 +13,9 @@ import com.lunix.javagame.engine.enums.ShaderType;
 import com.lunix.javagame.engine.graphic.Color;
 import com.lunix.javagame.engine.graphic.objects.Rectangle;
 import com.lunix.javagame.engine.graphic.objects.ScreenElement;
-import com.lunix.javagame.engine.graphic.objects.Triangle;
 
 public class TestScene extends Scene {
-	private ScreenElement rectangle1, rectangle2, rectangle3, rectangle4, rectangle5, rectangle6, character, camera;
+	private ScreenElement rectangle1, rectangle2, rectangle3, rectangle4, rectangle5, rectangle6, character, player;
 	private List<ScreenElement> staticElements;
 
 	@Override
@@ -35,7 +34,7 @@ public class TestScene extends Scene {
 				30, new Vector3f(0.0f, 1.0f, 0.0f)))
 			.color(Color.red)
 			.shader(ShaderType.DEFAULT)
-			.upload();
+			.update();
 		
 		// right
 		rectangle2 = new ScreenElement();
@@ -44,7 +43,7 @@ public class TestScene extends Scene {
 				30, new Vector3f(0.0f, 1.0f, 0.0f)))
 			.color(Color.green)
 			.shader(ShaderType.DEFAULT)
-			.upload();
+			.update();
 
 		//back
 		rectangle3 = new ScreenElement();
@@ -53,7 +52,7 @@ public class TestScene extends Scene {
 				30, new Vector3f(0.0f, 1.0f, 0.0f)))
 			.color(Color.black)
 			.shader(ShaderType.DEFAULT)
-			.upload();
+			.update();
 		
 		//left
 		rectangle4 = new ScreenElement();
@@ -62,7 +61,7 @@ public class TestScene extends Scene {
 				30, new Vector3f(0.0f, 1.0f, 0.0f)))
 			.color(Color.blue)
 			.shader(ShaderType.DEFAULT)
-			.upload();
+			.update();
 		
 		//top
 		rectangle5 = new ScreenElement();
@@ -71,7 +70,7 @@ public class TestScene extends Scene {
 				10, new Vector3f(0.0f, 0.0f, -1.0f)))
 			.color(Color.cyan)
 			.shader(ShaderType.DEFAULT)
-			.upload();
+			.update();
 		
 		rectangle6 = new ScreenElement();
 		rectangle6.shape(Rectangle.sized(new Vector3f(25.0f, 0.0f, 5.0f),
@@ -79,60 +78,60 @@ public class TestScene extends Scene {
 				10, new Vector3f(0.0f, 0.0f, 1.0f)))
 			.color(Color.magenta)
 			.shader(ShaderType.DEFAULT)
-			.upload();
+			.update();
 		
 		character = new ScreenElement();
-		character.shape(Rectangle.sized(new Vector3f(-50.0f, 0.0f, 20.0f),
+		character.shape(Rectangle.sized(new Vector3f(-50.0f, 100.0f, 20.0f),
 				20, new Vector3f(1.0f, 0.0f, 0.0f),
 				40, new Vector3f(0.0f, 0.0f, 1.0f)))
-				.color(Color.orange)
-				.shader(ShaderType.NO_PERSPECTIVE)
-			.upload();
+			.color(Color.orange)
+			.shader(ShaderType.DEFAULT)
+			.update();
 		
-		camera = new ScreenElement();
-		camera.shape(Triangle.equilateral(new Vector3f(0.0f, 0.0f, 0.0f), 10,
-				new Vector3f(1.0f, 0.0f, 0.0f),
-				new Vector3f(0.0f, 0.0f, 1.0f)))
-			.color(Color.black)
-				.shader(ShaderType.DEFAULT)
-			.upload();
+		player = new ScreenElement();
+		player.shape(Rectangle.sized(new Vector3f(0.0f, 0.0f, 0.0f),
+				10, new Vector3f(1.0f, 0.0f, 0.0f),
+				10, new Vector3f(0.0f, 0.0f, 1.0f)))
+			.color(Color.green)
+			.shader(ShaderType.NO_PERSPECTIVE)
+			.update();
 
 		staticElements = new ArrayList<>();
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < 100; i++) {
 			ScreenElement element = new ScreenElement();
 			element.shape(Rectangle.sized(new Vector3f(i * 5.0f, 0.0f, 0.0f),
 					1, new Vector3f(1.0f, 0.0f, 0.0f),
 					1, new Vector3f(0.0f, 1.0f, 0.0f)))
-					.color(new Color(0.0f, 0.0f, 1.0f, i * 0.05f))
+				.color(new Color(0.0f, 0.0f, 1.0f,1.0f))
 				.shader(ShaderType.DEFAULT)
-				.upload();
+				.update();
 			staticElements.add(element);
 			
 			element = new ScreenElement();
 			element.shape(Rectangle.sized(new Vector3f(i * -5.0f, 0.0f, 0.0f),
 					1, new Vector3f(1.0f, 0.0f, 0.0f),
 					1, new Vector3f(0.0f, 1.0f, 0.0f)))
-				.color(new Color(0.0f, 0.0f, 1.0f, i * 0.05f))
+				.color(new Color(0.0f, 0.0f, 1.0f, 1.0f))
 				.shader(ShaderType.DEFAULT)
-				.upload();
+				.update();
 			staticElements.add(element);
 			
 			element = new ScreenElement();
 			element.shape(Rectangle.sized(new Vector3f(0.0f, i * 5.0f, 0.0f),
 					1, new Vector3f(1.0f, 0.0f, 0.0f),
 					1, new Vector3f(0.0f, 1.0f, 0.0f)))
-					.color(new Color(1.0f, 0.0f, 0.0f, i * 0.05f))
+				.color(new Color(1.0f, 0.0f, 0.0f, 1.0f))
 				.shader(ShaderType.DEFAULT)
-				.upload();
+				.update();
 			staticElements.add(element);
 			
 			element = new ScreenElement();
 			element.shape(Rectangle.sized(new Vector3f(0.0f, i * -5.0f, 0.0f),
 					1, new Vector3f(1.0f, 0.0f, 0.0f),
 					1, new Vector3f(0.0f, 1.0f, 0.0f)))
-				.color(new Color(1.0f, 0.0f, 0.0f, i * 0.05f))
+				.color(new Color(1.0f, 0.0f, 0.0f, 1.0f))
 				.shader(ShaderType.DEFAULT)
-				.upload();
+				.update();
 			staticElements.add(element);
 		}
 	}
@@ -164,8 +163,8 @@ public class TestScene extends Scene {
 		if (zoomChange != 0.0f)
 			game.camera().changeZoom(zoomChange);
 		
-		camera.move(offset);
-		camera.upload();
+		player.move(offset);
+		player.update();
 		// logger.info(mouse);
 		// logger.info(keyboard);
 		// logger.info("Time elapsed: {}", time.getElapsedTimeInSeconds());
@@ -177,9 +176,12 @@ public class TestScene extends Scene {
 			logger.info("Escape button pressed. Close the game window");
 		}
 
-		game.display().drawElement(rectangle1, rectangle2, rectangle3, rectangle4, rectangle5, rectangle6, character,
-				camera);
+		logger.info("X={}, Y={}, Z={}", game.camera().position().x, game.camera().position().y,
+				game.camera().position().z);
 
 		game.display().drawElement(staticElements.toArray(ScreenElement[]::new));
+
+		game.display().drawElement(rectangle1, rectangle2, rectangle3, rectangle4, rectangle5, rectangle6, character,
+				player);
 	}
 }

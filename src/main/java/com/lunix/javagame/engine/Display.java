@@ -8,6 +8,8 @@ import java.util.Map.Entry;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
@@ -76,12 +78,10 @@ public class Display {
 
 	private void changeShader(ShaderType shader) {
 		if (currentShader != null) {
-			// Unbind the shader
 			currentShader.detach();
 		}
 
 		currentShader = getShader(shader);
-		// Bind shader program
 		currentShader.use();
 		updateCamera();
 	}
@@ -89,7 +89,16 @@ public class Display {
 	private void updateCamera() {
 		if (currentShader != null) {
 			currentShader.uploadMat4f("projMat", camera.getProjectionMatrix());
-			currentShader.uploadMat4f("viewMat", camera.getViewMatrix());
+			Matrix4f view = camera.getViewMatrix();
+			if (currentShader.type() == ShaderType.NO_PERSPECTIVE) {
+				// TODO: Move this logic in the shader if possible
+				//System.out.println("----> \n" + view.toString(NumberFormat.getNumberInstance()));
+				view.translate(camera.position());
+				view.rotate((float) Math.toRadians(-45f), new Vector3f(1f, 0f, 0f));
+				view.translate(camera.position().mul(-1, new Vector3f()));
+				//System.out.println("<---- \n" + view.toString(NumberFormat.getNumberInstance()));
+			}
+			currentShader.uploadMat4f("viewMat", view);
 		}
 	}
 
