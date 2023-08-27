@@ -27,7 +27,10 @@ public class Rectangle extends Shape {
 		p3.add(widthDirection.mul(width / 2, new Vector3f())).add(hightDirection.mul(hight / 2, new Vector3f()));
 		p4.add(widthDirection.mul(-width / 2, new Vector3f())).add(hightDirection.mul(hight / 2, new Vector3f()));
 
-		return new Rectangle(new Vertex(p1), new Vertex(p2), new Vertex(p3), new Vertex(p4));
+		return new Rectangle(new Vertex(p1).uv(0, 1),
+				new Vertex(p2).uv(1, 1),
+				new Vertex(p3).uv(1, 0), 
+				new Vertex(p4).uv(0, 0));
 	}
 
 	public Rectangle v1(Vertex v) {

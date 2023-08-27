@@ -164,6 +164,18 @@ public class Shader {
 		glUniform1i(varLocation, value);
 	}
 
+	public void uploadTexture(String variableName, int slot) {
+		int varLocation = glGetUniformLocation(programID, variableName);
+		use();
+		glUniform1i(varLocation, slot);
+	}
+	
+	public void uploadBoolean(String variableName, boolean value) {
+		int varLocation = glGetUniformLocation(programID, variableName);
+		use();
+		glUniform1i(varLocation, value ? 1 : 0);
+	}
+
 	public ShaderType type() {
 		return type;
 	}

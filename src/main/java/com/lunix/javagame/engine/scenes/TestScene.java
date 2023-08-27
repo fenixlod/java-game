@@ -10,6 +10,7 @@ import org.joml.Vector3f;
 import com.lunix.javagame.engine.GameInstance;
 import com.lunix.javagame.engine.Scene;
 import com.lunix.javagame.engine.enums.ShaderType;
+import com.lunix.javagame.engine.enums.TextureType;
 import com.lunix.javagame.engine.graphic.Color;
 import com.lunix.javagame.engine.graphic.objects.ScreenElement;
 
@@ -99,8 +100,9 @@ public class TestScene extends Scene {
 				20, new Vector3f(1f, 0f, 0f),
 				40, new Vector3f(0f, 0f, 1f)
 			)
-			.color(new Color(0f, 1f, 0f, 0.5f))
-			.shader(ShaderType.DEFAULT)
+			.color(new Color(0f, 1f, 0f, 1f))
+			.shader(ShaderType.NO_PERSPECTIVE)
+			.texture(TextureType.PLAYER)
 			.update();
 
 		staticElements = new ArrayList<>();
@@ -165,9 +167,11 @@ public class TestScene extends Scene {
 
 		//logger.info("X={}, Y={}, Z={}", game.camera().position().x, game.camera().position().y,	game.camera().position().z);
 
-		game.display().drawElement(staticElements.toArray(ScreenElement[]::new));
+		 game.display().drawElement(staticElements.toArray(ScreenElement[]::new));
 
-		game.display().drawElement(rectangle1, rectangle2, rectangle3, rectangle4, rectangle5, rectangle6, character,
-				player);
+		 game.display().drawElement(rectangle1, rectangle2, rectangle3, rectangle4,
+		 rectangle5, rectangle6, character);
+
+		game.display().drawElement(player);
 	}
 }

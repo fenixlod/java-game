@@ -41,9 +41,13 @@ public class Vertex {
 		return this;
 	}
 
-	public Vertex textureMapping(float[] uv) {
+	public Vertex uv(float[] uv) {
 		this.textureUV = uv;
 		return this;
+	}
+
+	public Vertex uv(float u, float v) {
+		return uv(new float[] { u, v });
 	}
 
 	public void move(float changeX, float changeY, float changeZ) {
@@ -67,8 +71,8 @@ public class Vertex {
 		vertexArray[offset++] = color == null ? defaultColor.b() : color.b();
 		vertexArray[offset++] = color == null ? defaultColor.a() : color.a();
 
-		vertexArray[offset++] = textureUV == null ? 0f : textureUV[0];
-		vertexArray[offset++] = textureUV == null ? 0f : textureUV[1];
+		vertexArray[offset++] = textureUV == null ? -1f : textureUV[0];
+		vertexArray[offset++] = textureUV == null ? -1f : textureUV[1];
 		return offset;
 	}
 }

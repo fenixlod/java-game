@@ -94,6 +94,9 @@ public class GameWindow {
 
 		// Set the clear color
 		glClearColor(1f, 1f, 1f, 1f);
+
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
 
 	public void refresh() {

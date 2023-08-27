@@ -20,6 +20,8 @@ resources:
   shaders:
     default: assets/shaders/default.glsl
     noPerspective: assets/shaders/noPerspective.glsl
+  textures:
+    player: assets/images/Player.png
     
 camera:
   ortho:

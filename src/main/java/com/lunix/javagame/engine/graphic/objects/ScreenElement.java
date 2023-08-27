@@ -14,11 +14,13 @@ import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 
 import com.lunix.javagame.engine.enums.ShaderType;
+import com.lunix.javagame.engine.enums.TextureType;
 import com.lunix.javagame.engine.graphic.Color;
 
 public class ScreenElement {
 	private Shape shape;
 	private ShaderType shader;
+	private TextureType texture;
 	private Color color = Color.black;
 	int vertexArrayObjectID, vertexBufferObjectID, elementBufferObjectID;
 
@@ -44,6 +46,11 @@ public class ScreenElement {
 
 	public ScreenElement shader(ShaderType shader) {
 		this.shader = shader;
+		return this;
+	}
+
+	public ScreenElement texture(TextureType texture) {
+		this.texture = texture;
 		return this;
 	}
 
@@ -119,5 +126,9 @@ public class ScreenElement {
 
 	public Shape shape() {
 		return this.shape;
+	}
+
+	public TextureType texture() {
+		return this.texture;
 	}
 }

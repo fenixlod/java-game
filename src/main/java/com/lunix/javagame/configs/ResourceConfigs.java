@@ -5,7 +5,8 @@ import java.util.Map;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import com.lunix.javagame.engine.enums.ShaderType;
+import com.lunix.javagame.engine.enums.TextureType;
 
 @ConfigurationProperties(prefix = "resources")
-public record ResourceConfigs(Map<ShaderType, String> shaders) {
+public record ResourceConfigs(Map<ShaderType, String> shaders, Map<TextureType, String> textures) {
 }
