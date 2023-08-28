@@ -4,6 +4,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
+import com.lunix.javagame.configs.CameraConfigs;
+import com.lunix.javagame.configs.WindowConfigs;
 import com.lunix.javagame.engine.enums.GameSceneType;
 import com.lunix.javagame.engine.util.GameTime;
 
@@ -14,14 +16,20 @@ public class GameInstance {
 	private final KeyboardListener keyboard;
 	private final GameTime timer;
 	private final SceneManager scenes;
-	private final Display display;
+	private final GameWindow window;
+	private final Resources resources;
+	private final Camera camera;
+	private static GameInstance currentInstance;
 
-	public GameInstance(Display display) {
-		this.display = display;
+	public GameInstance(WindowConfigs windowConfigs, Resources resources, CameraConfigs cameraConfig) {
+		this.window = new GameWindow(windowConfigs);
 		this.mouse = new MouseListener();
 		this.keyboard = new KeyboardListener();
 		this.timer = new GameTime();
-		this.scenes = new SceneManager(this);
+		this.scenes = new SceneManager();
+		this.resources = resources;
+		this.camera = new Camera(cameraConfig);
+		currentInstance = this;
 	}
 
 	public void run() throws Exception {
@@ -32,7 +40,8 @@ public class GameInstance {
 
 	private void init() throws Exception {
 		logger.info("Initializing the game engine...");
-		display.init(mouse, keyboard);
+		window.create(mouse, keyboard);
+		resources.init();
 		scenes.changeScene(GameSceneType.TEST);
 	}
 
@@ -40,20 +49,20 @@ public class GameInstance {
 		logger.info("Starting the game loop...");
 		// Run the rendering loop until the user has attempted to close
 		// the window or has pressed the ESCAPE key.
-		while (display.isWindowOpen()) {
+		while (window.isOpened()) {
 			timer.tick();
-			display.refresh();
+			window.refresh();
 			// TODO: display the mouse state in the window when in dev mode
 			// logger.info("Game FPS: {}", 1 / timer.getDeltaTime());
 			scenes.update(timer.getDeltaTime());
-			display.draw();
+			window.draw();
 			mouse.reset();
 		}
 	}
 
 	private void clean() {
 		logger.info("Clean before close...");
-		display.clean();
+		window.destroy();
 	}
 
 	public MouseListener mouse() {
@@ -69,10 +78,15 @@ public class GameInstance {
 	}
 
 	public Camera camera() {
-		return display.camera();
+		return camera;
 	}
 
-	public Display display() {
-		return display;
+	public static GameInstance get() {
+		return currentInstance;
 	}
+
+	public GameWindow window() {
+		return window;
+	}
+
 }

@@ -2,131 +2,136 @@ package com.lunix.javagame.engine.scenes;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.joml.Vector3f;
 
 import com.lunix.javagame.engine.GameInstance;
+import com.lunix.javagame.engine.GameObject;
 import com.lunix.javagame.engine.Scene;
+import com.lunix.javagame.engine.components.SpriteRenderer;
 import com.lunix.javagame.engine.enums.ShaderType;
-import com.lunix.javagame.engine.enums.TextureType;
 import com.lunix.javagame.engine.graphic.Color;
-import com.lunix.javagame.engine.graphic.objects.ScreenElement;
+import com.lunix.javagame.engine.util.VectorUtil;
 
 public class TestScene extends Scene {
-	private ScreenElement rectangle1, rectangle2, rectangle3, rectangle4, rectangle5, rectangle6, character, player;
-	private List<ScreenElement> staticElements;
+	private GameInstance game;
+	private GameObject playerObject;
 
 	@Override
-	public void init(GameInstance game) {
-		super.init(game);
-		game.display().setWindowClearColor(1f, 1f, 1f, 1f);
+	public void init() {
+		super.init();
+		this.game = GameInstance.get();
+		game.window().setClearColor(1f, 1f, 1f, 1f);
 		// game.camera().setOrthoProjection();
-		game.camera().setPerspectiveProjection(game.display().windowAspectRatio());
+		game.camera().setPerspectiveProjection(game.window().getAspectRatio());
 		game.camera().setPosition(new Vector3f());
+		
+		logger.info("Creating game objects...");
+		this.playerObject = new GameObject("Player")
+			.addComponent(
+				new SpriteRenderer(20, 40)
+					.color(Color.green)
+					.shader(ShaderType.NO_PERSPECTIVE)
+					.offset(new Vector3f(0f, 0f, 20f))
+			);
+		addGameObject(playerObject);
+		
+		GameObject enemy =  new GameObject("Enemy", new Vector3f(-50f, 50f, 0f))
+			.addComponent(
+				new SpriteRenderer(10, 20)
+					.color(Color.red)
+					.shader(ShaderType.DEFAULT)
+					.offset(VectorUtil.Z().mul(10))
+			);
+		addGameObject(enemy);
 		
 		// draw cuboid with dimensions: x=50, y=30, z=10
 		// front
-		rectangle1 = ScreenElement.centeredRectangle(
-				new Vector3f(25f, 15f, 0f),
-				50, new Vector3f(1f, 0f, 0f),
-				30, new Vector3f(0f, 1f, 0f)
-			)
-			.color(Color.red)
-			.shader(ShaderType.DEFAULT)
-			.update();
+		GameObject rectangle =  new GameObject("Cube1", new Vector3f(25f, 15f, 0f))
+			.addComponent(
+				new SpriteRenderer(50, 30)
+					.color(Color.blue)
+					.shader(ShaderType.DEFAULT)
+					.widthDirection(VectorUtil.X())
+					.heightDirection(VectorUtil.Y())
+			);
+		addGameObject(rectangle);
 		
 		// right
-		rectangle2 = ScreenElement.centeredRectangle(
-				new Vector3f(50f, 15f, 5f),
-				10, new Vector3f(0f, 0f, -1f), 
-				30, new Vector3f(0f, 1f, 0f)
-			)
-			.color(Color.green)
-			.shader(ShaderType.DEFAULT)
-			.update();
+		rectangle =  new GameObject("Cube2", new Vector3f(50f, 15f, 5f))
+			.addComponent(
+				new SpriteRenderer(10, 30)
+					.color(Color.red)
+					.shader(ShaderType.DEFAULT)
+					.widthDirection(VectorUtil.minusZ())
+					.heightDirection(VectorUtil.Y())
+			);
+		addGameObject(rectangle);
 
 		//back
-		rectangle3 = ScreenElement.centeredRectangle(
-				new Vector3f(25f, 15f, 10f),
-				50, new Vector3f(-1f, 0f, 0f), 
-				30, new Vector3f(0f, 1f, 0f)
-			)
-			.color(Color.black)
-			.shader(ShaderType.DEFAULT)
-			.update();
+		rectangle =  new GameObject("Cube3", new Vector3f(25f, 15f, 10f))
+			.addComponent(
+				new SpriteRenderer(50, 30)
+					.color(Color.black)
+					.shader(ShaderType.DEFAULT)
+					.widthDirection(VectorUtil.minusX())
+					.heightDirection(VectorUtil.Y())
+			);
+		addGameObject(rectangle);
 		
 		//left
-		rectangle4 = ScreenElement.centeredRectangle(
-				new Vector3f(0f, 15f, 5f),
-				10, new Vector3f(0f, 0f, 1f),
-				30, new Vector3f(0f, 1f, 0f)
-			)
-			.color(Color.blue)
-			.shader(ShaderType.DEFAULT)
-			.update();
+		rectangle =  new GameObject("Cube4", new Vector3f(0f, 15f, 5f))
+			.addComponent(
+				new SpriteRenderer(10, 30)
+					.color(Color.yellow)
+					.shader(ShaderType.DEFAULT)
+					.widthDirection(VectorUtil.Z())
+					.heightDirection(VectorUtil.Y())
+					);
+		addGameObject(rectangle);
 		
 		//top
-		rectangle5 = ScreenElement.centeredRectangle(
-				new Vector3f(25f, 30f, 5f),
-				50, new Vector3f(1f, 0f, 0f), 
-				10, new Vector3f(0f, 0f, -1f)
-			)
-			.color(Color.cyan)
-			.shader(ShaderType.DEFAULT)
-			.update();
+		rectangle =  new GameObject("Cube5", new Vector3f(25f, 30f, 5f))
+			.addComponent(
+				new SpriteRenderer(50, 10)
+					.color(Color.cyan)
+					.shader(ShaderType.DEFAULT)
+					.widthDirection(VectorUtil.X())
+					.heightDirection(VectorUtil.minusZ())
+			);
+		addGameObject(rectangle);
 		
-		rectangle6 = ScreenElement.centeredRectangle(
-				new Vector3f(25f, 0f, 5f),
-				50, new Vector3f(1f, 0f, 0f),
-				10, new Vector3f(0f, 0f, 1f)
-			)
-			.color(Color.magenta)
-			.shader(ShaderType.DEFAULT)
-			.update();
 		
-		character = ScreenElement.centeredTriangle(
-				new Vector3f(-50f, 100f, 20f),
-				20, new Vector3f(1f, 0f, 0f),
-				new Vector3f(0f, 0f, 1f)
-			)
-			.color(Color.yellow)
-			.shader(ShaderType.DEFAULT)
-			.update();
-		
-		player = ScreenElement.centeredRectangle(
-				new Vector3f(0f, 0f, 20f),
-				20, new Vector3f(1f, 0f, 0f),
-				40, new Vector3f(0f, 0f, 1f)
-			)
-			.color(new Color(0f, 1f, 0f, 1f))
-			.shader(ShaderType.NO_PERSPECTIVE)
-			.texture(TextureType.PLAYER)
-			.update();
-
-		staticElements = new ArrayList<>();
+		//bottom
+		rectangle =  new GameObject("Cube6", new Vector3f(25f, 0f, 5f))
+			.addComponent(
+				new SpriteRenderer(50, 10)
+					.color(Color.magenta)
+					.shader(ShaderType.DEFAULT)
+					.widthDirection(VectorUtil.X())
+					.heightDirection(VectorUtil.Z())
+			);
+		addGameObject(rectangle);
 		
 		for (int j = 0; j < 4; j++) {
 			int reverse = j > 1 ? -1 : 1;
 			int isXAxis = j % 2 * reverse;
 			int isYAxis = (1 - Math.abs(isXAxis)) * reverse;
 			for (int i = 0; i < 100; i++) {
-				ScreenElement element = ScreenElement.centeredRectangle(
-						new Vector3f(i * isXAxis * 5f, i * isYAxis * 5f, 0f),
-						1, new Vector3f(1f, 0f, 0f),
-						1, new Vector3f(0f, 1f, 0f)
-					)
-					.color(isXAxis != 0 ? Color.blue : Color.red)
-					.shader(ShaderType.DEFAULT)
-					.update();
-				staticElements.add(element);
+				GameObject obj = new GameObject("Marker " + i + " - " + j, new Vector3f(i * isXAxis * 5f, i * isYAxis * 5f, 0f))
+					.addComponent(
+						new SpriteRenderer(1,1)
+							.color(isXAxis != 0 ? Color.blue : Color.red)
+							.shader(ShaderType.DEFAULT)
+							.heightDirection(VectorUtil.Y())
+					);
+				addGameObject(obj);
 			}
 		}
+		super.start();
 	}
 
 	@Override
-	public void update(float deltaTime, GameInstance game) {
+	public void update(float deltaTime) {
 		Vector3f offset = new Vector3f();
 
 		if (game.keyboard().isKeyPressed(GLFW_KEY_RIGHT))
@@ -147,13 +152,11 @@ public class TestScene extends Scene {
 		if (game.keyboard().isKeyPressed(GLFW_KEY_PAGE_DOWN))
 			offset.z -= 50f * deltaTime;
 		
-		float zoomChange = (float) game.mouse().getScrollY() * 0.1f;
+		float zoomChange = (float) game.mouse().getScrollY() * -0.1f;
 		game.camera().move(offset);
 		if (zoomChange != 0f)
 			game.camera().changeZoom(zoomChange);
 		
-		player.move(offset);
-		player.update();
 		// logger.info(mouse);
 		// logger.info(keyboard);
 		// logger.info("Time elapsed: {}", time.getElapsedTimeInSeconds());
@@ -161,17 +164,13 @@ public class TestScene extends Scene {
 
 		// Close the game window when escape key is pressed
 		if (game.keyboard().isKeyPressed(GLFW_KEY_ESCAPE)) {
-			game.display().closeWindow();
+			game.window().close();
 			logger.info("Escape button pressed. Close the game window");
 		}
 
 		//logger.info("X={}, Y={}, Z={}", game.camera().position().x, game.camera().position().y,	game.camera().position().z);
 
-		 game.display().drawElement(staticElements.toArray(ScreenElement[]::new));
-
-		 game.display().drawElement(rectangle1, rectangle2, rectangle3, rectangle4,
-		 rectangle5, rectangle6, character);
-
-		game.display().drawElement(player);
+		this.playerObject.move(offset);
+		super.update(deltaTime);
 	}
 }

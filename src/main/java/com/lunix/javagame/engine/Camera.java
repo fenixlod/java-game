@@ -4,6 +4,7 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import com.lunix.javagame.configs.CameraConfigs;
+import com.lunix.javagame.engine.util.VectorUtil;
 
 public class Camera {
 	private final CameraConfigs cameraConfig;
@@ -37,7 +38,7 @@ public class Camera {
 	public Matrix4f getViewMatrix() {
 		Vector3f cameraEye = position.add(offsets.mul(zoomFactor, new Vector3f()), new Vector3f());
 		viewMatrix.identity();
-		viewMatrix = viewMatrix.lookAt(cameraEye, position, new Vector3f(0f, 0f, 1f));
+		viewMatrix = viewMatrix.lookAt(cameraEye, position, VectorUtil.Z());
 		return viewMatrix;
 	}
 

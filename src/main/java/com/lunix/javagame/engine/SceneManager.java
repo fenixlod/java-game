@@ -16,23 +16,22 @@ public class SceneManager {
 
 	private Scene currentScene;
 	private Map<GameSceneType, Scene> scenes = new HashMap<>();
-	private final GameInstance game;
 
-	public SceneManager(GameInstance gameInstance) {
-		this.game = gameInstance;
-	}
 
 	public void changeScene(GameSceneType newSceneType) {
 		logger.info("Changing scene to: " + newSceneType.toString());
+		// TODO: Display loading screen
 		Scene newScene = scenes.get(newSceneType);
 
 		if (newScene == null) {
 			newScene = createNewScene(newSceneType);
-			newScene.init(game);
+			newScene.init();
 			scenes.put(newSceneType, newScene);
 		}
 
 		currentScene = newScene;
+		// TODO: Remove loading screen
+		currentScene.start();
 	}
 
 	private Scene createNewScene(GameSceneType newSceneType) {
@@ -45,6 +44,6 @@ public class SceneManager {
 	}
 
 	public void update(float deltaTime) {
-		currentScene.update(deltaTime, game);
+		currentScene.update(deltaTime);
 	}
 }
