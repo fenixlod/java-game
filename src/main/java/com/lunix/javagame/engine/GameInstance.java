@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import com.lunix.javagame.configs.CameraConfigs;
 import com.lunix.javagame.configs.WindowConfigs;
 import com.lunix.javagame.engine.enums.GameSceneType;
+import com.lunix.javagame.engine.util.Debugger;
 import com.lunix.javagame.engine.util.GameTime;
 
 @Component
@@ -17,11 +18,11 @@ public class GameInstance {
 	private final GameTime timer;
 	private final SceneManager scenes;
 	private final GameWindow window;
-	private final Resources resources;
+	private final ResourcePool resources;
 	private final Camera camera;
 	private static GameInstance currentInstance;
 
-	public GameInstance(WindowConfigs windowConfigs, Resources resources, CameraConfigs cameraConfig) {
+	public GameInstance(WindowConfigs windowConfigs, ResourcePool resources, CameraConfigs cameraConfig) {
 		this.window = new GameWindow(windowConfigs);
 		this.mouse = new MouseListener();
 		this.keyboard = new KeyboardListener();
@@ -51,11 +52,16 @@ public class GameInstance {
 		// the window or has pressed the ESCAPE key.
 		while (window.isOpened()) {
 			timer.tick();
-			window.refresh();
-			// TODO: display the mouse state in the window when in dev mode
-			// logger.info("Game FPS: {}", 1 / timer.getDeltaTime());
+			window.clear();
+
+			Debugger.display(false, "Game FPS: {}", 1 / timer.getDeltaTime());
+			Debugger.display(false, mouse);
+			Debugger.display(false, keyboard);
+			Debugger.display(false, "Time elapsed: {}", timer.getElapsedTime());
+			Debugger.display(false, "Delta time: {}", timer.getDeltaTime());
+
 			scenes.update(timer.getDeltaTime());
-			window.draw();
+			window.refresh();
 			mouse.reset();
 		}
 	}

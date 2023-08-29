@@ -99,7 +99,7 @@ public class GameWindow {
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
 
-	public void refresh() {
+	public void clear() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the frame buffer
 
 		// Poll for window events. The key callback above will only be
@@ -107,7 +107,7 @@ public class GameWindow {
 		glfwPollEvents();
 	}
 
-	public void draw() {
+	public void refresh() {
 		glfwSwapBuffers(windowHandle); // swap the color buffers
 	}
 

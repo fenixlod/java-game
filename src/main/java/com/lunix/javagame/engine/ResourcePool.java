@@ -12,14 +12,16 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 import com.lunix.javagame.configs.ResourceConfigs;
+import com.lunix.javagame.engine.enums.ResourceType;
 import com.lunix.javagame.engine.enums.ShaderType;
 import com.lunix.javagame.engine.enums.TextureType;
+import com.lunix.javagame.engine.exception.ResourceNotFound;
 import com.lunix.javagame.engine.graphic.Shader;
 import com.lunix.javagame.engine.graphic.Texture;
 
 @Component
-public class Resources {
-	private static final Logger logger = LogManager.getLogger(Resources.class);
+public class ResourcePool {
+	private static final Logger logger = LogManager.getLogger(ResourcePool.class);
 	private final ResourceConfigs resourceConfig;
 	private static final Map<ShaderType, Shader> shaders;
 	private static final Map<TextureType, Texture> textures;
@@ -29,52 +31,64 @@ public class Resources {
 		textures = new HashMap<>();
 	}
 
-	public Resources(ResourceConfigs resourceConfig) {
+	public ResourcePool(ResourceConfigs resourceConfig) {
 		this.resourceConfig = resourceConfig;
 	}
 
 	public void init() throws IOException {
-		loadShaders(resourceConfig.shaders());
-		loadTextures(resourceConfig.textures());
+		initShaders(resourceConfig.shaders());
+		initTextures(resourceConfig.textures());
 	}
 
-	private void loadShaders(Map<ShaderType, String> shadersToLoad) throws IOException {
+	private void initShaders(Map<ShaderType, String> shadersToLoad) throws IOException {
 		logger.info("Loading shaders...");
 		for (Entry<ShaderType, String> entry : shadersToLoad.entrySet()) {
 			Path path = new ClassPathResource(entry.getValue()).getFile().toPath();
 			logger.debug("Loading shader: {}", path);
 			Shader shader = new Shader(entry.getKey(), path);
-			shader.compile();
 			shaders.put(entry.getKey(), shader);
 		}
 	}
 
-	private void loadTextures(Map<TextureType, String> texturesToLoad) throws IOException {
+	private void initTextures(Map<TextureType, String> texturesToLoad) throws IOException {
 		logger.info("Loading textures...");
 		for (Entry<TextureType, String> entry : texturesToLoad.entrySet()) {
 			Path path = new ClassPathResource(entry.getValue()).getFile().toPath();
 			logger.debug("Loading texture: {}", path);
 			Texture texture = new Texture(entry.getKey(), path);
-			texture.load();
 			textures.put(entry.getKey(), texture);
 		}
 	}
 
-	public static Shader getShader(ShaderType shaderName) {
+	public static void loadResources(ResourceType... resources) throws ResourceNotFound, IOException {
+		for (ResourceType resource : resources) {
+			if (resource instanceof ShaderType shader) {
+				getShader(shader);
+			} else if (resource instanceof TextureType texture) {
+				getTexture(texture);
+			}
+		}
+	}
+
+	public static Shader getShader(ShaderType shaderName) throws ResourceNotFound {
 		Shader shader = shaders.get(shaderName);
 		if (shader == null) {
-			logger.warn("Unable to find shader: {}, using the default one", shaderName);
-			return shaders.get(ShaderType.DEFAULT);
+			logger.warn("Unable to find shader: {}", shaderName);
+			throw new ResourceNotFound("Shader not found: " + shaderName);
 		}
+
+		shader.compile();
 		return shader;
 	}
 
-	public static Texture getTexture(TextureType textureTYpe) throws Exception {
-		Texture texture = textures.get(textureTYpe);
+	public static Texture getTexture(TextureType textureType) throws ResourceNotFound, IOException {
+		Texture texture = textures.get(textureType);
 		if (texture == null) {
-			logger.warn("Unable to find texture: {}, textureTYpe");
-			throw new Exception("Texture not found");
+			logger.warn("Unable to find texture: {}", textureType);
+			throw new ResourceNotFound("Texture not found: " + textureType);
 		}
+
+		texture.load();
 		return texture;
 	}
 }

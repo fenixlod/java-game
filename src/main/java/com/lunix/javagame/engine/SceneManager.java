@@ -18,9 +18,8 @@ public class SceneManager {
 	private Map<GameSceneType, Scene> scenes = new HashMap<>();
 
 
-	public void changeScene(GameSceneType newSceneType) {
+	public void changeScene(GameSceneType newSceneType) throws Exception {
 		logger.info("Changing scene to: " + newSceneType.toString());
-		// TODO: Display loading screen
 		Scene newScene = scenes.get(newSceneType);
 
 		if (newScene == null) {
@@ -29,17 +28,19 @@ public class SceneManager {
 			scenes.put(newSceneType, newScene);
 		}
 
+		if (currentScene != null)
+			currentScene.stop();
+
 		currentScene = newScene;
-		// TODO: Remove loading screen
 		currentScene.start();
 	}
 
 	private Scene createNewScene(GameSceneType newSceneType) {
 		return switch (newSceneType) {
-		case MAIN_MENU -> new MainMenuScene();
-		case WORLD -> new WorldScene();
-		case TEST -> new TestScene();
-		default -> throw new IllegalStateException("Unknown scene with index: " + newSceneType.toString());
+			case MAIN_MENU -> new MainMenuScene();
+			case WORLD -> new WorldScene();
+			case TEST -> new TestScene();
+			default -> throw new IllegalStateException("Unknown scene with index: " + newSceneType.toString());
 		};
 	}
 

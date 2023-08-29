@@ -15,6 +15,7 @@ public class SpriteRenderer extends Component {
 	private Vector3f heightDirection;
 	private Color color;
 	private ShaderType shader;
+	private boolean isStatic;
 
 	public SpriteRenderer(int width, int height) {
 		this.height = height;
@@ -24,6 +25,7 @@ public class SpriteRenderer extends Component {
 		this.heightDirection = VectorUtil.Z();
 		this.shader = ShaderType.DEFAULT;
 		this.positionOffset = new Vector3f();
+		this.isStatic = false;
 	}
 
 	@Override
@@ -68,6 +70,15 @@ public class SpriteRenderer extends Component {
 	public SpriteRenderer shader(ShaderType shader) {
 		this.shader = shader;
 		return this;
+	}
+
+	public SpriteRenderer isStatic(boolean isStatic) {
+		this.isStatic = isStatic;
+		return this;
+	}
+
+	public boolean isStatic() {
+		return this.isStatic;
 	}
 
 	public ShaderType shader() {

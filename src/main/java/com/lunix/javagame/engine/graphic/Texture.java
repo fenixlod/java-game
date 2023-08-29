@@ -20,13 +20,18 @@ public class Texture {
 	private final String filePath;
 	private int textureID;
 	private final TextureType type;
+	private boolean loaded;
 
 	public Texture(TextureType type, Path filePath) throws IOException {
 		this.type = type;
 		this.filePath = filePath.toString();
+		this.loaded = false;
 	}
 
 	public void load() throws IOException {
+		if (loaded)
+			return;
+
 		// Generate texture on GPU
 		textureID = glGenTextures();
 		glBindTexture(GL_TEXTURE_2D, textureID);
@@ -48,11 +53,13 @@ public class Texture {
 			else
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width.get(0), height.get(0), 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
 		} else {
+			logger.error("Cannot load image: {}", filePath);
 			throw new IOException("Cannot load image: " + filePath);
 		}
 
 		// Free the memory
 		stbi_image_free(image);
+		loaded = true;
 	}
 
 	public void bind(int slot) {
@@ -68,5 +75,9 @@ public class Texture {
 
 	public int id() {
 		return this.textureID;
+	}
+
+	public TextureType type() {
+		return this.type;
 	}
 }

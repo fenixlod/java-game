@@ -10,9 +10,10 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import com.lunix.javagame.engine.GameInstance;
-import com.lunix.javagame.engine.Resources;
+import com.lunix.javagame.engine.ResourcePool;
 import com.lunix.javagame.engine.components.SpriteRenderer;
 import com.lunix.javagame.engine.enums.ShaderType;
+import com.lunix.javagame.engine.exception.ResourceNotFound;
 import com.lunix.javagame.engine.util.VectorUtil;
 
 public class RenderBatch {
@@ -35,8 +36,8 @@ public class RenderBatch {
 	private Shader shader;
 	private boolean staticImage;
 
-	public RenderBatch(int maxBatchSize, ShaderType shaderType) {
-		this.shader = Resources.getShader(shaderType);
+	public RenderBatch(int maxBatchSize, ShaderType shaderType) throws ResourceNotFound {
+		this.shader = ResourcePool.getShader(shaderType);
 		this.sprites = new SpriteRenderer[maxBatchSize];
 		this.maxBatchSize = maxBatchSize;
 
@@ -88,7 +89,7 @@ public class RenderBatch {
 	public void render() {
 		// Update positions
 		for (int i = 0; i < countSprites; i++) {
-			loadVertexProperties(i);
+			loadVertexProperties(i, true);
 		}
 
 		// Re-buffer all data
@@ -133,11 +134,14 @@ public class RenderBatch {
 		this.countSprites++;
 
 		// Add properties to local vertices array
-		loadVertexProperties(index);
+		loadVertexProperties(index, false);
 	}
 
-	private void loadVertexProperties(int index) {
+	private void loadVertexProperties(int index, boolean update) {
 		SpriteRenderer sprite = this.sprites[index];
+
+		if (sprite.isStatic() && update)
+			return;
 
 		// Find offset within array (4 vertices per sprite)
 		int offset = 4 * index * VERTEX_SIZE;

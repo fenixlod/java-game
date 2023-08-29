@@ -4,32 +4,43 @@ import static org.lwjgl.glfw.GLFW.*;
 
 import org.joml.Vector3f;
 
-import com.lunix.javagame.engine.GameInstance;
 import com.lunix.javagame.engine.GameObject;
+import com.lunix.javagame.engine.ResourcePool;
 import com.lunix.javagame.engine.Scene;
 import com.lunix.javagame.engine.components.SpriteRenderer;
 import com.lunix.javagame.engine.enums.ShaderType;
+import com.lunix.javagame.engine.enums.TextureType;
 import com.lunix.javagame.engine.graphic.Color;
+import com.lunix.javagame.engine.util.Debugger;
 import com.lunix.javagame.engine.util.VectorUtil;
 
 public class TestScene extends Scene {
-	private GameInstance game;
 	private GameObject playerObject;
 
 	@Override
-	public void init() {
+	public void init() throws Exception {
 		super.init();
-		this.game = GameInstance.get();
 		game.window().setClearColor(1f, 1f, 1f, 1f);
 		// game.camera().setOrthoProjection();
 		game.camera().setPerspectiveProjection(game.window().getAspectRatio());
 		game.camera().setPosition(new Vector3f());
 		
+		ResourcePool.loadResources(ShaderType.DEFAULT, ShaderType.NO_PERSPECTIVE, TextureType.PLAYER);
+
 		logger.info("Creating game objects...");
+		GameObject ground =  new GameObject("Enemy")
+				.addComponent(
+					new SpriteRenderer(1_000_000, 1_000_000)
+						.color(new Color(0f, 1f, 0f, 0.5f))
+						.shader(ShaderType.DEFAULT)
+						.isStatic(true)
+				);
+			addGameObject(ground);
+		
 		this.playerObject = new GameObject("Player")
 			.addComponent(
 				new SpriteRenderer(20, 40)
-					.color(Color.green)
+					.color(Color.blue)
 					.shader(ShaderType.NO_PERSPECTIVE)
 					.offset(new Vector3f(0f, 0f, 20f))
 			);
@@ -157,18 +168,13 @@ public class TestScene extends Scene {
 		if (zoomChange != 0f)
 			game.camera().changeZoom(zoomChange);
 		
-		// logger.info(mouse);
-		// logger.info(keyboard);
-		// logger.info("Time elapsed: {}", time.getElapsedTimeInSeconds());
-		// logger.info("Delta time: {}", time.getDeltaTime());
-
 		// Close the game window when escape key is pressed
 		if (game.keyboard().isKeyPressed(GLFW_KEY_ESCAPE)) {
 			game.window().close();
 			logger.info("Escape button pressed. Close the game window");
 		}
 
-		//logger.info("X={}, Y={}, Z={}", game.camera().position().x, game.camera().position().y,	game.camera().position().z);
+		Debugger.display(false, "X={}, Y={}, Z={}", game.camera().position().x, game.camera().position().y,	game.camera().position().z);
 
 		this.playerObject.move(offset);
 		super.update(deltaTime);

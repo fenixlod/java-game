@@ -50,6 +50,10 @@ public class Transform {
 		return scale;
 	}
 
+	public Vector3f direction() {
+		return direction;
+	}
+
 	public Transform move(Vector3f offset) {
 		this.position.add(offset);
 		return this;

@@ -27,10 +27,13 @@ public class Shader {
 	private int programID;
 	private boolean inUse;
 	private final ShaderType type;
+	private boolean compiled;
 
 	public Shader(ShaderType type, Path filePath) throws IOException {
 		this.type = type;
 		this.filePath = filePath.toString();
+		this.compiled = false;
+
 		String source = new String(Files.readAllBytes(filePath));
 		String[] sources = source.split("#(type )([a-zA-Z]+)");
 
@@ -60,6 +63,9 @@ public class Shader {
 	}
 
 	public void compile() {
+		if (compiled)
+			return;
+
 		// Load and compile the vertex shader
 		int vertexShaderID = glCreateShader(GL_VERTEX_SHADER);
 		// Pass the shader source to the GPU
@@ -104,6 +110,8 @@ public class Shader {
 			logger.error(errorMessage);
 			throw new RuntimeException("Unable to link shaders: " + this.filePath);
 		}
+
+		compiled = true;
 	}
 
 	public void use() {

@@ -1,6 +1,6 @@
 package com.lunix.javagame.engine.enums;
 
-public enum TextureType {
+public enum TextureType implements ResourceType {
 	PLAYER("DEFAULT");
 
 	private final String value;

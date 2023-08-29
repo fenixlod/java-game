@@ -1,6 +1,6 @@
 package com.lunix.javagame.engine.enums;
 
-public enum ShaderType {
+public enum ShaderType implements ResourceType {
 	DEFAULT("DEFAULT"), NO_PERSPECTIVE("NO_PERSPECTIVE");
 
 	private final String value;
