@@ -1,10 +1,13 @@
 package com.lunix.javagame.engine.components;
 
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import com.lunix.javagame.engine.Component;
 import com.lunix.javagame.engine.enums.ShaderType;
+import com.lunix.javagame.engine.enums.TextureType;
 import com.lunix.javagame.engine.graphic.Color;
+import com.lunix.javagame.engine.graphic.Sprite;
 import com.lunix.javagame.engine.util.VectorUtil;
 
 public class SpriteRenderer extends Component {
@@ -16,16 +19,18 @@ public class SpriteRenderer extends Component {
 	private Color color;
 	private ShaderType shader;
 	private boolean isStatic;
+	private Sprite sprite;
 
 	public SpriteRenderer(int width, int height) {
 		this.height = height;
 		this.width = width;
-		this.color = Color.black;
+		this.color = Color.white;
 		this.widthDirection = VectorUtil.X();
 		this.heightDirection = VectorUtil.Z();
 		this.shader = ShaderType.DEFAULT;
 		this.positionOffset = new Vector3f();
 		this.isStatic = false;
+		this.sprite = new Sprite();
 	}
 
 	@Override
@@ -77,6 +82,11 @@ public class SpriteRenderer extends Component {
 		return this;
 	}
 
+	public SpriteRenderer sprite(Sprite sprite) {
+		this.sprite = sprite;
+		return this;
+	}
+
 	public boolean isStatic() {
 		return this.isStatic;
 	}
@@ -85,7 +95,7 @@ public class SpriteRenderer extends Component {
 		return this.shader;
 	}
 
-	public void getVertexArray(float[] vertices, int offset) {
+	public void getVertexArray(float[] vertices, int offset, int textureIndex) {
 		Vector3f center = owner.transform().position().add(positionOffset, new Vector3f());
 		Vector3f p1 = new Vector3f(center);
 		Vector3f p2 = new Vector3f(center);
@@ -103,13 +113,13 @@ public class SpriteRenderer extends Component {
 		p4.add(scaledWidthDirection.mul(-width / 2f, new Vector3f()))
 				.add(scaledHeightDirection.mul(height / 2f, new Vector3f()));
 		
-		offset = setVertexInArray(vertices, offset, p1, 0, 1);
-		offset = setVertexInArray(vertices, offset, p2, 1, 1);
-		offset = setVertexInArray(vertices, offset, p3, 1, 0);
-		offset = setVertexInArray(vertices, offset, p4, 0, 0);
+		offset = setVertexInArray(vertices, offset, p1, sprite.textureCoords()[0], textureIndex);
+		offset = setVertexInArray(vertices, offset, p2, sprite.textureCoords()[1], textureIndex);
+		offset = setVertexInArray(vertices, offset, p3, sprite.textureCoords()[2], textureIndex);
+		offset = setVertexInArray(vertices, offset, p4, sprite.textureCoords()[3], textureIndex);
 	}
 
-	private int setVertexInArray(float[] vertices, int offset, Vector3f position, float u, float v) {
+	private int setVertexInArray(float[] vertices, int offset, Vector3f position, Vector2f uv, int textureIndex) {
 		vertices[offset++] = position.x();
 		vertices[offset++] = position.y();
 		vertices[offset++] = position.z();
@@ -119,8 +129,14 @@ public class SpriteRenderer extends Component {
 		vertices[offset++] = color.b();
 		vertices[offset++] = color.a();
 
-		// vertices[offset++] = textureUV == null ? -1f : textureUV[0];
-		// vertices[offset++] = textureUV == null ? -1f : textureUV[1];
+		vertices[offset++] = uv.x;
+		vertices[offset++] = uv.y;
+
+		vertices[offset++] = textureIndex;
 		return offset;
+	}
+
+	public TextureType texture() {
+		return sprite.texture();
 	}
 }

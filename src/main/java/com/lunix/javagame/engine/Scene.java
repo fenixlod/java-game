@@ -41,7 +41,7 @@ public abstract class Scene {
 		active = false;
 	}
 
-	public void update(float deltaTime) {
+	public void update(float deltaTime) throws Exception {
 		if (!active)
 			return;
 

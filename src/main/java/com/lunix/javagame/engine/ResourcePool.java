@@ -3,6 +3,7 @@ package com.lunix.javagame.engine;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -12,11 +13,14 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 import com.lunix.javagame.configs.ResourceConfigs;
+import com.lunix.javagame.configs.ResourceConfigs.SpriteSheetData;
 import com.lunix.javagame.engine.enums.ResourceType;
 import com.lunix.javagame.engine.enums.ShaderType;
 import com.lunix.javagame.engine.enums.TextureType;
 import com.lunix.javagame.engine.exception.ResourceNotFound;
 import com.lunix.javagame.engine.graphic.Shader;
+import com.lunix.javagame.engine.graphic.Sprite;
+import com.lunix.javagame.engine.graphic.SpriteSheet;
 import com.lunix.javagame.engine.graphic.Texture;
 
 @Component
@@ -25,19 +29,22 @@ public class ResourcePool {
 	private final ResourceConfigs resourceConfig;
 	private static final Map<ShaderType, Shader> shaders;
 	private static final Map<TextureType, Texture> textures;
+	private static final Map<TextureType, SpriteSheet> spriteSheets;
 
 	static {
 		shaders = new HashMap<>();
 		textures = new HashMap<>();
+		spriteSheets = new HashMap<>();
 	}
 
 	public ResourcePool(ResourceConfigs resourceConfig) {
 		this.resourceConfig = resourceConfig;
 	}
 
-	public void init() throws IOException {
+	public void init() throws IOException, ResourceNotFound {
 		initShaders(resourceConfig.shaders());
 		initTextures(resourceConfig.textures());
+		initSpriteSheets(resourceConfig.spriteSheet());
 	}
 
 	private void initShaders(Map<ShaderType, String> shadersToLoad) throws IOException {
@@ -57,6 +64,12 @@ public class ResourcePool {
 			logger.debug("Loading texture: {}", path);
 			Texture texture = new Texture(entry.getKey(), path);
 			textures.put(entry.getKey(), texture);
+		}
+	}
+
+	private void initSpriteSheets(List<SpriteSheetData> sheetsData) throws IOException, ResourceNotFound {
+		for (SpriteSheetData ssd : sheetsData) {
+			spriteSheets.put(ssd.texture(), new SpriteSheet(ssd));
 		}
 	}
 
@@ -90,5 +103,15 @@ public class ResourcePool {
 
 		texture.load();
 		return texture;
+	}
+
+	public static Sprite getSprite(TextureType textureType, int index) throws ResourceNotFound, IOException {
+		SpriteSheet sheet = spriteSheets.get(textureType);
+		if (sheet == null) {
+			logger.warn("Unable to find sprite sheet: {}", textureType);
+			throw new ResourceNotFound("Sprite sheet not found: " + textureType);
+		}
+
+		return sheet.get(index);
 	}
 }

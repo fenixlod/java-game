@@ -46,7 +46,7 @@ public class GameInstance {
 		scenes.changeScene(GameSceneType.TEST);
 	}
 
-	private void loop() {
+	private void loop() throws Exception {
 		logger.info("Starting the game loop...");
 		// Run the rendering loop until the user has attempted to close
 		// the window or has pressed the ESCAPE key.

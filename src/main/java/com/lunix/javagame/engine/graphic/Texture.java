@@ -21,11 +21,15 @@ public class Texture {
 	private int textureID;
 	private final TextureType type;
 	private boolean loaded;
+	private int width;
+	private int height;
 
 	public Texture(TextureType type, Path filePath) throws IOException {
 		this.type = type;
 		this.filePath = filePath.toString();
 		this.loaded = false;
+		this.width = 0;
+		this.height = 0;
 	}
 
 	public void load() throws IOException {
@@ -48,8 +52,11 @@ public class Texture {
 		IntBuffer channels = BufferUtils.createIntBuffer(1);
 		ByteBuffer image = stbi_load(filePath, width, height, channels, 0);
 		if (image != null) {
+			this.width = width.get(0);
+			this.height = height.get(0);
+
 			if(channels.get(0) == 3)
-				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width.get(0), height.get(0), 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width.get(0), height.get(0), 0, GL_RGB, GL_UNSIGNED_BYTE, image);
 			else
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width.get(0), height.get(0), 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
 		} else {
@@ -79,5 +86,13 @@ public class Texture {
 
 	public TextureType type() {
 		return this.type;
+	}
+
+	public int wdth() {
+		return width;
+	}
+
+	public int height() {
+		return height;
 	}
 }

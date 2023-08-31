@@ -25,6 +25,7 @@ public class SceneManager {
 		if (newScene == null) {
 			newScene = createNewScene(newSceneType);
 			newScene.init();
+			newScene.start();
 			scenes.put(newSceneType, newScene);
 		}
 
@@ -32,7 +33,6 @@ public class SceneManager {
 			currentScene.stop();
 
 		currentScene = newScene;
-		currentScene.start();
 	}
 
 	private Scene createNewScene(GameSceneType newSceneType) {
@@ -44,7 +44,7 @@ public class SceneManager {
 		};
 	}
 
-	public void update(float deltaTime) {
+	public void update(float deltaTime) throws Exception {
 		currentScene.update(deltaTime);
 	}
 }

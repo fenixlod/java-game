@@ -22,6 +22,12 @@ resources:
     noPerspective: assets/shaders/noPerspective.glsl
   textures:
     player: assets/images/Player.png
+    enemy: assets/images/Enemy.png
+  sprite-sheet:
+    -
+      texture: enemy
+      width: 152
+      height: 512
     
 camera:
   ortho:

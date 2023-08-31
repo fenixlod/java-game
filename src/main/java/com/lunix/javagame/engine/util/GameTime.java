@@ -1,9 +1,11 @@
 package com.lunix.javagame.engine.util;
 
+import static org.lwjgl.glfw.GLFW.*;
+
 public class GameTime {
-	private final long startTime = System.nanoTime();
-	private long frameStartTime = startTime;
-	private long timeBetweenFrames;
+	private final double startTime = glfwGetTime();
+	private double frameStartTime = startTime;
+	private double timeBetweenFrames;
 
 	/**
 	 * Return elapsed time in seconds since game start.
@@ -11,14 +13,14 @@ public class GameTime {
 	 * @return
 	 */
 	public float getElapsedTime() {
-		return (float) ((System.nanoTime() - startTime) * 1E-9);
+		return (float) (glfwGetTime() - startTime);
 	}
 
 	/**
 	 * Indicate start of frame.
 	 */
 	public void tick() {
-		long currentTime = System.nanoTime();
+		double currentTime = glfwGetTime();
 		timeBetweenFrames = currentTime - frameStartTime;
 		frameStartTime = currentTime;
 	}
@@ -29,6 +31,6 @@ public class GameTime {
 	 * @return
 	 */
 	public float getDeltaTime() {
-		return (float) (timeBetweenFrames * 1E-9);
+		return (float) timeBetweenFrames;
 	}
 }

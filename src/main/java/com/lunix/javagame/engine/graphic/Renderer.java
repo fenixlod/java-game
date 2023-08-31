@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.lunix.javagame.engine.GameObject;
 import com.lunix.javagame.engine.components.SpriteRenderer;
+import com.lunix.javagame.engine.enums.TextureType;
 import com.lunix.javagame.engine.exception.ResourceNotFound;
 
 public class Renderer {
@@ -25,8 +26,11 @@ public class Renderer {
 	private void add(SpriteRenderer sprite) throws ResourceNotFound {
 		for (RenderBatch batch : batches) {
 			if (batch.haveRoom() && sprite.shader() == batch.shader()) {
-				batch.addSprite(sprite);
-				return;
+				TextureType texture = sprite.texture();
+				if (texture == TextureType.NONE || batch.hasTexture(texture) || batch.hasTexture(texture)) {
+					batch.addSprite(sprite);
+					return;
+				}
 			}
 		}
 
@@ -36,7 +40,7 @@ public class Renderer {
 		batches.add(newBatch);
 	}
 
-	public void render() {
+	public void render() throws Exception {
 		for (RenderBatch batch : batches) {
 			batch.render();
 		}

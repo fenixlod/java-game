@@ -11,6 +11,7 @@ import com.lunix.javagame.engine.components.SpriteRenderer;
 import com.lunix.javagame.engine.enums.ShaderType;
 import com.lunix.javagame.engine.enums.TextureType;
 import com.lunix.javagame.engine.graphic.Color;
+import com.lunix.javagame.engine.graphic.Sprite;
 import com.lunix.javagame.engine.util.Debugger;
 import com.lunix.javagame.engine.util.VectorUtil;
 
@@ -25,24 +26,14 @@ public class TestScene extends Scene {
 		game.camera().setPerspectiveProjection(game.window().getAspectRatio());
 		game.camera().setPosition(new Vector3f());
 		
-		ResourcePool.loadResources(ShaderType.DEFAULT, ShaderType.NO_PERSPECTIVE, TextureType.PLAYER);
+		ResourcePool.loadResources(ShaderType.DEFAULT, ShaderType.NO_PERSPECTIVE, TextureType.PLAYER, TextureType.ENEMY);
 
-		logger.info("Creating game objects...");
-		GameObject ground =  new GameObject("Enemy")
-				.addComponent(
-					new SpriteRenderer(1_000_000, 1_000_000)
-						.color(new Color(0f, 1f, 0f, 0.5f))
-						.shader(ShaderType.DEFAULT)
-						.isStatic(true)
-				);
-			addGameObject(ground);
-		
 		this.playerObject = new GameObject("Player")
 			.addComponent(
 				new SpriteRenderer(20, 40)
-					.color(Color.blue)
 					.shader(ShaderType.NO_PERSPECTIVE)
 					.offset(new Vector3f(0f, 0f, 20f))
+					.sprite(new Sprite(TextureType.PLAYER))
 			);
 		addGameObject(playerObject);
 		
@@ -138,11 +129,57 @@ public class TestScene extends Scene {
 				addGameObject(obj);
 			}
 		}
-		super.start();
+		
+		enemy = new GameObject("Enemy1", new Vector3f(0f, -100f, 0f))
+				.addComponent(
+					new SpriteRenderer(50, 100)
+						.color(Color.red)
+						.shader(ShaderType.DEFAULT)
+						.heightDirection(VectorUtil.Y())
+						.sprite(ResourcePool.getSprite(TextureType.ENEMY, 0))
+				);
+		addGameObject(enemy);
+		
+		enemy = new GameObject("Enemy2", new Vector3f(100f, -100f, 0f))
+				.addComponent(
+					new SpriteRenderer(50, 100)
+						.color(Color.green)
+						.shader(ShaderType.DEFAULT)
+						.heightDirection(VectorUtil.Y())
+						.sprite(ResourcePool.getSprite(TextureType.ENEMY, 1))
+				);
+		addGameObject(enemy);
+		
+		enemy = new GameObject("Enemy3", new Vector3f(200f, -100f, 0f))
+				.addComponent(
+					new SpriteRenderer(50, 100)
+						.color(Color.blue)
+						.shader(ShaderType.DEFAULT)
+						.heightDirection(VectorUtil.Y())
+						.sprite(ResourcePool.getSprite(TextureType.ENEMY, 2))
+				);
+		addGameObject(enemy);
+		
+//		logger.info("Creating game objects...");
+//		for (int i = 0; i < 200; i++) {
+//			float yPos = (100 - i) * 100f;
+//			for(int j = 0; j < 200; j++) {
+//				float xPos = (100 - j) * 100f;
+//				GameObject ground = new GameObject("Ground " + i + " - " + j, new Vector3f(xPos, yPos, 0f))
+//						.addComponent(
+//							new SpriteRenderer(100, 100)
+//								.heightDirection(VectorUtil.Y())
+//								.color(new Color(0f, 1f, 0f, 0.5f))
+//								.shader(ShaderType.DEFAULT)
+//								.isStatic(true)
+//						);
+//				addGameObject(ground);
+//			}
+//		}
 	}
 
 	@Override
-	public void update(float deltaTime) {
+	public void update(float deltaTime) throws Exception {
 		Vector3f offset = new Vector3f();
 
 		if (game.keyboard().isKeyPressed(GLFW_KEY_RIGHT))
