@@ -27,7 +27,7 @@ public class Renderer {
 		for (RenderBatch batch : batches) {
 			if (batch.haveRoom() && sprite.shader() == batch.shader()) {
 				TextureType texture = sprite.texture();
-				if (texture == TextureType.NONE || batch.hasTexture(texture) || batch.hasTexture(texture)) {
+				if (texture == TextureType.NONE || batch.hasTexture(texture) || batch.haveTextureRoom()) {
 					batch.addSprite(sprite);
 					return;
 				}

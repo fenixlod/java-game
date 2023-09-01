@@ -28,6 +28,22 @@ public class TestScene extends Scene {
 		
 		ResourcePool.loadResources(ShaderType.DEFAULT, ShaderType.NO_PERSPECTIVE, TextureType.PLAYER, TextureType.ENEMY);
 
+		for (int j = 0; j < 4; j++) {
+			int reverse = j > 1 ? -1 : 1;
+			int isXAxis = j % 2 * reverse;
+			int isYAxis = (1 - Math.abs(isXAxis)) * reverse;
+			for (int i = 0; i < 100; i++) {
+				GameObject obj = new GameObject("Marker " + i + " - " + j, new Vector3f(i * isXAxis * 5f, i * isYAxis * 5f, 0f))
+					.addComponent(
+						new SpriteRenderer(1,1)
+							.color(isXAxis != 0 ? Color.blue : Color.red)
+							.shader(ShaderType.DEFAULT)
+							.heightDirection(VectorUtil.Y())
+					);
+				addGameObject(obj);
+			}
+		}
+		
 		this.playerObject = new GameObject("Player")
 			.addComponent(
 				new SpriteRenderer(20, 40)
@@ -114,22 +130,6 @@ public class TestScene extends Scene {
 			);
 		addGameObject(rectangle);
 		
-		for (int j = 0; j < 4; j++) {
-			int reverse = j > 1 ? -1 : 1;
-			int isXAxis = j % 2 * reverse;
-			int isYAxis = (1 - Math.abs(isXAxis)) * reverse;
-			for (int i = 0; i < 100; i++) {
-				GameObject obj = new GameObject("Marker " + i + " - " + j, new Vector3f(i * isXAxis * 5f, i * isYAxis * 5f, 0f))
-					.addComponent(
-						new SpriteRenderer(1,1)
-							.color(isXAxis != 0 ? Color.blue : Color.red)
-							.shader(ShaderType.DEFAULT)
-							.heightDirection(VectorUtil.Y())
-					);
-				addGameObject(obj);
-			}
-		}
-		
 		enemy = new GameObject("Enemy1", new Vector3f(0f, -100f, 0f))
 				.addComponent(
 					new SpriteRenderer(50, 100)
@@ -178,8 +178,22 @@ public class TestScene extends Scene {
 //		}
 	}
 
+	int sIdx = 0;
+	float changeTime = 1.5f;
+	float changeLeftTime = changeTime;
 	@Override
 	public void update(float deltaTime) throws Exception {
+		changeLeftTime -= deltaTime;
+		if(changeLeftTime <= 0 ) {
+			changeLeftTime = changeTime;
+			sIdx++;
+			if (sIdx > 2)
+				sIdx = 0;
+
+			this.playerObject.getComponent(SpriteRenderer.class)
+					.sprite(ResourcePool.getSprite(TextureType.ENEMY, sIdx));
+		}
+			
 		Vector3f offset = new Vector3f();
 
 		if (game.keyboard().isKeyPressed(GLFW_KEY_RIGHT))

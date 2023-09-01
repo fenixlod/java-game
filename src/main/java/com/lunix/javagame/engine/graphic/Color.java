@@ -97,4 +97,16 @@ public class Color {
 		return "Color [r=" + rgba[0] + ", g=" + rgba[1] + ", b=" + rgba[2] + ", a=" + rgba[3] + "]";
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null)
+			return false;
+
+		if (obj instanceof Color other) {
+			return this.rgba[0] == other.rgba()[0] && this.rgba[1] == other.rgba()[1] && 
+					this.rgba[2] == other.rgba()[2] && this.rgba[3] == other.rgba()[3];
+		} else
+			return false;
+	}
+
 }

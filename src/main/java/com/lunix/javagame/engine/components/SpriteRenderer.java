@@ -4,6 +4,7 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import com.lunix.javagame.engine.Component;
+import com.lunix.javagame.engine.Transform;
 import com.lunix.javagame.engine.enums.ShaderType;
 import com.lunix.javagame.engine.enums.TextureType;
 import com.lunix.javagame.engine.graphic.Color;
@@ -18,8 +19,9 @@ public class SpriteRenderer extends Component {
 	private Vector3f heightDirection;
 	private Color color;
 	private ShaderType shader;
-	private boolean isStatic;
+	private boolean isChanged;
 	private Sprite sprite;
+	private Transform lastTransform;
 
 	public SpriteRenderer(int width, int height) {
 		this.height = height;
@@ -29,66 +31,95 @@ public class SpriteRenderer extends Component {
 		this.heightDirection = VectorUtil.Z();
 		this.shader = ShaderType.DEFAULT;
 		this.positionOffset = new Vector3f();
-		this.isStatic = false;
+		this.isChanged = true;
 		this.sprite = new Sprite();
 	}
 
 	@Override
 	public void start() {
 		super.start();
+		this.lastTransform = owner.transform().copy();
 	}
 
 	@Override
 	public void update(float deltaTime) {
+		if (!this.lastTransform.equals(owner.transform())) {
+			this.lastTransform = owner.transform().copy();
+			this.isChanged = true;
+		}
 	}
 
 	public SpriteRenderer offset(Vector3f positionOffset) {
-		this.positionOffset = positionOffset;
+		if (!positionOffset.equals(this.positionOffset)) {
+			this.positionOffset = positionOffset;
+			this.isChanged = true;
+		}
 		return this;
 	}
 
 	public SpriteRenderer width(int width) {
-		this.width = width;
+		if (width != this.width) {
+			this.width = width;
+			this.isChanged = true;
+		}
 		return this;
 	}
 
 	public SpriteRenderer height(int height) {
-		this.height = height;
+		if (height != this.height) {
+			this.height = height;
+			this.isChanged = true;
+		}
 		return this;
 	}
 
 	public SpriteRenderer widthDirection(Vector3f widthDirection) {
-		this.widthDirection = widthDirection;
+		if (!widthDirection.equals(this.widthDirection)) {
+			this.widthDirection = widthDirection;
+			this.isChanged = true;
+		}
 		return this;
 	}
 
 	public SpriteRenderer heightDirection(Vector3f heightDirection) {
-		this.heightDirection = heightDirection;
+		if (!heightDirection.equals(this.heightDirection)) {
+			this.heightDirection = heightDirection;
+			this.isChanged = true;
+		}
 		return this;
 	}
 
 	public SpriteRenderer color(Color color) {
-		this.color = color;
+		if (!color.equals(this.color)) {
+			this.color = color;
+			this.isChanged = true;
+		}
 		return this;
 	}
 
 	public SpriteRenderer shader(ShaderType shader) {
-		this.shader = shader;
-		return this;
-	}
-
-	public SpriteRenderer isStatic(boolean isStatic) {
-		this.isStatic = isStatic;
+		if (shader != this.shader) {
+			this.shader = shader;
+			this.isChanged = true;
+		}
 		return this;
 	}
 
 	public SpriteRenderer sprite(Sprite sprite) {
-		this.sprite = sprite;
+		if (!sprite.equals(this.sprite)) {
+			this.sprite = sprite;
+			this.isChanged = true;
+		}
 		return this;
 	}
 
-	public boolean isStatic() {
-		return this.isStatic;
+	public boolean isChanged() {
+		return this.isChanged;
+	}
+
+	public SpriteRenderer isChanged(boolean isChanged) {
+		this.isChanged = isChanged;
+		return this;
 	}
 
 	public ShaderType shader() {

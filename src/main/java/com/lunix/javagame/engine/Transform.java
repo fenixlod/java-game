@@ -58,4 +58,24 @@ public class Transform {
 		this.position.add(offset);
 		return this;
 	}
+
+	public Transform copy() {
+		return new Transform(new Vector3f(position), new Vector3f(direction), new Vector3f(scale));
+	}
+
+	public void copy(Transform dest) {
+		dest.position(new Vector3f(position)).direction(new Vector3f(direction)).scale(new Vector3f(scale));
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null)
+			return false;
+
+		if (obj instanceof Transform trans) {
+			return this.position.equals(trans.position()) && this.direction.equals(trans.direction())
+					&& this.scale.equals(trans.scale());
+		} else
+			return false;
+	}
 }

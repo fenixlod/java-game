@@ -7,6 +7,8 @@ import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.IntStream;
@@ -39,8 +41,7 @@ public class RenderBatch {
 	private final int VERTEX_SIZE = POSITION_SIZE + COLOR_SIZE + TEXTURE_COORDS_SIZE + TEXTURE_ID_SIZE;
 	private final int VERTEX_SIZE_BYTES = VERTEX_SIZE * Float.BYTES;
 
-	private SpriteRenderer[] sprites;
-	private int countSprites;
+	private List<SpriteRenderer> sprites;
 	private float[] vertices;
 	private int[] textureSlots;
 	private Map<TextureType, Integer> textures;
@@ -48,17 +49,15 @@ public class RenderBatch {
 	private int vboID;
 	private int maxBatchSize;
 	private Shader shader;
-	private boolean staticImage;
 
 	public RenderBatch(int maxBatchSize, ShaderType shaderType) throws ResourceNotFound {
 		this.shader = ResourcePool.getShader(shaderType);
-		this.sprites = new SpriteRenderer[maxBatchSize];
+		this.sprites = new LinkedList<>();
 		this.maxBatchSize = maxBatchSize;
 		this.textures = new HashMap<>();
 
 		// 4 vertices quads
 		this.vertices = new float[maxBatchSize * 4 * VERTEX_SIZE];
-		this.countSprites = 0;
 		this.textureSlots = IntStream.range(0, 32).toArray();
 	}
 
@@ -110,13 +109,23 @@ public class RenderBatch {
 
 	public void render() throws Exception {
 		// Update positions
-		for (int i = 0; i < countSprites; i++) {
-			loadVertexProperties(i, true);
+		boolean update = false;
+		int index = 0;
+		for (SpriteRenderer spr : this.sprites) {
+			if (spr.isChanged()) {
+				spr.isChanged(false);
+				if (loadVertexProperties(index, spr))
+					update = true;
+			}
+			index++;
 		}
 
-		// Re-buffer all data
-		glBindBuffer(GL_ARRAY_BUFFER, vboID);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, vertices);
+		if (update) {
+			// Re-buffer all data
+			glBindBuffer(GL_ARRAY_BUFFER, vboID);
+			glBufferSubData(GL_ARRAY_BUFFER, 0, vertices);
+		}
+
 		shader.use();
 		shader.uploadMat4f("projMat", GameInstance.get().camera().getProjectionMatrix());
 		Matrix4f view = GameInstance.get().camera().getViewMatrix();
@@ -147,7 +156,7 @@ public class RenderBatch {
 		glEnableVertexAttribArray(2);
 		glEnableVertexAttribArray(3);
 
-		glDrawElements(GL_TRIANGLES, countSprites * 6, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, this.sprites.size() * 6, GL_UNSIGNED_INT, 0);
 
 		// Unbind everithing
 		glDisableVertexAttribArray(0);
@@ -162,9 +171,8 @@ public class RenderBatch {
 
 	public void addSprite(SpriteRenderer sprite) {
 		// Get index and add grenderObject
-		int index = this.countSprites;
-		this.sprites[index] = sprite;
-		this.countSprites++;
+		int index = this.sprites.size();
+		this.sprites.add(sprite);
 
 		if (sprite.texture() != TextureType.NONE) {
 			if (textures.get(sprite.texture()) == null) {
@@ -173,29 +181,33 @@ public class RenderBatch {
 		}
 
 		// Add properties to local vertices array
-		loadVertexProperties(index, false);
+		loadVertexProperties(index, sprite);
 	}
 
-	private void loadVertexProperties(int index, boolean update) {
-		SpriteRenderer sprite = this.sprites[index];
-
-		if (sprite.isStatic() && update)
-			return;
-
+	private boolean loadVertexProperties(int index, SpriteRenderer sprite) {
 		// Find offset within array (4 vertices per sprite)
 		int offset = 4 * index * VERTEX_SIZE;
 		int textureIndex = 0;
 
 		if (sprite.texture() != TextureType.NONE) {
-			textureIndex = textures.get(sprite.texture());
+			Integer idx = textures.get(sprite.texture());
+			if (idx != null)
+				textureIndex = idx;
+			else if (haveTextureRoom()) {
+				textureIndex = textures.size() + 1;
+				textures.put(sprite.texture(), textureIndex);
+			} else {
+				// Use textureIndex = 0, reserved no texture
+			}
 		}
 
 		// Add vertices with appropriate attributes
 		sprite.getVertexArray(vertices, offset, textureIndex);
+		return true;
 	}
 
 	public boolean haveRoom() {
-		return countSprites < maxBatchSize;
+		return this.sprites.size() < maxBatchSize;
 	}
 
 	public boolean haveTextureRoom() {

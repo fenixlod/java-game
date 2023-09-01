@@ -34,4 +34,15 @@ public class Sprite {
 	public Vector2f[] textureCoords() {
 		return textureCoords;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null)
+			return false;
+
+		if (obj instanceof Sprite other) {
+			return this.textureCoords.equals(other.textureCoords()) && texture == other.texture();
+		} else
+			return false;
+	}
 }
