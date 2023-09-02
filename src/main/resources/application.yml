@@ -34,9 +34,9 @@ camera:
     width: 320
     height: 180
   prespective:
-    field-of-view: 60
+    field-of-view: 45
   x-offset: 0
   y-offset: -100
   z-offset: 100
-  z-near: 0
+  z-near: 10
   z-far: 500

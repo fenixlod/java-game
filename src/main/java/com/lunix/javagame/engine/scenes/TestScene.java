@@ -28,6 +28,15 @@ public class TestScene extends Scene {
 		
 		ResourcePool.loadResources(ShaderType.DEFAULT, ShaderType.NO_PERSPECTIVE, TextureType.PLAYER, TextureType.ENEMY);
 
+		this.playerObject = new GameObject("Player")
+				.addComponent(
+					new SpriteRenderer(20, 40)
+						.shader(ShaderType.DEFAULT)
+						.offset(new Vector3f(0f, 0f, 20f))
+						.sprite(new Sprite(TextureType.PLAYER))
+				);
+			addGameObject(playerObject);
+			
 		for (int j = 0; j < 4; j++) {
 			int reverse = j > 1 ? -1 : 1;
 			int isXAxis = j % 2 * reverse;
@@ -43,15 +52,6 @@ public class TestScene extends Scene {
 				addGameObject(obj);
 			}
 		}
-		
-		this.playerObject = new GameObject("Player")
-			.addComponent(
-				new SpriteRenderer(20, 40)
-					.shader(ShaderType.NO_PERSPECTIVE)
-					.offset(new Vector3f(0f, 0f, 20f))
-					.sprite(new Sprite(TextureType.PLAYER))
-			);
-		addGameObject(playerObject);
 		
 		GameObject enemy =  new GameObject("Enemy", new Vector3f(-50f, 50f, 0f))
 			.addComponent(
@@ -178,22 +178,8 @@ public class TestScene extends Scene {
 //		}
 	}
 
-	int sIdx = 0;
-	float changeTime = 1.5f;
-	float changeLeftTime = changeTime;
 	@Override
 	public void update(float deltaTime) throws Exception {
-		changeLeftTime -= deltaTime;
-		if(changeLeftTime <= 0 ) {
-			changeLeftTime = changeTime;
-			sIdx++;
-			if (sIdx > 2)
-				sIdx = 0;
-
-			this.playerObject.getComponent(SpriteRenderer.class)
-					.sprite(ResourcePool.getSprite(TextureType.ENEMY, sIdx));
-		}
-			
 		Vector3f offset = new Vector3f();
 
 		if (game.keyboard().isKeyPressed(GLFW_KEY_RIGHT))

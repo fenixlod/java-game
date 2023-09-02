@@ -95,8 +95,14 @@ public class GameWindow {
 		// Set the clear color
 		glClearColor(1f, 1f, 1f, 1f);
 
+		glDepthMask(true);
+		glEnable(GL_DEPTH_TEST);
+		glDepthFunc(GL_LESS);
+
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glAlphaFunc(GL_GREATER, 0.9f);
+		glEnable(GL_ALPHA_TEST);
 	}
 
 	public void clear() {
