@@ -181,7 +181,7 @@ public class ImGuiLayer {
 		ImGui.newFrame();
 
 		// Any Dear ImGui code SHOULD go between ImGui.newFrame()/ImGui.render() methods
-		ImGui.showDemoWindow();
+		// ImGui.showDemoWindow();
 
 		ImGui.render();
 		imGuiGl3.renderDrawData(ImGui.getDrawData());

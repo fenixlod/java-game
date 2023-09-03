@@ -23,16 +23,15 @@ public class TestScene extends Scene {
 		super.init();
 		game.window().setClearColor(1f, 1f, 1f, 1f);
 		float[] size = game.window().size();
-		// game.camera().setOrthoProjection();
-		game.camera().setPerspectiveProjection(size[0] / size[1]);
+		game.camera().setOrthoProjection();
+		// game.camera().setPerspectiveProjection(size[0] / size[1]);
 		game.camera().setPosition(new Vector3f());
 		
-		ResourcePool.loadResources(ShaderType.DEFAULT, ShaderType.NO_PERSPECTIVE, TextureType.PLAYER, TextureType.ENEMY);
+		ResourcePool.loadResources(ShaderType.DEFAULT, TextureType.PLAYER, TextureType.ENEMY);
 
 		this.playerObject = new GameObject("Player")
 				.addComponent(
 					new SpriteRenderer(20, 40)
-						.shader(ShaderType.DEFAULT)
 						.offset(new Vector3f(0f, 0f, 20f))
 						.sprite(new Sprite(TextureType.PLAYER))
 				);
@@ -47,7 +46,7 @@ public class TestScene extends Scene {
 					.addComponent(
 						new SpriteRenderer(1,1)
 							.color(isXAxis != 0 ? Color.blue : Color.red)
-							.shader(ShaderType.DEFAULT)
+							.widthDirection(VectorUtil.X())
 							.heightDirection(VectorUtil.Y())
 					);
 				addGameObject(obj);
@@ -58,76 +57,69 @@ public class TestScene extends Scene {
 			.addComponent(
 				new SpriteRenderer(10, 20)
 					.color(Color.red)
-					.shader(ShaderType.DEFAULT)
 					.offset(VectorUtil.Z().mul(10))
 			);
 		addGameObject(enemy);
 		
-		// draw cuboid with dimensions: x=50, y=30, z=10
+		// draw cuboid with dimensions: x=20, y=20, z=20
 		// front
-		GameObject rectangle =  new GameObject("Cube1", new Vector3f(25f, 15f, 0f))
+		GameObject rectangle =  new GameObject("Cube1", new Vector3f(10f, 0f, 10f))
 			.addComponent(
-				new SpriteRenderer(50, 30)
+				new SpriteRenderer(20, 20)
 					.color(Color.blue)
-					.shader(ShaderType.DEFAULT)
 					.widthDirection(VectorUtil.X())
-					.heightDirection(VectorUtil.Y())
+					.heightDirection(VectorUtil.Z())
 			);
 		addGameObject(rectangle);
 		
 		// right
-		rectangle =  new GameObject("Cube2", new Vector3f(50f, 15f, 5f))
+		rectangle =  new GameObject("Cube2", new Vector3f(20f, 10f, 10f))
 			.addComponent(
-				new SpriteRenderer(10, 30)
+				new SpriteRenderer(20, 20)
 					.color(Color.red)
-					.shader(ShaderType.DEFAULT)
-					.widthDirection(VectorUtil.minusZ())
-					.heightDirection(VectorUtil.Y())
+					.widthDirection(VectorUtil.Y())
+					.heightDirection(VectorUtil.Z())
 			);
 		addGameObject(rectangle);
 
 		//back
-		rectangle =  new GameObject("Cube3", new Vector3f(25f, 15f, 10f))
+		rectangle =  new GameObject("Cube3", new Vector3f(10f, 20f, 10f))
 			.addComponent(
-				new SpriteRenderer(50, 30)
+				new SpriteRenderer(20, 20)
 					.color(Color.black)
-					.shader(ShaderType.DEFAULT)
 					.widthDirection(VectorUtil.minusX())
-					.heightDirection(VectorUtil.Y())
+					.heightDirection(VectorUtil.Z())
 			);
 		addGameObject(rectangle);
 		
 		//left
-		rectangle =  new GameObject("Cube4", new Vector3f(0f, 15f, 5f))
+		rectangle =  new GameObject("Cube4", new Vector3f(0f, 10f, 10f))
 			.addComponent(
-				new SpriteRenderer(10, 30)
+				new SpriteRenderer(20, 20)
 					.color(Color.yellow)
-					.shader(ShaderType.DEFAULT)
-					.widthDirection(VectorUtil.Z())
-					.heightDirection(VectorUtil.Y())
+					.widthDirection(VectorUtil.minusY())
+					.heightDirection(VectorUtil.Z())
 					);
 		addGameObject(rectangle);
 		
 		//top
-		rectangle =  new GameObject("Cube5", new Vector3f(25f, 30f, 5f))
+		rectangle =  new GameObject("Cube5", new Vector3f(10f, 10f, 20f))
 			.addComponent(
-				new SpriteRenderer(50, 10)
+				new SpriteRenderer(20, 20)
 					.color(Color.cyan)
-					.shader(ShaderType.DEFAULT)
 					.widthDirection(VectorUtil.X())
-					.heightDirection(VectorUtil.minusZ())
+					.heightDirection(VectorUtil.Y())
 			);
 		addGameObject(rectangle);
 		
 		
 		//bottom
-		rectangle =  new GameObject("Cube6", new Vector3f(25f, 0f, 5f))
+		rectangle =  new GameObject("Cube6", new Vector3f(10f, 10f, 0f))
 			.addComponent(
-				new SpriteRenderer(50, 10)
+				new SpriteRenderer(20, 20)
 					.color(Color.magenta)
-					.shader(ShaderType.DEFAULT)
-					.widthDirection(VectorUtil.X())
-					.heightDirection(VectorUtil.Z())
+					.widthDirection(VectorUtil.minusX())
+					.heightDirection(VectorUtil.minusY())
 			);
 		addGameObject(rectangle);
 		
@@ -135,8 +127,8 @@ public class TestScene extends Scene {
 				.addComponent(
 					new SpriteRenderer(50, 100)
 						.color(Color.red)
-						.shader(ShaderType.DEFAULT)
-						.heightDirection(VectorUtil.Y())
+						.widthDirection(VectorUtil.viewX())
+						.heightDirection(VectorUtil.viewY())
 						.sprite(ResourcePool.getSprite(TextureType.ENEMY, 0))
 				);
 		addGameObject(enemy);
@@ -145,8 +137,8 @@ public class TestScene extends Scene {
 				.addComponent(
 					new SpriteRenderer(50, 100)
 						.color(Color.green)
-						.shader(ShaderType.DEFAULT)
-						.heightDirection(VectorUtil.Y())
+						.widthDirection(VectorUtil.viewX())
+						.heightDirection(VectorUtil.viewY())
 						.sprite(ResourcePool.getSprite(TextureType.ENEMY, 1))
 				);
 		addGameObject(enemy);
@@ -155,8 +147,8 @@ public class TestScene extends Scene {
 				.addComponent(
 					new SpriteRenderer(50, 100)
 						.color(Color.blue)
-						.shader(ShaderType.DEFAULT)
-						.heightDirection(VectorUtil.Y())
+						.widthDirection(VectorUtil.viewX())
+						.heightDirection(VectorUtil.viewY())
 						.sprite(ResourcePool.getSprite(TextureType.ENEMY, 2))
 				);
 		addGameObject(enemy);
@@ -201,7 +193,7 @@ public class TestScene extends Scene {
 		if (game.keyboard().isKeyPressed(GLFW_KEY_PAGE_DOWN))
 			offset.z -= 50f * deltaTime;
 		
-		float zoomChange = (float) game.mouse().getScrollY() * -0.1f;
+		float zoomChange = (float) game.mouse().getScrollY() * 0.1f;
 		game.camera().move(offset);
 		if (zoomChange != 0f)
 			game.camera().changeZoom(zoomChange);

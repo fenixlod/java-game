@@ -13,16 +13,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.IntStream;
 
-import org.joml.Matrix4f;
-import org.joml.Vector3f;
-
 import com.lunix.javagame.engine.GameInstance;
 import com.lunix.javagame.engine.ResourcePool;
 import com.lunix.javagame.engine.components.SpriteRenderer;
 import com.lunix.javagame.engine.enums.ShaderType;
 import com.lunix.javagame.engine.enums.TextureType;
 import com.lunix.javagame.engine.exception.ResourceNotFound;
-import com.lunix.javagame.engine.util.VectorUtil;
 
 public class RenderBatch {
 	//Vertex
@@ -128,18 +124,7 @@ public class RenderBatch {
 
 		shader.use();
 		shader.uploadMat4f("projMat", GameInstance.get().camera().getProjectionMatrix());
-		Matrix4f view = GameInstance.get().camera().getViewMatrix();
-		if (shader.type() == ShaderType.NO_PERSPECTIVE) {
-			// TODO: Move this logic in the shader if possible
-			//The idea is to set the camera to be perpendicular to the plane of the element,
-			// this way it will be displayed without any perspective
-			//System.out.println("----> \n" + view.toString(NumberFormat.getNumberInstance()));
-			view.translate(GameInstance.get().camera().position());
-			view.rotate((float) Math.toRadians(-45f), VectorUtil.X());
-			view.translate(GameInstance.get().camera().position().mul(-1, new Vector3f()));
-			//System.out.println("<---- \n" + view.toString(NumberFormat.getNumberInstance()));
-		}
-		shader.uploadMat4f("viewMat", view);
+		shader.uploadMat4f("viewMat", GameInstance.get().camera().getViewMatrix());
 
 		for (Entry<TextureType, Integer> entry : textures.entrySet()) {
 			ResourcePool.getTexture(entry.getKey()).bind(entry.getValue());

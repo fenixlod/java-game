@@ -19,7 +19,6 @@ window:
 resources:
   shaders:
     default: assets/shaders/default.glsl
-    noPerspective: assets/shaders/noPerspective.glsl
   textures:
     player: assets/images/Player.png
     enemy: assets/images/Enemy.png
@@ -35,7 +34,7 @@ camera:
     height: 180
   prespective:
     field-of-view: 45
-  x-offset: 0
+  x-offset: -100
   y-offset: -100
   z-offset: 100
   z-near: 10

@@ -27,8 +27,8 @@ public class SpriteRenderer extends Component {
 		this.height = height;
 		this.width = width;
 		this.color = Color.white;
-		this.widthDirection = VectorUtil.X();
-		this.heightDirection = VectorUtil.Z();
+		this.widthDirection = VectorUtil.viewX();
+		this.heightDirection = VectorUtil.viewZ();
 		this.shader = ShaderType.DEFAULT;
 		this.positionOffset = new Vector3f();
 		this.isChanged = true;
