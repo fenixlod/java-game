@@ -18,12 +18,13 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 
 import com.lunix.javagame.configs.WindowConfigs;
+import com.lunix.javagame.engine.ui.ImGuiLayer;
 
 public class GameWindow {
 	private static final Logger logger = LogManager.getLogger(GameWindow.class);
 	private final WindowConfigs windowConfigs;
-
 	private long windowHandle;// memory address of the window
+	private ImGuiLayer imGuiLayer;
 
 	public GameWindow(WindowConfigs windowConfigs) {
 		this.windowConfigs = windowConfigs;
@@ -52,14 +53,6 @@ public class GameWindow {
 				NULL);
 		if (windowHandle == NULL)
 			throw new RuntimeException("Failed to create the GLFW window");
-
-		// Setup a mouse button callback. It will be called every time a mouse button is
-		// pressed or released.
-		mouseListener.bindToWindow(windowHandle);
-
-		// Setup a key callback. It will be called every time a key is pressed, repeated
-		// or released.
-		keyboardListener.bindToWindow(windowHandle);
 
 		// Get the thread stack and push a new frame
 		try (MemoryStack stack = stackPush()) {
@@ -103,9 +96,20 @@ public class GameWindow {
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glAlphaFunc(GL_GREATER, 0.9f);
 		glEnable(GL_ALPHA_TEST);
+
+		this.imGuiLayer = new ImGuiLayer(this);
+		this.imGuiLayer.init();
+
+		// Setup a mouse button callback. It will be called every time a mouse button is
+		// pressed or released.
+		mouseListener.bindToWindow(windowHandle, ImGuiLayer::mouseButtonCallback, ImGuiLayer::scrollCallback);
+
+		// Setup a key callback. It will be called every time a key is pressed, repeated
+		// or released.
+		keyboardListener.bindToWindow(windowHandle, ImGuiLayer::keyCallback);
 	}
 
-	public void clear() {
+	public void newFrame() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the frame buffer
 
 		// Poll for window events. The key callback above will only be
@@ -113,7 +117,7 @@ public class GameWindow {
 		glfwPollEvents();
 	}
 
-	public void refresh() {
+	public void render() {
 		glfwSwapBuffers(windowHandle); // swap the color buffers
 	}
 
@@ -139,10 +143,18 @@ public class GameWindow {
 		glClearColor(r, g, b, alpha);
 	}
 
-	public float getAspectRatio() {
+	public long handle() {
+		return this.windowHandle;
+	}
+
+	public float[] size() {
 		IntBuffer w = BufferUtils.createIntBuffer(1);
 		IntBuffer h = BufferUtils.createIntBuffer(1);
 		glfwGetWindowSize(windowHandle, w, h);
-		return (float) w.get(0) / h.get(0);
+		return new float[] { w.get(0), h.get(0) };
+	}
+
+	public void update(float dt) {
+		this.imGuiLayer.update(dt);
 	}
 }

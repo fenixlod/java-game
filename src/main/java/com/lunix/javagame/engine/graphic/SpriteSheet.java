@@ -23,7 +23,7 @@ public class SpriteSheet {
 		this.texture = textureType;
 		this.sprites = new ArrayList<>();
 
-		Texture texture = ResourcePool.getTexture(textureType);
+		Texture texture = ResourcePool.getTexture(this.texture);
 		Vector2f total = new Vector2f(texture.wdth(), texture.height());
 		float currentX = 0, currentY = spriteHeight;
 		
@@ -45,7 +45,7 @@ public class SpriteSheet {
 			uv[1].div(total);
 			uv[2].div(total);
 			uv[3].div(total);
-			sprites.add(new Sprite(textureType, uv));
+			sprites.add(new Sprite(this.texture, uv));
 			
 			currentX += spriteWidth;
 			if (currentX + spriteWidth > total.x) {

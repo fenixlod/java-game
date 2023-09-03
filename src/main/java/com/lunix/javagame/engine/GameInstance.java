@@ -52,7 +52,7 @@ public class GameInstance {
 		// the window or has pressed the ESCAPE key.
 		while (window.isOpened()) {
 			timer.tick();
-			window.clear();
+			window.newFrame();
 
 			Debugger.display(false, "Game FPS: {}", 1 / timer.getDeltaTime());
 			Debugger.display(false, mouse);
@@ -61,7 +61,8 @@ public class GameInstance {
 			Debugger.display(false, "Delta time: {}", timer.getDeltaTime());
 
 			scenes.update(timer.getDeltaTime());
-			window.refresh();
+			window.update(timer.getDeltaTime());
+			window.render();
 			mouse.reset();
 		}
 	}

@@ -22,8 +22,9 @@ public class TestScene extends Scene {
 	public void init() throws Exception {
 		super.init();
 		game.window().setClearColor(1f, 1f, 1f, 1f);
+		float[] size = game.window().size();
 		// game.camera().setOrthoProjection();
-		game.camera().setPerspectiveProjection(game.window().getAspectRatio());
+		game.camera().setPerspectiveProjection(size[0] / size[1]);
 		game.camera().setPosition(new Vector3f());
 		
 		ResourcePool.loadResources(ShaderType.DEFAULT, ShaderType.NO_PERSPECTIVE, TextureType.PLAYER, TextureType.ENEMY);

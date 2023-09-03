@@ -1,12 +1,11 @@
 package com.lunix.javagame.engine;
 
-import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
-import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
-import static org.lwjgl.glfw.GLFW.glfwSetCursorPosCallback;
-import static org.lwjgl.glfw.GLFW.glfwSetMouseButtonCallback;
-import static org.lwjgl.glfw.GLFW.glfwSetScrollCallback;
+import static org.lwjgl.glfw.GLFW.*;
 
 import java.util.Arrays;
+
+import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
+import org.lwjgl.glfw.GLFWScrollCallbackI;
 
 public class MouseListener {
 	private double scrollX;
@@ -18,11 +17,16 @@ public class MouseListener {
 	private boolean buttonPressed[] = new boolean[5];
 	private boolean dragging;
 
-	public void bindToWindow(long windowHandler) {
+	public void bindToWindow(long windowHandler, GLFWMouseButtonCallbackI mouseBtnCb, GLFWScrollCallbackI scrollCb) {
 		glfwSetCursorPosCallback(windowHandler, (win, xPos, yPos) -> positionCallback(xPos, yPos));
-		glfwSetMouseButtonCallback(windowHandler,
-				(win, button, action, mod) -> buttonCallback(button, action, mod));
-		glfwSetScrollCallback(windowHandler, (win, xScroll, yScroll) -> scrollCallback(xScroll, yScroll));
+		glfwSetMouseButtonCallback(windowHandler, (win, button, action, mod) -> {
+			buttonCallback(button, action, mod);
+			mouseBtnCb.invoke(win, button, action, mod);
+		});
+		glfwSetScrollCallback(windowHandler, (win, xScroll, yScroll) -> {
+			scrollCallback(xScroll, yScroll);
+			scrollCb.invoke(win, xScroll, yScroll);
+		});
 	}
 
 	private void positionCallback(double xPos, double yPos) {

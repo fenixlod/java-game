@@ -1,18 +1,21 @@
 package com.lunix.javagame.engine;
 
-import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
-import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
-import static org.lwjgl.glfw.GLFW.glfwSetKeyCallback;
+import static org.lwjgl.glfw.GLFW.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.lwjgl.glfw.GLFWKeyCallbackI;
+
 public class KeyboardListener {
 	private boolean keyPressed[] = new boolean[350];
 
-	public void bindToWindow(long windowHandler) {
-		glfwSetKeyCallback(windowHandler, (win, key, sCode, action, mods) -> keyCallback(key, sCode, action, mods));
+	public void bindToWindow(long windowHandler, GLFWKeyCallbackI keyCb) {
+		glfwSetKeyCallback(windowHandler, (win, key, sCode, action, mods) -> {
+			keyCallback(key, sCode, action, mods);
+			keyCb.invoke(win, key, sCode, action, mods);
+		});
 	}
 
 	private void keyCallback(int key, int scanCode, int action, int modifiers) {

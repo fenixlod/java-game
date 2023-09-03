@@ -7,6 +7,11 @@ plugins {
 group = 'com.lunix'
 version = '1.0.0'
 
+ext {
+    lwjglVersion = "3.3.2"
+    imguiVersion = "1.86.10"
+}
+
 java {
 	sourceCompatibility = '17'
 }
@@ -40,6 +45,10 @@ dependencies {
 	runtimeOnly('org.lwjgl:lwjgl-opengl::natives-windows')
 	runtimeOnly('org.lwjgl:lwjgl-stb::natives-windows')
 	implementation('org.joml:joml:1.10.5')
+	
+	implementation "io.github.spair:imgui-java-binding:$imguiVersion"
+    implementation "io.github.spair:imgui-java-lwjgl3:$imguiVersion"
+    implementation "io.github.spair:imgui-java-natives-windows:$imguiVersion"
 }
 
 tasks.named('test') {
