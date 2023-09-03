@@ -22,11 +22,16 @@ resources:
   textures:
     player: assets/images/Player.png
     enemy: assets/images/Enemy.png
+    player_idle: assets/images/Player-idle.png
   sprite-sheet:
     -
       texture: enemy
       width: 152
       height: 512
+    -
+      texture: player_idle
+      width: 40
+      height: 50
     
 camera:
   ortho:

@@ -61,4 +61,8 @@ public class SpriteSheet {
 	public Sprite get(int index) {
 		return this.sprites.get(index);
 	}
+
+	public int size() {
+		return this.sprites.size();
+	}
 }

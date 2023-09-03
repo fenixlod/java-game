@@ -114,4 +114,14 @@ public class ResourcePool {
 
 		return sheet.get(index);
 	}
+
+	public static SpriteSheet getSpriteSheet(TextureType textureType) throws ResourceNotFound, IOException {
+		SpriteSheet sheet = spriteSheets.get(textureType);
+		if (sheet == null) {
+			logger.warn("Unable to find sprite sheet: {}", textureType);
+			throw new ResourceNotFound("Sprite sheet not found: " + textureType);
+		}
+
+		return sheet;
+	}
 }

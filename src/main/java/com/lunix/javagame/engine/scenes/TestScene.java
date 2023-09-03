@@ -7,6 +7,7 @@ import org.joml.Vector3f;
 import com.lunix.javagame.engine.GameObject;
 import com.lunix.javagame.engine.ResourcePool;
 import com.lunix.javagame.engine.Scene;
+import com.lunix.javagame.engine.components.Animation;
 import com.lunix.javagame.engine.components.SpriteRenderer;
 import com.lunix.javagame.engine.enums.ShaderType;
 import com.lunix.javagame.engine.enums.TextureType;
@@ -27,14 +28,14 @@ public class TestScene extends Scene {
 		// game.camera().setPerspectiveProjection(size[0] / size[1]);
 		game.camera().setPosition(new Vector3f());
 		
-		ResourcePool.loadResources(ShaderType.DEFAULT, TextureType.PLAYER, TextureType.ENEMY);
+		ResourcePool.loadResources(ShaderType.DEFAULT, TextureType.PLAYER, TextureType.ENEMY, TextureType.PLAYER_IDLE);
 
 		this.playerObject = new GameObject("Player")
 				.addComponent(
-					new SpriteRenderer(20, 40)
-						.offset(new Vector3f(0f, 0f, 20f))
+						new SpriteRenderer(40, 50)
 						.sprite(new Sprite(TextureType.PLAYER))
 				);
+		playerObject.addComponent(new Animation(ResourcePool.getSpriteSheet(TextureType.PLAYER_IDLE), 0.3f));
 			addGameObject(playerObject);
 			
 		for (int j = 0; j < 4; j++) {
@@ -53,17 +54,16 @@ public class TestScene extends Scene {
 			}
 		}
 		
-		GameObject enemy =  new GameObject("Enemy", new Vector3f(-50f, 50f, 0f))
+		GameObject enemy = new GameObject("Enemy", new Vector3f(-50f, 50f, 0f))
 			.addComponent(
-				new SpriteRenderer(10, 20)
+				new SpriteRenderer(20, 40)
 					.color(Color.red)
-					.offset(VectorUtil.Z().mul(10))
 			);
 		addGameObject(enemy);
 		
 		// draw cuboid with dimensions: x=20, y=20, z=20
 		// front
-		GameObject rectangle =  new GameObject("Cube1", new Vector3f(10f, 0f, 10f))
+		GameObject rectangle = new GameObject("Cube1", new Vector3f(10f, 0f, 0f))
 			.addComponent(
 				new SpriteRenderer(20, 20)
 					.color(Color.blue)
@@ -73,7 +73,7 @@ public class TestScene extends Scene {
 		addGameObject(rectangle);
 		
 		// right
-		rectangle =  new GameObject("Cube2", new Vector3f(20f, 10f, 10f))
+		rectangle = new GameObject("Cube2", new Vector3f(20f, 10f, 0f))
 			.addComponent(
 				new SpriteRenderer(20, 20)
 					.color(Color.red)
@@ -83,7 +83,7 @@ public class TestScene extends Scene {
 		addGameObject(rectangle);
 
 		//back
-		rectangle =  new GameObject("Cube3", new Vector3f(10f, 20f, 10f))
+		rectangle = new GameObject("Cube3", new Vector3f(10f, 20f, 0f))
 			.addComponent(
 				new SpriteRenderer(20, 20)
 					.color(Color.black)
@@ -93,7 +93,7 @@ public class TestScene extends Scene {
 		addGameObject(rectangle);
 		
 		//left
-		rectangle =  new GameObject("Cube4", new Vector3f(0f, 10f, 10f))
+		rectangle = new GameObject("Cube4", new Vector3f(0f, 10f, 0f))
 			.addComponent(
 				new SpriteRenderer(20, 20)
 					.color(Color.yellow)
@@ -103,7 +103,7 @@ public class TestScene extends Scene {
 		addGameObject(rectangle);
 		
 		//top
-		rectangle =  new GameObject("Cube5", new Vector3f(10f, 10f, 20f))
+		rectangle = new GameObject("Cube5", new Vector3f(10f, 0f, 20f))
 			.addComponent(
 				new SpriteRenderer(20, 20)
 					.color(Color.cyan)
@@ -114,7 +114,7 @@ public class TestScene extends Scene {
 		
 		
 		//bottom
-		rectangle =  new GameObject("Cube6", new Vector3f(10f, 10f, 0f))
+		rectangle = new GameObject("Cube6", new Vector3f(10f, 20f, 0f))
 			.addComponent(
 				new SpriteRenderer(20, 20)
 					.color(Color.magenta)

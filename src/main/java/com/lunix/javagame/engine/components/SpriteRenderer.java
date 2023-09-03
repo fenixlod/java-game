@@ -135,14 +135,10 @@ public class SpriteRenderer extends Component {
 		Vector3f scaledWidthDirection = widthDirection.mul(owner.transform().scale(), new Vector3f());
 		Vector3f scaledHeightDirection = heightDirection.mul(owner.transform().scale(), new Vector3f());
 
-		p1.add(scaledWidthDirection.mul(-width / 2f, new Vector3f()))
-				.add(scaledHeightDirection.mul(-height / 2f, new Vector3f()));
-		p2.add(scaledWidthDirection.mul(width / 2f, new Vector3f()))
-				.add(scaledHeightDirection.mul(-height / 2f, new Vector3f()));
-		p3.add(scaledWidthDirection.mul(width / 2f, new Vector3f()))
-				.add(scaledHeightDirection.mul(height / 2f, new Vector3f()));
-		p4.add(scaledWidthDirection.mul(-width / 2f, new Vector3f()))
-				.add(scaledHeightDirection.mul(height / 2f, new Vector3f()));
+		p1.add(scaledWidthDirection.mul(-width / 2f, new Vector3f()));
+		p2.add(scaledWidthDirection.mul(width / 2f, new Vector3f()));
+		p4 = p1.add(scaledHeightDirection.mul(height, new Vector3f()), new Vector3f());
+		p3 = p2.add(scaledHeightDirection.mul(height, new Vector3f()), new Vector3f());
 		
 		offset = setVertexInArray(vertices, offset, p1, sprite.textureCoords()[0], textureIndex);
 		offset = setVertexInArray(vertices, offset, p2, sprite.textureCoords()[1], textureIndex);
