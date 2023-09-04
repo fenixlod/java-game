@@ -1,10 +1,17 @@
 package com.lunix.javagame.engine;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.util.StringUtils;
 
 import com.lunix.javagame.engine.graphic.Renderer;
 
@@ -14,6 +21,7 @@ public abstract class Scene {
 	private final List<GameObject> objects;
 	private final Renderer renderer;
 	protected final GameInstance game;
+	protected boolean loaded;
 
 	protected Scene() {
 		this.active = false;
@@ -61,5 +69,39 @@ public abstract class Scene {
 	}
 
 	public void ui() {
+	}
+
+	public void load() throws Exception {
+		String pathToLevels = new ClassPathResource(game.pathsConfig().save().get("levels")).getFile()
+				.getAbsolutePath();
+		Path levelsFile = Paths.get(pathToLevels, "editor.json");
+
+		if (!levelsFile.toFile().exists())
+			return;
+
+		String json = new String(Files.readAllBytes(levelsFile));
+
+		if (StringUtils.hasText(json)) {
+			GameObject[] data = game.load(json, GameObject[].class);
+			for (GameObject obj : data) {
+				addGameObject(obj);
+			}
+			this.loaded = true;
+			sceneLoaded(data);
+		}
+	}
+
+	protected void sceneLoaded(GameObject[] loadedData) {
+	}
+
+	public void save() throws IOException {
+		String pathToLevels = new ClassPathResource(game.pathsConfig().save().get("levels")).getFile()
+				.getAbsolutePath();
+
+		Path levelsFile = Paths.get(pathToLevels, "editor.json");
+
+		try (FileWriter writer = new FileWriter(levelsFile.toFile())) {
+			writer.write(game.save(this.objects));
+		}
 	}
 }

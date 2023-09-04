@@ -25,10 +25,14 @@ public class SpriteRenderer extends Component {
 	private Sprite sprite;
 	private Transform lastTransform;
 
+	public SpriteRenderer() {
+		this(0, 0);
+	}
+
 	public SpriteRenderer(int width, int height) {
 		this.height = height;
 		this.width = width;
-		this.color = Color.white;
+		this.color = Color.white();
 		this.widthDirection = VectorUtil.viewX();
 		this.heightDirection = VectorUtil.viewZ();
 		this.shader = ShaderType.DEFAULT;

@@ -25,6 +25,7 @@ public class SceneManager {
 
 		if (newScene == null) {
 			newScene = createNewScene(newSceneType);
+			newScene.load();
 			newScene.init();
 			newScene.start();
 			scenes.put(newSceneType, newScene);

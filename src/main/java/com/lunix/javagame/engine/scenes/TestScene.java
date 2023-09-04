@@ -46,7 +46,7 @@ public class TestScene extends Scene {
 				GameObject obj = new GameObject("Marker " + i + " - " + j, new Vector3f(i * isXAxis * 5f, i * isYAxis * 5f, 0f))
 					.addComponent(
 						new SpriteRenderer(1,1)
-							.color(isXAxis != 0 ? Color.blue : Color.red)
+							.color(isXAxis != 0 ? Color.blue() : Color.red())
 							.widthDirection(VectorUtil.X())
 							.heightDirection(VectorUtil.Y())
 					);
@@ -57,7 +57,7 @@ public class TestScene extends Scene {
 		GameObject enemy = new GameObject("Enemy", new Vector3f(-50f, 50f, 0f))
 			.addComponent(
 				new SpriteRenderer(20, 40)
-					.color(Color.red)
+					.color(Color.red())
 			);
 		addGameObject(enemy);
 		
@@ -66,7 +66,7 @@ public class TestScene extends Scene {
 		GameObject rectangle = new GameObject("Cube1", new Vector3f(10f, 0f, 0f))
 			.addComponent(
 				new SpriteRenderer(20, 20)
-					.color(Color.blue)
+					.color(Color.blue())
 					.widthDirection(VectorUtil.X())
 					.heightDirection(VectorUtil.Z())
 			);
@@ -76,7 +76,7 @@ public class TestScene extends Scene {
 		rectangle = new GameObject("Cube2", new Vector3f(20f, 10f, 0f))
 			.addComponent(
 				new SpriteRenderer(20, 20)
-					.color(Color.red)
+					.color(Color.red())
 					.widthDirection(VectorUtil.Y())
 					.heightDirection(VectorUtil.Z())
 			);
@@ -86,7 +86,7 @@ public class TestScene extends Scene {
 		rectangle = new GameObject("Cube3", new Vector3f(10f, 20f, 0f))
 			.addComponent(
 				new SpriteRenderer(20, 20)
-					.color(Color.black)
+					.color(Color.black())
 					.widthDirection(VectorUtil.minusX())
 					.heightDirection(VectorUtil.Z())
 			);
@@ -96,7 +96,7 @@ public class TestScene extends Scene {
 		rectangle = new GameObject("Cube4", new Vector3f(0f, 10f, 0f))
 			.addComponent(
 				new SpriteRenderer(20, 20)
-					.color(Color.yellow)
+					.color(Color.yellow())
 					.widthDirection(VectorUtil.minusY())
 					.heightDirection(VectorUtil.Z())
 					);
@@ -106,7 +106,7 @@ public class TestScene extends Scene {
 		rectangle = new GameObject("Cube5", new Vector3f(10f, 0f, 20f))
 			.addComponent(
 				new SpriteRenderer(20, 20)
-					.color(Color.cyan)
+					.color(Color.cyan())
 					.widthDirection(VectorUtil.X())
 					.heightDirection(VectorUtil.Y())
 			);
@@ -117,7 +117,7 @@ public class TestScene extends Scene {
 		rectangle = new GameObject("Cube6", new Vector3f(10f, 20f, 0f))
 			.addComponent(
 				new SpriteRenderer(20, 20)
-					.color(Color.magenta)
+					.color(Color.magenta())
 					.widthDirection(VectorUtil.minusX())
 					.heightDirection(VectorUtil.minusY())
 			);
@@ -126,7 +126,7 @@ public class TestScene extends Scene {
 		enemy = new GameObject("Enemy1", new Vector3f(0f, -100f, 0f))
 				.addComponent(
 					new SpriteRenderer(50, 100)
-						.color(Color.red)
+						.color(Color.red())
 						.widthDirection(VectorUtil.viewX())
 						.heightDirection(VectorUtil.viewY())
 						.sprite(ResourcePool.getSprite(TextureType.ENEMY, 0))
@@ -136,7 +136,7 @@ public class TestScene extends Scene {
 		enemy = new GameObject("Enemy2", new Vector3f(100f, -100f, 0f))
 				.addComponent(
 					new SpriteRenderer(50, 100)
-						.color(Color.green)
+						.color(Color.green())
 						.widthDirection(VectorUtil.viewX())
 						.heightDirection(VectorUtil.viewY())
 						.sprite(ResourcePool.getSprite(TextureType.ENEMY, 1))
@@ -146,7 +146,7 @@ public class TestScene extends Scene {
 		enemy = new GameObject("Enemy3", new Vector3f(200f, -100f, 0f))
 				.addComponent(
 					new SpriteRenderer(50, 100)
-						.color(Color.blue)
+						.color(Color.blue())
 						.widthDirection(VectorUtil.viewX())
 						.heightDirection(VectorUtil.viewY())
 						.sprite(ResourcePool.getSprite(TextureType.ENEMY, 2))

@@ -1,10 +1,18 @@
 package com.lunix.javagame.engine;
 
+import java.io.IOException;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.lunix.javagame.configs.CameraConfigs;
+import com.lunix.javagame.configs.PathsConfigs;
 import com.lunix.javagame.configs.WindowConfigs;
 import com.lunix.javagame.engine.enums.GameSceneType;
 import com.lunix.javagame.engine.util.Debugger;
@@ -21,8 +29,11 @@ public class GameInstance {
 	private final ResourcePool resources;
 	private final Camera camera;
 	private static GameInstance currentInstance;
+	private final ObjectMapper objMapper;
+	private final PathsConfigs pathsConfig;
 
-	public GameInstance(WindowConfigs windowConfigs, ResourcePool resources, CameraConfigs cameraConfig) {
+	public GameInstance(WindowConfigs windowConfigs, ResourcePool resources, CameraConfigs cameraConfig,
+			PathsConfigs pathsConfig) {
 		this.window = new GameWindow(windowConfigs);
 		this.mouse = new MouseListener();
 		this.keyboard = new KeyboardListener();
@@ -30,6 +41,11 @@ public class GameInstance {
 		this.scenes = new SceneManager();
 		this.resources = resources;
 		this.camera = new Camera(cameraConfig);
+		this.objMapper = new ObjectMapper()
+				.enable(SerializationFeature.INDENT_OUTPUT)
+				.setVisibility(PropertyAccessor.FIELD, Visibility.ANY)
+				.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		this.pathsConfig = pathsConfig;
 		currentInstance = this;
 	}
 
@@ -65,6 +81,8 @@ public class GameInstance {
 			window.render();
 			mouse.reset();
 		}
+
+		scenes.current().save();
 	}
 
 	private void clean() {
@@ -96,4 +114,15 @@ public class GameInstance {
 		return window;
 	}
 
+	public String save(Object obj) throws IOException {
+		return objMapper.writeValueAsString(obj);
+	}
+
+	public <T> T load(String value, Class<T> classType) throws IOException {
+		return objMapper.readValue(value, classType);
+	}
+
+	public PathsConfigs pathsConfig() {
+		return pathsConfig;
+	}
 }

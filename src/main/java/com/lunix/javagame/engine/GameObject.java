@@ -5,10 +5,17 @@ import java.util.Map;
 
 import org.joml.Vector3f;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 public class GameObject {
-	private final String name;
+	private String name;
 	private Transform transform;
+	@JsonManagedReference
 	private Map<Class<? extends Component>, Component> components;
+
+	public GameObject() {	
+		this("");
+	}
 
 	public GameObject(String name) {
 		this(name, new Transform());
@@ -53,6 +60,11 @@ public class GameObject {
 
 	public String name() {
 		return this.name;
+	}
+
+	public GameObject name(String name) {
+		this.name = name;
+		return this;
 	}
 
 	public Transform transform() {

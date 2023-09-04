@@ -44,3 +44,7 @@ camera:
   z-offset: 100
   z-near: 10
   z-far: 500
+  
+paths:
+  save:
+    levels: levels

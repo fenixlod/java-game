@@ -9,6 +9,10 @@ public class Animation extends Component {
 	private float leftTime;
 	private int currentIdx;
 
+	public Animation() {
+		this(null, 0);
+	}
+
 	public Animation(SpriteSheet sheet, float changeDuration) {
 		this.sheet = sheet;
 		this.changeDuration = changeDuration;
@@ -39,5 +43,15 @@ public class Animation extends Component {
 			if (renderer != null)
 				renderer.sprite(sheet.get(currentIdx));
 		}
+	}
+
+	public Animation sheet(SpriteSheet sheet) {
+		this.sheet = sheet;
+		return this;
+	}
+
+	public Animation changeDuration(float changeDuration) {
+		this.changeDuration = changeDuration;
+		return this;
 	}
 }

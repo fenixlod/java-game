@@ -3,19 +3,19 @@ package com.lunix.javagame.engine.graphic;
 public class Color {
 	private float[] rgba = new float[4];
 
-	public static final Color white = new Color(1f, 1f, 1f, 1f);
-	public static final Color lightGray = new Color(0.75f, 0.75f, 0.75f, 1f);
-	public static final Color gray = new Color(0.5f, 0.5f, 0.5f, 1f);
-	public static final Color darkGray = new Color(0.25f, 0.25f, 0.25f, 1f);
-	public static final Color black = new Color(0f, 0f, 0f, 1f);
-	public static final Color red = new Color(1f, 0f, 0f, 1f);
-	public static final Color pink = new Color(1f, 0.69f, 0.69f, 1f);
-	public static final Color orange = new Color(1f, 0.78f, 0f, 1f);
-	public static final Color yellow = new Color(1f, 1f, 0f, 1f);
-	public static final Color green = new Color(0f, 1f, 0f, 1f);
-	public static final Color magenta = new Color(1f, 0f, 1f, 1f);
-	public static final Color cyan = new Color(0f, 1f, 1f, 1f);
-	public static final Color blue = new Color(0f, 0f, 1f, 1f);
+	private static final Color white = new Color(1f, 1f, 1f, 1f);
+	private static final Color lightGray = new Color(0.75f, 0.75f, 0.75f, 1f);
+	private static final Color gray = new Color(0.5f, 0.5f, 0.5f, 1f);
+	private static final Color darkGray = new Color(0.25f, 0.25f, 0.25f, 1f);
+	private static final Color black = new Color(0f, 0f, 0f, 1f);
+	private static final Color red = new Color(1f, 0f, 0f, 1f);
+	private static final Color pink = new Color(1f, 0.69f, 0.69f, 1f);
+	private static final Color orange = new Color(1f, 0.78f, 0f, 1f);
+	private static final Color yellow = new Color(1f, 1f, 0f, 1f);
+	private static final Color green = new Color(0f, 1f, 0f, 1f);
+	private static final Color magenta = new Color(1f, 0f, 1f, 1f);
+	private static final Color cyan = new Color(0f, 1f, 1f, 1f);
+	private static final Color blue = new Color(0f, 0f, 1f, 1f);
 
 	public Color() {
 		this(0f, 0f, 0f, 1f);
@@ -109,4 +109,55 @@ public class Color {
 			return false;
 	}
 
+	public static Color white() {
+		return new Color(white);
+	}
+
+	public static Color lightgray() {
+		return new Color(lightGray);
+	}
+
+	public static Color gray() {
+		return new Color(gray);
+	}
+
+	public static Color darkgray() {
+		return new Color(darkGray);
+	}
+
+	public static Color black() {
+		return new Color(black);
+	}
+
+	public static Color red() {
+		return new Color(red);
+	}
+
+	public static Color pink() {
+		return new Color(pink);
+	}
+
+	public static Color orange() {
+		return new Color(orange);
+	}
+
+	public static Color yellow() {
+		return new Color(yellow);
+	}
+
+	public static Color green() {
+		return new Color(green);
+	}
+
+	public static Color magenta() {
+		return new Color(magenta);
+	}
+
+	public static Color cyan() {
+		return new Color(cyan);
+	}
+
+	public static Color blue() {
+		return new Color(blue);
+	}
 }

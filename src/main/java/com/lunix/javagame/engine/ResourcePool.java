@@ -69,7 +69,7 @@ public class ResourcePool {
 
 	private void initSpriteSheets(List<SpriteSheetData> sheetsData) throws IOException, ResourceNotFound {
 		for (SpriteSheetData ssd : sheetsData) {
-			spriteSheets.put(ssd.texture(), new SpriteSheet(ssd));
+			spriteSheets.put(ssd.texture(), new SpriteSheet(ssd).load());
 		}
 	}
 

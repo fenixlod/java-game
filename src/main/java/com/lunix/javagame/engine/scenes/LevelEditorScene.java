@@ -26,10 +26,12 @@ public class LevelEditorScene extends Scene {
 	public void init() throws Exception {
 		super.init();
 		game.window().setClearColor(1f, 1f, 1f, 1f);
-		float[] size = game.window().size();
 		game.camera().setOrthoProjection();
 		game.camera().setPosition(new Vector3f());
 		
+		if (loaded)
+			return;
+
 		ResourcePool.loadResources(ShaderType.DEFAULT, TextureType.PLAYER, TextureType.ENEMY, TextureType.PLAYER_IDLE);
 
 		this.playerObject = new GameObject("Player")
@@ -48,7 +50,7 @@ public class LevelEditorScene extends Scene {
 				GameObject obj = new GameObject("Marker " + i + " - " + j, new Vector3f(i * isXAxis * 5f, i * isYAxis * 5f, 0f))
 					.addComponent(
 						new SpriteRenderer(1,1)
-							.color(isXAxis != 0 ? Color.blue : Color.red)
+							.color(isXAxis != 0 ? Color.blue() : Color.red())
 							.widthDirection(VectorUtil.X())
 							.heightDirection(VectorUtil.Y())
 					);
@@ -59,7 +61,7 @@ public class LevelEditorScene extends Scene {
 		GameObject enemy = new GameObject("Enemy", new Vector3f(-50f, 50f, 0f))
 			.addComponent(
 				new SpriteRenderer(20, 40)
-					.color(Color.red)
+					.color(Color.red())
 			);
 		addGameObject(enemy);
 		currentObject = enemy;
@@ -69,7 +71,7 @@ public class LevelEditorScene extends Scene {
 		GameObject rectangle = new GameObject("Cube1", new Vector3f(10f, 0f, 0f))
 			.addComponent(
 				new SpriteRenderer(20, 20)
-					.color(Color.blue)
+					.color(Color.blue())
 					.widthDirection(VectorUtil.X())
 					.heightDirection(VectorUtil.Z())
 			);
@@ -79,7 +81,7 @@ public class LevelEditorScene extends Scene {
 		rectangle = new GameObject("Cube2", new Vector3f(20f, 10f, 0f))
 			.addComponent(
 				new SpriteRenderer(20, 20)
-					.color(Color.red)
+					.color(Color.red())
 					.widthDirection(VectorUtil.Y())
 					.heightDirection(VectorUtil.Z())
 			);
@@ -89,7 +91,7 @@ public class LevelEditorScene extends Scene {
 		rectangle = new GameObject("Cube3", new Vector3f(10f, 20f, 0f))
 			.addComponent(
 				new SpriteRenderer(20, 20)
-					.color(Color.black)
+					.color(Color.black())
 					.widthDirection(VectorUtil.minusX())
 					.heightDirection(VectorUtil.Z())
 			);
@@ -99,7 +101,7 @@ public class LevelEditorScene extends Scene {
 		rectangle = new GameObject("Cube4", new Vector3f(0f, 10f, 0f))
 			.addComponent(
 				new SpriteRenderer(20, 20)
-					.color(Color.yellow)
+					.color(Color.yellow())
 					.widthDirection(VectorUtil.minusY())
 					.heightDirection(VectorUtil.Z())
 					);
@@ -109,7 +111,7 @@ public class LevelEditorScene extends Scene {
 		rectangle = new GameObject("Cube5", new Vector3f(10f, 0f, 20f))
 			.addComponent(
 				new SpriteRenderer(20, 20)
-					.color(Color.cyan)
+					.color(Color.cyan())
 					.widthDirection(VectorUtil.X())
 					.heightDirection(VectorUtil.Y())
 			);
@@ -120,7 +122,7 @@ public class LevelEditorScene extends Scene {
 		rectangle = new GameObject("Cube6", new Vector3f(10f, 20f, 0f))
 			.addComponent(
 				new SpriteRenderer(20, 20)
-					.color(Color.magenta)
+					.color(Color.magenta())
 					.widthDirection(VectorUtil.minusX())
 					.heightDirection(VectorUtil.minusY())
 			);
@@ -129,7 +131,7 @@ public class LevelEditorScene extends Scene {
 		enemy = new GameObject("Enemy1", new Vector3f(0f, -100f, 0f))
 				.addComponent(
 					new SpriteRenderer(50, 100)
-						.color(Color.red)
+						.color(Color.red())
 						.widthDirection(VectorUtil.viewX())
 						.heightDirection(VectorUtil.viewY())
 						.sprite(ResourcePool.getSprite(TextureType.ENEMY, 0))
@@ -139,7 +141,7 @@ public class LevelEditorScene extends Scene {
 		enemy = new GameObject("Enemy2", new Vector3f(100f, -100f, 0f))
 				.addComponent(
 					new SpriteRenderer(50, 100)
-						.color(Color.green)
+						.color(Color.green())
 						.widthDirection(VectorUtil.viewX())
 						.heightDirection(VectorUtil.viewY())
 						.sprite(ResourcePool.getSprite(TextureType.ENEMY, 1))
@@ -149,7 +151,7 @@ public class LevelEditorScene extends Scene {
 		enemy = new GameObject("Enemy3", new Vector3f(200f, -100f, 0f))
 				.addComponent(
 					new SpriteRenderer(50, 100)
-						.color(Color.blue)
+						.color(Color.blue())
 						.widthDirection(VectorUtil.viewX())
 						.heightDirection(VectorUtil.viewY())
 						.sprite(ResourcePool.getSprite(TextureType.ENEMY, 2))
@@ -172,6 +174,12 @@ public class LevelEditorScene extends Scene {
 //				addGameObject(ground);
 //			}
 //		}
+
+//		String value = game.save(playerObject);
+//		System.out.println(value);
+//		GameObject ob = game.load(value, GameObject.class);
+//		System.out.println("Yey");
+//		playerObject = ob;
 	}
 
 	@Override
@@ -227,5 +235,16 @@ public class LevelEditorScene extends Scene {
 		ImGui.begin("Level Editor Scene");
 		ImGui.text("This scene is for creating/editing game scenes");
 		ImGui.end();
+	}
+
+	@Override
+	protected void sceneLoaded(GameObject[] loadedData) {
+		for (GameObject obj : loadedData) {
+			if (obj.name().equals("Player")) {
+				playerObject = obj;
+				currentObject = obj;
+				return;
+			}
+		}
 	}
 }

@@ -32,15 +32,15 @@ public class VectorUtil {
 	}
 
 	public static Vector3f viewX() {
-		return viewX;
+		return new Vector3f(viewX);
 	}
 
 	public static Vector3f viewY() {
-		return viewY;
+		return new Vector3f(viewY);
 	}
 
 	public static Vector3f viewZ() {
-		return viewZ;
+		return new Vector3f(viewZ);
 	}
 	public static void setView(Vector3f view) {
 		Vector3f viewDir = view.normalize(new Vector3f()).mul(-1f);
