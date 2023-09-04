@@ -59,4 +59,7 @@ public abstract class Scene {
 			this.renderer.add(object);
 		}
 	}
+
+	public void ui() {
+	}
 }

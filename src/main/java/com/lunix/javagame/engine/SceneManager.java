@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.lunix.javagame.engine.enums.GameSceneType;
+import com.lunix.javagame.engine.scenes.LevelEditorScene;
 import com.lunix.javagame.engine.scenes.MainMenuScene;
 import com.lunix.javagame.engine.scenes.TestScene;
 import com.lunix.javagame.engine.scenes.WorldScene;
@@ -40,11 +41,16 @@ public class SceneManager {
 			case MAIN_MENU -> new MainMenuScene();
 			case WORLD -> new WorldScene();
 			case TEST -> new TestScene();
+			case EDITOR -> new LevelEditorScene();
 			default -> throw new IllegalStateException("Unknown scene with index: " + newSceneType.toString());
 		};
 	}
 
 	public void update(float deltaTime) throws Exception {
 		currentScene.update(deltaTime);
+	}
+
+	public Scene current() {
+		return this.currentScene;
 	}
 }

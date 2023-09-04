@@ -43,7 +43,7 @@ public class GameInstance {
 		logger.info("Initializing the game engine...");
 		window.create(mouse, keyboard);
 		resources.init();
-		scenes.changeScene(GameSceneType.TEST);
+		scenes.changeScene(GameSceneType.EDITOR);
 	}
 
 	private void loop() throws Exception {
@@ -61,7 +61,7 @@ public class GameInstance {
 			Debugger.display(false, "Delta time: {}", timer.getDeltaTime());
 
 			scenes.update(timer.getDeltaTime());
-			window.update(timer.getDeltaTime());
+			window.update(timer.getDeltaTime(), scenes.current());
 			window.render();
 			mouse.reset();
 		}

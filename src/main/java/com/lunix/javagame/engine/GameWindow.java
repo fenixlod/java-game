@@ -6,6 +6,7 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
+import java.io.IOException;
 import java.nio.IntBuffer;
 
 import org.apache.logging.log4j.LogManager;
@@ -18,19 +19,19 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 
 import com.lunix.javagame.configs.WindowConfigs;
-import com.lunix.javagame.engine.ui.ImGuiLayer;
+import com.lunix.javagame.engine.ui.UiLayer;
 
 public class GameWindow {
 	private static final Logger logger = LogManager.getLogger(GameWindow.class);
 	private final WindowConfigs windowConfigs;
 	private long windowHandle;// memory address of the window
-	private ImGuiLayer imGuiLayer;
+	private UiLayer uiLayer;
 
 	public GameWindow(WindowConfigs windowConfigs) {
 		this.windowConfigs = windowConfigs;
 	}
 
-	public void create(MouseListener mouseListener, KeyboardListener keyboardListener) {
+	public void create(MouseListener mouseListener, KeyboardListener keyboardListener) throws IOException {
 		logger.info("Creating game window using LWJGL version: {} ...", Version.getVersion());
 
 		// Setup an error callback. The default implementation
@@ -97,16 +98,16 @@ public class GameWindow {
 		glAlphaFunc(GL_GREATER, 0.9f);
 		glEnable(GL_ALPHA_TEST);
 
-		this.imGuiLayer = new ImGuiLayer(this);
-		this.imGuiLayer.init();
+		this.uiLayer = new UiLayer(this);
+		this.uiLayer.init();
 
 		// Setup a mouse button callback. It will be called every time a mouse button is
 		// pressed or released.
-		mouseListener.bindToWindow(windowHandle, ImGuiLayer::mouseButtonCallback, ImGuiLayer::scrollCallback);
+		mouseListener.bindToWindow(windowHandle, UiLayer::mouseButtonCallback, UiLayer::scrollCallback);
 
 		// Setup a key callback. It will be called every time a key is pressed, repeated
 		// or released.
-		keyboardListener.bindToWindow(windowHandle, ImGuiLayer::keyCallback);
+		keyboardListener.bindToWindow(windowHandle, UiLayer::keyCallback);
 	}
 
 	public void newFrame() {
@@ -154,7 +155,7 @@ public class GameWindow {
 		return new float[] { w.get(0), h.get(0) };
 	}
 
-	public void update(float dt) {
-		this.imGuiLayer.update(dt);
+	public void update(float dt, Scene currentScene) {
+		this.uiLayer.update(dt, currentScene);
 	}
 }

@@ -7,8 +7,6 @@ public abstract class Component {
 	protected static final Logger logger = LogManager.getLogger(Component.class);
 	protected GameObject owner;
 
-	public abstract void update(float deltaTime);
-
 	public void owner(GameObject owner) {
 		this.owner = owner;
 	}
@@ -17,6 +15,12 @@ public abstract class Component {
 		return this.owner;
 	}
 
+	public void update(float deltaTime) {
+	}
+
 	public void start() {
+	}
+
+	public void ui() {
 	}
 }

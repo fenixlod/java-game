@@ -2,10 +2,16 @@ package com.lunix.javagame.engine.ui;
 
 import static org.lwjgl.glfw.GLFW.*;
 
+import java.io.IOException;
+
 import org.lwjgl.glfw.Callbacks;
+import org.springframework.core.io.ClassPathResource;
 
 import com.lunix.javagame.engine.GameWindow;
+import com.lunix.javagame.engine.Scene;
 
+import imgui.ImFontAtlas;
+import imgui.ImFontConfig;
 import imgui.ImGuiIO;
 import imgui.callback.ImStrConsumer;
 import imgui.callback.ImStrSupplier;
@@ -17,7 +23,7 @@ import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
 import imgui.internal.ImGui;
 
-public class ImGuiLayer {
+public class UiLayer {
 	private final ImGuiImplGlfw imGuiGlfw = new ImGuiImplGlfw();
 	private final ImGuiImplGl3 imGuiGl3 = new ImGuiImplGl3();
 
@@ -29,12 +35,12 @@ public class ImGuiLayer {
 	// Mouse cursors provided by GLFW
 	private final long[] mouseCursors = new long[ImGuiMouseCursor.COUNT];
 
-	public ImGuiLayer(GameWindow window) {
+	public UiLayer(GameWindow window) {
 		this.glfwWindow = window.handle();
 		this.window = window;
 	}
 
-	public void init() {
+	public void init() throws IOException {
 		initImGui();
 		imGuiGlfw.init(glfwWindow, true);
 		imGuiGl3.init(glslVersion);
@@ -49,14 +55,14 @@ public class ImGuiLayer {
 		glfwTerminate();
 	}
 
-	private void initImGui() {
+	private void initImGui() throws IOException {
 		ImGui.createContext();
 
 		// ------------------------------------------------------------
 		// Initialize ImGuiIO config
 		io = ImGui.getIO();
 
-		io.setIniFilename(null); // We don't want to save .ini file
+		io.setIniFilename("src/main/resources/imgui.ini"); // We don't want to save .ini file
 		io.setConfigFlags(ImGuiConfigFlags.NavEnableKeyboard); // Navigation with keyboard
 		io.setBackendFlags(ImGuiBackendFlags.HasMouseCursors); // Mouse cursors to display while resizing windows etc.
 		io.setBackendPlatformName("imgui_java_impl_glfw");
@@ -133,40 +139,31 @@ public class ImGuiLayer {
 		// Fonts configuration
 		// Read: https://raw.githubusercontent.com/ocornut/imgui/master/docs/FONTS.txt
 
-//        final ImFontAtlas fontAtlas = io.getFonts();
-//        final ImFontConfig fontConfig = new ImFontConfig(); // Natively allocated object, should be explicitly destroyed
-//
-//        // Glyphs could be added per-font as well as per config used globally like here
-//        fontConfig.setGlyphRanges(fontAtlas.getGlyphRangesCyrillic());
-//
-//        // Add a default font, which is 'ProggyClean.ttf, 13px'
-//        fontAtlas.addFontDefault();
-//
-//        // Fonts merge example
-//        fontConfig.setMergeMode(true); // When enabled, all fonts added with this config would be merged with the previously added font
-//        fontConfig.setPixelSnapH(true);
-//
-//        fontAtlas.addFontFromMemoryTTF(loadFromResources("basis33.ttf"), 16, fontConfig);
-//
-//        fontConfig.setMergeMode(false);
-//        fontConfig.setPixelSnapH(false);
-//
-//        // Fonts from file/memory example
-//        // We can add new fonts from the file system
-//        fontAtlas.addFontFromFileTTF("src/test/resources/Righteous-Regular.ttf", 14, fontConfig);
-//        fontAtlas.addFontFromFileTTF("src/test/resources/Righteous-Regular.ttf", 16, fontConfig);
-//
-//        // Or directly from the memory
-//        fontConfig.setName("Roboto-Regular.ttf, 14px"); // This name will be displayed in Style Editor
-//        fontAtlas.addFontFromMemoryTTF(loadFromResources("Roboto-Regular.ttf"), 14, fontConfig);
-//        fontConfig.setName("Roboto-Regular.ttf, 16px"); // We can apply a new config value every time we add a new font
-//        fontAtlas.addFontFromMemoryTTF(loadFromResources("Roboto-Regular.ttf"), 16, fontConfig);
-//
-//        fontConfig.destroy(); // After all fonts were added we don't need this config more
-//
-//        // ------------------------------------------------------------
-//        // Use freetype instead of stb_truetype to build a fonts texture
-//        ImGuiFreeType.buildFontAtlas(fontAtlas, ImGuiFreeType.RasterizerFlags.LightHinting);
+		final ImFontAtlas fontAtlas = io.getFonts();
+		final ImFontConfig fontConfig = new ImFontConfig(); // Natively allocated object, should be explicitly destroyed
+
+		// Glyphs could be added per-font as well as per config used globally like here
+		fontConfig.setGlyphRanges(fontAtlas.getGlyphRangesCyrillic());
+
+		// Add a default font, which is 'ProggyClean.ttf, 13px'
+		// fontAtlas.addFontDefault();
+
+		// Fonts merge example
+		// fontConfig.setMergeMode(true); // When enabled, all fonts added with this
+		// config would be merged with the
+										// previously added font
+		fontConfig.setPixelSnapH(true);
+		fontAtlas.addFontFromFileTTF(new ClassPathResource("assets/fonts/cambriab.ttf").getFile().getAbsolutePath(), 32,
+				fontConfig);
+
+		fontConfig.destroy(); // After all fonts were added we don't need this config more
+
+		fontAtlas.build();
+		// ------------------------------------------------------------
+		// Use freetype instead of stb_truetype to build a fonts texture
+		// ImGuiFreeType.buildFontAtlas(fontAtlas,
+		// ImGuiFreeType.RasterizerFlags.LightHinting);
+
 
 		// Method initializes LWJGL3 renderer.
 		// This method SHOULD be called after you've initialized your ImGui
@@ -174,14 +171,15 @@ public class ImGuiLayer {
 		// ImGui context should be created as well.
 	}
 
-	public void update(float dt) {
+	public void update(float dt, Scene currentScene) {
 		startFrame(dt);
 
 		imGuiGlfw.newFrame();
 		ImGui.newFrame();
 
+		currentScene.ui();
 		// Any Dear ImGui code SHOULD go between ImGui.newFrame()/ImGui.render() methods
-		// ImGui.showDemoWindow();
+		ImGui.showDemoWindow();
 
 		ImGui.render();
 		imGuiGl3.renderDrawData(ImGui.getDrawData());

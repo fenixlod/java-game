@@ -48,7 +48,7 @@ public class GameObject {
 	}
 
 	public void start() {
-		components.values().forEach(c -> c.start());
+		components.values().forEach(Component::start);
 	}
 
 	public String name() {
@@ -62,5 +62,9 @@ public class GameObject {
 	public GameObject move(Vector3f offset) {
 		this.transform.move(offset);
 		return this;
+	}
+
+	public void ui() {
+		components.values().forEach(Component::ui);
 	}
 }
