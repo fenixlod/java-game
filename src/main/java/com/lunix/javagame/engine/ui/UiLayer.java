@@ -23,10 +23,9 @@ import imgui.glfw.ImGuiImplGlfw;
 import imgui.internal.ImGui;
 
 public class UiLayer {
-	private final ImGuiImplGlfw imGuiGlfw = new ImGuiImplGlfw();
-	private final ImGuiImplGl3 imGuiGl3 = new ImGuiImplGl3();
-
-	private String glslVersion = "#version 330 core";
+	private final ImGuiImplGlfw imGuiGlfw;
+	private final ImGuiImplGl3 imGuiGl3;
+	private String glslVersion;
 	private long glfwWindow;
 	private final GameWindow window;
 	public static ImGuiIO io;
@@ -37,23 +36,39 @@ public class UiLayer {
 	public UiLayer(GameWindow window) {
 		this.glfwWindow = window.handle();
 		this.window = window;
+		this.imGuiGlfw = new ImGuiImplGlfw();
+		this.imGuiGl3 = new ImGuiImplGl3();
+		this.glslVersion = "#version 330 core";
 	}
 
+	/**
+	 * Initialize the UI
+	 * 
+	 * @throws IOException
+	 */
 	public void init() throws IOException {
 		initImGui();
-		imGuiGlfw.init(glfwWindow, true);
-		imGuiGl3.init(glslVersion);
+		this.imGuiGlfw.init(this.glfwWindow, true);
+		this.imGuiGl3.init(this.glslVersion);
 	}
 
+	/**
+	 * Destroy the UI, free all allocated resources.
+	 */
 	public void destroy() {
-		imGuiGlfw.dispose();
-		imGuiGl3.dispose();
+		this.imGuiGlfw.dispose();
+		this.imGuiGl3.dispose();
 		ImGui.destroyContext();
-		Callbacks.glfwFreeCallbacks(glfwWindow);
-		glfwDestroyWindow(glfwWindow);
+		Callbacks.glfwFreeCallbacks(this.glfwWindow);
+		glfwDestroyWindow(this.glfwWindow);
 		glfwTerminate();
 	}
 
+	/**
+	 * Initialize the ImGui overlay.
+	 * 
+	 * @throws IOException
+	 */
 	private void initImGui() throws IOException {
 		ImGui.createContext();
 
@@ -96,20 +111,20 @@ public class UiLayer {
 
 		// ------------------------------------------------------------
 		// Mouse cursors mapping
-		mouseCursors[ImGuiMouseCursor.Arrow] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
-		mouseCursors[ImGuiMouseCursor.TextInput] = glfwCreateStandardCursor(GLFW_IBEAM_CURSOR);
-		mouseCursors[ImGuiMouseCursor.ResizeAll] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
-		mouseCursors[ImGuiMouseCursor.ResizeNS] = glfwCreateStandardCursor(GLFW_VRESIZE_CURSOR);
-		mouseCursors[ImGuiMouseCursor.ResizeEW] = glfwCreateStandardCursor(GLFW_HRESIZE_CURSOR);
-		mouseCursors[ImGuiMouseCursor.ResizeNESW] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
-		mouseCursors[ImGuiMouseCursor.ResizeNWSE] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
-		mouseCursors[ImGuiMouseCursor.Hand] = glfwCreateStandardCursor(GLFW_HAND_CURSOR);
-		mouseCursors[ImGuiMouseCursor.NotAllowed] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
+		this.mouseCursors[ImGuiMouseCursor.Arrow] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
+		this.mouseCursors[ImGuiMouseCursor.TextInput] = glfwCreateStandardCursor(GLFW_IBEAM_CURSOR);
+		this.mouseCursors[ImGuiMouseCursor.ResizeAll] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
+		this.mouseCursors[ImGuiMouseCursor.ResizeNS] = glfwCreateStandardCursor(GLFW_VRESIZE_CURSOR);
+		this.mouseCursors[ImGuiMouseCursor.ResizeEW] = glfwCreateStandardCursor(GLFW_HRESIZE_CURSOR);
+		this.mouseCursors[ImGuiMouseCursor.ResizeNESW] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
+		this.mouseCursors[ImGuiMouseCursor.ResizeNWSE] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
+		this.mouseCursors[ImGuiMouseCursor.Hand] = glfwCreateStandardCursor(GLFW_HAND_CURSOR);
+		this.mouseCursors[ImGuiMouseCursor.NotAllowed] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
 
 		// ------------------------------------------------------------
 		// GLFW callbacks to handle user input
 
-		glfwSetCharCallback(glfwWindow, (w, c) -> {
+		glfwSetCharCallback(this.glfwWindow, (w, c) -> {
 			if (c != GLFW_KEY_DELETE) {
 				io.addInputCharacter(c);
 			}
@@ -170,10 +185,16 @@ public class UiLayer {
 		// ImGui context should be created as well.
 	}
 
+	/**
+	 * Update the UI for the current scene.
+	 * 
+	 * @param dt
+	 * @param currentScene
+	 */
 	public void update(float dt, Scene currentScene) {
 		startFrame(dt);
 
-		imGuiGlfw.newFrame();
+		this.imGuiGlfw.newFrame();
 		ImGui.newFrame();
 
 		currentScene.ui();
@@ -181,17 +202,22 @@ public class UiLayer {
 		ImGui.showDemoWindow();
 
 		ImGui.render();
-		imGuiGl3.renderDrawData(ImGui.getDrawData());
+		this.imGuiGl3.renderDrawData(ImGui.getDrawData());
 	}
 
+	/**
+	 * Indicate the start of the new frame.
+	 * 
+	 * @param deltaTime
+	 */
 	private void startFrame(final float deltaTime) {
 		// Get window properties and mouse position
-		float[] size = window.size();
+		float[] size = this.window.size();
 		float[] winWidth = { size[0] };
 		float[] winHeight = { size[1] };
 		double[] mousePosX = { 0 };
 		double[] mousePosY = { 0 };
-		glfwGetCursorPos(glfwWindow, mousePosX, mousePosY);
+		glfwGetCursorPos(this.glfwWindow, mousePosX, mousePosY);
 
 		// We SHOULD call those methods to update Dear ImGui state for the current frame
 		final ImGuiIO io = ImGui.getIO();
@@ -202,13 +228,20 @@ public class UiLayer {
 
 		// Update the mouse cursor
 		final int imguiCursor = ImGui.getMouseCursor();
-		glfwSetCursor(glfwWindow, mouseCursors[imguiCursor]);
-		glfwSetInputMode(glfwWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		glfwSetCursor(this.glfwWindow, mouseCursors[imguiCursor]);
+		glfwSetInputMode(this.glfwWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 	}
 
+	/**
+	 * Mouse button callbacks.
+	 * 
+	 * @param window
+	 * @param button
+	 * @param action
+	 * @param mods
+	 */
 	public static void mouseButtonCallback(long window, int button, int action, int mods) {
 		final boolean[] mouseDown = new boolean[5];
-
 		mouseDown[0] = button == GLFW_MOUSE_BUTTON_1 && action != GLFW_RELEASE;
 		mouseDown[1] = button == GLFW_MOUSE_BUTTON_2 && action != GLFW_RELEASE;
 		mouseDown[2] = button == GLFW_MOUSE_BUTTON_3 && action != GLFW_RELEASE;
@@ -222,11 +255,27 @@ public class UiLayer {
 		}
 	}
 
+	/**
+	 * Mouse scroll callbacks.
+	 * 
+	 * @param window
+	 * @param xOffset
+	 * @param yOffset
+	 */
 	public static void scrollCallback(long window, double xOffset, double yOffset) {
 		io.setMouseWheelH(io.getMouseWheelH() + (float) xOffset);
 		io.setMouseWheel(io.getMouseWheel() + (float) yOffset);
 	}
 
+	/**
+	 * Keyboard callbacks.
+	 * 
+	 * @param window
+	 * @param key
+	 * @param scancode
+	 * @param action
+	 * @param mods
+	 */
 	public static void keyCallback(long window, int key, int scancode, int action, int mods) {
 		if (action == GLFW_PRESS) {
 			io.setKeysDown(key, true);

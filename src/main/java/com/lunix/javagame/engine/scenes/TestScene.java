@@ -9,6 +9,7 @@ import com.lunix.javagame.engine.ResourcePool;
 import com.lunix.javagame.engine.Scene;
 import com.lunix.javagame.engine.components.Animation;
 import com.lunix.javagame.engine.components.SpriteRenderer;
+import com.lunix.javagame.engine.enums.GameSceneType;
 import com.lunix.javagame.engine.enums.ShaderType;
 import com.lunix.javagame.engine.enums.TextureType;
 import com.lunix.javagame.engine.graphic.Color;
@@ -19,14 +20,17 @@ import com.lunix.javagame.engine.util.VectorUtil;
 public class TestScene extends Scene {
 	private GameObject playerObject;
 
+	public TestScene(GameSceneType type) {
+		super(type);
+	}
+
 	@Override
 	public void init() throws Exception {
 		super.init();
-		game.window().setClearColor(1f, 1f, 1f, 1f);
-		float[] size = game.window().size();
+		game.window().clearColor(1f, 1f, 1f, 1f);
 		game.camera().setOrthoProjection();
 		// game.camera().setPerspectiveProjection(size[0] / size[1]);
-		game.camera().setPosition(new Vector3f());
+		game.camera().position(new Vector3f());
 		
 		ResourcePool.loadResources(ShaderType.DEFAULT, TextureType.PLAYER, TextureType.ENEMY, TextureType.PLAYER_IDLE);
 
@@ -193,7 +197,7 @@ public class TestScene extends Scene {
 		if (game.keyboard().isKeyPressed(GLFW_KEY_PAGE_DOWN))
 			offset.z -= 50f * deltaTime;
 		
-		float zoomChange = (float) game.mouse().getScrollY() * 0.1f;
+		float zoomChange = (float) game.mouse().scroll().y * 0.1f;
 		game.camera().move(offset);
 		if (zoomChange != 0f)
 			game.camera().changeZoom(zoomChange);

@@ -11,8 +11,6 @@ import com.lunix.javagame.engine.graphic.Color;
 import com.lunix.javagame.engine.graphic.Sprite;
 import com.lunix.javagame.engine.util.VectorUtil;
 
-import imgui.ImGui;
-
 public class SpriteRenderer extends Component {
 	private Vector3f positionOffset;
 	private int width;
@@ -52,15 +50,6 @@ public class SpriteRenderer extends Component {
 		if (!this.lastTransform.equals(owner.transform())) {
 			this.lastTransform = owner.transform().copy();
 			this.isChanged = true;
-		}
-	}
-
-	@Override
-	public void ui() {
-		float[] uiColor = color.rgba();
-		if (ImGui.colorPicker4("Color picker: ", uiColor)) {
-			// color.rgba(uiColor);
-			isChanged = true;
 		}
 	}
 

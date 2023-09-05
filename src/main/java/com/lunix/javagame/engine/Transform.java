@@ -6,25 +6,25 @@ import com.lunix.javagame.engine.util.VectorUtil;
 
 public class Transform {
 	private Vector3f position;
-	private Vector3f direction;
+	private Vector3f facing;
 	private Vector3f scale;
 
-	public Transform(Vector3f position, Vector3f direction, Vector3f scale) {
-		this.position = position;
-		this.direction = direction;
-		this.scale = scale;
-	}
-
-	public Transform(Vector3f position, Vector3f direction) {
-		this(position, direction, new Vector3f(1f, 1f, 1f));
+	public Transform() {
+		this(new Vector3f());
 	}
 
 	public Transform(Vector3f position) {
 		this(position, VectorUtil.X());
 	}
 
-	public Transform() {
-		this(new Vector3f());
+	public Transform(Vector3f position, Vector3f facing) {
+		this(position, facing, new Vector3f(1f, 1f, 1f));
+	}
+
+	public Transform(Vector3f position, Vector3f facing, Vector3f scale) {
+		this.position = position;
+		this.facing = facing;
+		this.scale = scale;
 	}
 
 	public Transform position(Vector3f newPosition) {
@@ -32,9 +32,17 @@ public class Transform {
 		return this;
 	}
 
-	public Transform direction(Vector3f newDirection) {
-		this.direction = newDirection;
+	public Vector3f position() {
+		return position;
+	}
+
+	public Transform facing(Vector3f newFacing) {
+		this.facing = newFacing;
 		return this;
+	}
+
+	public Vector3f facing() {
+		return facing;
 	}
 
 	public Transform scale(Vector3f newScale) {
@@ -42,16 +50,8 @@ public class Transform {
 		return this;
 	}
 
-	public Vector3f position() {
-		return position;
-	}
-
 	public Vector3f scale() {
 		return scale;
-	}
-
-	public Vector3f direction() {
-		return direction;
 	}
 
 	public Transform move(Vector3f offset) {
@@ -60,11 +60,11 @@ public class Transform {
 	}
 
 	public Transform copy() {
-		return new Transform(new Vector3f(position), new Vector3f(direction), new Vector3f(scale));
+		return new Transform(new Vector3f(position), new Vector3f(facing), new Vector3f(scale));
 	}
 
 	public void copy(Transform dest) {
-		dest.position(new Vector3f(position)).direction(new Vector3f(direction)).scale(new Vector3f(scale));
+		dest.position(new Vector3f(position)).facing(new Vector3f(facing)).scale(new Vector3f(scale));
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public class Transform {
 			return false;
 
 		if (obj instanceof Transform trans) {
-			return this.position.equals(trans.position()) && this.direction.equals(trans.direction())
+			return this.position.equals(trans.position()) && this.facing.equals(trans.facing())
 					&& this.scale.equals(trans.scale());
 		} else
 			return false;

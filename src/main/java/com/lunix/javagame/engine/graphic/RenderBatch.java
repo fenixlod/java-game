@@ -59,13 +59,13 @@ public class RenderBatch {
 
 	public void start() {
 		// Generate and bind Vertex Array Object
-		vaoID = glGenVertexArrays();
+		this.vaoID = glGenVertexArrays();
 		glBindVertexArray(vaoID);
 
 		// Allocate space for the vertices
-		vboID = glGenBuffers();
-		glBindBuffer(GL_ARRAY_BUFFER, vboID);
-		glBufferData(GL_ARRAY_BUFFER, vertices.length * Float.BYTES, GL_DYNAMIC_DRAW);
+		this.vboID = glGenBuffers();
+		glBindBuffer(GL_ARRAY_BUFFER, this.vboID);
+		glBufferData(GL_ARRAY_BUFFER, this.vertices.length * Float.BYTES, GL_DYNAMIC_DRAW);
 
 		// Create and upload the indices buffer
 		int eboID = glGenBuffers();
@@ -90,8 +90,8 @@ public class RenderBatch {
 	private int[] generateIndices() {
 		// 6 indices per quad (3 per triangle)
 		// 0, 1, 2, 2, 3, 0        4, 5, 6, 6, 7, 4       ...
-		int[] elements = new int[6 * maxBatchSize];
-		for (int i = 0; i < maxBatchSize; i++) {
+		int[] elements = new int[6 * this.maxBatchSize];
+		for (int i = 0; i < this.maxBatchSize; i++) {
 			elements[i * 6] = 4 * i + 0;
 			elements[i * 6 + 1] = 4 * i + 1;
 			elements[i * 6 + 2] = 4 * i + 2;
@@ -122,18 +122,18 @@ public class RenderBatch {
 			glBufferSubData(GL_ARRAY_BUFFER, 0, vertices);
 		}
 
-		shader.use();
-		shader.uploadMat4f("projMat", GameInstance.get().camera().getProjectionMatrix());
-		shader.uploadMat4f("viewMat", GameInstance.get().camera().getViewMatrix());
+		this.shader.use();
+		this.shader.uploadMat4f("projMat", GameInstance.get().camera().projectionMatrix());
+		this.shader.uploadMat4f("viewMat", GameInstance.get().camera().viewMatrix());
 
-		for (Entry<TextureType, Integer> entry : textures.entrySet()) {
+		for (Entry<TextureType, Integer> entry : this.textures.entrySet()) {
 			ResourcePool.getTexture(entry.getKey()).bind(entry.getValue());
 		}
 
-		shader.uploadIntArray("textures", textureSlots);
+		shader.uploadIntArray("textures", this.textureSlots);
 
 		// Bind the VAO that we are using
-		glBindVertexArray(vaoID);
+		glBindVertexArray(this.vaoID);
 
 		// Enable vertex attribute pointers
 		glEnableVertexAttribArray(0);
@@ -151,7 +151,7 @@ public class RenderBatch {
 		glBindVertexArray(0);
 
 		Texture.unbind();
-		shader.detach();
+		this.shader.detach();
 	}
 
 	public void addSprite(SpriteRenderer sprite) {
@@ -160,8 +160,8 @@ public class RenderBatch {
 		this.sprites.add(sprite);
 
 		if (sprite.texture() != TextureType.NONE) {
-			if (textures.get(sprite.texture()) == null) {
-				textures.put(sprite.texture(), textures.size() + 1);
+			if (this.textures.get(sprite.texture()) == null) {
+				this.textures.put(sprite.texture(), this.textures.size() + 1);
 			}
 		}
 
@@ -175,12 +175,12 @@ public class RenderBatch {
 		int textureIndex = 0;
 
 		if (sprite.texture() != TextureType.NONE) {
-			Integer idx = textures.get(sprite.texture());
+			Integer idx = this.textures.get(sprite.texture());
 			if (idx != null)
 				textureIndex = idx;
 			else if (haveTextureRoom()) {
-				textureIndex = textures.size() + 1;
-				textures.put(sprite.texture(), textureIndex);
+				textureIndex = this.textures.size() + 1;
+				this.textures.put(sprite.texture(), textureIndex);
 			} else {
 				// Use textureIndex = 0, reserved no texture
 			}
@@ -192,7 +192,7 @@ public class RenderBatch {
 	}
 
 	public boolean haveRoom() {
-		return this.sprites.size() < maxBatchSize;
+		return this.sprites.size() < this.maxBatchSize;
 	}
 
 	public boolean haveTextureRoom() {
@@ -204,6 +204,6 @@ public class RenderBatch {
 	}
 
 	public boolean hasTexture(TextureType texture) {
-		return textures.get(texture) != null;
+		return this.textures.get(texture) != null;
 	}
 }

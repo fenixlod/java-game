@@ -24,7 +24,7 @@ public class GameInstance {
 	private final MouseListener mouse;
 	private final KeyboardListener keyboard;
 	private final GameTime timer;
-	private final SceneManager scenes;
+	private final SceneManager sceneManager;
 	private final GameWindow window;
 	private final ResourcePool resources;
 	private final Camera camera;
@@ -38,7 +38,7 @@ public class GameInstance {
 		this.mouse = new MouseListener();
 		this.keyboard = new KeyboardListener();
 		this.timer = new GameTime();
-		this.scenes = new SceneManager();
+		this.sceneManager = new SceneManager();
 		this.resources = resources;
 		this.camera = new Camera(cameraConfig);
 		this.objMapper = new ObjectMapper()
@@ -49,61 +49,75 @@ public class GameInstance {
 		currentInstance = this;
 	}
 
-	public void run() throws Exception {
+	/**
+	 * Start the game.
+	 * 
+	 * @throws Exception
+	 */
+	public void start() throws Exception {
 		init();
 		loop();
-		clean();
+		destroy();
 	}
 
+	/**
+	 * Initialize the game. Load resources, create scenes and objects.
+	 * 
+	 * @throws Exception
+	 */
 	private void init() throws Exception {
 		logger.info("Initializing the game engine...");
-		window.create(mouse, keyboard);
-		resources.init();
-		scenes.changeScene(GameSceneType.EDITOR);
+		this.window.create(this.mouse, this.keyboard);
+		this.resources.init();
+		this.sceneManager.changeScene(GameSceneType.EDITOR);
 	}
 
+	/**
+	 * Start the main game loop
+	 * 
+	 * @throws Exception
+	 */
 	private void loop() throws Exception {
 		logger.info("Starting the game loop...");
 		// Run the rendering loop until the user has attempted to close
 		// the window or has pressed the ESCAPE key.
-		while (window.isOpened()) {
-			timer.tick();
-			window.newFrame();
+		while (this.window.isOpened()) {
+			this.timer.tick();
+			this.window.newFrame();
 
-			Debugger.display(false, "Game FPS: {}", 1 / timer.getDeltaTime());
-			Debugger.display(false, mouse);
-			Debugger.display(false, keyboard);
-			Debugger.display(false, "Time elapsed: {}", timer.getElapsedTime());
-			Debugger.display(false, "Delta time: {}", timer.getDeltaTime());
+			Debugger.display(false, "Game FPS: {}", 1 / this.timer.deltaTime());
+			Debugger.display(false, this.mouse);
+			Debugger.display(false, this.keyboard);
+			Debugger.display(false, "Time elapsed: {}", this.timer.elapsedTime());
+			Debugger.display(false, "Delta time: {}", this.timer.deltaTime());
 
-			scenes.update(timer.getDeltaTime());
-			window.update(timer.getDeltaTime(), scenes.current());
-			window.render();
-			mouse.reset();
+			this.sceneManager.update(this.timer.deltaTime());
+			this.window.update(this.timer.deltaTime(), this.sceneManager.currentScene());
+			this.window.render();
+			this.mouse.reset();
 		}
 
-		scenes.current().save();
+		this.sceneManager.currentScene().save();
 	}
 
-	private void clean() {
+	/**
+	 * Destroy the game. Free all allocated resources.
+	 */
+	private void destroy() {
 		logger.info("Clean before close...");
-		window.destroy();
+		this.window.destroy();
 	}
 
 	public MouseListener mouse() {
-		return mouse;
+		return this.mouse;
 	}
 
 	public KeyboardListener keyboard() {
-		return keyboard;
-	}
-
-	public SceneManager scenes() {
-		return scenes;
+		return this.keyboard;
 	}
 
 	public Camera camera() {
-		return camera;
+		return this.camera;
 	}
 
 	public static GameInstance get() {
@@ -111,18 +125,18 @@ public class GameInstance {
 	}
 
 	public GameWindow window() {
-		return window;
+		return this.window;
 	}
 
 	public String save(Object obj) throws IOException {
-		return objMapper.writeValueAsString(obj);
+		return this.objMapper.writeValueAsString(obj);
 	}
 
 	public <T> T load(String value, Class<T> classType) throws IOException {
-		return objMapper.readValue(value, classType);
+		return this.objMapper.readValue(value, classType);
 	}
 
 	public PathsConfigs pathsConfig() {
-		return pathsConfig;
+		return this.pathsConfig;
 	}
 }

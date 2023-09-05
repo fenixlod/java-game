@@ -22,18 +22,25 @@ public class GameObject {
 		this(name, new Transform());
 	}
 
+	public GameObject(String name, Vector3f position) {
+		this(name, new Transform().position(position));
+	}
+
 	public GameObject(String name, Transform transform) {
 		this.name = name;
 		this.transform = transform;
 		this.components = new HashMap<>();
 	}
 
-	public GameObject(String name, Vector3f position) {
-		this(name, new Transform().position(position));
-	}
-
+	/**
+	 * Get component by class. Only one component per type is allowed.
+	 * 
+	 * @param <T>
+	 * @param className
+	 * @return
+	 */
 	public <T extends Component> T getComponent(Class<T> className) {
-		Component object = components.get(className);
+		Component object = this.components.get(className);
 
 		if (object != null)
 			return className.cast(object);
@@ -41,22 +48,42 @@ public class GameObject {
 		return null;
 	}
 
+	/**
+	 * Add new component to the object. Only one component per type is allowed.
+	 * 
+	 * @param component
+	 * @return
+	 */
 	public GameObject addComponent(Component component) {
-		components.put(component.getClass(), component);
+		this.components.put(component.getClass(), component);
 		component.owner(this);
 		return this;
 	}
 
+	/**
+	 * Remove component by type.
+	 * 
+	 * @param <T>
+	 * @param className
+	 */
 	public <T extends Component> void removeComponent(Class<T> className) {
-		components.remove(className);
+		this.components.remove(className);
 	}
 
+	/**
+	 * Update this object components animations, AI etc.
+	 * 
+	 * @param deltaTime
+	 */
 	public void update(float deltaTime) {
-		components.values().forEach(c -> c.update(deltaTime));
+		this.components.values().forEach(c -> c.update(deltaTime));
 	}
 
+	/**
+	 * Start the object components.
+	 */
 	public void start() {
-		components.values().forEach(Component::start);
+		this.components.values().forEach(Component::start);
 	}
 
 	public String name() {
@@ -75,10 +102,6 @@ public class GameObject {
 	public GameObject move(Vector3f offset) {
 		this.transform.move(offset);
 		return this;
-	}
-
-	public void ui() {
-		components.values().forEach(Component::ui);
 	}
 
 	public Collection<Component> components() {

@@ -14,6 +14,7 @@ import com.lunix.javagame.engine.ResourcePool;
 import com.lunix.javagame.engine.Scene;
 import com.lunix.javagame.engine.components.Animation;
 import com.lunix.javagame.engine.components.SpriteRenderer;
+import com.lunix.javagame.engine.enums.GameSceneType;
 import com.lunix.javagame.engine.enums.ShaderType;
 import com.lunix.javagame.engine.enums.TextureType;
 import com.lunix.javagame.engine.exception.ResourceNotFound;
@@ -30,12 +31,16 @@ public class LevelEditorScene extends Scene {
 	private GameObject playerObject;
 	protected GameObject currentObject;
 
+	public LevelEditorScene(GameSceneType type) {
+		super(type);
+	}
+
 	@Override
 	public void init() throws Exception {
 		super.init();
-		game.window().setClearColor(1f, 1f, 1f, 1f);
+		game.window().clearColor(1f, 1f, 1f, 1f);
 		game.camera().setOrthoProjection();
-		game.camera().setPosition(new Vector3f());
+		game.camera().position(new Vector3f());
 		ResourcePool.loadResources(ShaderType.DEFAULT, TextureType.PLAYER, TextureType.ENEMY, TextureType.PLAYER_IDLE,
 				TextureType.TILE_BRICK);
 		
@@ -166,7 +171,7 @@ public class LevelEditorScene extends Scene {
 				);
 		addGameObject(enemy);
 		
-		enemy = GameObjectFactory.GroundTile(new Vector3f(0f, 0f, 0f), TextureType.TILE_BRICK, 100, 100);
+		enemy = GameObjectFactory.groundTile(new Vector3f(0f, 0f, 0f), TextureType.TILE_BRICK, 100, 100);
 		addGameObject(enemy);
 		
 //		logger.info("Creating game objects...");
@@ -215,7 +220,7 @@ public class LevelEditorScene extends Scene {
 		if (game.keyboard().isKeyPressed(GLFW_KEY_PAGE_DOWN))
 			offset.z -= 50f * deltaTime;
 		
-		float zoomChange = (float) game.mouse().getScrollY() * 0.1f;
+		float zoomChange = (float) game.mouse().scroll().y * 0.1f;
 		if (zoomChange != 0f)
 			game.camera().changeZoom(zoomChange);
 		
@@ -228,9 +233,10 @@ public class LevelEditorScene extends Scene {
 		Debugger.display(false, "X={}, Y={}, Z={}", game.camera().position().x, game.camera().position().y,	game.camera().position().z);
 
 		this.playerObject.move(offset);
-		game.camera().setPosition(playerObject.transform().position());
+		game.camera().position(playerObject.transform().position());
 
-		game.mouse().worldPosition();
+		Vector3f worldPosition = game.mouse().worldPositionProjected();
+		System.out.println("Current X=" + worldPosition.x + " Y=" + worldPosition.y + " Z=" + worldPosition.z);
 		super.update(deltaTime);
 	}
 

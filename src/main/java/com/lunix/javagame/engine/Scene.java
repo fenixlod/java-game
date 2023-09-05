@@ -12,42 +12,64 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.util.StringUtils;
 
+import com.lunix.javagame.engine.enums.GameSceneType;
 import com.lunix.javagame.engine.graphic.Renderer;
 
 public abstract class Scene {
 	protected static final Logger logger = LogManager.getLogger(Scene.class);
+	private GameSceneType type;
 	private boolean active = false;
 	private final List<GameObject> objects;
 	private final Renderer renderer;
 	protected final GameInstance game;
 	protected boolean loaded;
 
-	protected Scene() {
+	protected Scene(GameSceneType type) {
 		this.active = false;
 		this.objects = new ArrayList<>();
 		this.renderer = new Renderer();
 		this.game = GameInstance.get();
+		this.type = type;
 	}
 
+	/**
+	 * Initialize the scene.
+	 * 
+	 * @throws Exception
+	 */
 	public void init() throws Exception {
 		logger.info("Start initializing scene");
 		// TODO: Display loading screen?
 	}
 
+	/**
+	 * Start the scene. All game objects will be rendered and updated.
+	 * 
+	 * @throws Exception
+	 */
 	public void start() throws Exception {
 		// TODO: Hide loading screen?
-		for (GameObject obj : objects) {
+		for (GameObject obj : this.objects) {
 			obj.start();
 			this.renderer.add(obj);
 		}
 
-		active = true;
+		this.active = true;
 	}
 
+	/**
+	 * Stop the scene. This scene will no longer receive updates.
+	 */
 	public void stop() {
-		active = false;
+		this.active = false;
 	}
 
+	/**
+	 * Update the scene.
+	 * 
+	 * @param deltaTime
+	 * @throws Exception
+	 */
 	public void update(float deltaTime) throws Exception {
 		if (!active)
 			return;
@@ -58,6 +80,12 @@ public abstract class Scene {
 		this.renderer.render();
 	}
 
+	/**
+	 * Add game object to the scene.
+	 * 
+	 * @param object
+	 * @throws Exception
+	 */
 	public void addGameObject(GameObject object) throws Exception {
 		objects.add(object);
 
@@ -70,11 +98,16 @@ public abstract class Scene {
 	public void ui() {
 	}
 
+	/**
+	 * Load the scene from saved file.
+	 * 
+	 * @throws Exception
+	 */
 	public void load() throws Exception {
 		if (true) // TODO: remove
 			return;
 
-		Path levelsFile = Paths.get(game.pathsConfig().save().get("levels"), "editor.json");
+		Path levelsFile = Paths.get(game.pathsConfig().save().get("levels"), type.toString() + ".json");
 
 		if (!levelsFile.toFile().exists())
 			return;
@@ -91,11 +124,21 @@ public abstract class Scene {
 		}
 	}
 
+	/**
+	 * This function will be called when the scene is loaded from file.
+	 * 
+	 * @param loadedData
+	 */
 	protected void sceneLoaded(GameObject[] loadedData) {
 	}
 
+	/**
+	 * Save the scene to file.
+	 * 
+	 * @throws IOException
+	 */
 	public void save() throws IOException {
-		Path levelsFile = Paths.get(game.pathsConfig().save().get("levels"), "editor.json");
+		Path levelsFile = Paths.get(game.pathsConfig().save().get("levels"), type.toString() + ".json");
 
 		try (FileWriter writer = new FileWriter(levelsFile.toFile())) {
 			writer.write(game.save(this.objects));

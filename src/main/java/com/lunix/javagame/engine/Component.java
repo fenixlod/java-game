@@ -32,7 +32,4 @@ public abstract class Component {
 
 	public void start() {
 	}
-
-	public void ui() {
-	}
 }

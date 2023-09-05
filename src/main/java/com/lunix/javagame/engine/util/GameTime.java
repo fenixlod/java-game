@@ -12,7 +12,7 @@ public class GameTime {
 	 * 
 	 * @return
 	 */
-	public float getElapsedTime() {
+	public float elapsedTime() {
 		return (float) (glfwGetTime() - startTime);
 	}
 
@@ -30,7 +30,7 @@ public class GameTime {
 	 * 
 	 * @return
 	 */
-	public float getDeltaTime() {
+	public float deltaTime() {
 		return (float) timeBetweenFrames;
 	}
 }

@@ -13,10 +13,20 @@ import imgui.type.ImInt;
 public class Editor {
 	private static final Logger logger = LogManager.getLogger(Editor.class);
 
+	/**
+	 * Display controls to edit game object fields.
+	 * 
+	 * @param obj
+	 */
 	public static void editObject(GameObject obj) {
 		obj.components().forEach(Editor::displayFields);
 	}
 
+	/**
+	 * Display controls to edit game object filed.
+	 * 
+	 * @param obj
+	 */
 	private static void displayFields(Object obj) {
 		try {
 			Field[] fields = obj.getClass().getDeclaredFields();
@@ -44,7 +54,13 @@ public class Editor {
 				} else if (type == Vector3f.class) {
 					displayVector3f(name, value, field, obj);
 				}
-
+	/*			
+				float[] uiColor = color.rgba();
+				if (ImGui.colorPicker4("Color picker: ", uiColor)) {
+					// color.rgba(uiColor);
+					isChanged = true;
+				}
+*/
 				if (isPrivate)
 					field.setAccessible(false);
 			}

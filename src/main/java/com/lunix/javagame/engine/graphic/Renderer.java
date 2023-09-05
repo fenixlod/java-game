@@ -16,6 +16,12 @@ public class Renderer {
 		this.batches = new ArrayList<>();
 	}
 
+	/**
+	 * Add game object for drawing.
+	 * 
+	 * @param obj
+	 * @throws ResourceNotFound
+	 */
 	public void add(GameObject obj) throws ResourceNotFound {
 		SpriteRenderer sprite = obj.getComponent(SpriteRenderer.class);
 
@@ -23,8 +29,14 @@ public class Renderer {
 			add(sprite);
 	}
 
+	/**
+	 * Add sprite for rendering.
+	 * 
+	 * @param sprite
+	 * @throws ResourceNotFound
+	 */
 	private void add(SpriteRenderer sprite) throws ResourceNotFound {
-		for (RenderBatch batch : batches) {
+		for (RenderBatch batch : this.batches) {
 			if (batch.haveRoom() && sprite.shader() == batch.shader()) {
 				TextureType texture = sprite.texture();
 				if (texture == TextureType.NONE || batch.hasTexture(texture) || batch.haveTextureRoom()) {
@@ -37,9 +49,14 @@ public class Renderer {
 		RenderBatch newBatch = new RenderBatch(MAX_BATCH_SIZE, sprite.shader());
 		newBatch.start();
 		newBatch.addSprite(sprite);
-		batches.add(newBatch);
+		this.batches.add(newBatch);
 	}
 
+	/**
+	 * Render all screen elements.
+	 * 
+	 * @throws Exception
+	 */
 	public void render() throws Exception {
 		for (RenderBatch batch : batches) {
 			batch.render();
