@@ -4,6 +4,9 @@ import static org.lwjgl.glfw.GLFW.*;
 
 import java.util.Arrays;
 
+import org.joml.Intersectionf;
+import org.joml.Vector3f;
+import org.joml.Vector4d;
 import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
 import org.lwjgl.glfw.GLFWScrollCallbackI;
 
@@ -103,9 +106,32 @@ public class MouseListener {
 		return deltaY;
 	}
 
-
 	public boolean isDragging() {
 		return dragging;
+	}
+
+	public Vector3f worldPosition() {
+		float[] size = GameInstance.get().window().size();
+		double currentX = positionX;
+		currentX = (currentX / size[0]) * 2f - 1;
+		double currentY = positionY;
+		currentY = (currentY / size[1]) * 2f - 1;
+		Vector4d tmp = new Vector4d(currentX, currentY, -1, 1);
+		tmp.mul(GameInstance.get().camera().inverseProjection()).mul(GameInstance.get().camera().inverseView());
+
+		// ADD
+		// tmp = new Vector4f(tmp.x / tmp.w, tmp.y / tmp.w, tmp.z / tmp.w, 0.0f);
+		Vector3f orig = new Vector3f((float) tmp.x, (float) tmp.y, (float) tmp.z);
+		Vector3f dir =  new Vector3f(-100, -100, 100).normalize().mul(-1);
+		Vector3f olaneOrg =  new Vector3f();
+		Vector3f olaneNorm =  new Vector3f(0,0,1);
+		float dist = Intersectionf.intersectRayPlane(orig, dir, olaneOrg, olaneNorm, 1);
+		orig.add(dir.mul(dist));
+
+		currentX = orig.x;
+		currentY = orig.y;
+		System.out.println("Current X=" + currentX + " Y=" + currentY);
+		return null;
 	}
 
 	@Override

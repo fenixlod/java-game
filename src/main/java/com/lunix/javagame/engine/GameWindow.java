@@ -48,6 +48,8 @@ public class GameWindow {
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE); // the window will be resizable
 		glfwWindowHint(GLFW_MAXIMIZED, windowConfigs.maximized() ? GLFW_TRUE : GLFW_FALSE); // the window will be
 																							// maximized
+		// glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+		// glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 
 		// Create the window
 		windowHandle = glfwCreateWindow(windowConfigs.width(), windowConfigs.height(), windowConfigs.title(), NULL,

@@ -10,7 +10,6 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.StringUtils;
 
 import com.lunix.javagame.engine.graphic.Renderer;
@@ -72,9 +71,10 @@ public abstract class Scene {
 	}
 
 	public void load() throws Exception {
-		String pathToLevels = new ClassPathResource(game.pathsConfig().save().get("levels")).getFile()
-				.getAbsolutePath();
-		Path levelsFile = Paths.get(pathToLevels, "editor.json");
+		if (true) // TODO: remove
+			return;
+
+		Path levelsFile = Paths.get(game.pathsConfig().save().get("levels"), "editor.json");
 
 		if (!levelsFile.toFile().exists())
 			return;
@@ -95,10 +95,7 @@ public abstract class Scene {
 	}
 
 	public void save() throws IOException {
-		String pathToLevels = new ClassPathResource(game.pathsConfig().save().get("levels")).getFile()
-				.getAbsolutePath();
-
-		Path levelsFile = Paths.get(pathToLevels, "editor.json");
+		Path levelsFile = Paths.get(game.pathsConfig().save().get("levels"), "editor.json");
 
 		try (FileWriter writer = new FileWriter(levelsFile.toFile())) {
 			writer.write(game.save(this.objects));

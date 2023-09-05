@@ -10,6 +10,8 @@ public class Camera {
 	private final CameraConfigs cameraConfig;
 	private Matrix4f projectionMatrix;
 	private Matrix4f viewMatrix;
+	private Matrix4f inverseProjection;
+	private Matrix4f inverseView;
 	private Vector3f position;
 	private Vector3f offsets;
 	private float zoomFactor;
@@ -19,6 +21,8 @@ public class Camera {
 		this.offsets = new Vector3f(cameraConfig.xOffset(), cameraConfig.yOffset(), cameraConfig.zOffset());
 		this.projectionMatrix = new Matrix4f();
 		this.viewMatrix = new Matrix4f();
+		this.inverseProjection = new Matrix4f();
+		this.inverseView = new Matrix4f();
 		this.zoomFactor = 1f;
 		VectorUtil.setView(offsets);
 	}
@@ -28,12 +32,16 @@ public class Camera {
 		projectionMatrix.ortho(-cameraConfig.ortho().width() / 2, cameraConfig.ortho().width() / 2,
 				-cameraConfig.ortho().height() / 2, cameraConfig.ortho().height() / 2,
 				cameraConfig.zNear(), cameraConfig.zFar());
+
+		projectionMatrix.invert(inverseProjection);
 	}
 
 	public void setPerspectiveProjection(float aspect) {
 		projectionMatrix.identity();
 		projectionMatrix.perspective((float) Math.toRadians(cameraConfig.prespective().fieldOfView()), aspect,
 				cameraConfig.zNear(), cameraConfig.zFar());
+
+		projectionMatrix.invert(inverseProjection);
 	}
 
 	public Matrix4f getViewMatrix() {
@@ -41,6 +49,7 @@ public class Camera {
 		viewMatrix = viewMatrix.lookAt(offsets, new Vector3f(), VectorUtil.Z());
 		viewMatrix.scale(zoomFactor);
 		viewMatrix.translate(position.mul(-1, new Vector3f()));
+		viewMatrix.invert(inverseView);
 		return viewMatrix;
 	}
 
@@ -66,5 +75,13 @@ public class Camera {
 
 	public Vector3f offsets() {
 		return this.offsets;
+	}
+
+	public Matrix4f inverseProjection() {
+		return inverseProjection;
+	}
+
+	public Matrix4f inverseView() {
+		return inverseView;
 	}
 }

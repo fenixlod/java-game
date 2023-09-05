@@ -1,5 +1,6 @@
 package com.lunix.javagame.engine;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -78,5 +79,9 @@ public class GameObject {
 
 	public void ui() {
 		components.values().forEach(Component::ui);
+	}
+
+	public Collection<Component> components() {
+		return components.values();
 	}
 }

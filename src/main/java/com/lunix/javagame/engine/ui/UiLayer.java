@@ -16,7 +16,6 @@ import imgui.ImGuiIO;
 import imgui.callback.ImStrConsumer;
 import imgui.callback.ImStrSupplier;
 import imgui.flag.ImGuiBackendFlags;
-import imgui.flag.ImGuiConfigFlags;
 import imgui.flag.ImGuiKey;
 import imgui.flag.ImGuiMouseCursor;
 import imgui.gl3.ImGuiImplGl3;
@@ -63,7 +62,7 @@ public class UiLayer {
 		io = ImGui.getIO();
 
 		io.setIniFilename("src/main/resources/imgui.ini"); // We don't want to save .ini file
-		io.setConfigFlags(ImGuiConfigFlags.NavEnableKeyboard); // Navigation with keyboard
+		//io.setConfigFlags(ImGuiConfigFlags.NavEnableKeyboard); // Navigation with keyboard
 		io.setBackendFlags(ImGuiBackendFlags.HasMouseCursors); // Mouse cursors to display while resizing windows etc.
 		io.setBackendPlatformName("imgui_java_impl_glfw");
 
@@ -153,7 +152,7 @@ public class UiLayer {
 		// config would be merged with the
 										// previously added font
 		fontConfig.setPixelSnapH(true);
-		fontAtlas.addFontFromFileTTF(new ClassPathResource("assets/fonts/arialbd.ttf").getFile().getAbsolutePath(), 24,
+		fontAtlas.addFontFromFileTTF(new ClassPathResource("assets/fonts/arialbd.ttf").getFile().getAbsolutePath(), 16,
 				fontConfig);
 
 		fontConfig.destroy(); // After all fonts were added we don't need this config more

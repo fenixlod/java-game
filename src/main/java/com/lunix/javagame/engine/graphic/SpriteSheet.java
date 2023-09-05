@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.joml.Vector2f;
 
 import com.lunix.javagame.configs.ResourceConfigs.SpriteSheetData;
@@ -12,6 +14,8 @@ import com.lunix.javagame.engine.enums.TextureType;
 import com.lunix.javagame.engine.exception.ResourceNotFound;
 
 public class SpriteSheet {
+	private static final Logger logger = LogManager.getLogger(SpriteSheet.class);
+
 	private TextureType texture;
 	private List<Sprite> sprites;
 	private int spriteWidth;
@@ -36,7 +40,7 @@ public class SpriteSheet {
 		this.sprites.clear();
 
 		Texture texture = ResourcePool.getTexture(this.texture);
-		Vector2f total = new Vector2f(texture.wdth(), texture.height());
+		Vector2f total = new Vector2f(texture.width(), texture.height());
 		float currentX = 0, currentY = spriteHeight;
 
 		while (true) {
@@ -73,6 +77,12 @@ public class SpriteSheet {
 	}
 
 	public Sprite get(int index) {
+		if (index < 0 || index >= sprites.size()) {
+			logger.error("Invalid sheet sprite index: {}, texture: {}, sprites count: {}", index, texture,
+					sprites.size());
+			index = 0;
+
+		}
 		return this.sprites.get(index);
 	}
 

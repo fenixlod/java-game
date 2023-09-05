@@ -23,6 +23,7 @@ resources:
     player: assets/images/Player.png
     enemy: assets/images/Enemy.png
     player_idle: assets/images/Player-idle.png
+    tile_brick: assets/images/tile_brick.png
   sprite-sheet:
     -
       texture: enemy
@@ -47,4 +48,4 @@ camera:
   
 paths:
   save:
-    levels: levels
+    levels: src/main/resources/levels

@@ -88,7 +88,7 @@ public class Texture {
 		return this.type;
 	}
 
-	public int wdth() {
+	public int width() {
 		return width;
 	}
 

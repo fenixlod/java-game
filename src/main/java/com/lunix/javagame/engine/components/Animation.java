@@ -5,26 +5,29 @@ import com.lunix.javagame.engine.graphic.SpriteSheet;
 
 public class Animation extends Component {
 	private SpriteSheet sheet;
-	private float changeDuration;
-	private float leftTime;
-	private int currentIdx;
+	private float changeInterval;
+	private int startingPose;
+
+	private transient float leftTime;
+	private transient int currentPose;
 
 	public Animation() {
 		this(null, 0);
 	}
 
-	public Animation(SpriteSheet sheet, float changeDuration) {
+	public Animation(SpriteSheet sheet, float changeInterval) {
 		this.sheet = sheet;
-		this.changeDuration = changeDuration;
-		this.leftTime = changeDuration;
-		this.currentIdx = 0;
+		this.changeInterval = changeInterval;
+		this.startingPose = 0;
 	}
 
 	@Override
 	public void start() {
 		SpriteRenderer renderer = owner.getComponent(SpriteRenderer.class);
+		currentPose = startingPose;
+		leftTime = changeInterval;
 		if (renderer != null)
-			renderer.sprite(sheet.get(currentIdx));
+			renderer.sprite(sheet.get(currentPose));
 	}
 
 	@Override
@@ -32,16 +35,16 @@ public class Animation extends Component {
 		leftTime -= deltaTime;
 
 		if (leftTime <= 0f) {
-			leftTime = changeDuration;
-			currentIdx++;
+			leftTime = changeInterval;
+			currentPose++;
 
-			if (currentIdx >= sheet.size()) {
-				currentIdx = 0;
+			if (currentPose >= sheet.size()) {
+				currentPose = 0;
 			}
 
 			SpriteRenderer renderer = owner.getComponent(SpriteRenderer.class);
 			if (renderer != null)
-				renderer.sprite(sheet.get(currentIdx));
+				renderer.sprite(sheet.get(currentPose));
 		}
 	}
 
@@ -50,8 +53,15 @@ public class Animation extends Component {
 		return this;
 	}
 
-	public Animation changeDuration(float changeDuration) {
-		this.changeDuration = changeDuration;
+	public Animation changeInterval(float changeInterval) {
+		this.changeInterval = changeInterval;
+		this.leftTime = changeInterval;
+		return this;
+	}
+
+	public Animation startingPose(int startingPose) {
+		this.startingPose = startingPose;
+		this.currentPose = startingPose;
 		return this;
 	}
 }
