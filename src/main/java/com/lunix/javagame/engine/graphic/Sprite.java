@@ -11,10 +11,10 @@ public class Sprite {
 	public Sprite(Texture texture, int width, int height) {
 		this.texture = texture;
 		this.textureCoords = new Vector2f[] {
-				new Vector2f(0f, 1f),
-				new Vector2f(1f, 1f),
-				new Vector2f(1f, 0f),
 				new Vector2f(0f, 0f),
+				new Vector2f(1f, 0f),
+				new Vector2f(1f, 1f),
+				new Vector2f(0f, 1f),
 		};
 		this.width = width;
 		this.height = height;

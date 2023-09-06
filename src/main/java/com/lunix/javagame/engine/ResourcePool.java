@@ -145,4 +145,8 @@ public class ResourcePool {
 
 		return sheet;
 	}
+
+	public static Map<String, Sprite> sprites() {
+		return sprites;
+	}
 }

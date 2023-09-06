@@ -35,17 +35,17 @@ public class SpriteSheet {
 
 		while (true) {
 			Vector2f[] uv = new Vector2f[] { new Vector2f(), new Vector2f(), new Vector2f(), new Vector2f() };
-			uv[0].x = currentX;
-			uv[0].y = currentY;
-
-			uv[1].x = currentX + this.spriteWidth;
-			uv[1].y = currentY;
+			uv[3].x = currentX;
+			uv[3].y = currentY;
 
 			uv[2].x = currentX + this.spriteWidth;
-			uv[2].y = currentY - this.spriteHeight;
+			uv[2].y = currentY;
 
-			uv[3].x = currentX;
-			uv[3].y = currentY - this.spriteHeight;
+			uv[1].x = currentX + this.spriteWidth;
+			uv[1].y = currentY - this.spriteHeight;
+
+			uv[0].x = currentX;
+			uv[0].y = currentY - this.spriteHeight;
 
 			uv[0].div(total);
 			uv[1].div(total);

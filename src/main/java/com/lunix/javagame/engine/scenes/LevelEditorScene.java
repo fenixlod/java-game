@@ -2,8 +2,6 @@ package com.lunix.javagame.engine.scenes;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-import java.io.IOException;
-
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -17,7 +15,6 @@ import com.lunix.javagame.engine.components.SpriteRenderer;
 import com.lunix.javagame.engine.enums.GameSceneType;
 import com.lunix.javagame.engine.enums.ShaderType;
 import com.lunix.javagame.engine.enums.TextureType;
-import com.lunix.javagame.engine.exception.ResourceNotFound;
 import com.lunix.javagame.engine.graphic.Color;
 import com.lunix.javagame.engine.graphic.Sprite;
 import com.lunix.javagame.engine.graphic.Texture;
@@ -262,23 +259,20 @@ public class LevelEditorScene extends Scene {
 		ImVec2 itemSpacing = new ImVec2();
 		ImGui.getStyle().getItemSpacing(itemSpacing);
 		float windowX2 = windowPos.x + windowSize.x;
-		for (int i = 0; i < 1; i++) {
-			Texture texture = null;
-			try {
-				texture = ResourcePool.getTexture(TextureType.TILE_BRICK);
-			} catch (ResourceNotFound | IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			Sprite sp = ResourcePool.getSprite(TextureType.TILE_BRICK.name());
-			float spriteWidth = texture.width() / 4;
-			float spriteHeight = texture.height() / 4;
+		int i = 0;
+		for (Sprite sp : ResourcePool.sprites().values()) {
+			Texture texture = sp.texture();
+			if (texture == null)
+				continue;
+
+			float spriteWidth = 60;
+			float spriteHeight = 60;
 			int id = texture.id();
 			Vector2f[] textureCoords = sp.textureCoords();
 
 			ImGui.pushID(i);
-			if (ImGui.imageButton(id, spriteWidth, spriteHeight, textureCoords[0].x, textureCoords[0].y,
-					textureCoords[2].x, textureCoords[2].y)) {
+			if (ImGui.imageButton(id, spriteWidth, spriteHeight, textureCoords[3].x, textureCoords[3].y,
+					textureCoords[1].x, textureCoords[1].y)) {
 				System.out.println("Texture clicked");
 			}
 			ImGui.popID();
@@ -288,9 +282,10 @@ public class LevelEditorScene extends Scene {
 			float lastButtonX2 = lastButtonPos.x;
 			float nextButtonX2 = lastButtonX2 + itemSpacing.x + spriteWidth;
 
-			if (i + 1 < 1 && nextButtonX2 < windowX2) {
+			if (i + 1 < ResourcePool.sprites().size() && nextButtonX2 < windowX2) {
 				ImGui.sameLine();
 			}
+			i++;
 		}
 
 		ImGui.end();
