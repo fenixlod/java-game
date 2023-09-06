@@ -1,7 +1,6 @@
 package com.lunix.javagame.engine;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,7 +8,6 @@ import java.util.Map.Entry;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 import com.lunix.javagame.configs.ResourceConfigs;
@@ -30,11 +28,13 @@ public class ResourcePool {
 	private static final Map<ShaderType, Shader> shaders;
 	private static final Map<TextureType, Texture> textures;
 	private static final Map<TextureType, SpriteSheet> spriteSheets;
+	private static final Map<String, Sprite> sprites;
 
 	static {
 		shaders = new HashMap<>();
 		textures = new HashMap<>();
 		spriteSheets = new HashMap<>();
+		sprites = new HashMap<>();
 	}
 
 	public ResourcePool(ResourceConfigs resourceConfig) {
@@ -45,31 +45,43 @@ public class ResourcePool {
 		initShaders(resourceConfig.shaders());
 		initTextures(resourceConfig.textures());
 		initSpriteSheets(resourceConfig.spriteSheet());
+		initSprites(resourceConfig.textures());
 	}
 
-	private void initShaders(Map<ShaderType, String> shadersToLoad) throws IOException {
+	private void initShaders(Map<ShaderType, String> shadersToLoad) {
 		logger.info("Loading shaders...");
 		for (Entry<ShaderType, String> entry : shadersToLoad.entrySet()) {
-			Path path = new ClassPathResource(entry.getValue()).getFile().toPath();
-			logger.debug("Loading shader: {}", path);
-			Shader shader = new Shader(entry.getKey(), path);
+			logger.debug("Loading shader: {}", entry.getValue());
+			Shader shader = new Shader(entry.getKey(), entry.getValue());
 			shaders.put(entry.getKey(), shader);
 		}
 	}
 
-	private void initTextures(Map<TextureType, String> texturesToLoad) throws IOException {
+	private void initTextures(Map<TextureType, String> texturesToLoad) {
 		logger.info("Loading textures...");
 		for (Entry<TextureType, String> entry : texturesToLoad.entrySet()) {
-			Path path = new ClassPathResource(entry.getValue()).getFile().toPath();
-			logger.debug("Loading texture: {}", path);
-			Texture texture = new Texture(entry.getKey(), path);
+			logger.debug("Loading texture: {}", entry.getValue());
+			Texture texture = new Texture(entry.getKey(), entry.getValue());
 			textures.put(entry.getKey(), texture);
 		}
 	}
 
 	private void initSpriteSheets(List<SpriteSheetData> sheetsData) throws IOException, ResourceNotFound {
 		for (SpriteSheetData ssd : sheetsData) {
-			spriteSheets.put(ssd.texture(), new SpriteSheet(ssd).load());
+			logger.debug("Loading sprite sheet: {}", ssd.texture());
+			SpriteSheet sheet = new SpriteSheet(getTexture(ssd.texture()), ssd.width(), ssd.height());
+			spriteSheets.put(ssd.texture(),sheet);
+		}
+	}
+
+	private void initSprites(Map<TextureType, String> allTextures) {
+		sprites.put(TextureType.NONE.name(), new Sprite());
+		for(TextureType texture : allTextures.keySet()) {
+			SpriteSheet sheet = spriteSheets.get(texture);
+			if(sheet == null) {
+				Sprite sprite = new Sprite(textures.get(texture), 0, 0);
+				sprites.put(texture.toString(), sprite);
+			}
 		}
 	}
 
@@ -83,14 +95,14 @@ public class ResourcePool {
 		}
 	}
 
-	public static Shader getShader(ShaderType shaderName) throws ResourceNotFound {
+	public static Shader getShader(ShaderType shaderName) throws ResourceNotFound, IOException {
 		Shader shader = shaders.get(shaderName);
 		if (shader == null) {
 			logger.warn("Unable to find shader: {}", shaderName);
 			throw new ResourceNotFound("Shader not found: " + shaderName);
 		}
 
-		shader.compile();
+		shader.load();
 		return shader;
 	}
 
@@ -102,17 +114,26 @@ public class ResourcePool {
 		}
 
 		texture.load();
+
+		SpriteSheet sheet = spriteSheets.get(texture.type());
+		if (sheet != null) {
+			sheet.load();
+			int idx = 0;
+			for (Sprite s : sheet.sprites()) {
+				sprites.put(s.texture().type().name() + idx++, s);
+			}
+		}
 		return texture;
 	}
 
-	public static Sprite getSprite(TextureType textureType, int index) throws ResourceNotFound, IOException {
-		SpriteSheet sheet = spriteSheets.get(textureType);
-		if (sheet == null) {
-			logger.warn("Unable to find sprite sheet: {}", textureType);
-			throw new ResourceNotFound("Sprite sheet not found: " + textureType);
+	public static Sprite getSprite(String name) {
+		Sprite sprite = sprites.get(name);
+		if (sprite == null) {
+			logger.warn("Unable to find sprite: {}", name);
+			sprite = sprites.get(TextureType.NONE.name());
 		}
 
-		return sheet.get(index);
+		return sprite;
 	}
 
 	public static SpriteSheet getSpriteSheet(TextureType textureType) throws ResourceNotFound, IOException {

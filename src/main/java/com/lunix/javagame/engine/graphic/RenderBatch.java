@@ -6,6 +6,7 @@ import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -46,7 +47,7 @@ public class RenderBatch {
 	private int maxBatchSize;
 	private Shader shader;
 
-	public RenderBatch(int maxBatchSize, ShaderType shaderType) throws ResourceNotFound {
+	public RenderBatch(int maxBatchSize, ShaderType shaderType) throws ResourceNotFound, IOException {
 		this.shader = ResourcePool.getShader(shaderType);
 		this.sprites = new LinkedList<>();
 		this.maxBatchSize = maxBatchSize;
@@ -159,9 +160,9 @@ public class RenderBatch {
 		int index = this.sprites.size();
 		this.sprites.add(sprite);
 
-		if (sprite.texture() != TextureType.NONE) {
-			if (this.textures.get(sprite.texture()) == null) {
-				this.textures.put(sprite.texture(), this.textures.size() + 1);
+		if (sprite.textureType() != TextureType.NONE) {
+			if (this.textures.get(sprite.textureType()) == null) {
+				this.textures.put(sprite.textureType(), this.textures.size() + 1);
 			}
 		}
 
@@ -174,20 +175,20 @@ public class RenderBatch {
 		int offset = 4 * index * VERTEX_SIZE;
 		int textureIndex = 0;
 
-		if (sprite.texture() != TextureType.NONE) {
-			Integer idx = this.textures.get(sprite.texture());
+		if (sprite.textureType() != TextureType.NONE) {
+			Integer idx = this.textures.get(sprite.textureType());
 			if (idx != null)
 				textureIndex = idx;
 			else if (haveTextureRoom()) {
 				textureIndex = this.textures.size() + 1;
-				this.textures.put(sprite.texture(), textureIndex);
+				this.textures.put(sprite.textureType(), textureIndex);
 			} else {
 				// Use textureIndex = 0, reserved no texture
 			}
 		}
 
 		// Add vertices with appropriate attributes
-		sprite.getVertexArray(vertices, offset, textureIndex);
+		sprite.getVertexArray(this.vertices, offset, textureIndex);
 		return true;
 	}
 
@@ -196,7 +197,7 @@ public class RenderBatch {
 	}
 
 	public boolean haveTextureRoom() {
-		return textures.size() < 32;
+		return this.textures.size() < 32;
 	}
 
 	public ShaderType shader() {

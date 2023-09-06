@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.BufferUtils;
+import org.springframework.core.io.ClassPathResource;
 
 import com.lunix.javagame.engine.enums.TextureType;
 
@@ -24,21 +25,28 @@ public class Texture {
 	private int width;
 	private int height;
 
-	public Texture(TextureType type, Path filePath) throws IOException {
+	public Texture() {
+		this.filePath = "";
+		this.type = TextureType.NONE;
+	}
+
+	public Texture(TextureType type, String filePath) {
 		this.type = type;
-		this.filePath = filePath.toString();
+		this.filePath = filePath;
 		this.loaded = false;
 		this.width = 0;
 		this.height = 0;
 	}
 
 	public void load() throws IOException {
-		if (loaded)
+		if (this.loaded)
 			return;
 
+		Path resourcePath = new ClassPathResource(filePath).getFile().toPath();
+
 		// Generate texture on GPU
-		textureID = glGenTextures();
-		glBindTexture(GL_TEXTURE_2D, textureID);
+		this.textureID = glGenTextures();
+		glBindTexture(GL_TEXTURE_2D, this.textureID);
 		// Set texture parameters
 		// Strech the texture if needed
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -50,7 +58,7 @@ public class Texture {
 		IntBuffer width = BufferUtils.createIntBuffer(1);
 		IntBuffer height = BufferUtils.createIntBuffer(1);
 		IntBuffer channels = BufferUtils.createIntBuffer(1);
-		ByteBuffer image = stbi_load(filePath, width, height, channels, 0);
+		ByteBuffer image = stbi_load(resourcePath.toString(), width, height, channels, 0);
 		if (image != null) {
 			this.width = width.get(0);
 			this.height = height.get(0);
@@ -60,20 +68,24 @@ public class Texture {
 			else
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width.get(0), height.get(0), 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
 		} else {
-			logger.error("Cannot load image: {}", filePath);
-			throw new IOException("Cannot load image: " + filePath);
+			logger.error("Cannot load image: {}", this.filePath);
+			throw new IOException("Cannot load image: " + this.filePath);
 		}
 
 		// Free the memory
 		stbi_image_free(image);
-		loaded = true;
+		this.loaded = true;
 	}
 
 	public void bind(int slot) {
+		if (!this.loaded) {
+			logger.error("Texture: {} not loaded!", type);
+			return;
+		}
 		// Set the current texture slot to slot number
 		glActiveTexture(GL_TEXTURE0 + slot);
 		// Bind texture to the current slot
-		glBindTexture(GL_TEXTURE_2D, textureID);
+		glBindTexture(GL_TEXTURE_2D, this.textureID);
 	}
 
 	public static void unbind() {
@@ -89,10 +101,10 @@ public class Texture {
 	}
 
 	public int width() {
-		return width;
+		return this.width;
 	}
 
 	public int height() {
-		return height;
+		return this.height;
 	}
 }

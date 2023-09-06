@@ -13,7 +13,6 @@ import com.lunix.javagame.engine.enums.GameSceneType;
 import com.lunix.javagame.engine.enums.ShaderType;
 import com.lunix.javagame.engine.enums.TextureType;
 import com.lunix.javagame.engine.graphic.Color;
-import com.lunix.javagame.engine.graphic.Sprite;
 import com.lunix.javagame.engine.util.Debugger;
 import com.lunix.javagame.engine.util.VectorUtil;
 
@@ -37,7 +36,7 @@ public class TestScene extends Scene {
 		this.playerObject = new GameObject("Player")
 				.addComponent(
 						new SpriteRenderer(40, 50)
-						.sprite(new Sprite(TextureType.PLAYER))
+							.sprite(ResourcePool.getSprite(TextureType.PLAYER.name()))
 				);
 		playerObject.addComponent(new Animation(ResourcePool.getSpriteSheet(TextureType.PLAYER_IDLE), 0.3f));
 			addGameObject(playerObject);
@@ -133,7 +132,7 @@ public class TestScene extends Scene {
 						.color(Color.red())
 						.widthDirection(VectorUtil.viewX())
 						.heightDirection(VectorUtil.viewY())
-						.sprite(ResourcePool.getSprite(TextureType.ENEMY, 0))
+						.sprite(ResourcePool.getSprite(TextureType.ENEMY.name() + 0))
 				);
 		addGameObject(enemy);
 		
@@ -143,7 +142,7 @@ public class TestScene extends Scene {
 						.color(Color.green())
 						.widthDirection(VectorUtil.viewX())
 						.heightDirection(VectorUtil.viewY())
-						.sprite(ResourcePool.getSprite(TextureType.ENEMY, 1))
+						.sprite(ResourcePool.getSprite(TextureType.ENEMY.name() + 1))
 				);
 		addGameObject(enemy);
 		
@@ -153,7 +152,7 @@ public class TestScene extends Scene {
 						.color(Color.blue())
 						.widthDirection(VectorUtil.viewX())
 						.heightDirection(VectorUtil.viewY())
-						.sprite(ResourcePool.getSprite(TextureType.ENEMY, 2))
+						.sprite(ResourcePool.getSprite(TextureType.ENEMY.name() + 2))
 				);
 		addGameObject(enemy);
 		

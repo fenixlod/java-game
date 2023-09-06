@@ -27,9 +27,17 @@ public abstract class Component {
 		return this.owner;
 	}
 
+	/**
+	 * Update this component.
+	 * 
+	 * @param deltaTime
+	 */
 	public void update(float deltaTime) {
 	}
 
+	/**
+	 * Initialize the component.
+	 */
 	public void start() {
 	}
 }

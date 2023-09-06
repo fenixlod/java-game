@@ -9,6 +9,7 @@ import com.lunix.javagame.engine.enums.ShaderType;
 import com.lunix.javagame.engine.enums.TextureType;
 import com.lunix.javagame.engine.graphic.Color;
 import com.lunix.javagame.engine.graphic.Sprite;
+import com.lunix.javagame.engine.graphic.Texture;
 import com.lunix.javagame.engine.util.VectorUtil;
 
 public class SpriteRenderer extends Component {
@@ -130,24 +131,31 @@ public class SpriteRenderer extends Component {
 		return this.shader;
 	}
 
+	/**
+	 * Transform this element to vertices for drawing.
+	 * 
+	 * @param vertices
+	 * @param offset
+	 * @param textureIndex
+	 */
 	public void getVertexArray(float[] vertices, int offset, int textureIndex) {
-		Vector3f center = owner.transform().position().add(positionOffset, new Vector3f());
+		Vector3f center = this.owner.transform().position().add(this.positionOffset, new Vector3f());
 		Vector3f p1 = new Vector3f(center);
 		Vector3f p2 = new Vector3f(center);
 		Vector3f p3 = new Vector3f(center);
 		Vector3f p4 = new Vector3f(center);
-		Vector3f scaledWidthDirection = widthDirection.mul(owner.transform().scale(), new Vector3f());
-		Vector3f scaledHeightDirection = heightDirection.mul(owner.transform().scale(), new Vector3f());
+		Vector3f scaledWidthDirection = this.widthDirection.mul(this.owner.transform().scale(), new Vector3f());
+		Vector3f scaledHeightDirection = this.heightDirection.mul(this.owner.transform().scale(), new Vector3f());
 
-		p1.add(scaledWidthDirection.mul(-width / 2f, new Vector3f()));
-		p2.add(scaledWidthDirection.mul(width / 2f, new Vector3f()));
-		p4 = p1.add(scaledHeightDirection.mul(height, new Vector3f()), new Vector3f());
-		p3 = p2.add(scaledHeightDirection.mul(height, new Vector3f()), new Vector3f());
+		p1.add(scaledWidthDirection.mul(-this.width / 2f, new Vector3f()));
+		p2.add(scaledWidthDirection.mul(this.width / 2f, new Vector3f()));
+		p4 = p1.add(scaledHeightDirection.mul(this.height, new Vector3f()), new Vector3f());
+		p3 = p2.add(scaledHeightDirection.mul(this.height, new Vector3f()), new Vector3f());
 		
-		offset = setVertexInArray(vertices, offset, p1, sprite.textureCoords()[0], textureIndex);
-		offset = setVertexInArray(vertices, offset, p2, sprite.textureCoords()[1], textureIndex);
-		offset = setVertexInArray(vertices, offset, p3, sprite.textureCoords()[2], textureIndex);
-		offset = setVertexInArray(vertices, offset, p4, sprite.textureCoords()[3], textureIndex);
+		offset = setVertexInArray(vertices, offset, p1, this.sprite.textureCoords()[0], textureIndex);
+		offset = setVertexInArray(vertices, offset, p2, this.sprite.textureCoords()[1], textureIndex);
+		offset = setVertexInArray(vertices, offset, p3, this.sprite.textureCoords()[2], textureIndex);
+		offset = setVertexInArray(vertices, offset, p4, this.sprite.textureCoords()[3], textureIndex);
 	}
 
 	private int setVertexInArray(float[] vertices, int offset, Vector3f position, Vector2f uv, int textureIndex) {
@@ -155,10 +163,10 @@ public class SpriteRenderer extends Component {
 		vertices[offset++] = position.y();
 		vertices[offset++] = position.z();
 
-		vertices[offset++] = color.r();
-		vertices[offset++] = color.g();
-		vertices[offset++] = color.b();
-		vertices[offset++] = color.a();
+		vertices[offset++] = this.color.r();
+		vertices[offset++] = this.color.g();
+		vertices[offset++] = this.color.b();
+		vertices[offset++] = this.color.a();
 
 		vertices[offset++] = uv.x;
 		vertices[offset++] = uv.y;
@@ -167,7 +175,15 @@ public class SpriteRenderer extends Component {
 		return offset;
 	}
 
-	public TextureType texture() {
-		return sprite.texture();
+	public TextureType textureType() {
+		if (this.sprite == null)
+			return TextureType.NONE;
+
+		Texture texture = this.sprite.texture();
+
+		if (texture == null)
+			return TextureType.NONE;
+
+		return texture.type();
 	}
 }

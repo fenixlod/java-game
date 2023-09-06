@@ -1,5 +1,6 @@
 package com.lunix.javagame.engine.graphic;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,8 +22,9 @@ public class Renderer {
 	 * 
 	 * @param obj
 	 * @throws ResourceNotFound
+	 * @throws IOException
 	 */
-	public void add(GameObject obj) throws ResourceNotFound {
+	public void add(GameObject obj) throws ResourceNotFound, IOException {
 		SpriteRenderer sprite = obj.getComponent(SpriteRenderer.class);
 
 		if (sprite != null)
@@ -34,11 +36,12 @@ public class Renderer {
 	 * 
 	 * @param sprite
 	 * @throws ResourceNotFound
+	 * @throws IOException
 	 */
-	private void add(SpriteRenderer sprite) throws ResourceNotFound {
+	private void add(SpriteRenderer sprite) throws ResourceNotFound, IOException {
 		for (RenderBatch batch : this.batches) {
 			if (batch.haveRoom() && sprite.shader() == batch.shader()) {
-				TextureType texture = sprite.texture();
+				TextureType texture = sprite.textureType();
 				if (texture == TextureType.NONE || batch.hasTexture(texture) || batch.haveTextureRoom()) {
 					batch.addSprite(sprite);
 					return;

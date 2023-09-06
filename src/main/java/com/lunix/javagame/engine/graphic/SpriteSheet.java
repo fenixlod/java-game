@@ -8,65 +8,55 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joml.Vector2f;
 
-import com.lunix.javagame.configs.ResourceConfigs.SpriteSheetData;
-import com.lunix.javagame.engine.ResourcePool;
-import com.lunix.javagame.engine.enums.TextureType;
-import com.lunix.javagame.engine.exception.ResourceNotFound;
-
 public class SpriteSheet {
 	private static final Logger logger = LogManager.getLogger(SpriteSheet.class);
-
-	private TextureType texture;
+	private Texture texture;
 	private List<Sprite> sprites;
 	private int spriteWidth;
 	private int spriteHeight;
 
 	public SpriteSheet() {
-		this(TextureType.NONE, 0, 0);
+		this(null, 0, 0);
 	}
 
-	public SpriteSheet(SpriteSheetData spriteSheetData) throws ResourceNotFound, IOException {
-		this(spriteSheetData.texture(), spriteSheetData.width(), spriteSheetData.height());
-	}
-
-	public SpriteSheet(TextureType textureType, int spriteWidth, int spriteHeight) {
-		this.texture = textureType;
+	public SpriteSheet(Texture texture, int spriteWidth, int spriteHeight) {
+		this.texture = texture;
 		this.sprites = new ArrayList<>();
 		this.spriteWidth = spriteWidth;
 		this.spriteHeight = spriteHeight;
 	}
 
-	public SpriteSheet load() throws ResourceNotFound, IOException {
+	public SpriteSheet load() throws IOException {
 		this.sprites.clear();
 
-		Texture texture = ResourcePool.getTexture(this.texture);
-		Vector2f total = new Vector2f(texture.width(), texture.height());
-		float currentX = 0, currentY = spriteHeight;
+		texture.load();
+		Vector2f total = new Vector2f(this.texture.width(), this.texture.height());
+		float currentX = 0, currentY = this.spriteHeight;
 
 		while (true) {
 			Vector2f[] uv = new Vector2f[] { new Vector2f(), new Vector2f(), new Vector2f(), new Vector2f() };
 			uv[0].x = currentX;
 			uv[0].y = currentY;
 
-			uv[1].x = currentX + spriteWidth;
+			uv[1].x = currentX + this.spriteWidth;
 			uv[1].y = currentY;
 
-			uv[2].x = currentX + spriteWidth;
-			uv[2].y = currentY - spriteHeight;
+			uv[2].x = currentX + this.spriteWidth;
+			uv[2].y = currentY - this.spriteHeight;
 
 			uv[3].x = currentX;
-			uv[3].y = currentY - spriteHeight;
+			uv[3].y = currentY - this.spriteHeight;
 
 			uv[0].div(total);
 			uv[1].div(total);
 			uv[2].div(total);
 			uv[3].div(total);
-			sprites.add(new Sprite(this.texture, uv));
+			this.sprites.add(new Sprite(this.texture, uv, this.spriteWidth, this.spriteHeight));
 
-			currentX += spriteWidth;
-			if (currentX + spriteWidth > total.x) {
+			currentX += this.spriteWidth;
+			if (currentX + this.spriteWidth > total.x) {
 				currentX = 0;
-				currentY += spriteHeight;
+				currentY += this.spriteHeight;
 			}
 
 			if (currentY > total.y)
@@ -77,9 +67,9 @@ public class SpriteSheet {
 	}
 
 	public Sprite get(int index) {
-		if (index < 0 || index >= sprites.size()) {
+		if (index < 0 || index >= this.sprites.size()) {
 			logger.error("Invalid sheet sprite index: {}, texture: {}, sprites count: {}", index, texture,
-					sprites.size());
+					this.sprites.size());
 			index = 0;
 
 		}
@@ -90,7 +80,7 @@ public class SpriteSheet {
 		return this.sprites.size();
 	}
 
-	public SpriteSheet texture(TextureType texture) {
+	public SpriteSheet texture(Texture texture) {
 		this.texture = texture;
 		return this;
 	}
@@ -103,6 +93,10 @@ public class SpriteSheet {
 	public SpriteSheet spriteHeight(int spriteHeight) {
 		this.spriteHeight = spriteHeight;
 		return this;
+	}
+
+	public List<Sprite> sprites() {
+		return this.sprites;
 	}
 
 }

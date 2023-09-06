@@ -50,7 +50,7 @@ public class LevelEditorScene extends Scene {
 		this.playerObject = new GameObject("Player")
 				.addComponent(
 						new SpriteRenderer(40, 50)
-						.sprite(new Sprite(TextureType.PLAYER))
+						.sprite(ResourcePool.getSprite(TextureType.PLAYER.name()))
 				);
 		playerObject.addComponent(new Animation(ResourcePool.getSpriteSheet(TextureType.PLAYER_IDLE), 0.3f));
 			addGameObject(playerObject);
@@ -147,7 +147,7 @@ public class LevelEditorScene extends Scene {
 						.color(Color.red())
 						.widthDirection(VectorUtil.viewX())
 						.heightDirection(VectorUtil.viewY())
-						.sprite(ResourcePool.getSprite(TextureType.ENEMY, 0))
+						.sprite(ResourcePool.getSprite(TextureType.ENEMY.name() + 0))
 				);
 		addGameObject(enemy);
 		
@@ -157,7 +157,7 @@ public class LevelEditorScene extends Scene {
 						.color(Color.green())
 						.widthDirection(VectorUtil.viewX())
 						.heightDirection(VectorUtil.viewY())
-						.sprite(ResourcePool.getSprite(TextureType.ENEMY, 1))
+						.sprite(ResourcePool.getSprite(TextureType.ENEMY.name() + 1))
 				);
 		addGameObject(enemy);
 		
@@ -167,11 +167,11 @@ public class LevelEditorScene extends Scene {
 						.color(Color.blue())
 						.widthDirection(VectorUtil.viewX())
 						.heightDirection(VectorUtil.viewY())
-						.sprite(ResourcePool.getSprite(TextureType.ENEMY, 2))
+						.sprite(ResourcePool.getSprite(TextureType.ENEMY.name() + 2))
 				);
 		addGameObject(enemy);
 		
-		enemy = GameObjectFactory.groundTile(new Vector3f(0f, 0f, 0f), TextureType.TILE_BRICK, 100, 100);
+		enemy = GameObjectFactory.groundTile(new Vector3f(0f, 0f, 0f), TextureType.TILE_BRICK.name(), 100, 100);
 		addGameObject(enemy);
 		
 //		logger.info("Creating game objects...");
@@ -235,8 +235,9 @@ public class LevelEditorScene extends Scene {
 		this.playerObject.move(offset);
 		game.camera().position(playerObject.transform().position());
 
-		Vector3f worldPosition = game.mouse().worldPositionProjected();
-		System.out.println("Current X=" + worldPosition.x + " Y=" + worldPosition.y + " Z=" + worldPosition.z);
+		// Vector3f worldPosition = game.mouse().worldPositionProjected();
+		// System.out.println("Current X=" + worldPosition.x + " Y=" + worldPosition.y +
+		// " Z=" + worldPosition.z);
 		super.update(deltaTime);
 	}
 
@@ -269,7 +270,7 @@ public class LevelEditorScene extends Scene {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			Sprite sp = new Sprite(TextureType.TILE_BRICK);
+			Sprite sp = ResourcePool.getSprite(TextureType.TILE_BRICK.name());
 			float spriteWidth = texture.width() / 4;
 			float spriteHeight = texture.height() / 4;
 			int id = texture.id();
