@@ -15,25 +15,26 @@ window:
   height: 720
   title: "Lunix java game"
   maximized: true
-  
+
 resources:
   shaders:
     default: assets/shaders/default.glsl
   textures:
-    player: assets/images/Player.png
-    enemy: assets/images/Enemy.png
-    player_idle: assets/images/Player-idle.png
-    tile_brick: assets/images/tile_brick.png
-  sprite-sheet:
-    -
-      texture: enemy
+    player:
+      path: assets/images/Player.png
+    enemy:
+      path: assets/images/Enemy.png
       width: 152
       height: 512
-    -
-      texture: player_idle
+    player_idle:
+      path: assets/images/player_idle.png
       width: 40
       height: 50
-    
+    tile_brick:
+      path: assets/images/tile_brick.png
+      width: 128
+      height: 128
+
 camera:
   ortho:
     width: 320
@@ -45,7 +46,7 @@ camera:
   z-offset: 100
   z-near: 10
   z-far: 500
-  
+
 paths:
   save:
     levels: src/main/resources/levels

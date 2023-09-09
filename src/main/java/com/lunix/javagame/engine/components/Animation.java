@@ -1,10 +1,12 @@
 package com.lunix.javagame.engine.components;
 
+import java.util.List;
+
 import com.lunix.javagame.engine.Component;
-import com.lunix.javagame.engine.graphic.SpriteSheet;
+import com.lunix.javagame.engine.graphic.Sprite;
 
 public class Animation extends Component {
-	private SpriteSheet sheet;
+	private List<Sprite> poses;
 	private float changeInterval;
 	private int startingPose;
 
@@ -15,8 +17,8 @@ public class Animation extends Component {
 		this(null, 0);
 	}
 
-	public Animation(SpriteSheet sheet, float changeInterval) {
-		this.sheet = sheet;
+	public Animation(List<Sprite> poses, float changeInterval) {
+		this.poses = poses;
 		this.changeInterval = changeInterval;
 		this.startingPose = 0;
 	}
@@ -27,7 +29,7 @@ public class Animation extends Component {
 		currentPose = startingPose;
 		leftTime = changeInterval;
 		if (renderer != null)
-			renderer.sprite(sheet.get(currentPose));
+			renderer.sprite(poses.get(currentPose));
 	}
 
 	@Override
@@ -38,18 +40,18 @@ public class Animation extends Component {
 			leftTime = changeInterval;
 			currentPose++;
 
-			if (currentPose >= sheet.size()) {
+			if (currentPose >= poses.size()) {
 				currentPose = 0;
 			}
 
 			SpriteRenderer renderer = owner.getComponent(SpriteRenderer.class);
 			if (renderer != null)
-				renderer.sprite(sheet.get(currentPose));
+				renderer.sprite(poses.get(currentPose));
 		}
 	}
 
-	public Animation sheet(SpriteSheet sheet) {
-		this.sheet = sheet;
+	public Animation poses(List<Sprite> poses) {
+		this.poses = poses;
 		return this;
 	}
 

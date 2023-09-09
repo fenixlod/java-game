@@ -109,4 +109,8 @@ public class Texture {
 	public int height() {
 		return this.height;
 	}
+
+	public boolean isLoaded() {
+		return this.loaded;
+	}
 }

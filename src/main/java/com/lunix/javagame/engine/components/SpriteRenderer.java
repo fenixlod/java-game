@@ -9,7 +9,6 @@ import com.lunix.javagame.engine.enums.ShaderType;
 import com.lunix.javagame.engine.enums.TextureType;
 import com.lunix.javagame.engine.graphic.Color;
 import com.lunix.javagame.engine.graphic.Sprite;
-import com.lunix.javagame.engine.graphic.Texture;
 import com.lunix.javagame.engine.util.VectorUtil;
 
 public class SpriteRenderer extends Component {
@@ -176,14 +175,6 @@ public class SpriteRenderer extends Component {
 	}
 
 	public TextureType textureType() {
-		if (this.sprite == null)
-			return TextureType.NONE;
-
-		Texture texture = this.sprite.texture();
-
-		if (texture == null)
-			return TextureType.NONE;
-
-		return texture.type();
+		return this.sprite.texture();
 	}
 }

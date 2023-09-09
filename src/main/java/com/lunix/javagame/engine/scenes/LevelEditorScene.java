@@ -2,6 +2,9 @@ package com.lunix.javagame.engine.scenes;
 
 import static org.lwjgl.glfw.GLFW.*;
 
+import java.io.IOException;
+import java.util.Map.Entry;
+
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -15,9 +18,9 @@ import com.lunix.javagame.engine.components.SpriteRenderer;
 import com.lunix.javagame.engine.enums.GameSceneType;
 import com.lunix.javagame.engine.enums.ShaderType;
 import com.lunix.javagame.engine.enums.TextureType;
+import com.lunix.javagame.engine.exception.ResourceNotFound;
 import com.lunix.javagame.engine.graphic.Color;
 import com.lunix.javagame.engine.graphic.Sprite;
-import com.lunix.javagame.engine.graphic.Texture;
 import com.lunix.javagame.engine.util.Debugger;
 import com.lunix.javagame.engine.util.VectorUtil;
 
@@ -49,7 +52,7 @@ public class LevelEditorScene extends Scene {
 						new SpriteRenderer(40, 50)
 						.sprite(ResourcePool.getSprite(TextureType.PLAYER.name()))
 				);
-		playerObject.addComponent(new Animation(ResourcePool.getSpriteSheet(TextureType.PLAYER_IDLE), 0.3f));
+		playerObject.addComponent(new Animation(ResourcePool.getSprites(TextureType.PLAYER_IDLE), 0.3f));
 			addGameObject(playerObject);
 			
 		for (int j = 0; j < 4; j++) {
@@ -144,7 +147,7 @@ public class LevelEditorScene extends Scene {
 						.color(Color.red())
 						.widthDirection(VectorUtil.viewX())
 						.heightDirection(VectorUtil.viewY())
-						.sprite(ResourcePool.getSprite(TextureType.ENEMY.name() + 0))
+						.sprite(ResourcePool.getSprite(TextureType.ENEMY, 0))
 				);
 		addGameObject(enemy);
 		
@@ -154,7 +157,7 @@ public class LevelEditorScene extends Scene {
 						.color(Color.green())
 						.widthDirection(VectorUtil.viewX())
 						.heightDirection(VectorUtil.viewY())
-						.sprite(ResourcePool.getSprite(TextureType.ENEMY.name() + 1))
+						.sprite(ResourcePool.getSprite(TextureType.ENEMY, 1))
 				);
 		addGameObject(enemy);
 		
@@ -164,11 +167,11 @@ public class LevelEditorScene extends Scene {
 						.color(Color.blue())
 						.widthDirection(VectorUtil.viewX())
 						.heightDirection(VectorUtil.viewY())
-						.sprite(ResourcePool.getSprite(TextureType.ENEMY.name() + 2))
+						.sprite(ResourcePool.getSprite(TextureType.ENEMY, 2))
 				);
 		addGameObject(enemy);
 		
-		enemy = GameObjectFactory.groundTile(new Vector3f(0f, 0f, 0f), TextureType.TILE_BRICK.name(), 100, 100);
+		enemy = GameObjectFactory.groundTile(new Vector3f(0f, 0f, 0f), 100, 100, TextureType.TILE_BRICK, 0);
 		addGameObject(enemy);
 		
 //		logger.info("Creating game objects...");
@@ -260,32 +263,38 @@ public class LevelEditorScene extends Scene {
 		ImGui.getStyle().getItemSpacing(itemSpacing);
 		float windowX2 = windowPos.x + windowSize.x;
 		int i = 0;
-		for (Sprite sp : ResourcePool.sprites().values()) {
-			Texture texture = sp.texture();
-			if (texture == null)
-				continue;
+		for (Entry<String, Sprite> entry : ResourcePool.sprites().entrySet()) {
+			try {
+				Sprite sp = entry.getValue();
+				TextureType textureType = sp.texture();
 
-			float spriteWidth = 60;
-			float spriteHeight = 60;
-			int id = texture.id();
-			Vector2f[] textureCoords = sp.textureCoords();
+				if (textureType == TextureType.NONE)
+					continue;
 
-			ImGui.pushID(i);
-			if (ImGui.imageButton(id, spriteWidth, spriteHeight, textureCoords[3].x, textureCoords[3].y,
-					textureCoords[1].x, textureCoords[1].y)) {
-				System.out.println("Texture clicked");
+				float spriteWidth = 60;
+				float spriteHeight = 60;
+				int id = ResourcePool.getTexture(textureType).id();
+				Vector2f[] textureCoords = sp.textureCoords();
+
+				ImGui.pushID(i);
+				if (ImGui.imageButton(id, spriteWidth, spriteHeight, textureCoords[3].x, textureCoords[3].y,
+						textureCoords[1].x, textureCoords[1].y)) {
+					logger.info("Sprite {} clicked", entry.getKey());
+				}
+				ImGui.popID();
+
+				ImVec2 lastButtonPos = new ImVec2();
+				ImGui.getItemRectMax(lastButtonPos);
+				float lastButtonX2 = lastButtonPos.x;
+				float nextButtonX2 = lastButtonX2 + itemSpacing.x + spriteWidth;
+
+				if (i + 1 < ResourcePool.sprites().size() && nextButtonX2 < windowX2) {
+					ImGui.sameLine();
+				}
+				i++;
+			} catch (ResourceNotFound | IOException e) {
+				logger.error(e);
 			}
-			ImGui.popID();
-
-			ImVec2 lastButtonPos = new ImVec2();
-			ImGui.getItemRectMax(lastButtonPos);
-			float lastButtonX2 = lastButtonPos.x;
-			float nextButtonX2 = lastButtonX2 + itemSpacing.x + spriteWidth;
-
-			if (i + 1 < ResourcePool.sprites().size() && nextButtonX2 < windowX2) {
-				ImGui.sameLine();
-			}
-			i++;
 		}
 
 		ImGui.end();

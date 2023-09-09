@@ -104,7 +104,7 @@ public abstract class Scene {
 	 * @throws Exception
 	 */
 	public void load() throws Exception {
-		if (true) // TODO: remove
+		if (false) // TODO: remove
 			return;
 
 		Path levelsFile = Paths.get(game.pathsConfig().save().get("levels"), type.toString() + ".json");

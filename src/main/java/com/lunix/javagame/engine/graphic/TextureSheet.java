@@ -8,58 +8,63 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joml.Vector2f;
 
-public class SpriteSheet {
-	private static final Logger logger = LogManager.getLogger(SpriteSheet.class);
+import com.lunix.javagame.configs.ResourceConfigs.SpriteSheetData;
+import com.lunix.javagame.engine.enums.TextureType;
+
+public class TextureSheet {
+	private static final Logger logger = LogManager.getLogger(TextureSheet.class);
 	private Texture texture;
 	private List<Sprite> sprites;
 	private int spriteWidth;
 	private int spriteHeight;
 
-	public SpriteSheet() {
-		this(null, 0, 0);
-	}
-
-	public SpriteSheet(Texture texture, int spriteWidth, int spriteHeight) {
-		this.texture = texture;
+	public TextureSheet(TextureType type, SpriteSheetData data) {
+		this.texture = new Texture(type, data.path());
 		this.sprites = new ArrayList<>();
-		this.spriteWidth = spriteWidth;
-		this.spriteHeight = spriteHeight;
+		this.spriteWidth = data.width();
+		this.spriteHeight = data.height();
 	}
 
-	public SpriteSheet load() throws IOException {
+	public TextureSheet load() throws IOException {
 		this.sprites.clear();
 
 		texture.load();
 		Vector2f total = new Vector2f(this.texture.width(), this.texture.height());
-		float currentX = 0, currentY = this.spriteHeight;
+
+		if (this.spriteWidth == 0 || this.spriteHeight == 0) {
+			this.spriteWidth = texture.width();
+			this.spriteHeight = texture.height();
+		}
+
+		float currentX = 0, currentY = this.texture.height() - this.spriteHeight;
 
 		while (true) {
 			Vector2f[] uv = new Vector2f[] { new Vector2f(), new Vector2f(), new Vector2f(), new Vector2f() };
-			uv[3].x = currentX;
-			uv[3].y = currentY;
-
-			uv[2].x = currentX + this.spriteWidth;
-			uv[2].y = currentY;
+			uv[0].x = currentX;
+			uv[0].y = currentY;
 
 			uv[1].x = currentX + this.spriteWidth;
-			uv[1].y = currentY - this.spriteHeight;
+			uv[1].y = currentY;
 
-			uv[0].x = currentX;
-			uv[0].y = currentY - this.spriteHeight;
+			uv[2].x = currentX + this.spriteWidth;
+			uv[2].y = currentY + this.spriteHeight;
+
+			uv[3].x = currentX;
+			uv[3].y = currentY + this.spriteHeight;
 
 			uv[0].div(total);
 			uv[1].div(total);
 			uv[2].div(total);
 			uv[3].div(total);
-			this.sprites.add(new Sprite(this.texture, uv, this.spriteWidth, this.spriteHeight));
+			this.sprites.add(new Sprite(this.texture.type(), uv));
 
 			currentX += this.spriteWidth;
 			if (currentX + this.spriteWidth > total.x) {
 				currentX = 0;
-				currentY += this.spriteHeight;
+				currentY -= this.spriteHeight;
 			}
 
-			if (currentY > total.y)
+			if (currentY < 0)
 				break;
 		}
 
@@ -80,17 +85,21 @@ public class SpriteSheet {
 		return this.sprites.size();
 	}
 
-	public SpriteSheet texture(Texture texture) {
+	public TextureSheet texture(Texture texture) {
 		this.texture = texture;
 		return this;
 	}
 
-	public SpriteSheet spriteWidth(int spriteWidth) {
+	public Texture texture() {
+		return this.texture;
+	}
+
+	public TextureSheet spriteWidth(int spriteWidth) {
 		this.spriteWidth = spriteWidth;
 		return this;
 	}
 
-	public SpriteSheet spriteHeight(int spriteHeight) {
+	public TextureSheet spriteHeight(int spriteHeight) {
 		this.spriteHeight = spriteHeight;
 		return this;
 	}
@@ -98,5 +107,4 @@ public class SpriteSheet {
 	public List<Sprite> sprites() {
 		return this.sprites;
 	}
-
 }

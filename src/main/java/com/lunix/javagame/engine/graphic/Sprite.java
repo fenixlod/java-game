@@ -2,13 +2,13 @@ package com.lunix.javagame.engine.graphic;
 
 import org.joml.Vector2f;
 
+import com.lunix.javagame.engine.enums.TextureType;
+
 public class Sprite {
 	private final Vector2f[] textureCoords;
-	private final Texture texture;
-	private int width;
-	private int height;
+	private final TextureType texture;
 
-	public Sprite(Texture texture, int width, int height) {
+	public Sprite(TextureType texture) {
 		this.texture = texture;
 		this.textureCoords = new Vector2f[] {
 				new Vector2f(0f, 0f),
@@ -16,22 +16,18 @@ public class Sprite {
 				new Vector2f(1f, 1f),
 				new Vector2f(0f, 1f),
 		};
-		this.width = width;
-		this.height = height;
 	}
 
-	public Sprite(Texture texture, Vector2f[] textureCoords, int width, int height) {
+	public Sprite(TextureType texture, Vector2f[] textureCoords) {
 		this.texture = texture;
 		this.textureCoords = textureCoords;
-		this.width = width;
-		this.height = height;
 	}
 	
 	public Sprite() {
-		this(null, 0, 0);
+		this(TextureType.NONE);
 	}
 
-	public Texture texture() {
+	public TextureType texture() {
 		return this.texture;
 	}
 
@@ -47,22 +43,8 @@ public class Sprite {
 		if (obj instanceof Sprite other) {
 			return this.textureCoords.equals(other.textureCoords())
 					&& ((this.texture == null && other.texture() == null)
-							|| (this.texture.type() == other.texture().type()));
+							|| (this.texture == other.texture()));
 		} else
 			return false;
-	}
-
-	public int width() {
-		if (this.width == 0)
-			this.width = texture.width();
-
-		return this.width;
-	}
-
-	public int height() {
-		if (this.height == 0)
-			this.height = texture.height();
-
-		return this.height;
 	}
 }
