@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.joml.Vector3f;
 
 import imgui.ImGui;
+import imgui.type.ImFloat;
 import imgui.type.ImInt;
 
 public class Editor {
@@ -19,7 +20,10 @@ public class Editor {
 	 * @param obj
 	 */
 	public static void editObject(GameObject obj) {
-		obj.components().forEach(Editor::displayFields);
+		for (Component c : obj.components()) {
+			ImGui.text("---" + c.getClass().getSimpleName() + "---");
+			displayFields(c);
+		}
 	}
 
 	/**
@@ -79,9 +83,9 @@ public class Editor {
 
 	private static void displayFloat(String name, Object value, Field field, Object obj)
 			throws IllegalArgumentException, IllegalAccessException {
-		float[] uiValue = { (float) value };
-		if (ImGui.dragFloat(name + ": ", uiValue)) {
-			field.set(obj, uiValue[0]);
+		ImFloat uiValue = new ImFloat((float) value);
+		if (ImGui.inputFloat(name + ": ", uiValue, 0.1f)) {
+			field.set(obj, uiValue.get());
 		}
 	}
 

@@ -11,8 +11,8 @@ logging:
       springframework: INFO
 
 window:
-  width: 1280
-  height: 720
+  width: 1600
+  height: 900
   title: "Lunix java game"
   maximized: true
 
@@ -38,15 +38,15 @@ resources:
 
 camera:
   ortho:
-    width: 320
-    height: 180
+    width: 480
+    height: 270
   prespective:
     field-of-view: 45
-  x-offset: -100
-  y-offset: -100
-  z-offset: 100
-  z-near: 10
-  z-far: 500
+  x-offset: -130
+  y-offset: -130
+  z-offset: 130
+  z-near: 1
+  z-far: 5000
 
 paths:
   save:

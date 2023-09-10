@@ -21,6 +21,8 @@ public class SpriteRenderer extends Component {
 	private ShaderType shader;
 	private Sprite sprite;
 	private int rotate;
+	private boolean mirrorWidth;
+	private boolean mirrorHeight;
 
 	private transient Transform lastTransform;
 	private transient boolean isChanged;
@@ -128,6 +130,22 @@ public class SpriteRenderer extends Component {
 		return this;
 	}
 
+	public SpriteRenderer mirrorWidth(boolean mirror) {
+		if (this.mirrorWidth != mirror) {
+			this.mirrorWidth = mirror;
+			this.isChanged = true;
+		}
+		return this;
+	}
+
+	public SpriteRenderer mirrorHeight(boolean mirror) {
+		if (this.mirrorHeight != mirror) {
+			this.mirrorHeight = mirror;
+			this.isChanged = true;
+		}
+		return this;
+	}
+
 	public boolean isChanged() {
 		return this.isChanged;
 	}
@@ -162,13 +180,37 @@ public class SpriteRenderer extends Component {
 		p4 = p1.add(scaledHeightDirection.mul(this.height, new Vector3f()), new Vector3f());
 		p3 = p2.add(scaledHeightDirection.mul(this.height, new Vector3f()), new Vector3f());
 		
-		Vector2f[] uvMap = new Vector2f[] { 
-				this.sprite.textureCoords()[((0 - rotate) % 4 + 4) % 4],
-				this.sprite.textureCoords()[((1 - rotate) % 4 + 4) % 4],
-				this.sprite.textureCoords()[((2 - rotate) % 4 + 4) % 4],
-				this.sprite.textureCoords()[((3 - rotate) % 4 + 4) % 4] 
-		};
+		int bottomLeft, bottomRight, topRight, topLeft, tmp;
+		bottomLeft = ((0 - rotate) % 4 + 4) % 4;
+		bottomRight = ((1 - rotate) % 4 + 4) % 4;
+		topRight = ((2 - rotate) % 4 + 4) % 4;
+		topLeft = ((3 - rotate) % 4 + 4) % 4;
 		
+		if (mirrorWidth) {
+			tmp = bottomLeft;
+			bottomLeft = bottomRight;
+			bottomRight = tmp;
+			tmp = topRight;
+			topRight = topLeft;
+			topLeft = tmp;
+		}
+
+		if (mirrorHeight) {
+			tmp = bottomLeft;
+			bottomLeft = topLeft;
+			topLeft = tmp;
+			tmp = bottomRight;
+			bottomRight = topRight;
+			topRight = tmp;
+		}
+		
+		Vector2f[] uvMap = new Vector2f[] { 
+				this.sprite.textureCoords()[bottomLeft],
+				this.sprite.textureCoords()[bottomRight],
+				this.sprite.textureCoords()[topRight],
+				this.sprite.textureCoords()[topLeft] 
+		};
+
 		offset = setVertexInArray(vertices, offset, p1, uvMap[0], textureIndex);
 		offset = setVertexInArray(vertices, offset, p2, uvMap[1], textureIndex);
 		offset = setVertexInArray(vertices, offset, p3, uvMap[2], textureIndex);

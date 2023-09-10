@@ -75,7 +75,7 @@ public class Camera {
 	}
 
 	public void changeZoom(float change) {
-		this.zoomFactor = Math.min(Math.max(this.zoomFactor + change, 0.1f), 2f);
+		this.zoomFactor = Math.min(Math.max(this.zoomFactor + change, 0.5f), 2f);
 		calculateViewMatrix();
 	}
 

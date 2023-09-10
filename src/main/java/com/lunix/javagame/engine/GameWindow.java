@@ -117,9 +117,7 @@ public class GameWindow {
 
 		// Setup a mouse button callback. It will be called every time a mouse button is
 		// pressed or released.
-		glfwSetCursorPosCallback(this.windowHandle,	(win, xPos, yPos) -> 
-			mouseListener.positionCallback(win, xPos, yPos)
-		);
+		glfwSetCursorPosCallback(this.windowHandle, mouseListener::positionCallback);
 		
 		glfwSetMouseButtonCallback(this.windowHandle, (win, button, action, mod) ->
 			UiLayer.mouseButtonCallback(win, button, action, mod, mouseListener::buttonCallback)
@@ -136,7 +134,7 @@ public class GameWindow {
 		);
 
 		// Add window resize callback
-		glfwSetWindowSizeCallback(this.windowHandle, (w, newWidth, newHeight) -> {
+		glfwSetWindowSizeCallback(this.windowHandle, (win, newWidth, newHeight) -> {
 			this.size[0] = newWidth;
 			this.size[1] = newHeight;
 		});

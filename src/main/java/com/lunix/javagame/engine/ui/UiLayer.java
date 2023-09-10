@@ -170,7 +170,7 @@ public class UiLayer {
 		// config would be merged with the
 										// previously added font
 		fontConfig.setPixelSnapH(true);
-		fontAtlas.addFontFromFileTTF(new ClassPathResource("assets/fonts/arialbd.ttf").getFile().getAbsolutePath(), 16,
+		fontAtlas.addFontFromFileTTF(new ClassPathResource("assets/fonts/arialbd.ttf").getFile().getAbsolutePath(), 18,
 				fontConfig);
 
 		fontConfig.destroy(); // After all fonts were added we don't need this config more

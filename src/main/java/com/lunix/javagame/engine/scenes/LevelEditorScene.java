@@ -59,6 +59,7 @@ public class LevelEditorScene extends Scene {
 		playerObject.addComponent(new Animation(ResourcePool.getSprites(TextureType.PLAYER_IDLE), 0.3f));
 			addGameObject(playerObject);
 			
+/*			
 		GameObject enemy = new GameObject("Enemy", new Vector3f(-50f, 50f, 0f))
 			.addComponent(
 				new SpriteRenderer(20, 40)
@@ -66,7 +67,8 @@ public class LevelEditorScene extends Scene {
 			);
 		addGameObject(enemy);
 		currentObject = enemy;
-		
+*/
+/*		
 		// draw cuboid with dimensions: x=20, y=20, z=20
 		// front
 		GameObject rectangle = new GameObject("Cube1", new Vector3f(10f, 0f, 0f))
@@ -128,6 +130,7 @@ public class LevelEditorScene extends Scene {
 					.heightDirection(VectorUtil.minusY())
 			);
 		addGameObject(rectangle);
+*/
 /*		
 		enemy = new GameObject("Enemy1", new Vector3f(0f, -100f, 0f))
 				.addComponent(
