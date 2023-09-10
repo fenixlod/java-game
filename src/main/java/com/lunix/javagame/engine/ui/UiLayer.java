@@ -16,9 +16,11 @@ import com.lunix.javagame.engine.Scene;
 import imgui.ImFontAtlas;
 import imgui.ImFontConfig;
 import imgui.ImGuiIO;
+import imgui.ImGuiStyle;
 import imgui.callback.ImStrConsumer;
 import imgui.callback.ImStrSupplier;
 import imgui.flag.ImGuiBackendFlags;
+import imgui.flag.ImGuiCol;
 import imgui.flag.ImGuiKey;
 import imgui.flag.ImGuiMouseCursor;
 import imgui.gl3.ImGuiImplGl3;
@@ -127,11 +129,11 @@ public class UiLayer {
 		// ------------------------------------------------------------
 		// GLFW callbacks to handle user input
 
-		glfwSetCharCallback(this.glfwWindow, (w, c) -> {
-			if (c != GLFW_KEY_DELETE) {
-				io.addInputCharacter(c);
-			}
-		});
+//		glfwSetCharCallback(this.glfwWindow, (w, c) -> {
+//			if (c != GLFW_KEY_DELETE) {
+//				io.addInputCharacter(c);
+//			}
+//		});
 
 		io.setSetClipboardTextFn(new ImStrConsumer() {
 			@Override
@@ -186,6 +188,13 @@ public class UiLayer {
 		// This method SHOULD be called after you've initialized your ImGui
 		// configuration (fonts and so on).
 		// ImGui context should be created as well.
+		
+		//Custom styling
+		ImGuiStyle style = ImGui.getStyle();
+		float[][] colors = style.getColors();
+		colors[ImGuiCol.TextSelectedBg] = new float[] { 0f, 0f, 1f, 1f };
+		colors[ImGuiCol.FrameBg] = new float[] { 0.16f, 0.29f, 0.48f, 1f };
+		style.setColors(colors);
 	}
 
 	/**

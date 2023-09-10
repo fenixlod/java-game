@@ -3,8 +3,8 @@
   "name" : "Player",
   "transform" : {
     "position" : {
-      "x" : 47.63936,
-      "y" : 39.337227,
+      "x" : -1.6074648,
+      "y" : -4.9038706,
       "z" : 0.0,
       "finite" : true
     },
@@ -134,25 +134,25 @@
       "shader" : "DEFAULT",
       "sprite" : {
         "textureCoords" : [ {
-          "x" : 0.25,
+          "x" : 0.75,
           "y" : 0.0,
           "finite" : true
         }, {
-          "x" : 0.5,
+          "x" : 1.0,
           "y" : 0.0,
           "finite" : true
         }, {
-          "x" : 0.5,
+          "x" : 1.0,
           "y" : 1.0,
           "finite" : true
         }, {
-          "x" : 0.25,
+          "x" : 0.75,
           "y" : 1.0,
           "finite" : true
         } ],
         "texture" : "PLAYER_IDLE"
       },
-      "rotate" : 5,
+      "rotate" : 0,
       "mirrorWidth" : false,
       "mirrorHeight" : false,
       "changed" : false
