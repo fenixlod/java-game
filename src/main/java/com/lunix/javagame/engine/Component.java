@@ -18,6 +18,7 @@ public abstract class Component {
 	protected static final Logger logger = LogManager.getLogger(Component.class);
 	@JsonBackReference
 	protected GameObject owner;
+	private long id = -1;
 
 	public void owner(GameObject owner) {
 		this.owner = owner;
@@ -39,5 +40,14 @@ public abstract class Component {
 	 * Initialize the component.
 	 */
 	public void start() {
+	}
+
+	public void generateId() {
+		if (this.id == -1)
+			this.id = GameInstance.getNextId();
+	}
+
+	public long id() {
+		return this.id;
 	}
 }

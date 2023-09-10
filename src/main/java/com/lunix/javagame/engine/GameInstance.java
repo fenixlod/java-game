@@ -15,6 +15,7 @@ import com.lunix.javagame.configs.CameraConfigs;
 import com.lunix.javagame.configs.PathsConfigs;
 import com.lunix.javagame.configs.WindowConfigs;
 import com.lunix.javagame.engine.enums.GameSceneType;
+import com.lunix.javagame.engine.enums.ShaderType;
 import com.lunix.javagame.engine.util.Debugger;
 import com.lunix.javagame.engine.util.GameTime;
 
@@ -31,6 +32,7 @@ public class GameInstance {
 	private static GameInstance currentInstance;
 	private final ObjectMapper objMapper;
 	private final PathsConfigs pathsConfig;
+	private static long nextObjectId = 0;
 
 	public GameInstance(WindowConfigs windowConfigs, ResourcePool resources, CameraConfigs cameraConfig,
 			PathsConfigs pathsConfig) {
@@ -70,6 +72,8 @@ public class GameInstance {
 		this.window.create(this.mouse, this.keyboard);
 		this.resources.init();
 		this.sceneManager.changeScene(GameSceneType.EDITOR);
+		Debugger.init();
+		ResourcePool.loadResources(ShaderType.DEBUG);
 	}
 
 	/**
@@ -84,13 +88,13 @@ public class GameInstance {
 		while (this.window.isOpened()) {
 			this.timer.tick();
 			this.window.newFrame();
-
+			Debugger.beginFrame();
 			Debugger.display(false, "Game FPS: {}", 1 / this.timer.deltaTime());
 			Debugger.display(false, this.mouse);
 			Debugger.display(false, this.keyboard);
 			Debugger.display(false, "Time elapsed: {}", this.timer.elapsedTime());
 			Debugger.display(false, "Delta time: {}", this.timer.deltaTime());
-
+			Debugger.draw();
 			this.sceneManager.update(this.timer.deltaTime());
 			this.window.update(this.timer.deltaTime(), this.sceneManager.currentScene());
 			this.window.render();
@@ -138,5 +142,13 @@ public class GameInstance {
 
 	public PathsConfigs pathsConfig() {
 		return this.pathsConfig;
+	}
+
+	public static long getNextId() {
+		return nextObjectId++;
+	}
+
+	public static void nextId(long maxId) {
+		nextObjectId = maxId + 1;
 	}
 }

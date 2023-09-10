@@ -19,6 +19,7 @@ window:
 resources:
   shaders:
     default: assets/shaders/default.glsl
+    debug: assets/shaders/debug.glsl
   textures:
     player:
       path: assets/images/Player.png

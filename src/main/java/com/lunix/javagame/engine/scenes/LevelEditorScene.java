@@ -2,7 +2,6 @@ package com.lunix.javagame.engine.scenes;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-import java.io.IOException;
 import java.util.Map.Entry;
 
 import org.joml.Vector2f;
@@ -14,11 +13,11 @@ import com.lunix.javagame.engine.GameObjectFactory;
 import com.lunix.javagame.engine.ResourcePool;
 import com.lunix.javagame.engine.Scene;
 import com.lunix.javagame.engine.components.Animation;
+import com.lunix.javagame.engine.components.MouseDragging;
 import com.lunix.javagame.engine.components.SpriteRenderer;
 import com.lunix.javagame.engine.enums.GameSceneType;
 import com.lunix.javagame.engine.enums.ShaderType;
 import com.lunix.javagame.engine.enums.TextureType;
-import com.lunix.javagame.engine.exception.ResourceNotFound;
 import com.lunix.javagame.engine.graphic.Color;
 import com.lunix.javagame.engine.graphic.Sprite;
 import com.lunix.javagame.engine.util.Debugger;
@@ -44,6 +43,8 @@ public class LevelEditorScene extends Scene {
 		ResourcePool.loadResources(ShaderType.DEFAULT, TextureType.PLAYER, TextureType.ENEMY, TextureType.PLAYER_IDLE,
 				TextureType.TILE_BRICK);
 		
+		Debugger.drawAxis(true);
+
 		if (loaded)
 			return;
 
@@ -55,22 +56,6 @@ public class LevelEditorScene extends Scene {
 		playerObject.addComponent(new Animation(ResourcePool.getSprites(TextureType.PLAYER_IDLE), 0.3f));
 			addGameObject(playerObject);
 			
-		for (int j = 0; j < 4; j++) {
-			int reverse = j > 1 ? -1 : 1;
-			int isXAxis = j % 2 * reverse;
-			int isYAxis = (1 - Math.abs(isXAxis)) * reverse;
-			for (int i = 0; i < 100; i++) {
-				GameObject obj = new GameObject("Marker " + i + " - " + j, new Vector3f(i * isXAxis * 5f, i * isYAxis * 5f, 0f))
-					.addComponent(
-						new SpriteRenderer(1,1)
-							.color(isXAxis != 0 ? Color.blue() : Color.red())
-							.widthDirection(VectorUtil.X())
-							.heightDirection(VectorUtil.Y())
-					);
-				addGameObject(obj);
-			}
-		}
-		
 		GameObject enemy = new GameObject("Enemy", new Vector3f(-50f, 50f, 0f))
 			.addComponent(
 				new SpriteRenderer(20, 40)
@@ -171,7 +156,8 @@ public class LevelEditorScene extends Scene {
 				);
 		addGameObject(enemy);
 		
-		enemy = GameObjectFactory.groundTile(new Vector3f(0f, 0f, 0f), 100, 100, TextureType.TILE_BRICK, 0);
+		enemy = GameObjectFactory.groundTile(new Vector3f(0f, 0f, 0f), 100, 100,
+				TextureType.TILE_BRICK.name() + "_" + 0);
 		addGameObject(enemy);
 		
 //		logger.info("Creating game objects...");
@@ -234,10 +220,10 @@ public class LevelEditorScene extends Scene {
 
 		this.playerObject.move(offset);
 		game.camera().position(playerObject.transform().position());
-
-		// Vector3f worldPosition = game.mouse().worldPositionProjected();
-		// System.out.println("Current X=" + worldPosition.x + " Y=" + worldPosition.y +
-		// " Z=" + worldPosition.z);
+/*
+		Vector3f worldPosition = game.mouse().worldPositionProjected();
+		System.out.println("Current X=" + worldPosition.x + " Y=" + worldPosition.y + " Z=" + worldPosition.z);
+*/
 		super.update(deltaTime);
 	}
 
@@ -280,6 +266,13 @@ public class LevelEditorScene extends Scene {
 				if (ImGui.imageButton(id, spriteWidth, spriteHeight, textureCoords[3].x, textureCoords[3].y,
 						textureCoords[1].x, textureCoords[1].y)) {
 					logger.info("Sprite {} clicked", entry.getKey());
+					GameObject groundTile = GameObjectFactory.groundTile(new Vector3f(0f, 0f, 0f), 100, 100,
+							entry.getKey());
+					// Attach the ground object to the mouse cursor
+					MouseDragging mouseDragging = new MouseDragging();
+					mouseDragging.pickup();
+					groundTile.addComponent(mouseDragging);
+					addGameObject(groundTile);
 				}
 				ImGui.popID();
 
@@ -292,7 +285,7 @@ public class LevelEditorScene extends Scene {
 					ImGui.sameLine();
 				}
 				i++;
-			} catch (ResourceNotFound | IOException e) {
+			} catch (Exception e) {
 				logger.error(e);
 			}
 		}

@@ -9,6 +9,7 @@ import org.joml.Vector3f;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 public class GameObject {
+	private long id = -1;
 	private String name;
 	private Transform transform;
 	@JsonManagedReference
@@ -30,6 +31,7 @@ public class GameObject {
 		this.name = name;
 		this.transform = transform;
 		this.components = new HashMap<>();
+		this.id = GameInstance.getNextId();
 	}
 
 	/**
@@ -55,6 +57,7 @@ public class GameObject {
 	 * @return
 	 */
 	public GameObject addComponent(Component component) {
+		component.generateId();
 		this.components.put(component.getClass(), component);
 		component.owner(this);
 		return this;
@@ -106,5 +109,9 @@ public class GameObject {
 
 	public Collection<Component> components() {
 		return components.values();
+	}
+
+	public long id() {
+		return this.id;
 	}
 }

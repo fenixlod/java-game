@@ -104,7 +104,7 @@ public abstract class Scene {
 	 * @throws Exception
 	 */
 	public void load() throws Exception {
-		if (false) // TODO: remove
+		if (true) // TODO: remove
 			return;
 
 		Path levelsFile = Paths.get(game.pathsConfig().save().get("levels"), type.toString() + ".json");
@@ -115,12 +115,20 @@ public abstract class Scene {
 		String json = new String(Files.readAllBytes(levelsFile));
 
 		if (StringUtils.hasText(json)) {
+			long maxFoundId = -1;
 			GameObject[] data = game.load(json, GameObject[].class);
 			for (GameObject obj : data) {
 				addGameObject(obj);
+				if (obj.id() > maxFoundId)
+					maxFoundId = obj.id();
+
+				long maxComponentId = obj.components().stream().mapToLong(Component::id).max().getAsLong();
+				if (maxComponentId > maxFoundId)
+					maxFoundId = maxComponentId;
 			}
 			this.loaded = true;
 			sceneLoaded(data);
+			GameInstance.nextId(maxFoundId);
 		}
 	}
 
