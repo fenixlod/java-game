@@ -8,8 +8,6 @@ import org.joml.Intersectionf;
 import org.joml.Vector2d;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
-import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
-import org.lwjgl.glfw.GLFWScrollCallbackI;
 
 import com.lunix.javagame.engine.util.VectorUtil;
 
@@ -27,31 +25,12 @@ public class MouseListener {
 	}
 
 	/**
-	 * Bind this listener to the window.
-	 * 
-	 * @param windowHandler
-	 * @param mouseBtnCb
-	 * @param scrollCb
-	 */
-	public void bindToWindow(long windowHandler, GLFWMouseButtonCallbackI mouseBtnCb, GLFWScrollCallbackI scrollCb) {
-		glfwSetCursorPosCallback(windowHandler, (win, xPos, yPos) -> positionCallback(xPos, yPos));
-		glfwSetMouseButtonCallback(windowHandler, (win, button, action, mod) -> {
-			buttonCallback(button, action, mod);
-			mouseBtnCb.invoke(win, button, action, mod);
-		});
-		glfwSetScrollCallback(windowHandler, (win, xScroll, yScroll) -> {
-			scrollCallback(xScroll, yScroll);
-			scrollCb.invoke(win, xScroll, yScroll);
-		});
-	}
-
-	/**
 	 * Execute this callback function every time when mouse is moved.
 	 * 
 	 * @param xPos
 	 * @param yPos
 	 */
-	private void positionCallback(double xPos, double yPos) {
+	public void positionCallback(long window, double xPos, double yPos) {
 		this.delta.x = xPos - this.position.x;
 		this.delta.y = yPos - this.position.y;
 		this.position.x = xPos;
@@ -72,7 +51,7 @@ public class MouseListener {
 	 * @param action
 	 * @param modifiers
 	 */
-	private void buttonCallback(int button, int action, int modifiers) {
+	public void buttonCallback(long window, int button, int action, int modifiers) {
 		if (button >= this.pressedButtons.length)
 			return;
 
@@ -90,7 +69,7 @@ public class MouseListener {
 	 * @param xOffset
 	 * @param yOffset
 	 */
-	private void scrollCallback(double xOffset, double yOffset) {
+	public void scrollCallback(long window, double xOffset, double yOffset) {
 		this.scroll.x = xOffset;
 		this.scroll.y = yOffset;
 	}

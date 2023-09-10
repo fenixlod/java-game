@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.lunix.javagame.configs.CameraConfigs;
+import com.lunix.javagame.configs.EditorConfigs;
 import com.lunix.javagame.configs.PathsConfigs;
 import com.lunix.javagame.configs.WindowConfigs;
 import com.lunix.javagame.engine.enums.GameSceneType;
@@ -32,10 +33,11 @@ public class GameInstance {
 	private static GameInstance currentInstance;
 	private final ObjectMapper objMapper;
 	private final PathsConfigs pathsConfig;
+	private final EditorConfigs editorConfig;
 	private static long nextObjectId = 0;
 
 	public GameInstance(WindowConfigs windowConfigs, ResourcePool resources, CameraConfigs cameraConfig,
-			PathsConfigs pathsConfig) {
+			PathsConfigs pathsConfig, EditorConfigs editorConfig) {
 		this.window = new GameWindow(windowConfigs);
 		this.mouse = new MouseListener();
 		this.keyboard = new KeyboardListener();
@@ -48,6 +50,7 @@ public class GameInstance {
 				.setVisibility(PropertyAccessor.FIELD, Visibility.ANY)
 				.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		this.pathsConfig = pathsConfig;
+		this.editorConfig = editorConfig;
 		currentInstance = this;
 	}
 
@@ -150,5 +153,9 @@ public class GameInstance {
 
 	public static void nextId(long maxId) {
 		nextObjectId = maxId + 1;
+	}
+
+	public EditorConfigs editorConfig() {
+		return editorConfig;
 	}
 }

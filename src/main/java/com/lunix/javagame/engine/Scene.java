@@ -40,6 +40,7 @@ public abstract class Scene {
 	public void init() throws Exception {
 		logger.info("Start initializing scene");
 		// TODO: Display loading screen?
+		load();
 	}
 
 	/**
@@ -104,9 +105,6 @@ public abstract class Scene {
 	 * @throws Exception
 	 */
 	public void load() throws Exception {
-		if (true) // TODO: remove
-			return;
-
 		Path levelsFile = Paths.get(game.pathsConfig().save().get("levels"), type.toString() + ".json");
 
 		if (!levelsFile.toFile().exists())

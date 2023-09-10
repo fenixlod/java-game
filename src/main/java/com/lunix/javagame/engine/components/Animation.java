@@ -28,8 +28,14 @@ public class Animation extends Component {
 		SpriteRenderer renderer = owner.getComponent(SpriteRenderer.class);
 		currentPose = startingPose;
 		leftTime = changeInterval;
-		if (renderer != null)
+		if (renderer != null) {
+			if (currentPose >= poses.size() || currentPose < 0) {
+				logger.warn("Starting pose is out of bounds. Current value:{}, bounds: 0 - {}", currentPose,
+						poses.size());
+				currentPose = 0;
+			}
 			renderer.sprite(poses.get(currentPose));
+		}
 	}
 
 	@Override

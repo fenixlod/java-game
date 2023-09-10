@@ -3,8 +3,8 @@
   "name" : "Player",
   "transform" : {
     "position" : {
-      "x" : 75.900566,
-      "y" : -2.486985,
+      "x" : 176.80504,
+      "y" : -30.992556,
       "z" : 0.0,
       "finite" : true
     },
@@ -114,8 +114,6 @@
         "z" : 0.0,
         "finite" : true
       },
-      "width" : 40,
-      "height" : 50,
       "widthDirection" : {
         "x" : 0.57735026,
         "y" : -0.57735026,
@@ -128,11 +126,12 @@
         "z" : 0.6666666,
         "finite" : true
       },
+      "width" : 40,
+      "height" : 50,
       "color" : {
         "rgba" : [ 1.0, 1.0, 1.0, 1.0 ]
       },
       "shader" : "DEFAULT",
-      "isChanged" : false,
       "sprite" : {
         "textureCoords" : [ {
           "x" : 0.75,
@@ -153,26 +152,7 @@
         } ],
         "texture" : "PLAYER_IDLE"
       },
-      "lastTransform" : {
-        "position" : {
-          "x" : 75.900566,
-          "y" : -2.486985,
-          "z" : 0.0,
-          "finite" : true
-        },
-        "facing" : {
-          "x" : 1.0,
-          "y" : 0.0,
-          "z" : 0.0,
-          "finite" : true
-        },
-        "scale" : {
-          "x" : 1.0,
-          "y" : 1.0,
-          "z" : 1.0,
-          "finite" : true
-        }
-      },
+      "rotate" : 0,
       "changed" : false
     }
   }
@@ -209,8 +189,6 @@
         "z" : 0.0,
         "finite" : true
       },
-      "width" : 20,
-      "height" : 40,
       "widthDirection" : {
         "x" : 0.57735026,
         "y" : -0.57735026,
@@ -223,11 +201,12 @@
         "z" : 0.6666666,
         "finite" : true
       },
+      "width" : 20,
+      "height" : 40,
       "color" : {
         "rgba" : [ 1.0, 0.0, 0.0, 1.0 ]
       },
       "shader" : "DEFAULT",
-      "isChanged" : false,
       "sprite" : {
         "textureCoords" : [ {
           "x" : 0.0,
@@ -248,26 +227,7 @@
         } ],
         "texture" : "NONE"
       },
-      "lastTransform" : {
-        "position" : {
-          "x" : -50.0,
-          "y" : 50.0,
-          "z" : 0.0,
-          "finite" : true
-        },
-        "facing" : {
-          "x" : 1.0,
-          "y" : 0.0,
-          "z" : 0.0,
-          "finite" : true
-        },
-        "scale" : {
-          "x" : 1.0,
-          "y" : 1.0,
-          "z" : 1.0,
-          "finite" : true
-        }
-      },
+      "rotate" : 0,
       "changed" : false
     }
   }
@@ -304,8 +264,6 @@
         "z" : 0.0,
         "finite" : true
       },
-      "width" : 20,
-      "height" : 20,
       "widthDirection" : {
         "x" : 1.0,
         "y" : 0.0,
@@ -318,11 +276,12 @@
         "z" : 1.0,
         "finite" : true
       },
+      "width" : 20,
+      "height" : 20,
       "color" : {
         "rgba" : [ 0.0, 0.0, 1.0, 1.0 ]
       },
       "shader" : "DEFAULT",
-      "isChanged" : false,
       "sprite" : {
         "textureCoords" : [ {
           "x" : 0.0,
@@ -343,26 +302,7 @@
         } ],
         "texture" : "NONE"
       },
-      "lastTransform" : {
-        "position" : {
-          "x" : 10.0,
-          "y" : 0.0,
-          "z" : 0.0,
-          "finite" : true
-        },
-        "facing" : {
-          "x" : 1.0,
-          "y" : 0.0,
-          "z" : 0.0,
-          "finite" : true
-        },
-        "scale" : {
-          "x" : 1.0,
-          "y" : 1.0,
-          "z" : 1.0,
-          "finite" : true
-        }
-      },
+      "rotate" : 0,
       "changed" : false
     }
   }
@@ -399,8 +339,6 @@
         "z" : 0.0,
         "finite" : true
       },
-      "width" : 20,
-      "height" : 20,
       "widthDirection" : {
         "x" : 0.0,
         "y" : 1.0,
@@ -413,11 +351,12 @@
         "z" : 1.0,
         "finite" : true
       },
+      "width" : 20,
+      "height" : 20,
       "color" : {
         "rgba" : [ 1.0, 0.0, 0.0, 1.0 ]
       },
       "shader" : "DEFAULT",
-      "isChanged" : false,
       "sprite" : {
         "textureCoords" : [ {
           "x" : 0.0,
@@ -438,26 +377,7 @@
         } ],
         "texture" : "NONE"
       },
-      "lastTransform" : {
-        "position" : {
-          "x" : 20.0,
-          "y" : 10.0,
-          "z" : 0.0,
-          "finite" : true
-        },
-        "facing" : {
-          "x" : 1.0,
-          "y" : 0.0,
-          "z" : 0.0,
-          "finite" : true
-        },
-        "scale" : {
-          "x" : 1.0,
-          "y" : 1.0,
-          "z" : 1.0,
-          "finite" : true
-        }
-      },
+      "rotate" : 0,
       "changed" : false
     }
   }
@@ -494,8 +414,6 @@
         "z" : 0.0,
         "finite" : true
       },
-      "width" : 20,
-      "height" : 20,
       "widthDirection" : {
         "x" : -1.0,
         "y" : 0.0,
@@ -508,11 +426,12 @@
         "z" : 1.0,
         "finite" : true
       },
+      "width" : 20,
+      "height" : 20,
       "color" : {
         "rgba" : [ 0.0, 0.0, 0.0, 1.0 ]
       },
       "shader" : "DEFAULT",
-      "isChanged" : false,
       "sprite" : {
         "textureCoords" : [ {
           "x" : 0.0,
@@ -533,26 +452,7 @@
         } ],
         "texture" : "NONE"
       },
-      "lastTransform" : {
-        "position" : {
-          "x" : 10.0,
-          "y" : 20.0,
-          "z" : 0.0,
-          "finite" : true
-        },
-        "facing" : {
-          "x" : 1.0,
-          "y" : 0.0,
-          "z" : 0.0,
-          "finite" : true
-        },
-        "scale" : {
-          "x" : 1.0,
-          "y" : 1.0,
-          "z" : 1.0,
-          "finite" : true
-        }
-      },
+      "rotate" : 0,
       "changed" : false
     }
   }
@@ -589,8 +489,6 @@
         "z" : 0.0,
         "finite" : true
       },
-      "width" : 20,
-      "height" : 20,
       "widthDirection" : {
         "x" : 0.0,
         "y" : -1.0,
@@ -603,11 +501,12 @@
         "z" : 1.0,
         "finite" : true
       },
+      "width" : 20,
+      "height" : 20,
       "color" : {
         "rgba" : [ 1.0, 1.0, 0.0, 1.0 ]
       },
       "shader" : "DEFAULT",
-      "isChanged" : false,
       "sprite" : {
         "textureCoords" : [ {
           "x" : 0.0,
@@ -628,26 +527,7 @@
         } ],
         "texture" : "NONE"
       },
-      "lastTransform" : {
-        "position" : {
-          "x" : 0.0,
-          "y" : 10.0,
-          "z" : 0.0,
-          "finite" : true
-        },
-        "facing" : {
-          "x" : 1.0,
-          "y" : 0.0,
-          "z" : 0.0,
-          "finite" : true
-        },
-        "scale" : {
-          "x" : 1.0,
-          "y" : 1.0,
-          "z" : 1.0,
-          "finite" : true
-        }
-      },
+      "rotate" : 0,
       "changed" : false
     }
   }
@@ -684,8 +564,6 @@
         "z" : 0.0,
         "finite" : true
       },
-      "width" : 20,
-      "height" : 20,
       "widthDirection" : {
         "x" : 1.0,
         "y" : 0.0,
@@ -698,11 +576,12 @@
         "z" : 0.0,
         "finite" : true
       },
+      "width" : 20,
+      "height" : 20,
       "color" : {
         "rgba" : [ 0.0, 1.0, 1.0, 1.0 ]
       },
       "shader" : "DEFAULT",
-      "isChanged" : false,
       "sprite" : {
         "textureCoords" : [ {
           "x" : 0.0,
@@ -723,26 +602,7 @@
         } ],
         "texture" : "NONE"
       },
-      "lastTransform" : {
-        "position" : {
-          "x" : 10.0,
-          "y" : 0.0,
-          "z" : 20.0,
-          "finite" : true
-        },
-        "facing" : {
-          "x" : 1.0,
-          "y" : 0.0,
-          "z" : 0.0,
-          "finite" : true
-        },
-        "scale" : {
-          "x" : 1.0,
-          "y" : 1.0,
-          "z" : 1.0,
-          "finite" : true
-        }
-      },
+      "rotate" : 0,
       "changed" : false
     }
   }
@@ -779,8 +639,6 @@
         "z" : 0.0,
         "finite" : true
       },
-      "width" : 20,
-      "height" : 20,
       "widthDirection" : {
         "x" : -1.0,
         "y" : 0.0,
@@ -793,11 +651,12 @@
         "z" : 0.0,
         "finite" : true
       },
+      "width" : 20,
+      "height" : 20,
       "color" : {
         "rgba" : [ 1.0, 0.0, 1.0, 1.0 ]
       },
       "shader" : "DEFAULT",
-      "isChanged" : false,
       "sprite" : {
         "textureCoords" : [ {
           "x" : 0.0,
@@ -818,316 +677,12 @@
         } ],
         "texture" : "NONE"
       },
-      "lastTransform" : {
-        "position" : {
-          "x" : 10.0,
-          "y" : 20.0,
-          "z" : 0.0,
-          "finite" : true
-        },
-        "facing" : {
-          "x" : 1.0,
-          "y" : 0.0,
-          "z" : 0.0,
-          "finite" : true
-        },
-        "scale" : {
-          "x" : 1.0,
-          "y" : 1.0,
-          "z" : 1.0,
-          "finite" : true
-        }
-      },
+      "rotate" : 0,
       "changed" : false
     }
   }
 }, {
   "id" : 17,
-  "name" : "Enemy1",
-  "transform" : {
-    "position" : {
-      "x" : 0.0,
-      "y" : -100.0,
-      "z" : 0.0,
-      "finite" : true
-    },
-    "facing" : {
-      "x" : 1.0,
-      "y" : 0.0,
-      "z" : 0.0,
-      "finite" : true
-    },
-    "scale" : {
-      "x" : 1.0,
-      "y" : 1.0,
-      "z" : 1.0,
-      "finite" : true
-    }
-  },
-  "components" : {
-    "com.lunix.javagame.engine.components.SpriteRenderer" : {
-      "@type" : "SpriteRenderer",
-      "id" : 18,
-      "positionOffset" : {
-        "x" : 0.0,
-        "y" : 0.0,
-        "z" : 0.0,
-        "finite" : true
-      },
-      "width" : 50,
-      "height" : 100,
-      "widthDirection" : {
-        "x" : 0.57735026,
-        "y" : -0.57735026,
-        "z" : 0.0,
-        "finite" : true
-      },
-      "heightDirection" : {
-        "x" : 0.57735026,
-        "y" : 0.57735026,
-        "z" : -0.0,
-        "finite" : true
-      },
-      "color" : {
-        "rgba" : [ 1.0, 0.0, 0.0, 1.0 ]
-      },
-      "shader" : "DEFAULT",
-      "isChanged" : false,
-      "sprite" : {
-        "textureCoords" : [ {
-          "x" : 0.0,
-          "y" : 0.0,
-          "finite" : true
-        }, {
-          "x" : 0.296875,
-          "y" : 0.0,
-          "finite" : true
-        }, {
-          "x" : 0.296875,
-          "y" : 1.0,
-          "finite" : true
-        }, {
-          "x" : 0.0,
-          "y" : 1.0,
-          "finite" : true
-        } ],
-        "texture" : "ENEMY"
-      },
-      "lastTransform" : {
-        "position" : {
-          "x" : 0.0,
-          "y" : -100.0,
-          "z" : 0.0,
-          "finite" : true
-        },
-        "facing" : {
-          "x" : 1.0,
-          "y" : 0.0,
-          "z" : 0.0,
-          "finite" : true
-        },
-        "scale" : {
-          "x" : 1.0,
-          "y" : 1.0,
-          "z" : 1.0,
-          "finite" : true
-        }
-      },
-      "changed" : false
-    }
-  }
-}, {
-  "id" : 19,
-  "name" : "Enemy2",
-  "transform" : {
-    "position" : {
-      "x" : 100.0,
-      "y" : -100.0,
-      "z" : 0.0,
-      "finite" : true
-    },
-    "facing" : {
-      "x" : 1.0,
-      "y" : 0.0,
-      "z" : 0.0,
-      "finite" : true
-    },
-    "scale" : {
-      "x" : 1.0,
-      "y" : 1.0,
-      "z" : 1.0,
-      "finite" : true
-    }
-  },
-  "components" : {
-    "com.lunix.javagame.engine.components.SpriteRenderer" : {
-      "@type" : "SpriteRenderer",
-      "id" : 20,
-      "positionOffset" : {
-        "x" : 0.0,
-        "y" : 0.0,
-        "z" : 0.0,
-        "finite" : true
-      },
-      "width" : 50,
-      "height" : 100,
-      "widthDirection" : {
-        "x" : 0.57735026,
-        "y" : -0.57735026,
-        "z" : 0.0,
-        "finite" : true
-      },
-      "heightDirection" : {
-        "x" : 0.57735026,
-        "y" : 0.57735026,
-        "z" : -0.0,
-        "finite" : true
-      },
-      "color" : {
-        "rgba" : [ 0.0, 1.0, 0.0, 1.0 ]
-      },
-      "shader" : "DEFAULT",
-      "isChanged" : false,
-      "sprite" : {
-        "textureCoords" : [ {
-          "x" : 0.296875,
-          "y" : 0.0,
-          "finite" : true
-        }, {
-          "x" : 0.59375,
-          "y" : 0.0,
-          "finite" : true
-        }, {
-          "x" : 0.59375,
-          "y" : 1.0,
-          "finite" : true
-        }, {
-          "x" : 0.296875,
-          "y" : 1.0,
-          "finite" : true
-        } ],
-        "texture" : "ENEMY"
-      },
-      "lastTransform" : {
-        "position" : {
-          "x" : 100.0,
-          "y" : -100.0,
-          "z" : 0.0,
-          "finite" : true
-        },
-        "facing" : {
-          "x" : 1.0,
-          "y" : 0.0,
-          "z" : 0.0,
-          "finite" : true
-        },
-        "scale" : {
-          "x" : 1.0,
-          "y" : 1.0,
-          "z" : 1.0,
-          "finite" : true
-        }
-      },
-      "changed" : false
-    }
-  }
-}, {
-  "id" : 21,
-  "name" : "Enemy3",
-  "transform" : {
-    "position" : {
-      "x" : 200.0,
-      "y" : -100.0,
-      "z" : 0.0,
-      "finite" : true
-    },
-    "facing" : {
-      "x" : 1.0,
-      "y" : 0.0,
-      "z" : 0.0,
-      "finite" : true
-    },
-    "scale" : {
-      "x" : 1.0,
-      "y" : 1.0,
-      "z" : 1.0,
-      "finite" : true
-    }
-  },
-  "components" : {
-    "com.lunix.javagame.engine.components.SpriteRenderer" : {
-      "@type" : "SpriteRenderer",
-      "id" : 22,
-      "positionOffset" : {
-        "x" : 0.0,
-        "y" : 0.0,
-        "z" : 0.0,
-        "finite" : true
-      },
-      "width" : 50,
-      "height" : 100,
-      "widthDirection" : {
-        "x" : 0.57735026,
-        "y" : -0.57735026,
-        "z" : 0.0,
-        "finite" : true
-      },
-      "heightDirection" : {
-        "x" : 0.57735026,
-        "y" : 0.57735026,
-        "z" : -0.0,
-        "finite" : true
-      },
-      "color" : {
-        "rgba" : [ 0.0, 0.0, 1.0, 1.0 ]
-      },
-      "shader" : "DEFAULT",
-      "isChanged" : false,
-      "sprite" : {
-        "textureCoords" : [ {
-          "x" : 0.59375,
-          "y" : 0.0,
-          "finite" : true
-        }, {
-          "x" : 0.890625,
-          "y" : 0.0,
-          "finite" : true
-        }, {
-          "x" : 0.890625,
-          "y" : 1.0,
-          "finite" : true
-        }, {
-          "x" : 0.59375,
-          "y" : 1.0,
-          "finite" : true
-        } ],
-        "texture" : "ENEMY"
-      },
-      "lastTransform" : {
-        "position" : {
-          "x" : 200.0,
-          "y" : -100.0,
-          "z" : 0.0,
-          "finite" : true
-        },
-        "facing" : {
-          "x" : 1.0,
-          "y" : 0.0,
-          "z" : 0.0,
-          "finite" : true
-        },
-        "scale" : {
-          "x" : 1.0,
-          "y" : 1.0,
-          "z" : 1.0,
-          "finite" : true
-        }
-      },
-      "changed" : false
-    }
-  }
-}, {
-  "id" : 23,
   "name" : "Ground",
   "transform" : {
     "position" : {
@@ -1150,17 +705,21 @@
     }
   },
   "components" : {
+    "com.lunix.javagame.engine.components.MouseDragging" : {
+      "@type" : "MouseDragging",
+      "id" : 19,
+      "snapToGrid" : true,
+      "gridSize" : 100
+    },
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
-      "id" : 24,
+      "id" : 18,
       "positionOffset" : {
         "x" : 0.0,
         "y" : -50.0,
         "z" : 0.0,
         "finite" : true
       },
-      "width" : 100,
-      "height" : 100,
       "widthDirection" : {
         "x" : 1.0,
         "y" : 0.0,
@@ -1173,51 +732,114 @@
         "z" : 0.0,
         "finite" : true
       },
+      "width" : 100,
+      "height" : 100,
       "color" : {
         "rgba" : [ 1.0, 1.0, 1.0, 1.0 ]
       },
       "shader" : "DEFAULT",
-      "isChanged" : false,
       "sprite" : {
         "textureCoords" : [ {
-          "x" : 0.0,
+          "x" : 0.5,
+          "y" : 0.25,
+          "finite" : true
+        }, {
+          "x" : 0.75,
+          "y" : 0.25,
+          "finite" : true
+        }, {
+          "x" : 0.75,
           "y" : 0.5,
           "finite" : true
         }, {
           "x" : 0.5,
           "y" : 0.5,
-          "finite" : true
-        }, {
-          "x" : 0.5,
-          "y" : 1.0,
-          "finite" : true
-        }, {
-          "x" : 0.0,
-          "y" : 1.0,
           "finite" : true
         } ],
         "texture" : "TILE_BRICK"
       },
-      "lastTransform" : {
-        "position" : {
-          "x" : 0.0,
-          "y" : 0.0,
-          "z" : 0.0,
-          "finite" : true
-        },
-        "facing" : {
-          "x" : 1.0,
-          "y" : 0.0,
-          "z" : 0.0,
-          "finite" : true
-        },
-        "scale" : {
-          "x" : 1.0,
-          "y" : 1.0,
-          "z" : 1.0,
-          "finite" : true
-        }
+      "rotate" : 0,
+      "changed" : false
+    }
+  }
+}, {
+  "id" : 20,
+  "name" : "Ground",
+  "transform" : {
+    "position" : {
+      "x" : 100.0,
+      "y" : -100.0,
+      "z" : 0.0,
+      "finite" : true
+    },
+    "facing" : {
+      "x" : 1.0,
+      "y" : 0.0,
+      "z" : 0.0,
+      "finite" : true
+    },
+    "scale" : {
+      "x" : 1.0,
+      "y" : 1.0,
+      "z" : 1.0,
+      "finite" : true
+    }
+  },
+  "components" : {
+    "com.lunix.javagame.engine.components.MouseDragging" : {
+      "@type" : "MouseDragging",
+      "id" : 22,
+      "snapToGrid" : true,
+      "gridSize" : 100
+    },
+    "com.lunix.javagame.engine.components.SpriteRenderer" : {
+      "@type" : "SpriteRenderer",
+      "id" : 21,
+      "positionOffset" : {
+        "x" : 0.0,
+        "y" : -50.0,
+        "z" : 0.0,
+        "finite" : true
       },
+      "widthDirection" : {
+        "x" : 1.0,
+        "y" : 0.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "heightDirection" : {
+        "x" : 0.0,
+        "y" : 1.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "width" : 100,
+      "height" : 100,
+      "color" : {
+        "rgba" : [ 1.0, 1.0, 1.0, 1.0 ]
+      },
+      "shader" : "DEFAULT",
+      "sprite" : {
+        "textureCoords" : [ {
+          "x" : 0.5,
+          "y" : 0.25,
+          "finite" : true
+        }, {
+          "x" : 0.75,
+          "y" : 0.25,
+          "finite" : true
+        }, {
+          "x" : 0.75,
+          "y" : 0.5,
+          "finite" : true
+        }, {
+          "x" : 0.5,
+          "y" : 0.5,
+          "finite" : true
+        } ],
+        "texture" : "TILE_BRICK"
+      },
+      "rotate" : 0,
       "changed" : false
     }
   }

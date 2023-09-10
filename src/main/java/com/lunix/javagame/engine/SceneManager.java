@@ -33,7 +33,6 @@ public class SceneManager {
 
 		if (newScene == null) {
 			newScene = createNewScene(newSceneType);
-			newScene.load();
 			newScene.init();
 			newScene.start();
 			this.scenes.put(newSceneType, newScene);

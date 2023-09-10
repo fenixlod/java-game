@@ -117,11 +117,23 @@ public class GameWindow {
 
 		// Setup a mouse button callback. It will be called every time a mouse button is
 		// pressed or released.
-		mouseListener.bindToWindow(this.windowHandle, UiLayer::mouseButtonCallback, UiLayer::scrollCallback);
+		glfwSetCursorPosCallback(this.windowHandle,	(win, xPos, yPos) -> 
+			mouseListener.positionCallback(win, xPos, yPos)
+		);
+		
+		glfwSetMouseButtonCallback(this.windowHandle, (win, button, action, mod) ->
+			UiLayer.mouseButtonCallback(win, button, action, mod, mouseListener::buttonCallback)
+		);
+		
+		glfwSetScrollCallback(this.windowHandle, (win, xScroll, yScroll) -> 
+			UiLayer.scrollCallback(win, xScroll, yScroll, mouseListener::scrollCallback)
+		);
 
 		// Setup a key callback. It will be called every time a key is pressed, repeated
 		// or released.
-		keyboardListener.bindToWindow(this.windowHandle, UiLayer::keyCallback);
+		glfwSetKeyCallback(this.windowHandle, (win, key, sCode, action, mods) ->
+			UiLayer.keyCallback(win, key, sCode, action, mods, keyboardListener::keyCallback)
+		);
 
 		// Add window resize callback
 		glfwSetWindowSizeCallback(this.windowHandle, (w, newWidth, newHeight) -> {

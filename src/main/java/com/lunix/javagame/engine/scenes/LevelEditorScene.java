@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
+import com.lunix.javagame.configs.EditorConfigs;
 import com.lunix.javagame.engine.Editor;
 import com.lunix.javagame.engine.GameObject;
 import com.lunix.javagame.engine.GameObjectFactory;
@@ -29,6 +30,7 @@ import imgui.ImVec2;
 public class LevelEditorScene extends Scene {
 	private GameObject playerObject;
 	protected GameObject currentObject;
+	private EditorConfigs editorConfig;
 
 	public LevelEditorScene(GameSceneType type) {
 		super(type);
@@ -37,6 +39,7 @@ public class LevelEditorScene extends Scene {
 	@Override
 	public void init() throws Exception {
 		super.init();
+		editorConfig = game.editorConfig();
 		game.window().clearColor(1f, 1f, 1f, 1f);
 		game.camera().setOrthoProjection();
 		game.camera().position(new Vector3f());
@@ -125,7 +128,7 @@ public class LevelEditorScene extends Scene {
 					.heightDirection(VectorUtil.minusY())
 			);
 		addGameObject(rectangle);
-		
+/*		
 		enemy = new GameObject("Enemy1", new Vector3f(0f, -100f, 0f))
 				.addComponent(
 					new SpriteRenderer(50, 100)
@@ -155,33 +158,7 @@ public class LevelEditorScene extends Scene {
 						.sprite(ResourcePool.getSprite(TextureType.ENEMY, 2))
 				);
 		addGameObject(enemy);
-		
-		enemy = GameObjectFactory.groundTile(new Vector3f(0f, 0f, 0f), 100, 100,
-				TextureType.TILE_BRICK.name() + "_" + 0);
-		addGameObject(enemy);
-		
-//		logger.info("Creating game objects...");
-//		for (int i = 0; i < 200; i++) {
-//			float yPos = (100 - i) * 100f;
-//			for(int j = 0; j < 200; j++) {
-//				float xPos = (100 - j) * 100f;
-//				GameObject ground = new GameObject("Ground " + i + " - " + j, new Vector3f(xPos, yPos, 0f))
-//						.addComponent(
-//							new SpriteRenderer(100, 100)
-//								.heightDirection(VectorUtil.Y())
-//								.color(new Color(0f, 1f, 0f, 0.5f))
-//								.shader(ShaderType.DEFAULT)
-//								.isStatic(true)
-//						);
-//				addGameObject(ground);
-//			}
-//		}
-
-//		String value = game.save(playerObject);
-//		System.out.println(value);
-//		GameObject ob = game.load(value, GameObject.class);
-//		System.out.println("Yey");
-//		playerObject = ob;
+*/
 	}
 
 	@Override
@@ -266,11 +243,12 @@ public class LevelEditorScene extends Scene {
 				if (ImGui.imageButton(id, spriteWidth, spriteHeight, textureCoords[3].x, textureCoords[3].y,
 						textureCoords[1].x, textureCoords[1].y)) {
 					logger.info("Sprite {} clicked", entry.getKey());
-					GameObject groundTile = GameObjectFactory.groundTile(new Vector3f(0f, 0f, 0f), 100, 100,
+					GameObject groundTile = GameObjectFactory.groundTile(new Vector3f(0f, 0f, 0f),
+							editorConfig.gridSize(), editorConfig.gridSize(),
 							entry.getKey());
 					// Attach the ground object to the mouse cursor
 					MouseDragging mouseDragging = new MouseDragging();
-					mouseDragging.pickup();
+					mouseDragging.snapToGrid(true).gridSize(editorConfig.gridSize()).pickup();
 					groundTile.addComponent(mouseDragging);
 					addGameObject(groundTile);
 				}

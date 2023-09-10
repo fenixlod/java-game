@@ -13,15 +13,17 @@ import com.lunix.javagame.engine.util.VectorUtil;
 
 public class SpriteRenderer extends Component {
 	private Vector3f positionOffset;
-	private int width;
-	private int height;
 	private Vector3f widthDirection;
 	private Vector3f heightDirection;
+	private int width;
+	private int height;
 	private Color color;
 	private ShaderType shader;
-	private boolean isChanged;
 	private Sprite sprite;
-	private Transform lastTransform;
+	private int rotate;
+
+	private transient Transform lastTransform;
+	private transient boolean isChanged;
 
 	public SpriteRenderer() {
 		this(0, 0);
@@ -37,6 +39,7 @@ public class SpriteRenderer extends Component {
 		this.positionOffset = new Vector3f();
 		this.isChanged = true;
 		this.sprite = new Sprite();
+		this.rotate = 0;
 	}
 
 	@Override
@@ -117,6 +120,14 @@ public class SpriteRenderer extends Component {
 		return this;
 	}
 
+	public SpriteRenderer rotate(int rotate) {
+		if (this.rotate != rotate) {
+			this.rotate = rotate;
+			this.isChanged = true;
+		}
+		return this;
+	}
+
 	public boolean isChanged() {
 		return this.isChanged;
 	}
@@ -151,10 +162,17 @@ public class SpriteRenderer extends Component {
 		p4 = p1.add(scaledHeightDirection.mul(this.height, new Vector3f()), new Vector3f());
 		p3 = p2.add(scaledHeightDirection.mul(this.height, new Vector3f()), new Vector3f());
 		
-		offset = setVertexInArray(vertices, offset, p1, this.sprite.textureCoords()[0], textureIndex);
-		offset = setVertexInArray(vertices, offset, p2, this.sprite.textureCoords()[1], textureIndex);
-		offset = setVertexInArray(vertices, offset, p3, this.sprite.textureCoords()[2], textureIndex);
-		offset = setVertexInArray(vertices, offset, p4, this.sprite.textureCoords()[3], textureIndex);
+		Vector2f[] uvMap = new Vector2f[] { 
+				this.sprite.textureCoords()[((0 - rotate) % 4 + 4) % 4],
+				this.sprite.textureCoords()[((1 - rotate) % 4 + 4) % 4],
+				this.sprite.textureCoords()[((2 - rotate) % 4 + 4) % 4],
+				this.sprite.textureCoords()[((3 - rotate) % 4 + 4) % 4] 
+		};
+		
+		offset = setVertexInArray(vertices, offset, p1, uvMap[0], textureIndex);
+		offset = setVertexInArray(vertices, offset, p2, uvMap[1], textureIndex);
+		offset = setVertexInArray(vertices, offset, p3, uvMap[2], textureIndex);
+		offset = setVertexInArray(vertices, offset, p4, uvMap[3], textureIndex);
 	}
 
 	private int setVertexInArray(float[] vertices, int offset, Vector3f position, Vector2f uv, int textureIndex) {

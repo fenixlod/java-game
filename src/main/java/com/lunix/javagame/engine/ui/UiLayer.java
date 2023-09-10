@@ -5,6 +5,9 @@ import static org.lwjgl.glfw.GLFW.*;
 import java.io.IOException;
 
 import org.lwjgl.glfw.Callbacks;
+import org.lwjgl.glfw.GLFWKeyCallbackI;
+import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
+import org.lwjgl.glfw.GLFWScrollCallbackI;
 import org.springframework.core.io.ClassPathResource;
 
 import com.lunix.javagame.engine.GameWindow;
@@ -240,7 +243,8 @@ public class UiLayer {
 	 * @param action
 	 * @param mods
 	 */
-	public static void mouseButtonCallback(long window, int button, int action, int mods) {
+	public static void mouseButtonCallback(long window, int button, int action, int mods,
+			GLFWMouseButtonCallbackI mouseBtnCb) {
 		final boolean[] mouseDown = new boolean[5];
 		mouseDown[0] = button == GLFW_MOUSE_BUTTON_1 && action != GLFW_RELEASE;
 		mouseDown[1] = button == GLFW_MOUSE_BUTTON_2 && action != GLFW_RELEASE;
@@ -253,6 +257,9 @@ public class UiLayer {
 		if (!io.getWantCaptureMouse() && mouseDown[1]) {
 			ImGui.setWindowFocus(null);
 		}
+
+		if (!io.getWantCaptureMouse() && mouseBtnCb != null)
+			mouseBtnCb.invoke(window, button, action, mods);
 	}
 
 	/**
@@ -262,9 +269,12 @@ public class UiLayer {
 	 * @param xOffset
 	 * @param yOffset
 	 */
-	public static void scrollCallback(long window, double xOffset, double yOffset) {
+	public static void scrollCallback(long window, double xOffset, double yOffset, GLFWScrollCallbackI scrollCb) {
 		io.setMouseWheelH(io.getMouseWheelH() + (float) xOffset);
 		io.setMouseWheel(io.getMouseWheel() + (float) yOffset);
+
+		if (!io.getWantCaptureMouse() && scrollCb != null)
+			scrollCb.invoke(window, xOffset, yOffset);
 	}
 
 	/**
@@ -276,7 +286,7 @@ public class UiLayer {
 	 * @param action
 	 * @param mods
 	 */
-	public static void keyCallback(long window, int key, int scancode, int action, int mods) {
+	public static void keyCallback(long window, int key, int scancode, int action, int mods, GLFWKeyCallbackI keyCb) {
 		if (action == GLFW_PRESS) {
 			io.setKeysDown(key, true);
 		} else if (action == GLFW_RELEASE) {
@@ -287,5 +297,8 @@ public class UiLayer {
 		io.setKeyShift(io.getKeysDown(GLFW_KEY_LEFT_SHIFT) || io.getKeysDown(GLFW_KEY_RIGHT_SHIFT));
 		io.setKeyAlt(io.getKeysDown(GLFW_KEY_LEFT_ALT) || io.getKeysDown(GLFW_KEY_RIGHT_ALT));
 		io.setKeySuper(io.getKeysDown(GLFW_KEY_LEFT_SUPER) || io.getKeysDown(GLFW_KEY_RIGHT_SUPER));
+
+		if (!io.getWantCaptureKeyboard() && keyCb != null)
+			keyCb.invoke(window, key, scancode, action, mods);
 	}
 }

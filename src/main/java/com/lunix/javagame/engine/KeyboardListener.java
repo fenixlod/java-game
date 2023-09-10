@@ -6,23 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.lwjgl.glfw.GLFWKeyCallbackI;
-
 public class KeyboardListener {
 	private boolean keyPressed[] = new boolean[350];
-
-	/**
-	 * Bind this listener to the window.
-	 * 
-	 * @param windowHandler
-	 * @param keyCb
-	 */
-	public void bindToWindow(long windowHandler, GLFWKeyCallbackI keyCb) {
-		glfwSetKeyCallback(windowHandler, (win, key, sCode, action, mods) -> {
-			keyCallback(key, sCode, action, mods);
-			keyCb.invoke(win, key, sCode, action, mods);
-		});
-	}
 
 	/**
 	 * Execute this callback function every time when key is pressed.
@@ -32,7 +17,7 @@ public class KeyboardListener {
 	 * @param action
 	 * @param modifiers
 	 */
-	private void keyCallback(int key, int scanCode, int action, int modifiers) {
+	public void keyCallback(long window, int key, int scanCode, int action, int modifiers) {
 		if (key >= this.keyPressed.length)
 			return;
 
