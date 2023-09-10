@@ -19,10 +19,8 @@ import com.lunix.javagame.engine.components.SpriteRenderer;
 import com.lunix.javagame.engine.enums.GameSceneType;
 import com.lunix.javagame.engine.enums.ShaderType;
 import com.lunix.javagame.engine.enums.TextureType;
-import com.lunix.javagame.engine.graphic.Color;
 import com.lunix.javagame.engine.graphic.Sprite;
 import com.lunix.javagame.engine.util.Debugger;
-import com.lunix.javagame.engine.util.VectorUtil;
 
 import imgui.ImGui;
 import imgui.ImVec2;
@@ -47,6 +45,8 @@ public class LevelEditorScene extends Scene {
 				TextureType.TILE_BRICK);
 		
 		Debugger.drawAxis(true);
+		// Debugger.addBox(new Vector3f(10, 10, 0), 20, 20);
+		// Debugger.addCircle(new Vector3f(40, 40, 0.1f), VectorUtil.Z(), 70);
 
 		if (loaded)
 			return;
