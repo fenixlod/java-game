@@ -19,11 +19,12 @@ import com.lunix.javagame.engine.enums.TextureType;
 public class Texture {
 	private static final Logger logger = LogManager.getLogger(Texture.class);
 	private final String filePath;
-	private int textureID;
 	private final TextureType type;
 	private boolean loaded;
 	private int width;
 	private int height;
+
+	private transient int textureID;
 
 	public Texture() {
 		this.filePath = "";
@@ -36,6 +37,15 @@ public class Texture {
 		this.loaded = false;
 		this.width = 0;
 		this.height = 0;
+	}
+
+	public Texture(int width, int height) {
+		this.filePath = "";
+		this.type = TextureType.FRAMEBUFFER;
+		// Generate texture on GPU
+		this.textureID = glGenTextures();
+		glBindTexture(GL_TEXTURE_2D, this.textureID);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
 	}
 
 	public void load() throws IOException {

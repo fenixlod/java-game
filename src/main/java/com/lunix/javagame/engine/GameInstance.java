@@ -17,6 +17,7 @@ import com.lunix.javagame.configs.PathsConfigs;
 import com.lunix.javagame.configs.WindowConfigs;
 import com.lunix.javagame.engine.enums.GameSceneType;
 import com.lunix.javagame.engine.enums.ShaderType;
+import com.lunix.javagame.engine.graphic.FrameBuffer;
 import com.lunix.javagame.engine.util.Debugger;
 import com.lunix.javagame.engine.util.GameTime;
 
@@ -35,6 +36,7 @@ public class GameInstance {
 	private final PathsConfigs pathsConfig;
 	private final EditorConfigs editorConfig;
 	private static long nextObjectId = 0;
+	private FrameBuffer frameBuffer;
 
 	public GameInstance(WindowConfigs windowConfigs, ResourcePool resources, CameraConfigs cameraConfig,
 			PathsConfigs pathsConfig, EditorConfigs editorConfig) {
@@ -73,6 +75,7 @@ public class GameInstance {
 	private void init() throws Exception {
 		logger.info("Initializing the game engine...");
 		this.window.create(this.mouse, this.keyboard);
+		this.frameBuffer = new FrameBuffer((int) window.size()[0], (int) window.size()[1]);
 		this.resources.init();
 		this.sceneManager.changeScene(GameSceneType.EDITOR);
 		Debugger.init();
@@ -91,6 +94,7 @@ public class GameInstance {
 		while (this.window.isOpened()) {
 			this.timer.tick();
 			this.window.newFrame();
+			// this.frameBuffer.bind();
 			Debugger.beginFrame();
 			Debugger.display(false, "Game FPS: {}", 1 / this.timer.deltaTime());
 			Debugger.display(false, this.mouse);
@@ -99,6 +103,7 @@ public class GameInstance {
 			Debugger.display(false, "Delta time: {}", this.timer.deltaTime());
 			Debugger.draw();
 			this.sceneManager.update(this.timer.deltaTime());
+			this.frameBuffer.unbind();
 			this.window.update(this.timer.deltaTime(), this.sceneManager.currentScene());
 			this.window.render();
 			this.mouse.reset();

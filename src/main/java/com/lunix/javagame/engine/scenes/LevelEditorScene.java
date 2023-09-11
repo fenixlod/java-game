@@ -10,7 +10,7 @@ import org.joml.Vector3f;
 import com.lunix.javagame.configs.EditorConfigs;
 import com.lunix.javagame.engine.Editor;
 import com.lunix.javagame.engine.GameObject;
-import com.lunix.javagame.engine.GameObjectFactory;
+import com.lunix.javagame.engine.Prefabs;
 import com.lunix.javagame.engine.ResourcePool;
 import com.lunix.javagame.engine.Scene;
 import com.lunix.javagame.engine.components.Animation;
@@ -246,7 +246,7 @@ public class LevelEditorScene extends Scene {
 				if (ImGui.imageButton(id, spriteWidth, spriteHeight, textureCoords[3].x, textureCoords[3].y,
 						textureCoords[1].x, textureCoords[1].y)) {
 					logger.info("Sprite {} clicked", entry.getKey());
-					GameObject groundTile = GameObjectFactory.groundTile(new Vector3f(0f, 0f, 0f),
+					GameObject groundTile = Prefabs.groundTile(new Vector3f(0f, 0f, 0f),
 							editorConfig.gridSize(), editorConfig.gridSize(),
 							entry.getKey());
 					// Attach the ground object to the mouse cursor

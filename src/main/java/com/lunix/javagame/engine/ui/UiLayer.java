@@ -17,15 +17,21 @@ import imgui.ImFontAtlas;
 import imgui.ImFontConfig;
 import imgui.ImGuiIO;
 import imgui.ImGuiStyle;
+import imgui.ImGuiViewport;
 import imgui.callback.ImStrConsumer;
 import imgui.callback.ImStrSupplier;
 import imgui.flag.ImGuiBackendFlags;
 import imgui.flag.ImGuiCol;
+import imgui.flag.ImGuiCond;
+import imgui.flag.ImGuiConfigFlags;
 import imgui.flag.ImGuiKey;
 import imgui.flag.ImGuiMouseCursor;
+import imgui.flag.ImGuiStyleVar;
+import imgui.flag.ImGuiWindowFlags;
 import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
 import imgui.internal.ImGui;
+import imgui.type.ImBoolean;
 
 public class UiLayer {
 	private final ImGuiImplGlfw imGuiGlfw;
@@ -82,7 +88,8 @@ public class UiLayer {
 		io = ImGui.getIO();
 
 		io.setIniFilename("src/main/resources/imgui.ini"); // We don't want to save .ini file
-		//io.setConfigFlags(ImGuiConfigFlags.NavEnableKeyboard); // Navigation with keyboard
+		io.setConfigFlags(ImGuiConfigFlags.NavEnableKeyboard); // Navigation with keyboard
+		io.setConfigFlags(ImGuiConfigFlags.DockingEnable);// Enable docking
 		io.setBackendFlags(ImGuiBackendFlags.HasMouseCursors); // Mouse cursors to display while resizing windows etc.
 		io.setBackendPlatformName("imgui_java_impl_glfw");
 
@@ -194,6 +201,7 @@ public class UiLayer {
 		float[][] colors = style.getColors();
 		colors[ImGuiCol.TextSelectedBg] = new float[] { 0f, 0f, 1f, 1f };
 		colors[ImGuiCol.FrameBg] = new float[] { 0.16f, 0.29f, 0.48f, 1f };
+		colors[ImGuiCol.DockingPreview] = new float[] { 0.16f, 0.29f, 0.48f, 1f };
 		style.setColors(colors);
 	}
 
@@ -208,11 +216,11 @@ public class UiLayer {
 
 		this.imGuiGlfw.newFrame();
 		ImGui.newFrame();
-
+		setupDockspace();
 		currentScene.ui();
 		// Any Dear ImGui code SHOULD go between ImGui.newFrame()/ImGui.render() methods
 		ImGui.showDemoWindow();
-
+		ImGui.end();
 		ImGui.render();
 		this.imGuiGl3.renderDrawData(ImGui.getDrawData());
 	}
@@ -309,5 +317,24 @@ public class UiLayer {
 
 		if (!io.getWantCaptureKeyboard() && keyCb != null)
 			keyCb.invoke(window, key, scancode, action, mods);
+	}
+
+	private void setupDockspace() {
+		int windowFlags = ImGuiWindowFlags.MenuBar | ImGuiWindowFlags.NoDocking;
+		ImGuiViewport mainViewport = ImGui.getMainViewport();
+		ImGui.setNextWindowPos(mainViewport.getWorkPosX(), mainViewport.getWorkPosY(), ImGuiCond.Always);
+		ImGui.setNextWindowSize(mainViewport.getWorkSizeX(), mainViewport.getWorkSizeY());
+		ImGui.setNextWindowViewport(mainViewport.getID());
+        ImGui.pushStyleVar(ImGuiStyleVar.WindowRounding, 0.0f);
+        ImGui.pushStyleVar(ImGuiStyleVar.WindowBorderSize, 0.0f);
+        windowFlags |= ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoCollapse |
+                ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove |
+                ImGuiWindowFlags.NoBringToFrontOnFocus | ImGuiWindowFlags.NoNavFocus;
+
+		ImGui.begin("Dockspace Demo", new ImBoolean(true), windowFlags);
+		ImGui.popStyleVar(2);
+
+        // Dockspace
+		ImGui.dockSpace(ImGui.getID("Dockspace"));
 	}
 }
