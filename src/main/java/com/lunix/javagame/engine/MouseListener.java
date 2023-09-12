@@ -6,6 +6,7 @@ import java.util.Arrays;
 
 import org.joml.Intersectionf;
 import org.joml.Vector2d;
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
@@ -17,11 +18,15 @@ public class MouseListener {
 	private Vector2d delta;
 	private boolean pressedButtons[] = new boolean[5];
 	private boolean dragging;
+	private Vector2f gameViewportPosition;
+	private Vector2f gameViewportSize;
 
 	public MouseListener() {
 		scroll = new Vector2d();
 		position = new Vector2d();
 		delta = new Vector2d();
+		gameViewportPosition = new Vector2f();
+		gameViewportSize = new Vector2f();
 	}
 
 	/**
@@ -115,8 +120,9 @@ public class MouseListener {
 	 * @return
 	 */
 	public Vector3f worldPosition() {
-		float[] size = GameInstance.get().window().size();
-		Vector4f nsc = new Vector4f((float)(position.x / size[0]) * 2f - 1, 1 - (float)(position.y / size[1]) * 2f, -1, 1);
+		// float[] size = GameInstance.get().window().size();
+		Vector4f nsc = new Vector4f((float) ((position.x - gameViewportPosition.x) / gameViewportSize.x) * 2f - 1,
+				1 - (float) ((position.y - gameViewportPosition.y) / gameViewportSize.y) * 2f, -1, 1);
 		nsc.mul(GameInstance.get().camera().inverseProjection()).mul(GameInstance.get().camera().inverseView());
 		return new Vector3f(nsc.x, nsc.y, nsc.z);
 	}
@@ -141,5 +147,15 @@ public class MouseListener {
 		return "MouseListener [X=" + position.x + ", Y=" + position.y + ", dX=" + delta.x + ", dY=" + delta.y +
 				", pressedButtons="	+ Arrays.toString(pressedButtons) + ", dragging=" + dragging + 
 				", scrollX=" + scroll.x + ", scrollY=" + scroll.y + "]";
+	}
+
+	public MouseListener gameViewportPosition(Vector2f gameViewportPosition) {
+		this.gameViewportPosition.set(gameViewportPosition);
+		return this;
+	}
+
+	public MouseListener gameViewportSize(Vector2f gameViewportSize) {
+		this.gameViewportSize.set(gameViewportSize);
+		return this;
 	}
 }

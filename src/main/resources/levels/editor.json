@@ -3,8 +3,8 @@
   "name" : "Player",
   "transform" : {
     "position" : {
-      "x" : -72.625755,
-      "y" : -98.36953,
+      "x" : -51.428425,
+      "y" : -64.60281,
       "z" : 0.0,
       "finite" : true
     },
@@ -3061,6 +3061,1251 @@
       "id" : 107,
       "snapToGrid" : true,
       "gridSize" : 100
+    }
+  }
+}, {
+  "id" : 108,
+  "name" : "Ground",
+  "transform" : {
+    "position" : {
+      "x" : 300.0,
+      "y" : 0.0,
+      "z" : 0.0,
+      "finite" : true
+    },
+    "facing" : {
+      "x" : 1.0,
+      "y" : 0.0,
+      "z" : 0.0,
+      "finite" : true
+    },
+    "scale" : {
+      "x" : 1.0,
+      "y" : 1.0,
+      "z" : 1.0,
+      "finite" : true
+    }
+  },
+  "components" : {
+    "com.lunix.javagame.engine.components.SpriteRenderer" : {
+      "@type" : "SpriteRenderer",
+      "id" : 109,
+      "positionOffset" : {
+        "x" : 0.0,
+        "y" : -50.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "widthDirection" : {
+        "x" : 1.0,
+        "y" : 0.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "heightDirection" : {
+        "x" : 0.0,
+        "y" : 1.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "width" : 100,
+      "height" : 100,
+      "color" : {
+        "rgba" : [ 1.0, 1.0, 1.0, 1.0 ]
+      },
+      "shader" : "DEFAULT",
+      "sprite" : {
+        "textureCoords" : [ {
+          "x" : 0.0,
+          "y" : 0.75,
+          "finite" : true
+        }, {
+          "x" : 0.25,
+          "y" : 0.75,
+          "finite" : true
+        }, {
+          "x" : 0.25,
+          "y" : 1.0,
+          "finite" : true
+        }, {
+          "x" : 0.0,
+          "y" : 1.0,
+          "finite" : true
+        } ],
+        "texture" : "TILE_BRICK"
+      },
+      "rotate" : 0,
+      "mirrorWidth" : false,
+      "mirrorHeight" : false,
+      "changed" : false
+    },
+    "com.lunix.javagame.engine.components.MouseDragging" : {
+      "@type" : "MouseDragging",
+      "id" : 110,
+      "snapToGrid" : true,
+      "gridSize" : 100
+    }
+  }
+}, {
+  "id" : 111,
+  "name" : "Ground",
+  "transform" : {
+    "position" : {
+      "x" : 0.0,
+      "y" : 0.0,
+      "z" : 0.0,
+      "finite" : true
+    },
+    "facing" : {
+      "x" : 1.0,
+      "y" : 0.0,
+      "z" : 0.0,
+      "finite" : true
+    },
+    "scale" : {
+      "x" : 1.0,
+      "y" : 1.0,
+      "z" : 1.0,
+      "finite" : true
+    }
+  },
+  "components" : {
+    "com.lunix.javagame.engine.components.MouseDragging" : {
+      "@type" : "MouseDragging",
+      "id" : 113,
+      "snapToGrid" : true,
+      "gridSize" : 100
+    },
+    "com.lunix.javagame.engine.components.SpriteRenderer" : {
+      "@type" : "SpriteRenderer",
+      "id" : 112,
+      "positionOffset" : {
+        "x" : 0.0,
+        "y" : -50.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "widthDirection" : {
+        "x" : 1.0,
+        "y" : 0.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "heightDirection" : {
+        "x" : 0.0,
+        "y" : 1.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "width" : 100,
+      "height" : 100,
+      "color" : {
+        "rgba" : [ 1.0, 1.0, 1.0, 1.0 ]
+      },
+      "shader" : "DEFAULT",
+      "sprite" : {
+        "textureCoords" : [ {
+          "x" : 0.5,
+          "y" : 0.75,
+          "finite" : true
+        }, {
+          "x" : 0.75,
+          "y" : 0.75,
+          "finite" : true
+        }, {
+          "x" : 0.75,
+          "y" : 1.0,
+          "finite" : true
+        }, {
+          "x" : 0.5,
+          "y" : 1.0,
+          "finite" : true
+        } ],
+        "texture" : "TILE_BRICK"
+      },
+      "rotate" : 0,
+      "mirrorWidth" : false,
+      "mirrorHeight" : false,
+      "changed" : false
+    }
+  }
+}, {
+  "id" : 114,
+  "name" : "Ground",
+  "transform" : {
+    "position" : {
+      "x" : 0.0,
+      "y" : 0.0,
+      "z" : 0.0,
+      "finite" : true
+    },
+    "facing" : {
+      "x" : 1.0,
+      "y" : 0.0,
+      "z" : 0.0,
+      "finite" : true
+    },
+    "scale" : {
+      "x" : 1.0,
+      "y" : 1.0,
+      "z" : 1.0,
+      "finite" : true
+    }
+  },
+  "components" : {
+    "com.lunix.javagame.engine.components.MouseDragging" : {
+      "@type" : "MouseDragging",
+      "id" : 116,
+      "snapToGrid" : true,
+      "gridSize" : 100
+    },
+    "com.lunix.javagame.engine.components.SpriteRenderer" : {
+      "@type" : "SpriteRenderer",
+      "id" : 115,
+      "positionOffset" : {
+        "x" : 0.0,
+        "y" : -50.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "widthDirection" : {
+        "x" : 1.0,
+        "y" : 0.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "heightDirection" : {
+        "x" : 0.0,
+        "y" : 1.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "width" : 100,
+      "height" : 100,
+      "color" : {
+        "rgba" : [ 1.0, 1.0, 1.0, 1.0 ]
+      },
+      "shader" : "DEFAULT",
+      "sprite" : {
+        "textureCoords" : [ {
+          "x" : 0.25,
+          "y" : 0.5,
+          "finite" : true
+        }, {
+          "x" : 0.5,
+          "y" : 0.5,
+          "finite" : true
+        }, {
+          "x" : 0.5,
+          "y" : 0.75,
+          "finite" : true
+        }, {
+          "x" : 0.25,
+          "y" : 0.75,
+          "finite" : true
+        } ],
+        "texture" : "TILE_BRICK"
+      },
+      "rotate" : 0,
+      "mirrorWidth" : false,
+      "mirrorHeight" : false,
+      "changed" : false
+    }
+  }
+}, {
+  "id" : 117,
+  "name" : "Ground",
+  "transform" : {
+    "position" : {
+      "x" : 0.0,
+      "y" : 0.0,
+      "z" : 0.0,
+      "finite" : true
+    },
+    "facing" : {
+      "x" : 1.0,
+      "y" : 0.0,
+      "z" : 0.0,
+      "finite" : true
+    },
+    "scale" : {
+      "x" : 1.0,
+      "y" : 1.0,
+      "z" : 1.0,
+      "finite" : true
+    }
+  },
+  "components" : {
+    "com.lunix.javagame.engine.components.MouseDragging" : {
+      "@type" : "MouseDragging",
+      "id" : 119,
+      "snapToGrid" : true,
+      "gridSize" : 100
+    },
+    "com.lunix.javagame.engine.components.SpriteRenderer" : {
+      "@type" : "SpriteRenderer",
+      "id" : 118,
+      "positionOffset" : {
+        "x" : 0.0,
+        "y" : -50.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "widthDirection" : {
+        "x" : 1.0,
+        "y" : 0.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "heightDirection" : {
+        "x" : 0.0,
+        "y" : 1.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "width" : 100,
+      "height" : 100,
+      "color" : {
+        "rgba" : [ 1.0, 1.0, 1.0, 1.0 ]
+      },
+      "shader" : "DEFAULT",
+      "sprite" : {
+        "textureCoords" : [ {
+          "x" : 0.25,
+          "y" : 0.5,
+          "finite" : true
+        }, {
+          "x" : 0.5,
+          "y" : 0.5,
+          "finite" : true
+        }, {
+          "x" : 0.5,
+          "y" : 0.75,
+          "finite" : true
+        }, {
+          "x" : 0.25,
+          "y" : 0.75,
+          "finite" : true
+        } ],
+        "texture" : "TILE_BRICK"
+      },
+      "rotate" : 0,
+      "mirrorWidth" : false,
+      "mirrorHeight" : false,
+      "changed" : false
+    }
+  }
+}, {
+  "id" : 120,
+  "name" : "Ground",
+  "transform" : {
+    "position" : {
+      "x" : 300.0,
+      "y" : -100.0,
+      "z" : 0.0,
+      "finite" : true
+    },
+    "facing" : {
+      "x" : 1.0,
+      "y" : 0.0,
+      "z" : 0.0,
+      "finite" : true
+    },
+    "scale" : {
+      "x" : 1.0,
+      "y" : 1.0,
+      "z" : 1.0,
+      "finite" : true
+    }
+  },
+  "components" : {
+    "com.lunix.javagame.engine.components.MouseDragging" : {
+      "@type" : "MouseDragging",
+      "id" : 122,
+      "snapToGrid" : true,
+      "gridSize" : 100
+    },
+    "com.lunix.javagame.engine.components.SpriteRenderer" : {
+      "@type" : "SpriteRenderer",
+      "id" : 121,
+      "positionOffset" : {
+        "x" : 0.0,
+        "y" : -50.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "widthDirection" : {
+        "x" : 1.0,
+        "y" : 0.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "heightDirection" : {
+        "x" : 0.0,
+        "y" : 1.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "width" : 100,
+      "height" : 100,
+      "color" : {
+        "rgba" : [ 1.0, 1.0, 1.0, 1.0 ]
+      },
+      "shader" : "DEFAULT",
+      "sprite" : {
+        "textureCoords" : [ {
+          "x" : 0.0,
+          "y" : 0.75,
+          "finite" : true
+        }, {
+          "x" : 0.25,
+          "y" : 0.75,
+          "finite" : true
+        }, {
+          "x" : 0.25,
+          "y" : 1.0,
+          "finite" : true
+        }, {
+          "x" : 0.0,
+          "y" : 1.0,
+          "finite" : true
+        } ],
+        "texture" : "TILE_BRICK"
+      },
+      "rotate" : 0,
+      "mirrorWidth" : false,
+      "mirrorHeight" : false,
+      "changed" : false
+    }
+  }
+}, {
+  "id" : 123,
+  "name" : "Ground",
+  "transform" : {
+    "position" : {
+      "x" : -1000.0,
+      "y" : -800.0,
+      "z" : 0.0,
+      "finite" : true
+    },
+    "facing" : {
+      "x" : 1.0,
+      "y" : 0.0,
+      "z" : 0.0,
+      "finite" : true
+    },
+    "scale" : {
+      "x" : 1.0,
+      "y" : 1.0,
+      "z" : 1.0,
+      "finite" : true
+    }
+  },
+  "components" : {
+    "com.lunix.javagame.engine.components.SpriteRenderer" : {
+      "@type" : "SpriteRenderer",
+      "id" : 124,
+      "positionOffset" : {
+        "x" : 0.0,
+        "y" : -50.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "widthDirection" : {
+        "x" : 1.0,
+        "y" : 0.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "heightDirection" : {
+        "x" : 0.0,
+        "y" : 1.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "width" : 100,
+      "height" : 100,
+      "color" : {
+        "rgba" : [ 1.0, 1.0, 1.0, 1.0 ]
+      },
+      "shader" : "DEFAULT",
+      "sprite" : {
+        "textureCoords" : [ {
+          "x" : 0.25,
+          "y" : 0.75,
+          "finite" : true
+        }, {
+          "x" : 0.5,
+          "y" : 0.75,
+          "finite" : true
+        }, {
+          "x" : 0.5,
+          "y" : 1.0,
+          "finite" : true
+        }, {
+          "x" : 0.25,
+          "y" : 1.0,
+          "finite" : true
+        } ],
+        "texture" : "TILE_BRICK"
+      },
+      "rotate" : 0,
+      "mirrorWidth" : false,
+      "mirrorHeight" : false,
+      "changed" : false
+    },
+    "com.lunix.javagame.engine.components.MouseDragging" : {
+      "@type" : "MouseDragging",
+      "id" : 125,
+      "snapToGrid" : true,
+      "gridSize" : 100
+    }
+  }
+}, {
+  "id" : 126,
+  "name" : "Ground",
+  "transform" : {
+    "position" : {
+      "x" : -100.0,
+      "y" : 100.0,
+      "z" : 0.0,
+      "finite" : true
+    },
+    "facing" : {
+      "x" : 1.0,
+      "y" : 0.0,
+      "z" : 0.0,
+      "finite" : true
+    },
+    "scale" : {
+      "x" : 1.0,
+      "y" : 1.0,
+      "z" : 1.0,
+      "finite" : true
+    }
+  },
+  "components" : {
+    "com.lunix.javagame.engine.components.SpriteRenderer" : {
+      "@type" : "SpriteRenderer",
+      "id" : 127,
+      "positionOffset" : {
+        "x" : 0.0,
+        "y" : -50.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "widthDirection" : {
+        "x" : 1.0,
+        "y" : 0.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "heightDirection" : {
+        "x" : 0.0,
+        "y" : 1.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "width" : 100,
+      "height" : 100,
+      "color" : {
+        "rgba" : [ 1.0, 1.0, 1.0, 1.0 ]
+      },
+      "shader" : "DEFAULT",
+      "sprite" : {
+        "textureCoords" : [ {
+          "x" : 0.25,
+          "y" : 0.5,
+          "finite" : true
+        }, {
+          "x" : 0.5,
+          "y" : 0.5,
+          "finite" : true
+        }, {
+          "x" : 0.5,
+          "y" : 0.75,
+          "finite" : true
+        }, {
+          "x" : 0.25,
+          "y" : 0.75,
+          "finite" : true
+        } ],
+        "texture" : "TILE_BRICK"
+      },
+      "rotate" : 0,
+      "mirrorWidth" : false,
+      "mirrorHeight" : false,
+      "changed" : false
+    },
+    "com.lunix.javagame.engine.components.MouseDragging" : {
+      "@type" : "MouseDragging",
+      "id" : 128,
+      "snapToGrid" : true,
+      "gridSize" : 100
+    }
+  }
+}, {
+  "id" : 129,
+  "name" : "Ground",
+  "transform" : {
+    "position" : {
+      "x" : -300.0,
+      "y" : 0.0,
+      "z" : 0.0,
+      "finite" : true
+    },
+    "facing" : {
+      "x" : 1.0,
+      "y" : 0.0,
+      "z" : 0.0,
+      "finite" : true
+    },
+    "scale" : {
+      "x" : 1.0,
+      "y" : 1.0,
+      "z" : 1.0,
+      "finite" : true
+    }
+  },
+  "components" : {
+    "com.lunix.javagame.engine.components.MouseDragging" : {
+      "@type" : "MouseDragging",
+      "id" : 131,
+      "snapToGrid" : true,
+      "gridSize" : 100
+    },
+    "com.lunix.javagame.engine.components.SpriteRenderer" : {
+      "@type" : "SpriteRenderer",
+      "id" : 130,
+      "positionOffset" : {
+        "x" : 0.0,
+        "y" : -50.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "widthDirection" : {
+        "x" : 1.0,
+        "y" : 0.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "heightDirection" : {
+        "x" : 0.0,
+        "y" : 1.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "width" : 100,
+      "height" : 100,
+      "color" : {
+        "rgba" : [ 1.0, 1.0, 1.0, 1.0 ]
+      },
+      "shader" : "DEFAULT",
+      "sprite" : {
+        "textureCoords" : [ {
+          "x" : 0.25,
+          "y" : 0.75,
+          "finite" : true
+        }, {
+          "x" : 0.5,
+          "y" : 0.75,
+          "finite" : true
+        }, {
+          "x" : 0.5,
+          "y" : 1.0,
+          "finite" : true
+        }, {
+          "x" : 0.25,
+          "y" : 1.0,
+          "finite" : true
+        } ],
+        "texture" : "TILE_BRICK"
+      },
+      "rotate" : 0,
+      "mirrorWidth" : false,
+      "mirrorHeight" : false,
+      "changed" : false
+    }
+  }
+}, {
+  "id" : 132,
+  "name" : "Ground",
+  "transform" : {
+    "position" : {
+      "x" : -300.0,
+      "y" : 200.0,
+      "z" : 0.0,
+      "finite" : true
+    },
+    "facing" : {
+      "x" : 1.0,
+      "y" : 0.0,
+      "z" : 0.0,
+      "finite" : true
+    },
+    "scale" : {
+      "x" : 1.0,
+      "y" : 1.0,
+      "z" : 1.0,
+      "finite" : true
+    }
+  },
+  "components" : {
+    "com.lunix.javagame.engine.components.MouseDragging" : {
+      "@type" : "MouseDragging",
+      "id" : 134,
+      "snapToGrid" : true,
+      "gridSize" : 100
+    },
+    "com.lunix.javagame.engine.components.SpriteRenderer" : {
+      "@type" : "SpriteRenderer",
+      "id" : 133,
+      "positionOffset" : {
+        "x" : 0.0,
+        "y" : -50.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "widthDirection" : {
+        "x" : 1.0,
+        "y" : 0.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "heightDirection" : {
+        "x" : 0.0,
+        "y" : 1.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "width" : 100,
+      "height" : 100,
+      "color" : {
+        "rgba" : [ 1.0, 1.0, 1.0, 1.0 ]
+      },
+      "shader" : "DEFAULT",
+      "sprite" : {
+        "textureCoords" : [ {
+          "x" : 0.0,
+          "y" : 0.75,
+          "finite" : true
+        }, {
+          "x" : 0.25,
+          "y" : 0.75,
+          "finite" : true
+        }, {
+          "x" : 0.25,
+          "y" : 1.0,
+          "finite" : true
+        }, {
+          "x" : 0.0,
+          "y" : 1.0,
+          "finite" : true
+        } ],
+        "texture" : "TILE_BRICK"
+      },
+      "rotate" : 0,
+      "mirrorWidth" : false,
+      "mirrorHeight" : false,
+      "changed" : false
+    }
+  }
+}, {
+  "id" : 135,
+  "name" : "Ground",
+  "transform" : {
+    "position" : {
+      "x" : -300.0,
+      "y" : 100.0,
+      "z" : 0.0,
+      "finite" : true
+    },
+    "facing" : {
+      "x" : 1.0,
+      "y" : 0.0,
+      "z" : 0.0,
+      "finite" : true
+    },
+    "scale" : {
+      "x" : 1.0,
+      "y" : 1.0,
+      "z" : 1.0,
+      "finite" : true
+    }
+  },
+  "components" : {
+    "com.lunix.javagame.engine.components.MouseDragging" : {
+      "@type" : "MouseDragging",
+      "id" : 137,
+      "snapToGrid" : true,
+      "gridSize" : 100
+    },
+    "com.lunix.javagame.engine.components.SpriteRenderer" : {
+      "@type" : "SpriteRenderer",
+      "id" : 136,
+      "positionOffset" : {
+        "x" : 0.0,
+        "y" : -50.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "widthDirection" : {
+        "x" : 1.0,
+        "y" : 0.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "heightDirection" : {
+        "x" : 0.0,
+        "y" : 1.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "width" : 100,
+      "height" : 100,
+      "color" : {
+        "rgba" : [ 1.0, 1.0, 1.0, 1.0 ]
+      },
+      "shader" : "DEFAULT",
+      "sprite" : {
+        "textureCoords" : [ {
+          "x" : 0.0,
+          "y" : 0.75,
+          "finite" : true
+        }, {
+          "x" : 0.25,
+          "y" : 0.75,
+          "finite" : true
+        }, {
+          "x" : 0.25,
+          "y" : 1.0,
+          "finite" : true
+        }, {
+          "x" : 0.0,
+          "y" : 1.0,
+          "finite" : true
+        } ],
+        "texture" : "TILE_BRICK"
+      },
+      "rotate" : 0,
+      "mirrorWidth" : false,
+      "mirrorHeight" : false,
+      "changed" : false
+    }
+  }
+}, {
+  "id" : 138,
+  "name" : "Ground",
+  "transform" : {
+    "position" : {
+      "x" : -300.0,
+      "y" : -300.0,
+      "z" : 0.0,
+      "finite" : true
+    },
+    "facing" : {
+      "x" : 1.0,
+      "y" : 0.0,
+      "z" : 0.0,
+      "finite" : true
+    },
+    "scale" : {
+      "x" : 1.0,
+      "y" : 1.0,
+      "z" : 1.0,
+      "finite" : true
+    }
+  },
+  "components" : {
+    "com.lunix.javagame.engine.components.MouseDragging" : {
+      "@type" : "MouseDragging",
+      "id" : 140,
+      "snapToGrid" : true,
+      "gridSize" : 100
+    },
+    "com.lunix.javagame.engine.components.SpriteRenderer" : {
+      "@type" : "SpriteRenderer",
+      "id" : 139,
+      "positionOffset" : {
+        "x" : 0.0,
+        "y" : -50.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "widthDirection" : {
+        "x" : 1.0,
+        "y" : 0.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "heightDirection" : {
+        "x" : 0.0,
+        "y" : 1.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "width" : 100,
+      "height" : 100,
+      "color" : {
+        "rgba" : [ 1.0, 1.0, 1.0, 1.0 ]
+      },
+      "shader" : "DEFAULT",
+      "sprite" : {
+        "textureCoords" : [ {
+          "x" : 0.5,
+          "y" : 0.75,
+          "finite" : true
+        }, {
+          "x" : 0.75,
+          "y" : 0.75,
+          "finite" : true
+        }, {
+          "x" : 0.75,
+          "y" : 1.0,
+          "finite" : true
+        }, {
+          "x" : 0.5,
+          "y" : 1.0,
+          "finite" : true
+        } ],
+        "texture" : "TILE_BRICK"
+      },
+      "rotate" : 0,
+      "mirrorWidth" : false,
+      "mirrorHeight" : false,
+      "changed" : false
+    }
+  }
+}, {
+  "id" : 141,
+  "name" : "Ground",
+  "transform" : {
+    "position" : {
+      "x" : 300.0,
+      "y" : 100.0,
+      "z" : 0.0,
+      "finite" : true
+    },
+    "facing" : {
+      "x" : 1.0,
+      "y" : 0.0,
+      "z" : 0.0,
+      "finite" : true
+    },
+    "scale" : {
+      "x" : 1.0,
+      "y" : 1.0,
+      "z" : 1.0,
+      "finite" : true
+    }
+  },
+  "components" : {
+    "com.lunix.javagame.engine.components.MouseDragging" : {
+      "@type" : "MouseDragging",
+      "id" : 143,
+      "snapToGrid" : true,
+      "gridSize" : 100
+    },
+    "com.lunix.javagame.engine.components.SpriteRenderer" : {
+      "@type" : "SpriteRenderer",
+      "id" : 142,
+      "positionOffset" : {
+        "x" : 0.0,
+        "y" : -50.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "widthDirection" : {
+        "x" : 1.0,
+        "y" : 0.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "heightDirection" : {
+        "x" : 0.0,
+        "y" : 1.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "width" : 100,
+      "height" : 100,
+      "color" : {
+        "rgba" : [ 1.0, 1.0, 1.0, 1.0 ]
+      },
+      "shader" : "DEFAULT",
+      "sprite" : {
+        "textureCoords" : [ {
+          "x" : 0.25,
+          "y" : 0.75,
+          "finite" : true
+        }, {
+          "x" : 0.5,
+          "y" : 0.75,
+          "finite" : true
+        }, {
+          "x" : 0.5,
+          "y" : 1.0,
+          "finite" : true
+        }, {
+          "x" : 0.25,
+          "y" : 1.0,
+          "finite" : true
+        } ],
+        "texture" : "TILE_BRICK"
+      },
+      "rotate" : 0,
+      "mirrorWidth" : false,
+      "mirrorHeight" : false,
+      "changed" : false
+    }
+  }
+}, {
+  "id" : 144,
+  "name" : "Ground",
+  "transform" : {
+    "position" : {
+      "x" : 300.0,
+      "y" : 200.0,
+      "z" : 0.0,
+      "finite" : true
+    },
+    "facing" : {
+      "x" : 1.0,
+      "y" : 0.0,
+      "z" : 0.0,
+      "finite" : true
+    },
+    "scale" : {
+      "x" : 1.0,
+      "y" : 1.0,
+      "z" : 1.0,
+      "finite" : true
+    }
+  },
+  "components" : {
+    "com.lunix.javagame.engine.components.MouseDragging" : {
+      "@type" : "MouseDragging",
+      "id" : 146,
+      "snapToGrid" : true,
+      "gridSize" : 100
+    },
+    "com.lunix.javagame.engine.components.SpriteRenderer" : {
+      "@type" : "SpriteRenderer",
+      "id" : 145,
+      "positionOffset" : {
+        "x" : 0.0,
+        "y" : -50.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "widthDirection" : {
+        "x" : 1.0,
+        "y" : 0.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "heightDirection" : {
+        "x" : 0.0,
+        "y" : 1.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "width" : 100,
+      "height" : 100,
+      "color" : {
+        "rgba" : [ 1.0, 1.0, 1.0, 1.0 ]
+      },
+      "shader" : "DEFAULT",
+      "sprite" : {
+        "textureCoords" : [ {
+          "x" : 0.0,
+          "y" : 0.0,
+          "finite" : true
+        }, {
+          "x" : 0.25,
+          "y" : 0.0,
+          "finite" : true
+        }, {
+          "x" : 0.25,
+          "y" : 0.25,
+          "finite" : true
+        }, {
+          "x" : 0.0,
+          "y" : 0.25,
+          "finite" : true
+        } ],
+        "texture" : "TILE_BRICK"
+      },
+      "rotate" : 0,
+      "mirrorWidth" : false,
+      "mirrorHeight" : false,
+      "changed" : false
+    }
+  }
+}, {
+  "id" : 147,
+  "name" : "Ground",
+  "transform" : {
+    "position" : {
+      "x" : 300.0,
+      "y" : -200.0,
+      "z" : 0.0,
+      "finite" : true
+    },
+    "facing" : {
+      "x" : 1.0,
+      "y" : 0.0,
+      "z" : 0.0,
+      "finite" : true
+    },
+    "scale" : {
+      "x" : 1.0,
+      "y" : 1.0,
+      "z" : 1.0,
+      "finite" : true
+    }
+  },
+  "components" : {
+    "com.lunix.javagame.engine.components.MouseDragging" : {
+      "@type" : "MouseDragging",
+      "id" : 149,
+      "snapToGrid" : true,
+      "gridSize" : 100
+    },
+    "com.lunix.javagame.engine.components.SpriteRenderer" : {
+      "@type" : "SpriteRenderer",
+      "id" : 148,
+      "positionOffset" : {
+        "x" : 0.0,
+        "y" : -50.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "widthDirection" : {
+        "x" : 1.0,
+        "y" : 0.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "heightDirection" : {
+        "x" : 0.0,
+        "y" : 1.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "width" : 100,
+      "height" : 100,
+      "color" : {
+        "rgba" : [ 1.0, 1.0, 1.0, 1.0 ]
+      },
+      "shader" : "DEFAULT",
+      "sprite" : {
+        "textureCoords" : [ {
+          "x" : 0.0,
+          "y" : 0.25,
+          "finite" : true
+        }, {
+          "x" : 0.25,
+          "y" : 0.25,
+          "finite" : true
+        }, {
+          "x" : 0.25,
+          "y" : 0.5,
+          "finite" : true
+        }, {
+          "x" : 0.0,
+          "y" : 0.5,
+          "finite" : true
+        } ],
+        "texture" : "TILE_BRICK"
+      },
+      "rotate" : 0,
+      "mirrorWidth" : false,
+      "mirrorHeight" : false,
+      "changed" : false
+    }
+  }
+}, {
+  "id" : 150,
+  "name" : "Ground",
+  "transform" : {
+    "position" : {
+      "x" : 300.0,
+      "y" : -300.0,
+      "z" : 0.0,
+      "finite" : true
+    },
+    "facing" : {
+      "x" : 1.0,
+      "y" : 0.0,
+      "z" : 0.0,
+      "finite" : true
+    },
+    "scale" : {
+      "x" : 1.0,
+      "y" : 1.0,
+      "z" : 1.0,
+      "finite" : true
+    }
+  },
+  "components" : {
+    "com.lunix.javagame.engine.components.MouseDragging" : {
+      "@type" : "MouseDragging",
+      "id" : 152,
+      "snapToGrid" : true,
+      "gridSize" : 100
+    },
+    "com.lunix.javagame.engine.components.SpriteRenderer" : {
+      "@type" : "SpriteRenderer",
+      "id" : 151,
+      "positionOffset" : {
+        "x" : 0.0,
+        "y" : -50.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "widthDirection" : {
+        "x" : 1.0,
+        "y" : 0.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "heightDirection" : {
+        "x" : 0.0,
+        "y" : 1.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "width" : 100,
+      "height" : 100,
+      "color" : {
+        "rgba" : [ 1.0, 1.0, 1.0, 1.0 ]
+      },
+      "shader" : "DEFAULT",
+      "sprite" : {
+        "textureCoords" : [ {
+          "x" : 0.0,
+          "y" : 0.25,
+          "finite" : true
+        }, {
+          "x" : 0.25,
+          "y" : 0.25,
+          "finite" : true
+        }, {
+          "x" : 0.25,
+          "y" : 0.5,
+          "finite" : true
+        }, {
+          "x" : 0.0,
+          "y" : 0.5,
+          "finite" : true
+        } ],
+        "texture" : "TILE_BRICK"
+      },
+      "rotate" : 0,
+      "mirrorWidth" : false,
+      "mirrorHeight" : false,
+      "changed" : false
     }
   }
 } ]

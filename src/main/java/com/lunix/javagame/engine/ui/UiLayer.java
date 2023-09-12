@@ -220,6 +220,7 @@ public class UiLayer {
 		currentScene.ui();
 		// Any Dear ImGui code SHOULD go between ImGui.newFrame()/ImGui.render() methods
 		ImGui.showDemoWindow();
+		GameViewWindow.show();
 		ImGui.end();
 		ImGui.render();
 		this.imGuiGl3.renderDrawData(ImGui.getDrawData());
@@ -275,8 +276,10 @@ public class UiLayer {
 			ImGui.setWindowFocus(null);
 		}
 
-		if (!io.getWantCaptureMouse() && mouseBtnCb != null)
-			mouseBtnCb.invoke(window, button, action, mods);
+		if (!io.getWantCaptureMouse() || GameViewWindow.getWantCaptureMouse()) {
+			if (mouseBtnCb != null)
+				mouseBtnCb.invoke(window, button, action, mods);
+		}
 	}
 
 	/**
@@ -290,8 +293,10 @@ public class UiLayer {
 		io.setMouseWheelH(io.getMouseWheelH() + (float) xOffset);
 		io.setMouseWheel(io.getMouseWheel() + (float) yOffset);
 
-		if (!io.getWantCaptureMouse() && scrollCb != null)
-			scrollCb.invoke(window, xOffset, yOffset);
+		if (!io.getWantCaptureMouse() || GameViewWindow.getWantCaptureMouse()) {
+			if (scrollCb != null)
+				scrollCb.invoke(window, xOffset, yOffset);
+		}
 	}
 
 	/**
@@ -315,8 +320,10 @@ public class UiLayer {
 		io.setKeyAlt(io.getKeysDown(GLFW_KEY_LEFT_ALT) || io.getKeysDown(GLFW_KEY_RIGHT_ALT));
 		io.setKeySuper(io.getKeysDown(GLFW_KEY_LEFT_SUPER) || io.getKeysDown(GLFW_KEY_RIGHT_SUPER));
 
-		if (!io.getWantCaptureKeyboard() && keyCb != null)
-			keyCb.invoke(window, key, scancode, action, mods);
+		if (!io.getWantCaptureKeyboard()) {
+			if (keyCb != null/* && !GameViewWindow.getWantCaptureMouse() */)
+				keyCb.invoke(window, key, scancode, action, mods);
+		}
 	}
 
 	private void setupDockspace() {

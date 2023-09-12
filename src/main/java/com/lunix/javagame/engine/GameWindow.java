@@ -137,6 +137,8 @@ public class GameWindow {
 			this.size[0] = newWidth;
 			this.size[1] = newHeight;
 		});
+
+		glViewport(0, 0, this.windowConfigs.width(), this.windowConfigs.height());
 	}
 
 	/**
@@ -215,5 +217,9 @@ public class GameWindow {
 	 */
 	public void update(float dt, Scene currentScene) {
 		this.uiLayer.update(dt, currentScene);
+	}
+
+	public float targerAspectRatio() {
+		return (float) this.windowConfigs.width() / this.windowConfigs.height();
 	}
 }

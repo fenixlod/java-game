@@ -93,8 +93,8 @@ public class GameInstance {
 		// the window or has pressed the ESCAPE key.
 		while (this.window.isOpened()) {
 			this.timer.tick();
+			this.frameBuffer.bind();
 			this.window.newFrame();
-			// this.frameBuffer.bind();
 			Debugger.beginFrame();
 			Debugger.display(false, "Game FPS: {}", 1 / this.timer.deltaTime());
 			Debugger.display(false, this.mouse);
@@ -162,5 +162,9 @@ public class GameInstance {
 
 	public EditorConfigs editorConfig() {
 		return editorConfig;
+	}
+
+	public FrameBuffer frameBuffer() {
+		return this.frameBuffer;
 	}
 }
