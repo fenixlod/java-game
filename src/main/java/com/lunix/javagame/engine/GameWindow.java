@@ -152,6 +152,10 @@ public class GameWindow {
 	public void newFrame(Scene currentScene) {
 		currentScene.newFrame();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the frame buffer
+
+		// Poll for window events. The key callback above will only be
+		// invoked during this call.
+		glfwPollEvents();
 	}
 
 	/**
@@ -160,10 +164,6 @@ public class GameWindow {
 	public void render() {
 		// Swap frame buffers. Fore drawing of all rendered elements
 		glfwSwapBuffers(this.windowHandle); // swap the color buffers
-
-		// Poll for window events. The key callback above will only be
-		// invoked during this call.
-		glfwPollEvents();
 	}
 
 	/**

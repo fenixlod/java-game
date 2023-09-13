@@ -24,6 +24,7 @@ import com.lunix.javagame.engine.graphic.FrameBuffer;
 import com.lunix.javagame.engine.graphic.Sprite;
 import com.lunix.javagame.engine.ui.GameViewWindow;
 import com.lunix.javagame.engine.util.Debugger;
+import com.lunix.javagame.engine.util.VectorUtil;
 
 import imgui.ImGui;
 import imgui.ImGuiViewport;
@@ -179,24 +180,24 @@ public class LevelEditorScene extends Scene {
 		Vector3f offset = new Vector3f();
 
 		if (game.keyboard().isKeyPressed(GLFW_KEY_RIGHT))
-			offset.x += 50f * deltaTime;
+			offset.add(VectorUtil.viewX().mul(100f * deltaTime));
 		
 		if (game.keyboard().isKeyPressed(GLFW_KEY_LEFT))
-			offset.x -= 50f * deltaTime;
+			offset.add(VectorUtil.viewX().mul(-100f * deltaTime));
 		
 		if (game.keyboard().isKeyPressed(GLFW_KEY_UP))
-			offset.y += 50f * deltaTime;
+			offset.add(VectorUtil.viewY().mul(200f * deltaTime));
 		
 		if (game.keyboard().isKeyPressed(GLFW_KEY_DOWN))
-			offset.y -= 50f * deltaTime;
+			offset.add(VectorUtil.viewY().mul(-200f * deltaTime));
 		
 		if (game.keyboard().isKeyPressed(GLFW_KEY_PAGE_UP))
-			offset.z += 50f * deltaTime;
+			offset.add(VectorUtil.viewZ().mul(100f * deltaTime));
 		
 		if (game.keyboard().isKeyPressed(GLFW_KEY_PAGE_DOWN))
-			offset.z -= 50f * deltaTime;
+			offset.add(VectorUtil.viewZ().mul(-100f * deltaTime));
 		
-		float zoomChange = (float) game.mouse().scroll().y * 0.1f;
+		float zoomChange = (float) game.mouse().scroll().y * 0.2f;
 		if (zoomChange != 0f)
 			game.camera().changeZoom(zoomChange);
 		
@@ -207,9 +208,7 @@ public class LevelEditorScene extends Scene {
 		}
 
 		Debugger.display(false, "X={}, Y={}, Z={}", game.camera().position().x, game.camera().position().y,	game.camera().position().z);
-
-		this.playerObject.move(offset);
-		game.camera().position(playerObject.transform().position());
+		game.camera().move(offset);
 /*
 		Vector3f worldPosition = game.mouse().worldPositionProjected();
 		System.out.println("Current X=" + worldPosition.x + " Y=" + worldPosition.y + " Z=" + worldPosition.z);
