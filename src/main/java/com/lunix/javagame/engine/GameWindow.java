@@ -11,6 +11,7 @@ import java.nio.IntBuffer;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
@@ -24,12 +25,12 @@ public class GameWindow {
 	private static final Logger logger = LogManager.getLogger(GameWindow.class);
 	private final WindowConfigs windowConfigs;
 	private long windowHandle;// memory address of the window
-	private float[] size;
+	private int[] size;
 	private UiLayer uiLayer;
 
 	public GameWindow(WindowConfigs windowConfigs) {
 		this.windowConfigs = windowConfigs;
-		this.size = new float[2];
+		this.size = new int[2];
 	}
 
 	/**
@@ -54,10 +55,9 @@ public class GameWindow {
 		glfwDefaultWindowHints(); // optional, the current window hints are already the default
 		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // the window will stay hidden after creation
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE); // the window will be resizable
-		glfwWindowHint(GLFW_MAXIMIZED, this.windowConfigs.maximized() ? GLFW_TRUE : GLFW_FALSE); // the window will be
-																							// maximized
-		// glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-		// glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+		glfwWindowHint(GLFW_MAXIMIZED, this.windowConfigs.maximized() ? GLFW_TRUE : GLFW_FALSE); // the window will be maximized
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
 		// Create the window
 		this.windowHandle = glfwCreateWindow(this.windowConfigs.width(), this.windowConfigs.height(),
@@ -108,7 +108,6 @@ public class GameWindow {
 
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glAlphaFunc(GL_GREATER, 0.9f);
 		glEnable(GL_ALPHA_TEST);
 
 		this.uiLayer = new UiLayer(this);
@@ -136,28 +135,35 @@ public class GameWindow {
 		glfwSetWindowSizeCallback(this.windowHandle, (win, newWidth, newHeight) -> {
 			this.size[0] = newWidth;
 			this.size[1] = newHeight;
+			glViewport(0, 0, newWidth, newHeight);
 		});
 
-		glViewport(0, 0, this.windowConfigs.width(), this.windowConfigs.height());
+		IntBuffer width = BufferUtils.createIntBuffer(1), height = BufferUtils.createIntBuffer(1);
+		glfwGetWindowSize(this.windowHandle, width, height);
+		this.size[0] = width.get();
+		this.size[1] = height.get();
+		glViewport(0, 0, this.size[0], this.size[1]);
 	}
 
 	/**
 	 * Indicate the start of new frame. This function should be called at the start
 	 * of the new game cycle.
 	 */
-	public void newFrame() {
+	public void newFrame(Scene currentScene) {
+		currentScene.newFrame();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the frame buffer
-
-		// Poll for window events. The key callback above will only be
-		// invoked during this call.
-		glfwPollEvents();
 	}
 
 	/**
 	 * Refresh the display. Will draw all screen elements.
 	 */
 	public void render() {
+		// Swap frame buffers. Fore drawing of all rendered elements
 		glfwSwapBuffers(this.windowHandle); // swap the color buffers
+
+		// Poll for window events. The key callback above will only be
+		// invoked during this call.
+		glfwPollEvents();
 	}
 
 	/**
@@ -205,7 +211,7 @@ public class GameWindow {
 		return this.windowHandle;
 	}
 
-	public float[] size() {
+	public int[] size() {
 		return this.size;
 	}
 
@@ -216,6 +222,7 @@ public class GameWindow {
 	 * @param currentScene
 	 */
 	public void update(float dt, Scene currentScene) {
+		currentScene.endFrame();
 		this.uiLayer.update(dt, currentScene);
 	}
 

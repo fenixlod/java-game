@@ -19,16 +19,25 @@ import com.lunix.javagame.engine.components.SpriteRenderer;
 import com.lunix.javagame.engine.enums.GameSceneType;
 import com.lunix.javagame.engine.enums.ShaderType;
 import com.lunix.javagame.engine.enums.TextureType;
+import com.lunix.javagame.engine.graphic.Color;
+import com.lunix.javagame.engine.graphic.FrameBuffer;
 import com.lunix.javagame.engine.graphic.Sprite;
+import com.lunix.javagame.engine.ui.GameViewWindow;
 import com.lunix.javagame.engine.util.Debugger;
 
 import imgui.ImGui;
+import imgui.ImGuiViewport;
 import imgui.ImVec2;
+import imgui.flag.ImGuiCond;
+import imgui.flag.ImGuiStyleVar;
+import imgui.flag.ImGuiWindowFlags;
+import imgui.type.ImBoolean;
 
 public class LevelEditorScene extends Scene {
 	private GameObject playerObject;
 	protected GameObject currentObject;
 	private EditorConfigs editorConfig;
+	private FrameBuffer frameBuffer;
 
 	public LevelEditorScene(GameSceneType type) {
 		super(type);
@@ -41,6 +50,7 @@ public class LevelEditorScene extends Scene {
 		game.window().clearColor(1f, 1f, 1f, 1f);
 		game.camera().setOrthoProjection();
 		game.camera().position(new Vector3f());
+		this.frameBuffer = new FrameBuffer(game.window().size()[0], game.window().size()[1]);
 		ResourcePool.loadResources(ShaderType.DEFAULT, TextureType.PLAYER, TextureType.ENEMY, TextureType.PLAYER_IDLE,
 				TextureType.TILE_BRICK);
 		
@@ -59,7 +69,7 @@ public class LevelEditorScene extends Scene {
 		playerObject.addComponent(new Animation(ResourcePool.getSprites(TextureType.PLAYER_IDLE), 0.3f));
 			addGameObject(playerObject);
 			
-/*			
+
 		GameObject enemy = new GameObject("Enemy", new Vector3f(-50f, 50f, 0f))
 			.addComponent(
 				new SpriteRenderer(20, 40)
@@ -67,7 +77,7 @@ public class LevelEditorScene extends Scene {
 			);
 		addGameObject(enemy);
 		currentObject = enemy;
-*/
+
 /*		
 		// draw cuboid with dimensions: x=20, y=20, z=20
 		// front
@@ -218,6 +228,8 @@ public class LevelEditorScene extends Scene {
 
 	@Override
 	public void ui() {
+		setupDockspace();
+
 		inspector();
 		ImGui.begin("World Editor");
 
@@ -272,6 +284,10 @@ public class LevelEditorScene extends Scene {
 		}
 
 		ImGui.end();
+
+		GameViewWindow.show(frameBuffer);
+		ImGui.showDemoWindow();
+		ImGui.end();
 	}
 
 	@Override
@@ -283,5 +299,35 @@ public class LevelEditorScene extends Scene {
 				return;
 			}
 		}
+	}
+
+	@Override
+	public void newFrame() {
+		super.newFrame();
+		this.frameBuffer.bind();
+	}
+
+	@Override
+	public void endFrame() {
+		super.endFrame();
+		this.frameBuffer.unbind();
+	}
+
+	private void setupDockspace() {
+		int windowFlags = ImGuiWindowFlags.MenuBar | ImGuiWindowFlags.NoDocking;
+		ImGuiViewport mainViewport = ImGui.getMainViewport();
+		ImGui.setNextWindowPos(mainViewport.getWorkPosX(), mainViewport.getWorkPosY(), ImGuiCond.Always);
+		ImGui.setNextWindowSize(mainViewport.getWorkSizeX(), mainViewport.getWorkSizeY());
+		ImGui.setNextWindowViewport(mainViewport.getID());
+		ImGui.pushStyleVar(ImGuiStyleVar.WindowRounding, 0.0f);
+		ImGui.pushStyleVar(ImGuiStyleVar.WindowBorderSize, 0.0f);
+		windowFlags |= ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize
+				| ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoBringToFrontOnFocus | ImGuiWindowFlags.NoNavFocus;
+
+		ImGui.begin("Dockspace Demo", new ImBoolean(true), windowFlags);
+		ImGui.popStyleVar(2);
+
+		// Dockspace
+		ImGui.dockSpace(ImGui.getID("Dockspace"));
 	}
 }

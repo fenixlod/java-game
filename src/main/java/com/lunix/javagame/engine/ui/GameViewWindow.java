@@ -4,6 +4,7 @@ import org.joml.Vector2d;
 import org.joml.Vector2f;
 
 import com.lunix.javagame.engine.GameInstance;
+import com.lunix.javagame.engine.graphic.FrameBuffer;
 
 import imgui.ImGui;
 import imgui.ImVec2;
@@ -15,7 +16,7 @@ public class GameViewWindow {
 	private static float topY;
 	private static float bottomY;
 
-	public static void show() {
+	public static void show(FrameBuffer frameBuffer) {
 		ImGui.begin("Game viewport", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse);
 		ImVec2 windowSize = getLargestSizeForViewport();
 		ImVec2 windowPosition = getCenteredPositionForViewoirt(windowSize);
@@ -32,7 +33,7 @@ public class GameViewWindow {
 		rightX = topLeft.x + windowSize.x;
 		topY = topLeft.y + windowSize.y;
 
-		int textureId = GameInstance.get().frameBuffer().texture().id();
+		int textureId = frameBuffer.texture().id();
 		ImGui.image(textureId, windowSize.x, windowSize.y, 0, 1, 1, 0);
 
 		GameInstance.get().mouse().gameViewportPosition(new Vector2f(topLeft.x, topLeft.y));

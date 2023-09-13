@@ -22,11 +22,11 @@ public class MouseListener {
 	private Vector2f gameViewportSize;
 
 	public MouseListener() {
-		scroll = new Vector2d();
-		position = new Vector2d();
-		delta = new Vector2d();
-		gameViewportPosition = new Vector2f();
-		gameViewportSize = new Vector2f();
+		this.scroll = new Vector2d();
+		this.position = new Vector2d();
+		this.delta = new Vector2d();
+		this.gameViewportPosition = new Vector2f();
+		this.gameViewportSize = new Vector2f();
 	}
 
 	/**
@@ -120,9 +120,19 @@ public class MouseListener {
 	 * @return
 	 */
 	public Vector3f worldPosition() {
-		// float[] size = GameInstance.get().window().size();
-		Vector4f nsc = new Vector4f((float) ((position.x - gameViewportPosition.x) / gameViewportSize.x) * 2f - 1,
-				1 - (float) ((position.y - gameViewportPosition.y) / gameViewportSize.y) * 2f, -1, 1);
+		float cursorX = (float) this.position.x;
+		float cursorY = (float) this.position.y;
+
+		if (this.gameViewportSize.lengthSquared() > 0) {
+			cursorX = (cursorX - gameViewportPosition.x) / gameViewportSize.x;
+			cursorY = (cursorY - gameViewportPosition.y) / gameViewportSize.y;
+		} else {
+			int[] size = GameInstance.get().window().size();
+			cursorX /= size[0];
+			cursorY /= size[1];
+		}
+
+		Vector4f nsc = new Vector4f(cursorX * 2f - 1, 1 - cursorY * 2f, -1, 1);
 		nsc.mul(GameInstance.get().camera().inverseProjection()).mul(GameInstance.get().camera().inverseView());
 		return new Vector3f(nsc.x, nsc.y, nsc.z);
 	}

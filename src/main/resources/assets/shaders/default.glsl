@@ -38,4 +38,7 @@ void main()
 		color = fragmentColor * texture(textures[int(textureIdx)], textureUV);
 	else
 		color = fragmentColor;
+		
+	if(color.a <= 0.9) // Replacement of glAlphaFunc
+        discard;
 }

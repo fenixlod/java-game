@@ -41,9 +41,13 @@ public class MouseDragging extends Component {
 				int newY = ((int) worldPos.y / gridSize) * gridSize;
 				int newZ = ((int) worldPos.z / gridSize) * gridSize;
 
-				worldPos.x = (worldPos.x - newX) > (gridSize / 2) ? newX + gridSize : newX;
-				worldPos.y = (worldPos.y - newY) > (gridSize / 2) ? newY + gridSize : newY;
-				worldPos.z = (worldPos.z - newZ) > (gridSize / 2) ? newZ + gridSize : newZ;
+				float offsetX = worldPos.x - newX;
+				float offsetY = worldPos.y - newY;
+				float offsetZ = worldPos.z - newZ;
+				
+				worldPos.x = offsetX > (gridSize / 2) ? newX + gridSize : offsetX < (-gridSize / 2) ? newX - gridSize : newX;
+				worldPos.y = offsetY > (gridSize / 2) ? newY + gridSize : offsetY < (-gridSize / 2) ? newY - gridSize : newY;
+				worldPos.z = offsetZ > (gridSize / 2) ? newZ + gridSize : offsetZ < (-gridSize / 2) ? newZ - gridSize : newZ;
 			}
 
 			owner.transform().position(worldPos);

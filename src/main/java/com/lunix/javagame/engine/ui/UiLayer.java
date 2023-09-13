@@ -16,22 +16,15 @@ import com.lunix.javagame.engine.Scene;
 import imgui.ImFontAtlas;
 import imgui.ImFontConfig;
 import imgui.ImGuiIO;
-import imgui.ImGuiStyle;
-import imgui.ImGuiViewport;
 import imgui.callback.ImStrConsumer;
 import imgui.callback.ImStrSupplier;
 import imgui.flag.ImGuiBackendFlags;
-import imgui.flag.ImGuiCol;
-import imgui.flag.ImGuiCond;
 import imgui.flag.ImGuiConfigFlags;
 import imgui.flag.ImGuiKey;
 import imgui.flag.ImGuiMouseCursor;
-import imgui.flag.ImGuiStyleVar;
-import imgui.flag.ImGuiWindowFlags;
 import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
 import imgui.internal.ImGui;
-import imgui.type.ImBoolean;
 
 public class UiLayer {
 	private final ImGuiImplGlfw imGuiGlfw;
@@ -195,14 +188,6 @@ public class UiLayer {
 		// This method SHOULD be called after you've initialized your ImGui
 		// configuration (fonts and so on).
 		// ImGui context should be created as well.
-		
-		//Custom styling
-		ImGuiStyle style = ImGui.getStyle();
-		float[][] colors = style.getColors();
-		colors[ImGuiCol.TextSelectedBg] = new float[] { 0f, 0f, 1f, 1f };
-		colors[ImGuiCol.FrameBg] = new float[] { 0.16f, 0.29f, 0.48f, 1f };
-		colors[ImGuiCol.DockingPreview] = new float[] { 0.16f, 0.29f, 0.48f, 1f };
-		style.setColors(colors);
 	}
 
 	/**
@@ -213,15 +198,12 @@ public class UiLayer {
 	 */
 	public void update(float dt, Scene currentScene) {
 		startFrame(dt);
-
 		this.imGuiGlfw.newFrame();
 		ImGui.newFrame();
-		setupDockspace();
+
 		currentScene.ui();
 		// Any Dear ImGui code SHOULD go between ImGui.newFrame()/ImGui.render() methods
-		ImGui.showDemoWindow();
-		GameViewWindow.show();
-		ImGui.end();
+
 		ImGui.render();
 		this.imGuiGl3.renderDrawData(ImGui.getDrawData());
 	}
@@ -233,7 +215,7 @@ public class UiLayer {
 	 */
 	private void startFrame(final float deltaTime) {
 		// Get window properties and mouse position
-		float[] size = this.window.size();
+		int[] size = this.window.size();
 		float[] winWidth = { size[0] };
 		float[] winHeight = { size[1] };
 		double[] mousePosX = { 0 };
@@ -324,24 +306,5 @@ public class UiLayer {
 			if (keyCb != null/* && !GameViewWindow.getWantCaptureMouse() */)
 				keyCb.invoke(window, key, scancode, action, mods);
 		}
-	}
-
-	private void setupDockspace() {
-		int windowFlags = ImGuiWindowFlags.MenuBar | ImGuiWindowFlags.NoDocking;
-		ImGuiViewport mainViewport = ImGui.getMainViewport();
-		ImGui.setNextWindowPos(mainViewport.getWorkPosX(), mainViewport.getWorkPosY(), ImGuiCond.Always);
-		ImGui.setNextWindowSize(mainViewport.getWorkSizeX(), mainViewport.getWorkSizeY());
-		ImGui.setNextWindowViewport(mainViewport.getID());
-        ImGui.pushStyleVar(ImGuiStyleVar.WindowRounding, 0.0f);
-        ImGui.pushStyleVar(ImGuiStyleVar.WindowBorderSize, 0.0f);
-        windowFlags |= ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoCollapse |
-                ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove |
-                ImGuiWindowFlags.NoBringToFrontOnFocus | ImGuiWindowFlags.NoNavFocus;
-
-		ImGui.begin("Dockspace Demo", new ImBoolean(true), windowFlags);
-		ImGui.popStyleVar(2);
-
-        // Dockspace
-		ImGui.dockSpace(ImGui.getID("Dockspace"));
 	}
 }

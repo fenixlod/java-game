@@ -105,7 +105,7 @@ public abstract class Scene {
 	 * @throws Exception
 	 */
 	public void load() throws Exception {
-		Path levelsFile = Paths.get(game.pathsConfig().save().get("levels"), type.toString() + ".json");
+		Path levelsFile = Paths.get(game.pathsConfig().save().get("levels"), "world.json");
 
 		if (!levelsFile.toFile().exists())
 			return;
@@ -144,10 +144,24 @@ public abstract class Scene {
 	 * @throws IOException
 	 */
 	public void save() throws IOException {
-		Path levelsFile = Paths.get(game.pathsConfig().save().get("levels"), type.toString() + ".json");
+		Path levelsFile = Paths.get(game.pathsConfig().save().get("levels"), "world.json");
 
 		try (FileWriter writer = new FileWriter(levelsFile.toFile())) {
 			writer.write(game.save(this.objects));
 		}
+	}
+
+	/**
+	 * This function will be called when new frame begin.
+	 * 
+	 */
+	public void newFrame() {
+	}
+
+	/**
+	 * This function will be called when the frame ends.
+	 * 
+	 */
+	public void endFrame() {
 	}
 }
