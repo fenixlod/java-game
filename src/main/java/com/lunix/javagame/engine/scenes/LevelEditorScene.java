@@ -51,7 +51,7 @@ public class LevelEditorScene extends Scene {
 		game.window().clearColor(1f, 1f, 1f, 1f);
 		game.camera().setOrthoProjection();
 		game.camera().position(new Vector3f());
-		this.frameBuffer = new FrameBuffer(game.window().size()[0], game.window().size()[1]);
+		this.frameBuffer = new FrameBuffer(game.window().windowSize().x, game.window().windowSize().y);
 		ResourcePool.loadResources(ShaderType.DEFAULT, TextureType.PLAYER, TextureType.ENEMY, TextureType.PLAYER_IDLE,
 				TextureType.TILE_BRICK);
 		

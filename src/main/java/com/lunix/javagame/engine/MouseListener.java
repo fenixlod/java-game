@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 import org.joml.Intersectionf;
 import org.joml.Vector2d;
-import org.joml.Vector2f;
+import org.joml.Vector2i;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
@@ -18,15 +18,11 @@ public class MouseListener {
 	private Vector2d delta;
 	private boolean pressedButtons[] = new boolean[5];
 	private boolean dragging;
-	private Vector2f gameViewportPosition;
-	private Vector2f gameViewportSize;
 
 	public MouseListener() {
 		this.scroll = new Vector2d();
 		this.position = new Vector2d();
 		this.delta = new Vector2d();
-		this.gameViewportPosition = new Vector2f();
-		this.gameViewportSize = new Vector2f();
 	}
 
 	/**
@@ -123,13 +119,14 @@ public class MouseListener {
 		float cursorX = (float) this.position.x;
 		float cursorY = (float) this.position.y;
 
-		if (this.gameViewportSize.lengthSquared() > 0) {
-			cursorX = (cursorX - gameViewportPosition.x) / gameViewportSize.x;
-			cursorY = (cursorY - gameViewportPosition.y) / gameViewportSize.y;
+		if (GameInstance.get().window().viewPortSize().lengthSquared() > 0) {
+			Vector2i offset = GameInstance.get().window().viewPortOffset();
+			cursorX = (cursorX - offset.x) / GameInstance.get().window().viewPortSize().x;
+			cursorY = (cursorY - offset.y) / GameInstance.get().window().viewPortSize().y;
 		} else {
-			int[] size = GameInstance.get().window().size();
-			cursorX /= size[0];
-			cursorY /= size[1];
+			Vector2i size = GameInstance.get().window().windowSize();
+			cursorX /= size.x;
+			cursorY /= size.y;
 		}
 
 		Vector4f nsc = new Vector4f(cursorX * 2f - 1, 1 - cursorY * 2f, -1, 1);
@@ -157,15 +154,5 @@ public class MouseListener {
 		return "MouseListener [X=" + position.x + ", Y=" + position.y + ", dX=" + delta.x + ", dY=" + delta.y +
 				", pressedButtons="	+ Arrays.toString(pressedButtons) + ", dragging=" + dragging + 
 				", scrollX=" + scroll.x + ", scrollY=" + scroll.y + "]";
-	}
-
-	public MouseListener gameViewportPosition(Vector2f gameViewportPosition) {
-		this.gameViewportPosition.set(gameViewportPosition);
-		return this;
-	}
-
-	public MouseListener gameViewportSize(Vector2f gameViewportSize) {
-		this.gameViewportSize.set(gameViewportSize);
-		return this;
 	}
 }

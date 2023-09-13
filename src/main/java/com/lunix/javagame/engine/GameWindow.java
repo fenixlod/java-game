@@ -11,6 +11,7 @@ import java.nio.IntBuffer;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.joml.Vector2i;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -25,12 +26,16 @@ public class GameWindow {
 	private static final Logger logger = LogManager.getLogger(GameWindow.class);
 	private final WindowConfigs windowConfigs;
 	private long windowHandle;// memory address of the window
-	private int[] size;
+	private Vector2i windowSize;
+	private Vector2i viewPortSize;
+	private Vector2i viewPortOffset;
 	private UiLayer uiLayer;
 
 	public GameWindow(WindowConfigs windowConfigs) {
 		this.windowConfigs = windowConfigs;
-		this.size = new int[2];
+		this.windowSize = new Vector2i();
+		this.viewPortSize = new Vector2i();
+		this.viewPortOffset = new Vector2i();
 	}
 
 	/**
@@ -65,8 +70,7 @@ public class GameWindow {
 		if (this.windowHandle == NULL)
 			throw new RuntimeException("Failed to create the GLFW window");
 
-		this.size[0] = this.windowConfigs.width();
-		this.size[1] = this.windowConfigs.height();
+		this.windowSize.set(this.windowConfigs.width(), this.windowConfigs.height());
 
 		// Get the thread stack and push a new frame
 		try (MemoryStack stack = stackPush()) {
@@ -133,16 +137,16 @@ public class GameWindow {
 
 		// Add window resize callback
 		glfwSetWindowSizeCallback(this.windowHandle, (win, newWidth, newHeight) -> {
-			this.size[0] = newWidth;
-			this.size[1] = newHeight;
+			this.windowSize.set(newWidth, newHeight);
 			glViewport(0, 0, newWidth, newHeight);
+			this.viewPortSize.set(this.windowSize);
 		});
 
 		IntBuffer width = BufferUtils.createIntBuffer(1), height = BufferUtils.createIntBuffer(1);
 		glfwGetWindowSize(this.windowHandle, width, height);
-		this.size[0] = width.get();
-		this.size[1] = height.get();
-		glViewport(0, 0, this.size[0], this.size[1]);
+		this.windowSize.set(width.get(), height.get());
+		glViewport(0, 0, this.windowSize.x, this.windowSize.y);
+		this.viewPortSize.set(this.windowSize);
 	}
 
 	/**
@@ -211,8 +215,8 @@ public class GameWindow {
 		return this.windowHandle;
 	}
 
-	public int[] size() {
-		return this.size;
+	public Vector2i windowSize() {
+		return this.windowSize;
 	}
 
 	/**
@@ -228,5 +232,21 @@ public class GameWindow {
 
 	public float targerAspectRatio() {
 		return (float) this.windowConfigs.width() / this.windowConfigs.height();
+	}
+	
+	public Vector2i viewPortSize() {
+		return this.viewPortSize;
+	}
+
+	public void viewPortSize(int viewPortWidth, int viewPortHeight) {
+		this.viewPortSize.set(viewPortWidth, viewPortHeight);
+	}
+
+	public Vector2i viewPortOffset() {
+		return this.viewPortOffset;
+	}
+
+	public void viewPortOffset(int viewPortOffsetX, int viewPortOffsetY) {
+		this.viewPortOffset.set(viewPortOffsetX, viewPortOffsetY);
 	}
 }

@@ -4,6 +4,7 @@ import static org.lwjgl.glfw.GLFW.*;
 
 import java.io.IOException;
 
+import org.joml.Vector2i;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFWKeyCallbackI;
 import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
@@ -215,9 +216,9 @@ public class UiLayer {
 	 */
 	private void startFrame(final float deltaTime) {
 		// Get window properties and mouse position
-		int[] size = this.window.size();
-		float[] winWidth = { size[0] };
-		float[] winHeight = { size[1] };
+		Vector2i size = this.window.windowSize();
+		float[] winWidth = { size.x };
+		float[] winHeight = { size.y };
 		double[] mousePosX = { 0 };
 		double[] mousePosY = { 0 };
 		glfwGetCursorPos(this.glfwWindow, mousePosX, mousePosY);

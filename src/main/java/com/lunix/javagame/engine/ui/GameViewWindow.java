@@ -1,7 +1,6 @@
 package com.lunix.javagame.engine.ui;
 
 import org.joml.Vector2d;
-import org.joml.Vector2f;
 
 import com.lunix.javagame.engine.GameInstance;
 import com.lunix.javagame.engine.graphic.FrameBuffer;
@@ -36,8 +35,8 @@ public class GameViewWindow {
 		int textureId = frameBuffer.texture().id();
 		ImGui.image(textureId, windowSize.x, windowSize.y, 0, 1, 1, 0);
 
-		GameInstance.get().mouse().gameViewportPosition(new Vector2f(topLeft.x, topLeft.y));
-		GameInstance.get().mouse().gameViewportSize(new Vector2f(windowSize.x, windowSize.y));
+		GameInstance.get().window().viewPortOffset((int) topLeft.x, (int) topLeft.y);
+		GameInstance.get().window().viewPortSize((int) windowSize.x, (int) windowSize.y);
 
 		ImGui.end();
 	}
