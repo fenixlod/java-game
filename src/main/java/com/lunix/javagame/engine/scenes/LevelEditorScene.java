@@ -5,10 +5,12 @@ import static org.lwjgl.glfw.GLFW.*;
 import java.util.Map.Entry;
 
 import org.joml.Vector2f;
+import org.joml.Vector2i;
 import org.joml.Vector3f;
 
 import com.lunix.javagame.configs.EditorConfigs;
 import com.lunix.javagame.engine.Editor;
+import com.lunix.javagame.engine.GameInstance;
 import com.lunix.javagame.engine.GameObject;
 import com.lunix.javagame.engine.Prefabs;
 import com.lunix.javagame.engine.ResourcePool;
@@ -37,6 +39,7 @@ import imgui.type.ImBoolean;
 public class LevelEditorScene extends Scene {
 	private GameObject playerObject;
 	protected GameObject currentObject;
+	private GameObject draggingObject;
 	private EditorConfigs editorConfig;
 	private FrameBuffer frameBuffer;
 
@@ -48,7 +51,6 @@ public class LevelEditorScene extends Scene {
 	public void init() throws Exception {
 		super.init();
 		editorConfig = game.editorConfig();
-		game.window().clearColor(1f, 1f, 1f, 1f);
 		game.camera().setOrthoProjection();
 		game.camera().position(new Vector3f());
 		this.frameBuffer = new FrameBuffer(game.window().windowSize().x, game.window().windowSize().y);
@@ -203,8 +205,18 @@ public class LevelEditorScene extends Scene {
 		
 		// Close the game window when escape key is pressed
 		if (game.keyboard().isKeyPressed(GLFW_KEY_ESCAPE)) {
-			game.window().close();
-			logger.info("Escape button pressed. Close the game window");
+			if (this.draggingObject != null) {
+				MouseDragging component = this.draggingObject.getComponent(MouseDragging.class);
+				if (component.isPicked()) {
+					removeGameObject(this.draggingObject);
+					this.draggingObject = null;
+				}
+			}
+		}
+
+		if (GameInstance.get().mouse().isButtonClicked(GLFW_MOUSE_BUTTON_LEFT)) {
+			Vector2i pos = GameInstance.get().mouse().positionInViewPort();
+			System.out.println(game.window().pickObject(pos));
 		}
 
 		Debugger.display(false, "X={}, Y={}, Z={}", game.camera().position().x, game.camera().position().y,	game.camera().position().z);
@@ -264,6 +276,7 @@ public class LevelEditorScene extends Scene {
 					MouseDragging mouseDragging = new MouseDragging();
 					mouseDragging.snapToGrid(true).gridSize(editorConfig.gridSize()).pickup();
 					groundTile.addComponent(mouseDragging);
+					this.draggingObject = groundTile;
 					addGameObject(groundTile);
 				}
 				ImGui.popID();
@@ -304,6 +317,7 @@ public class LevelEditorScene extends Scene {
 	public void newFrame() {
 		super.newFrame();
 		this.frameBuffer.bind();
+		game.window().clearColor(1f, 1f, 1f, 1f);
 	}
 
 	@Override

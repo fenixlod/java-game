@@ -33,27 +33,34 @@ public class MouseDragging extends Component {
 
 	@Override
 	public void update(float deltaTime) {
-		if (isPicked) {
-			Vector3f worldPos = GameInstance.get().mouse().worldPositionProjected();
+		if (!isPicked)
+			return;
 
-			if (snapToGrid) {
-				int newX = ((int) worldPos.x / gridSize) * gridSize;
-				int newY = ((int) worldPos.y / gridSize) * gridSize;
-				int newZ = ((int) worldPos.z / gridSize) * gridSize;
+		Vector3f worldPos = GameInstance.get().mouse().worldPositionProjected();
+		if (snapToGrid) {
+			int newX = ((int) worldPos.x / gridSize) * gridSize;
+			int newY = ((int) worldPos.y / gridSize) * gridSize;
+			int newZ = ((int) worldPos.z / gridSize) * gridSize;
 
-				float offsetX = worldPos.x - newX;
-				float offsetY = worldPos.y - newY;
-				float offsetZ = worldPos.z - newZ;
-				
-				worldPos.x = offsetX > (gridSize / 2) ? newX + gridSize : offsetX < (-gridSize / 2) ? newX - gridSize : newX;
-				worldPos.y = offsetY > (gridSize / 2) ? newY + gridSize : offsetY < (-gridSize / 2) ? newY - gridSize : newY;
-				worldPos.z = offsetZ > (gridSize / 2) ? newZ + gridSize : offsetZ < (-gridSize / 2) ? newZ - gridSize : newZ;
-			}
+			float offsetX = worldPos.x - newX;
+			float offsetY = worldPos.y - newY;
+			float offsetZ = worldPos.z - newZ;
 
-			owner.transform().position(worldPos);
-			if (GameInstance.get().mouse().isButtonPressed(GLFW_MOUSE_BUTTON_LEFT)) {
-				place();
-			}
+			worldPos.x = offsetX > (gridSize / 2) ? newX + gridSize
+					: offsetX < (-gridSize / 2) ? newX - gridSize : newX;
+			worldPos.y = offsetY > (gridSize / 2) ? newY + gridSize
+					: offsetY < (-gridSize / 2) ? newY - gridSize : newY;
+			worldPos.z = offsetZ > (gridSize / 2) ? newZ + gridSize
+					: offsetZ < (-gridSize / 2) ? newZ - gridSize : newZ;
 		}
+
+		owner.transform().position(worldPos);
+		if (GameInstance.get().mouse().isButtonPressed(GLFW_MOUSE_BUTTON_LEFT)) {
+			place();
+		}
+	}
+
+	public boolean isPicked() {
+		return this.isPicked;
 	}
 }

@@ -23,7 +23,6 @@ public class WorldScene extends Scene {
 	@Override
 	public void init() throws Exception {
 		super.init();
-		game.window().clearColor(1f, 1f, 1f, 1f);
 		game.camera().setOrthoProjection();
 		game.camera().position(new Vector3f());
 		ResourcePool.loadResources(ShaderType.DEFAULT, TextureType.PLAYER, TextureType.ENEMY, TextureType.PLAYER_IDLE,
@@ -82,5 +81,11 @@ public class WorldScene extends Scene {
 				return;
 			}
 		}
+	}
+
+	@Override
+	public void newFrame() {
+		super.newFrame();
+		game.window().clearColor(1f, 1f, 1f, 1f);
 	}
 }

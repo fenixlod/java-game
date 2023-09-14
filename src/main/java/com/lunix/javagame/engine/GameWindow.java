@@ -6,7 +6,6 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
-import java.io.IOException;
 import java.nio.IntBuffer;
 
 import org.apache.logging.log4j.LogManager;
@@ -20,6 +19,9 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 
 import com.lunix.javagame.configs.WindowConfigs;
+import com.lunix.javagame.engine.enums.ShaderType;
+import com.lunix.javagame.engine.graphic.PickingTexture;
+import com.lunix.javagame.engine.graphic.Renderer;
 import com.lunix.javagame.engine.ui.UiLayer;
 
 public class GameWindow {
@@ -30,12 +32,14 @@ public class GameWindow {
 	private Vector2i viewPortSize;
 	private Vector2i viewPortOffset;
 	private UiLayer uiLayer;
+	private PickingTexture pickingTexture;
 
 	public GameWindow(WindowConfigs windowConfigs) {
 		this.windowConfigs = windowConfigs;
 		this.windowSize = new Vector2i();
 		this.viewPortSize = new Vector2i();
 		this.viewPortOffset = new Vector2i();
+		this.pickingTexture = new PickingTexture();
 	}
 
 	/**
@@ -43,9 +47,9 @@ public class GameWindow {
 	 * 
 	 * @param mouseListener
 	 * @param keyboardListener
-	 * @throws IOException
+	 * @throws Exception
 	 */
-	public void create(MouseListener mouseListener, KeyboardListener keyboardListener) throws IOException {
+	public void create(MouseListener mouseListener, KeyboardListener keyboardListener) throws Exception {
 		logger.info("Creating game window using LWJGL version: {} ...", Version.getVersion());
 
 		// Setup an error callback. The default implementation
@@ -104,7 +108,7 @@ public class GameWindow {
 		GL.createCapabilities();
 
 		// Set the clear color
-		glClearColor(1f, 1f, 1f, 1f);
+		clearColor(1f, 1f, 1f, 1f);
 
 		glDepthMask(true);
 		glEnable(GL_DEPTH_TEST);
@@ -147,6 +151,7 @@ public class GameWindow {
 		this.windowSize.set(width.get(), height.get());
 		glViewport(0, 0, this.windowSize.x, this.windowSize.y);
 		this.viewPortSize.set(this.windowSize);
+		this.pickingTexture.init(this.windowSize.x, this.windowSize.y);
 	}
 
 	/**
@@ -248,5 +253,22 @@ public class GameWindow {
 
 	public void viewPortOffset(int viewPortOffsetX, int viewPortOffsetY) {
 		this.viewPortOffset.set(viewPortOffsetX, viewPortOffsetY);
+	}
+
+	public void createPickingTexture(Scene currentScene) throws Exception {
+		glDisable(GL_BLEND);
+		this.pickingTexture.enableWrithing();
+		glViewport(0, 0, this.windowSize.x, this.windowSize.y);
+		clearColor(0f, 0f, 0f, 0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the frame buffer
+		Renderer.overrideShader(ResourcePool.getShader(ShaderType.PICKING));
+		currentScene.render();
+		this.pickingTexture.disableWrithing();
+		Renderer.overrideShader(null);
+		glEnable(GL_BLEND);
+	}
+
+	public int pickObject(Vector2i pos) {
+		return this.pickingTexture.readPixel(pos);
 	}
 }

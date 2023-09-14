@@ -3,8 +3,8 @@
   "name" : "Player",
   "transform" : {
     "position" : {
-      "x" : -0.03664553,
-      "y" : -8.050273,
+      "x" : -31.563425,
+      "y" : 63.626717,
       "z" : 0.0,
       "finite" : true
     },
@@ -51,19 +51,19 @@
       "shader" : "DEFAULT",
       "sprite" : {
         "textureCoords" : [ {
-          "x" : 0.0,
+          "x" : 0.5,
           "y" : 0.0,
           "finite" : true
         }, {
-          "x" : 0.25,
+          "x" : 0.75,
           "y" : 0.0,
           "finite" : true
         }, {
-          "x" : 0.25,
+          "x" : 0.75,
           "y" : 1.0,
           "finite" : true
         }, {
-          "x" : 0.0,
+          "x" : 0.5,
           "y" : 1.0,
           "finite" : true
         } ],
@@ -315,7 +315,8 @@
       "@type" : "MouseDragging",
       "id" : 7,
       "snapToGrid" : true,
-      "gridSize" : 100
+      "gridSize" : 100,
+      "picked" : false
     }
   }
 }, {
@@ -398,7 +399,8 @@
       "@type" : "MouseDragging",
       "id" : 10,
       "snapToGrid" : true,
-      "gridSize" : 100
+      "gridSize" : 100,
+      "picked" : false
     }
   }
 }, {
@@ -481,7 +483,8 @@
       "@type" : "MouseDragging",
       "id" : 13,
       "snapToGrid" : true,
-      "gridSize" : 100
+      "gridSize" : 100,
+      "picked" : false
     }
   }
 }, {
@@ -564,7 +567,8 @@
       "@type" : "MouseDragging",
       "id" : 16,
       "snapToGrid" : true,
-      "gridSize" : 100
+      "gridSize" : 100,
+      "picked" : false
     }
   }
 }, {
@@ -647,7 +651,8 @@
       "@type" : "MouseDragging",
       "id" : 19,
       "snapToGrid" : true,
-      "gridSize" : 100
+      "gridSize" : 100,
+      "picked" : false
     }
   }
 }, {
@@ -730,7 +735,8 @@
       "@type" : "MouseDragging",
       "id" : 22,
       "snapToGrid" : true,
-      "gridSize" : 100
+      "gridSize" : 100,
+      "picked" : false
     }
   }
 }, {
@@ -813,7 +819,8 @@
       "@type" : "MouseDragging",
       "id" : 25,
       "snapToGrid" : true,
-      "gridSize" : 100
+      "gridSize" : 100,
+      "picked" : false
     }
   }
 }, {
@@ -896,7 +903,8 @@
       "@type" : "MouseDragging",
       "id" : 28,
       "snapToGrid" : true,
-      "gridSize" : 100
+      "gridSize" : 100,
+      "picked" : false
     }
   }
 }, {
@@ -979,7 +987,8 @@
       "@type" : "MouseDragging",
       "id" : 31,
       "snapToGrid" : true,
-      "gridSize" : 100
+      "gridSize" : 100,
+      "picked" : false
     }
   }
 }, {
@@ -1062,7 +1071,8 @@
       "@type" : "MouseDragging",
       "id" : 34,
       "snapToGrid" : true,
-      "gridSize" : 100
+      "gridSize" : 100,
+      "picked" : false
     }
   }
 }, {
@@ -1145,7 +1155,8 @@
       "@type" : "MouseDragging",
       "id" : 37,
       "snapToGrid" : true,
-      "gridSize" : 100
+      "gridSize" : 100,
+      "picked" : false
     }
   }
 }, {
@@ -1228,7 +1239,8 @@
       "@type" : "MouseDragging",
       "id" : 40,
       "snapToGrid" : true,
-      "gridSize" : 100
+      "gridSize" : 100,
+      "picked" : false
     }
   }
 }, {
@@ -1311,7 +1323,8 @@
       "@type" : "MouseDragging",
       "id" : 43,
       "snapToGrid" : true,
-      "gridSize" : 100
+      "gridSize" : 100,
+      "picked" : false
     }
   }
 }, {
@@ -1394,7 +1407,8 @@
       "@type" : "MouseDragging",
       "id" : 46,
       "snapToGrid" : true,
-      "gridSize" : 100
+      "gridSize" : 100,
+      "picked" : false
     }
   }
 }, {
@@ -1425,7 +1439,8 @@
       "@type" : "MouseDragging",
       "id" : 49,
       "snapToGrid" : true,
-      "gridSize" : 100
+      "gridSize" : 100,
+      "picked" : false
     },
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
@@ -1560,7 +1575,8 @@
       "@type" : "MouseDragging",
       "id" : 52,
       "snapToGrid" : true,
-      "gridSize" : 100
+      "gridSize" : 100,
+      "picked" : false
     }
   }
 }, {
@@ -1591,7 +1607,8 @@
       "@type" : "MouseDragging",
       "id" : 55,
       "snapToGrid" : true,
-      "gridSize" : 100
+      "gridSize" : 100,
+      "picked" : false
     },
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
@@ -1674,7 +1691,8 @@
       "@type" : "MouseDragging",
       "id" : 58,
       "snapToGrid" : true,
-      "gridSize" : 100
+      "gridSize" : 100,
+      "picked" : false
     },
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
@@ -1757,7 +1775,8 @@
       "@type" : "MouseDragging",
       "id" : 61,
       "snapToGrid" : true,
-      "gridSize" : 100
+      "gridSize" : 100,
+      "picked" : false
     },
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
@@ -1840,7 +1859,8 @@
       "@type" : "MouseDragging",
       "id" : 64,
       "snapToGrid" : true,
-      "gridSize" : 100
+      "gridSize" : 100,
+      "picked" : false
     },
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
@@ -1923,7 +1943,8 @@
       "@type" : "MouseDragging",
       "id" : 67,
       "snapToGrid" : true,
-      "gridSize" : 100
+      "gridSize" : 100,
+      "picked" : false
     },
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
@@ -2058,7 +2079,8 @@
       "@type" : "MouseDragging",
       "id" : 70,
       "snapToGrid" : true,
-      "gridSize" : 100
+      "gridSize" : 100,
+      "picked" : false
     }
   }
 }, {
@@ -2141,7 +2163,8 @@
       "@type" : "MouseDragging",
       "id" : 73,
       "snapToGrid" : true,
-      "gridSize" : 100
+      "gridSize" : 100,
+      "picked" : false
     }
   }
 }, {
@@ -2224,7 +2247,260 @@
       "@type" : "MouseDragging",
       "id" : 76,
       "snapToGrid" : true,
-      "gridSize" : 100
+      "gridSize" : 100,
+      "picked" : false
+    }
+  }
+}, {
+  "id" : 77,
+  "name" : "Ground",
+  "transform" : {
+    "position" : {
+      "x" : 200.0,
+      "y" : 0.0,
+      "z" : 0.0,
+      "finite" : true
+    },
+    "facing" : {
+      "x" : 1.0,
+      "y" : 0.0,
+      "z" : 0.0,
+      "finite" : true
+    },
+    "scale" : {
+      "x" : 1.0,
+      "y" : 1.0,
+      "z" : 1.0,
+      "finite" : true
+    }
+  },
+  "components" : {
+    "com.lunix.javagame.engine.components.MouseDragging" : {
+      "@type" : "MouseDragging",
+      "id" : 79,
+      "snapToGrid" : true,
+      "gridSize" : 100,
+      "picked" : false
+    },
+    "com.lunix.javagame.engine.components.SpriteRenderer" : {
+      "@type" : "SpriteRenderer",
+      "id" : 78,
+      "positionOffset" : {
+        "x" : 0.0,
+        "y" : -50.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "widthDirection" : {
+        "x" : 1.0,
+        "y" : 0.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "heightDirection" : {
+        "x" : 0.0,
+        "y" : 1.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "width" : 100,
+      "height" : 100,
+      "color" : {
+        "rgba" : [ 1.0, 1.0, 1.0, 1.0 ]
+      },
+      "shader" : "DEFAULT",
+      "sprite" : {
+        "textureCoords" : [ {
+          "x" : 0.25,
+          "y" : 0.5,
+          "finite" : true
+        }, {
+          "x" : 0.5,
+          "y" : 0.5,
+          "finite" : true
+        }, {
+          "x" : 0.5,
+          "y" : 0.75,
+          "finite" : true
+        }, {
+          "x" : 0.25,
+          "y" : 0.75,
+          "finite" : true
+        } ],
+        "texture" : "TILE_BRICK"
+      },
+      "rotate" : 0,
+      "mirrorWidth" : false,
+      "mirrorHeight" : false,
+      "changed" : false
+    }
+  }
+}, {
+  "id" : 80,
+  "name" : "Ground",
+  "transform" : {
+    "position" : {
+      "x" : 200.0,
+      "y" : 100.0,
+      "z" : 0.0,
+      "finite" : true
+    },
+    "facing" : {
+      "x" : 1.0,
+      "y" : 0.0,
+      "z" : 0.0,
+      "finite" : true
+    },
+    "scale" : {
+      "x" : 1.0,
+      "y" : 1.0,
+      "z" : 1.0,
+      "finite" : true
+    }
+  },
+  "components" : {
+    "com.lunix.javagame.engine.components.MouseDragging" : {
+      "@type" : "MouseDragging",
+      "id" : 82,
+      "snapToGrid" : true,
+      "gridSize" : 100,
+      "picked" : false
+    },
+    "com.lunix.javagame.engine.components.SpriteRenderer" : {
+      "@type" : "SpriteRenderer",
+      "id" : 81,
+      "positionOffset" : {
+        "x" : 0.0,
+        "y" : -50.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "widthDirection" : {
+        "x" : 1.0,
+        "y" : 0.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "heightDirection" : {
+        "x" : 0.0,
+        "y" : 1.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "width" : 100,
+      "height" : 100,
+      "color" : {
+        "rgba" : [ 1.0, 1.0, 1.0, 1.0 ]
+      },
+      "shader" : "DEFAULT",
+      "sprite" : {
+        "textureCoords" : [ {
+          "x" : 0.0,
+          "y" : 0.75,
+          "finite" : true
+        }, {
+          "x" : 0.25,
+          "y" : 0.75,
+          "finite" : true
+        }, {
+          "x" : 0.25,
+          "y" : 1.0,
+          "finite" : true
+        }, {
+          "x" : 0.0,
+          "y" : 1.0,
+          "finite" : true
+        } ],
+        "texture" : "TILE_BRICK"
+      },
+      "rotate" : 0,
+      "mirrorWidth" : false,
+      "mirrorHeight" : false,
+      "changed" : false
+    }
+  }
+}, {
+  "id" : 89,
+  "name" : "Ground",
+  "transform" : {
+    "position" : {
+      "x" : 200.0,
+      "y" : 200.0,
+      "z" : 0.0,
+      "finite" : true
+    },
+    "facing" : {
+      "x" : 1.0,
+      "y" : 0.0,
+      "z" : 0.0,
+      "finite" : true
+    },
+    "scale" : {
+      "x" : 1.0,
+      "y" : 1.0,
+      "z" : 1.0,
+      "finite" : true
+    }
+  },
+  "components" : {
+    "com.lunix.javagame.engine.components.MouseDragging" : {
+      "@type" : "MouseDragging",
+      "id" : 91,
+      "snapToGrid" : true,
+      "gridSize" : 100,
+      "picked" : false
+    },
+    "com.lunix.javagame.engine.components.SpriteRenderer" : {
+      "@type" : "SpriteRenderer",
+      "id" : 90,
+      "positionOffset" : {
+        "x" : 0.0,
+        "y" : -50.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "widthDirection" : {
+        "x" : 1.0,
+        "y" : 0.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "heightDirection" : {
+        "x" : 0.0,
+        "y" : 1.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "width" : 100,
+      "height" : 100,
+      "color" : {
+        "rgba" : [ 1.0, 1.0, 1.0, 1.0 ]
+      },
+      "shader" : "DEFAULT",
+      "sprite" : {
+        "textureCoords" : [ {
+          "x" : 0.75,
+          "y" : 0.75,
+          "finite" : true
+        }, {
+          "x" : 1.0,
+          "y" : 0.75,
+          "finite" : true
+        }, {
+          "x" : 1.0,
+          "y" : 1.0,
+          "finite" : true
+        }, {
+          "x" : 0.75,
+          "y" : 1.0,
+          "finite" : true
+        } ],
+        "texture" : "TILE_BRICK"
+      },
+      "rotate" : 0,
+      "mirrorWidth" : false,
+      "mirrorHeight" : false,
+      "changed" : false
     }
   }
 } ]

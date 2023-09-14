@@ -73,4 +73,14 @@ public class SceneManager {
 	public Scene currentScene() {
 		return this.currentScene;
 	}
+
+	/**
+	 * Render the current scene
+	 * 
+	 * @param deltaTime
+	 * @throws Exception
+	 */
+	public void render() throws Exception {
+		this.currentScene.render();
+	}
 }

@@ -1,7 +1,7 @@
 package com.lunix.javagame.engine.enums;
 
 public enum ShaderType implements ResourceType {
-	DEFAULT("DEFAULT"), DEBUG("DEBUG");
+	DEFAULT("DEFAULT"), DEBUG("DEBUG"), PICKING("PICKING");
 
 	private final String value;
 

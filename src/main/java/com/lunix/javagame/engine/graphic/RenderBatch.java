@@ -29,13 +29,15 @@ public class RenderBatch {
 	private final int COLOR_SIZE = 4;
 	private final int TEXTURE_COORDS_SIZE = 2;
 	private final int TEXTURE_ID_SIZE = 1;
+	private final int OBJECT_ID_SIZE = 1;
 
 	private final int POSITION_OFFSET = 0;
 	private final int COLOR_OFFSET = POSITION_OFFSET + POSITION_SIZE * Float.BYTES;
 	private final int TEXTURE_COORDS_OFFSET = COLOR_OFFSET + COLOR_SIZE * Float.BYTES;
 	private final int TEXTURE_ID_OFFSET = TEXTURE_COORDS_OFFSET + TEXTURE_COORDS_SIZE * Float.BYTES;
+	private final int OBJECT_ID_OFFSET = TEXTURE_ID_OFFSET + OBJECT_ID_SIZE * Float.BYTES;
 
-	private final int VERTEX_SIZE = POSITION_SIZE + COLOR_SIZE + TEXTURE_COORDS_SIZE + TEXTURE_ID_SIZE;
+	private final int VERTEX_SIZE = POSITION_SIZE + COLOR_SIZE + TEXTURE_COORDS_SIZE + TEXTURE_ID_SIZE + OBJECT_ID_SIZE;
 	private final int VERTEX_SIZE_BYTES = VERTEX_SIZE * Float.BYTES;
 
 	private List<SpriteRenderer> sprites;
@@ -86,6 +88,9 @@ public class RenderBatch {
 
 		glVertexAttribPointer(3, TEXTURE_ID_SIZE, GL_FLOAT, false, VERTEX_SIZE_BYTES, TEXTURE_ID_OFFSET);
 		glEnableVertexAttribArray(3);
+
+		glVertexAttribPointer(4, OBJECT_ID_SIZE, GL_FLOAT, false, VERTEX_SIZE_BYTES, OBJECT_ID_OFFSET);
+		glEnableVertexAttribArray(4);
 	}
 
 	private int[] generateIndices() {
@@ -104,7 +109,7 @@ public class RenderBatch {
 		return elements;
 	}
 
-	public void render() throws Exception {
+	public void render(Shader overrideShader) throws Exception {
 		// Update positions
 		boolean update = false;
 		int index = 0;
@@ -123,15 +128,16 @@ public class RenderBatch {
 			glBufferSubData(GL_ARRAY_BUFFER, 0, vertices);
 		}
 
-		this.shader.use();
-		this.shader.uploadMat4f("projMat", GameInstance.get().camera().projectionMatrix());
-		this.shader.uploadMat4f("viewMat", GameInstance.get().camera().viewMatrix());
+		Shader currentShader = overrideShader == null ? this.shader : overrideShader;
+		currentShader.use();
+		currentShader.uploadMat4f("projMat", GameInstance.get().camera().projectionMatrix());
+		currentShader.uploadMat4f("viewMat", GameInstance.get().camera().viewMatrix());
 
 		for (Entry<TextureType, Integer> entry : this.textures.entrySet()) {
 			ResourcePool.getTexture(entry.getKey()).bind(entry.getValue());
 		}
 
-		shader.uploadIntArray("textures", this.textureSlots);
+		currentShader.uploadIntArray("textures", this.textureSlots);
 
 		// Bind the VAO that we are using
 		glBindVertexArray(this.vaoID);
@@ -141,6 +147,7 @@ public class RenderBatch {
 		glEnableVertexAttribArray(1);
 		glEnableVertexAttribArray(2);
 		glEnableVertexAttribArray(3);
+		glEnableVertexAttribArray(4);
 
 		glDrawElements(GL_TRIANGLES, this.sprites.size() * 6, GL_UNSIGNED_INT, 0);
 
@@ -149,10 +156,11 @@ public class RenderBatch {
 		glDisableVertexAttribArray(1);
 		glDisableVertexAttribArray(2);
 		glDisableVertexAttribArray(3);
+		glDisableVertexAttribArray(4);
 		glBindVertexArray(0);
 
 		Texture.unbind();
-		this.shader.detach();
+		currentShader.detach();
 	}
 
 	public void addSprite(SpriteRenderer sprite) {
@@ -206,5 +214,13 @@ public class RenderBatch {
 
 	public boolean hasTexture(TextureType texture) {
 		return this.textures.get(texture) != null;
+	}
+
+	public boolean removeSprite(SpriteRenderer sprite) {
+		// Get index and add grenderObject
+		if (!this.sprites.remove(sprite))
+			return false;
+
+		return true;
 	}
 }

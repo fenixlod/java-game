@@ -14,14 +14,14 @@ import com.lunix.javagame.engine.util.VectorUtil;
 
 public class MouseListener {
 	private Vector2d scroll;
-	private Vector2d position;
+	private Vector2d positionInWindow;
 	private Vector2d delta;
-	private boolean pressedButtons[] = new boolean[5];
+	private boolean pressedButtons[][] = new boolean[2][5];//Pos[0] = if button is pressed, pos[1] = if it is clicked this frame
 	private boolean dragging;
 
 	public MouseListener() {
 		this.scroll = new Vector2d();
-		this.position = new Vector2d();
+		this.positionInWindow = new Vector2d();
 		this.delta = new Vector2d();
 	}
 
@@ -32,12 +32,12 @@ public class MouseListener {
 	 * @param yPos
 	 */
 	public void positionCallback(long window, double xPos, double yPos) {
-		this.delta.x = xPos - this.position.x;
-		this.delta.y = yPos - this.position.y;
-		this.position.x = xPos;
-		this.position.y = yPos;
+		this.delta.x = xPos - this.positionInWindow.x;
+		this.delta.y = yPos - this.positionInWindow.y;
+		this.positionInWindow.x = xPos;
+		this.positionInWindow.y = yPos;
 		
-		for (boolean pressedButton : pressedButtons) {
+		for (boolean pressedButton : pressedButtons[0]) {
 			if (pressedButton) {
 				this.dragging = true;
 				break;
@@ -53,13 +53,14 @@ public class MouseListener {
 	 * @param modifiers
 	 */
 	public void buttonCallback(long window, int button, int action, int modifiers) {
-		if (button >= this.pressedButtons.length)
+		if (button >= this.pressedButtons[0].length)
 			return;
 
-		if (action == GLFW_PRESS)
-			this.pressedButtons[button] = true;
-		else if (action == GLFW_RELEASE) {
-			this.pressedButtons[button] = false;
+		if (action == GLFW_PRESS) {
+			this.pressedButtons[0][button] = true;
+			this.pressedButtons[1][button] = true;
+		} else if (action == GLFW_RELEASE) {
+			this.pressedButtons[0][button] = false;
 			this.dragging = false;
 		}
 	}
@@ -85,21 +86,32 @@ public class MouseListener {
 		this.scroll.y = 0.0;
 		this.delta.x = 0.0;
 		this.delta.y = 0.0;
+
+		for (int i = 0; i < this.pressedButtons[1].length; i++) {
+			this.pressedButtons[1][i] = false;
+		}
 	}
 
 	public boolean isButtonPressed(int button) {
-		if (button >= this.pressedButtons.length)
+		if (button >= this.pressedButtons[0].length)
 			throw new IllegalStateException("Invalid mouse button: " + button);
 
-		return this.pressedButtons[button];
+		return this.pressedButtons[0][button];
+	}
+	
+	public boolean isButtonClicked(int button) {
+		if (button >= this.pressedButtons[1].length)
+			throw new IllegalStateException("Invalid mouse button: " + button);
+
+		return this.pressedButtons[1][button];
 	}
 
 	public Vector2d scroll() {
 		return this.scroll;
 	}
 
-	public Vector2d position() {
-		return this.position;
+	public Vector2d positionInWindow() {
+		return this.positionInWindow;
 	}
 
 	public Vector2d delta() {
@@ -116,8 +128,8 @@ public class MouseListener {
 	 * @return
 	 */
 	public Vector3f worldPosition() {
-		float cursorX = (float) this.position.x;
-		float cursorY = (float) this.position.y;
+		float cursorX = (float) this.positionInWindow.x;
+		float cursorY = (float) this.positionInWindow.y;
 
 		if (GameInstance.get().window().viewPortSize().lengthSquared() > 0) {
 			Vector2i offset = GameInstance.get().window().viewPortOffset();
@@ -149,10 +161,29 @@ public class MouseListener {
 		return orig;
 	}
 
+	public Vector2i positionInViewPort() {
+		float cursorX = (float) this.positionInWindow.x;
+		float cursorY = (float) this.positionInWindow.y;
+		Vector2i size = GameInstance.get().window().windowSize();
+
+		if (GameInstance.get().window().viewPortSize().lengthSquared() > 0) {
+			Vector2i offset = GameInstance.get().window().viewPortOffset();
+			cursorX = (cursorX - offset.x) / GameInstance.get().window().viewPortSize().x;
+			cursorY = (cursorY - offset.y) / GameInstance.get().window().viewPortSize().y;
+
+			cursorX *= size.x;
+			cursorY *= size.y;
+			cursorY = size.y - cursorY;
+		}
+
+		return new Vector2i((int) cursorX, (int) cursorY);
+	}
+
 	@Override
 	public String toString() {
-		return "MouseListener [X=" + position.x + ", Y=" + position.y + ", dX=" + delta.x + ", dY=" + delta.y +
-				", pressedButtons="	+ Arrays.toString(pressedButtons) + ", dragging=" + dragging + 
+		return "MouseListener [X=" + positionInWindow.x + ", Y=" + positionInWindow.y + ", dX=" + delta.x + ", dY=" + delta.y +
+				", pressedButtons=" + Arrays.toString(pressedButtons[0]) + ", dragging=" + dragging
+				+ 
 				", scrollX=" + scroll.x + ", scrollY=" + scroll.y + "]";
 	}
 }

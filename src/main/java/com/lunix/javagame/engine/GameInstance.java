@@ -90,7 +90,11 @@ public class GameInstance {
 		// the window or has pressed the ESCAPE key.
 		while (this.window.isOpened()) {
 			this.timer.tick();
-			this.window.newFrame(this.sceneManager.currentScene());
+			Scene currentScene = this.sceneManager.currentScene();
+			// Render pass 1. Create the picking texture
+			this.window.createPickingTexture(currentScene);
+			// Render pass 2. Render the actual game
+			this.window.newFrame(currentScene);
 			Debugger.beginFrame();
 			Debugger.display(false, "Game FPS: {}", 1 / this.timer.deltaTime());
 			Debugger.display(false, this.mouse);
@@ -99,7 +103,8 @@ public class GameInstance {
 			Debugger.display(false, "Delta time: {}", this.timer.deltaTime());
 			Debugger.draw();
 			this.sceneManager.update(this.timer.deltaTime());
-			this.window.update(this.timer.deltaTime(), this.sceneManager.currentScene());
+			this.sceneManager.render();
+			this.window.update(this.timer.deltaTime(), currentScene);
 			this.window.render();
 			this.mouse.reset();
 		}

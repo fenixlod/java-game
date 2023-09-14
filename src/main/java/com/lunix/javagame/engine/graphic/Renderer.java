@@ -11,7 +11,8 @@ import com.lunix.javagame.engine.exception.ResourceNotFound;
 
 public class Renderer {
 	private final int MAX_BATCH_SIZE = 1000;
-	List<RenderBatch> batches;
+	private List<RenderBatch> batches;
+	private static Shader overrideShader;
 
 	public Renderer() {
 		this.batches = new ArrayList<>();
@@ -62,7 +63,27 @@ public class Renderer {
 	 */
 	public void render() throws Exception {
 		for (RenderBatch batch : batches) {
-			batch.render();
+			batch.render(overrideShader);
+		}
+	}
+
+	public static void overrideShader(Shader shader) {
+		overrideShader = shader;
+	}
+
+	/**
+	 * Remove game object for drawing.
+	 * 
+	 * @param obj
+	 * @throws ResourceNotFound
+	 * @throws IOException
+	 */
+	public void remove(GameObject obj) throws ResourceNotFound, IOException {
+		SpriteRenderer sprite = obj.getComponent(SpriteRenderer.class);
+
+		for (RenderBatch batch : this.batches) {
+			if (batch.removeSprite(sprite))
+				break;
 		}
 	}
 }

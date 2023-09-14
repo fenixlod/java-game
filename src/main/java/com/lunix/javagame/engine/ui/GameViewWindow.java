@@ -69,7 +69,7 @@ public class GameViewWindow {
 	}
 
 	public static boolean getWantCaptureMouse() {
-		Vector2d cursorPosition = GameInstance.get().mouse().position();
+		Vector2d cursorPosition = GameInstance.get().mouse().positionInWindow();
 		return cursorPosition.x >= leftX && cursorPosition.x <= rightX && cursorPosition.y >= bottomY
 				&& cursorPosition.y <= topY;
 	}

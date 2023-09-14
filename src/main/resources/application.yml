@@ -20,6 +20,7 @@ resources:
   shaders:
     default: assets/shaders/default.glsl
     debug: assets/shaders/debug.glsl
+    picking: assets/shaders/picking.glsl
   textures:
     player:
       path: assets/images/Player.png

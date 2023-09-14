@@ -231,6 +231,8 @@ public class SpriteRenderer extends Component {
 		vertices[offset++] = uv.y;
 
 		vertices[offset++] = textureIndex;
+
+		vertices[offset++] = owner.id() + 1;
 		return offset;
 	}
 

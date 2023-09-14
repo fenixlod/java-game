@@ -78,7 +78,6 @@ public abstract class Scene {
 		for (GameObject obj : objects) {
 			obj.update(deltaTime);
 		}
-		this.renderer.render();
 	}
 
 	/**
@@ -163,5 +162,26 @@ public abstract class Scene {
 	 * 
 	 */
 	public void endFrame() {
+	}
+
+	/**
+	 * Render the scene.
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	public void render() throws Exception {
+		this.renderer.render();
+	}
+
+	/**
+	 * Remove game object from the scene.
+	 * 
+	 * @param object
+	 * @throws Exception
+	 */
+	public void removeGameObject(GameObject object) throws Exception {
+		if (objects.remove(object))
+			this.renderer.remove(object);
 	}
 }
