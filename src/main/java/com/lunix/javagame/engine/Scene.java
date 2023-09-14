@@ -12,24 +12,21 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.util.StringUtils;
 
-import com.lunix.javagame.engine.enums.GameSceneType;
 import com.lunix.javagame.engine.graphic.Renderer;
 
 public abstract class Scene {
 	protected static final Logger logger = LogManager.getLogger(Scene.class);
-	private GameSceneType type;
 	private boolean active = false;
 	private final List<GameObject> objects;
 	private final Renderer renderer;
 	protected final GameInstance game;
 	protected boolean loaded;
 
-	protected Scene(GameSceneType type) {
+	protected Scene() {
 		this.active = false;
 		this.objects = new ArrayList<>();
 		this.renderer = new Renderer();
 		this.game = GameInstance.get();
-		this.type = type;
 	}
 
 	/**

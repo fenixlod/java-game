@@ -3,8 +3,8 @@
   "name" : "Player",
   "transform" : {
     "position" : {
-      "x" : -31.563425,
-      "y" : 63.626717,
+      "x" : -44.13964,
+      "y" : 8.621589,
       "z" : 0.0,
       "finite" : true
     },

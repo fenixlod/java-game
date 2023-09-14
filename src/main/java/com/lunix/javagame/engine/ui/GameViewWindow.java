@@ -10,12 +10,12 @@ import imgui.ImVec2;
 import imgui.flag.ImGuiWindowFlags;
 
 public class GameViewWindow {
-	private static float leftX;
-	private static float rightX;
-	private static float topY;
-	private static float bottomY;
+	private float leftX;
+	private float rightX;
+	private float topY;
+	private float bottomY;
 
-	public static void show(FrameBuffer frameBuffer) {
+	public void show(FrameBuffer frameBuffer) {
 		ImGui.begin("Game viewport", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse);
 		ImVec2 windowSize = getLargestSizeForViewport();
 		ImVec2 windowPosition = getCenteredPositionForViewoirt(windowSize);
@@ -27,10 +27,10 @@ public class GameViewWindow {
 		topLeft.x -= ImGui.getScrollX();
 		topLeft.y -= ImGui.getScrollY();
 
-		leftX = topLeft.x;
-		bottomY = topLeft.y;
-		rightX = topLeft.x + windowSize.x;
-		topY = topLeft.y + windowSize.y;
+		this.leftX = topLeft.x;
+		this.bottomY = topLeft.y;
+		this.rightX = topLeft.x + windowSize.x;
+		this.topY = topLeft.y + windowSize.y;
 
 		int textureId = frameBuffer.texture().id();
 		ImGui.image(textureId, windowSize.x, windowSize.y, 0, 1, 1, 0);
@@ -41,7 +41,7 @@ public class GameViewWindow {
 		ImGui.end();
 	}
 
-	private static ImVec2 getLargestSizeForViewport() {
+	private ImVec2 getLargestSizeForViewport() {
 		float targerAspectRatio = GameInstance.get().window().targerAspectRatio();
 		ImVec2 windowSize = new ImVec2();
 		ImGui.getContentRegionAvail(windowSize);
@@ -57,7 +57,7 @@ public class GameViewWindow {
 		return windowSize.set(aspectWidth, aspectHeigth);
 	}
 
-	private static ImVec2 getCenteredPositionForViewoirt(ImVec2 aspectSize) {
+	private ImVec2 getCenteredPositionForViewoirt(ImVec2 aspectSize) {
 		ImVec2 windowSize = new ImVec2();
 		ImGui.getContentRegionAvail(windowSize);
 		windowSize.x -= ImGui.getScrollX();
@@ -68,9 +68,9 @@ public class GameViewWindow {
 		return windowSize.set(viewportX + ImGui.getCursorPosX(), viewportY + ImGui.getCursorPosY());
 	}
 
-	public static boolean getWantCaptureMouse() {
+	public boolean getWantCaptureMouse() {
 		Vector2d cursorPosition = GameInstance.get().mouse().positionInWindow();
-		return cursorPosition.x >= leftX && cursorPosition.x <= rightX && cursorPosition.y >= bottomY
-				&& cursorPosition.y <= topY;
+		return cursorPosition.x >= this.leftX && cursorPosition.x <= this.rightX && cursorPosition.y >= this.bottomY
+				&& cursorPosition.y <= this.topY;
 	}
 }

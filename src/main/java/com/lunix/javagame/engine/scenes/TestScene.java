@@ -9,7 +9,6 @@ import com.lunix.javagame.engine.ResourcePool;
 import com.lunix.javagame.engine.Scene;
 import com.lunix.javagame.engine.components.Animation;
 import com.lunix.javagame.engine.components.SpriteRenderer;
-import com.lunix.javagame.engine.enums.GameSceneType;
 import com.lunix.javagame.engine.enums.ShaderType;
 import com.lunix.javagame.engine.enums.TextureType;
 import com.lunix.javagame.engine.graphic.Color;
@@ -19,8 +18,8 @@ import com.lunix.javagame.engine.util.VectorUtil;
 public class TestScene extends Scene {
 	private GameObject playerObject;
 
-	public TestScene(GameSceneType type) {
-		super(type);
+	public TestScene() {
+		super();
 	}
 
 	@Override

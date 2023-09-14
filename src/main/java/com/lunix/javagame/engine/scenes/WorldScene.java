@@ -7,7 +7,6 @@ import org.joml.Vector3f;
 import com.lunix.javagame.engine.GameObject;
 import com.lunix.javagame.engine.ResourcePool;
 import com.lunix.javagame.engine.Scene;
-import com.lunix.javagame.engine.enums.GameSceneType;
 import com.lunix.javagame.engine.enums.ShaderType;
 import com.lunix.javagame.engine.enums.TextureType;
 import com.lunix.javagame.engine.util.Debugger;
@@ -16,8 +15,8 @@ public class WorldScene extends Scene {
 	private GameObject playerObject;
 	protected GameObject currentObject;
 
-	public WorldScene(GameSceneType type) {
-		super(type);
+	public WorldScene() {
+		super();
 	}
 
 	@Override

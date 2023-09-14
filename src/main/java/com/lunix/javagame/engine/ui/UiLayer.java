@@ -33,7 +33,8 @@ public class UiLayer {
 	private String glslVersion;
 	private long glfwWindow;
 	private final GameWindow window;
-	public static ImGuiIO io;
+	public ImGuiIO io;
+	private GameViewWindow viewWindow;
 
 	// Mouse cursors provided by GLFW
 	private final long[] mouseCursors = new long[ImGuiMouseCursor.COUNT];
@@ -244,7 +245,7 @@ public class UiLayer {
 	 * @param action
 	 * @param mods
 	 */
-	public static void mouseButtonCallback(long window, int button, int action, int mods,
+	public void mouseButtonCallback(long window, int button, int action, int mods,
 			GLFWMouseButtonCallbackI mouseBtnCb) {
 		final boolean[] mouseDown = new boolean[5];
 		mouseDown[0] = button == GLFW_MOUSE_BUTTON_1 && action != GLFW_RELEASE;
@@ -259,7 +260,7 @@ public class UiLayer {
 			ImGui.setWindowFocus(null);
 		}
 
-		if (!io.getWantCaptureMouse() || GameViewWindow.getWantCaptureMouse()) {
+		if (!io.getWantCaptureMouse() || (viewWindow != null && viewWindow.getWantCaptureMouse())) {
 			if (mouseBtnCb != null)
 				mouseBtnCb.invoke(window, button, action, mods);
 		}
@@ -272,11 +273,11 @@ public class UiLayer {
 	 * @param xOffset
 	 * @param yOffset
 	 */
-	public static void scrollCallback(long window, double xOffset, double yOffset, GLFWScrollCallbackI scrollCb) {
+	public void scrollCallback(long window, double xOffset, double yOffset, GLFWScrollCallbackI scrollCb) {
 		io.setMouseWheelH(io.getMouseWheelH() + (float) xOffset);
 		io.setMouseWheel(io.getMouseWheel() + (float) yOffset);
 
-		if (!io.getWantCaptureMouse() || GameViewWindow.getWantCaptureMouse()) {
+		if (!io.getWantCaptureMouse() || (viewWindow != null && viewWindow.getWantCaptureMouse())) {
 			if (scrollCb != null)
 				scrollCb.invoke(window, xOffset, yOffset);
 		}
@@ -291,7 +292,7 @@ public class UiLayer {
 	 * @param action
 	 * @param mods
 	 */
-	public static void keyCallback(long window, int key, int scancode, int action, int mods, GLFWKeyCallbackI keyCb) {
+	public void keyCallback(long window, int key, int scancode, int action, int mods, GLFWKeyCallbackI keyCb) {
 		if (action == GLFW_PRESS) {
 			io.setKeysDown(key, true);
 		} else if (action == GLFW_RELEASE) {
@@ -307,5 +308,9 @@ public class UiLayer {
 			if (keyCb != null/* && !GameViewWindow.getWantCaptureMouse() */)
 				keyCb.invoke(window, key, scancode, action, mods);
 		}
+	}
+
+	public void setViewWindow(GameViewWindow viewWindow) {
+		this.viewWindow = viewWindow;
 	}
 }

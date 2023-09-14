@@ -126,17 +126,17 @@ public class GameWindow {
 		glfwSetCursorPosCallback(this.windowHandle, mouseListener::positionCallback);
 		
 		glfwSetMouseButtonCallback(this.windowHandle, (win, button, action, mod) ->
-			UiLayer.mouseButtonCallback(win, button, action, mod, mouseListener::buttonCallback)
+			uiLayer.mouseButtonCallback(win, button, action, mod, mouseListener::buttonCallback)
 		);
 		
 		glfwSetScrollCallback(this.windowHandle, (win, xScroll, yScroll) -> 
-			UiLayer.scrollCallback(win, xScroll, yScroll, mouseListener::scrollCallback)
+			uiLayer.scrollCallback(win, xScroll, yScroll, mouseListener::scrollCallback)
 		);
 
 		// Setup a key callback. It will be called every time a key is pressed, repeated
 		// or released.
 		glfwSetKeyCallback(this.windowHandle, (win, key, sCode, action, mods) ->
-			UiLayer.keyCallback(win, key, sCode, action, mods, keyboardListener::keyCallback)
+			uiLayer.keyCallback(win, key, sCode, action, mods, keyboardListener::keyCallback)
 		);
 
 		// Add window resize callback
@@ -233,6 +233,10 @@ public class GameWindow {
 	public void update(float dt, Scene currentScene) {
 		currentScene.endFrame();
 		this.uiLayer.update(dt, currentScene);
+	}
+
+	public UiLayer uiLayer() {
+		return uiLayer;
 	}
 
 	public float targerAspectRatio() {

@@ -52,10 +52,10 @@ public class SceneManager {
 	 */
 	private Scene createNewScene(GameSceneType newSceneType) {
 		return switch (newSceneType) {
-			case MAIN_MENU -> new MainMenuScene(newSceneType);
-			case WORLD -> new WorldScene(newSceneType);
-			case TEST -> new TestScene(newSceneType);
-			case EDITOR -> new LevelEditorScene(newSceneType);
+			case MAIN_MENU -> new MainMenuScene();
+			case WORLD -> new WorldScene();
+			case TEST -> new TestScene();
+			case EDITOR -> new LevelEditorScene();
 			default -> throw new IllegalStateException("Unknown scene with type: " + newSceneType.toString());
 		};
 	}

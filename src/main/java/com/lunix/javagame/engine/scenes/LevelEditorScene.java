@@ -18,7 +18,6 @@ import com.lunix.javagame.engine.Scene;
 import com.lunix.javagame.engine.components.Animation;
 import com.lunix.javagame.engine.components.MouseDragging;
 import com.lunix.javagame.engine.components.SpriteRenderer;
-import com.lunix.javagame.engine.enums.GameSceneType;
 import com.lunix.javagame.engine.enums.ShaderType;
 import com.lunix.javagame.engine.enums.TextureType;
 import com.lunix.javagame.engine.graphic.Color;
@@ -42,9 +41,11 @@ public class LevelEditorScene extends Scene {
 	private GameObject draggingObject;
 	private EditorConfigs editorConfig;
 	private FrameBuffer frameBuffer;
+	private GameViewWindow viewWindow;
 
-	public LevelEditorScene(GameSceneType type) {
-		super(type);
+	public LevelEditorScene() {
+		super();
+		this.viewWindow = new GameViewWindow();
 	}
 
 	@Override
@@ -53,6 +54,7 @@ public class LevelEditorScene extends Scene {
 		editorConfig = game.editorConfig();
 		game.camera().setOrthoProjection();
 		game.camera().position(new Vector3f());
+		game.window().uiLayer().setViewWindow(viewWindow);
 		this.frameBuffer = new FrameBuffer(game.window().windowSize().x, game.window().windowSize().y);
 		ResourcePool.loadResources(ShaderType.DEFAULT, TextureType.PLAYER, TextureType.ENEMY, TextureType.PLAYER_IDLE,
 				TextureType.TILE_BRICK);
@@ -297,7 +299,7 @@ public class LevelEditorScene extends Scene {
 
 		ImGui.end();
 
-		GameViewWindow.show(frameBuffer);
+		viewWindow.show(frameBuffer);
 		ImGui.showDemoWindow();
 		ImGui.end();
 	}
@@ -342,5 +344,11 @@ public class LevelEditorScene extends Scene {
 
 		// Dockspace
 		ImGui.dockSpace(ImGui.getID("Dockspace"));
+	}
+
+	@Override
+	public void stop() {
+		super.stop();
+		game.window().uiLayer().setViewWindow(null);
 	}
 }
