@@ -9,7 +9,6 @@ import org.joml.Vector2i;
 import org.joml.Vector3f;
 
 import com.lunix.javagame.configs.EditorConfigs;
-import com.lunix.javagame.engine.Editor;
 import com.lunix.javagame.engine.GameInstance;
 import com.lunix.javagame.engine.GameObject;
 import com.lunix.javagame.engine.Prefabs;
@@ -24,6 +23,7 @@ import com.lunix.javagame.engine.graphic.Color;
 import com.lunix.javagame.engine.graphic.FrameBuffer;
 import com.lunix.javagame.engine.graphic.Sprite;
 import com.lunix.javagame.engine.ui.GameViewWindow;
+import com.lunix.javagame.engine.ui.ObjectInspector;
 import com.lunix.javagame.engine.util.Debugger;
 import com.lunix.javagame.engine.util.VectorUtil;
 
@@ -37,15 +37,16 @@ import imgui.type.ImBoolean;
 
 public class LevelEditorScene extends Scene {
 	private GameObject playerObject;
-	protected GameObject currentObject;
 	private GameObject draggingObject;
 	private EditorConfigs editorConfig;
 	private FrameBuffer frameBuffer;
 	private GameViewWindow viewWindow;
+	private ObjectInspector objInspector;
 
 	public LevelEditorScene() {
 		super();
 		this.viewWindow = new GameViewWindow();
+		this.objInspector = new ObjectInspector();
 	}
 
 	@Override
@@ -81,7 +82,6 @@ public class LevelEditorScene extends Scene {
 					.color(Color.red())
 			);
 		addGameObject(enemy);
-		currentObject = enemy;
 
 /*		
 		// draw cuboid with dimensions: x=20, y=20, z=20
@@ -216,34 +216,21 @@ public class LevelEditorScene extends Scene {
 			}
 		}
 
-		if (GameInstance.get().mouse().isButtonClicked(GLFW_MOUSE_BUTTON_LEFT)) {
-			Vector2i pos = GameInstance.get().mouse().positionInViewPort();
-			System.out.println(game.window().pickObject(pos));
-		}
-
-		Debugger.display(false, "X={}, Y={}, Z={}", game.camera().position().x, game.camera().position().y,	game.camera().position().z);
+		//Debugger.display(true, "X={}, Y={}, Z={}", game.camera().position().x, game.camera().position().y,	game.camera().position().z);
 		game.camera().move(offset);
 /*
 		Vector3f worldPosition = game.mouse().worldPositionProjected();
 		System.out.println("Current X=" + worldPosition.x + " Y=" + worldPosition.y + " Z=" + worldPosition.z);
 */
+objInspector.update(deltaTime, this);
 		super.update(deltaTime);
-	}
-
-	public void inspector() {
-		if (currentObject != null) {
-			ImGui.begin("Inspector");
-			Editor.editObject(currentObject);
-			// currentObject.ui();
-			ImGui.end();
-		}
 	}
 
 	@Override
 	public void ui() {
 		setupDockspace();
 
-		inspector();
+		objInspector.show();
 		ImGui.begin("World Editor");
 
 		ImVec2 windowPos = new ImVec2();
@@ -309,7 +296,6 @@ public class LevelEditorScene extends Scene {
 		for (GameObject obj : loadedData) {
 			if (obj.name().equals("Player")) {
 				playerObject = obj;
-				currentObject = obj;
 				return;
 			}
 		}

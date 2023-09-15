@@ -7,6 +7,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joml.Vector3f;
 
+import com.lunix.javagame.engine.components.SpriteRenderer;
+import com.lunix.javagame.engine.graphic.Color;
+
 import imgui.ImGui;
 import imgui.type.ImFloat;
 import imgui.type.ImInt;
@@ -21,6 +24,9 @@ public class Editor {
 	 */
 	public static void editObject(GameObject obj) {
 		for (Component c : obj.components()) {
+			if (c.isHidden())
+				continue;
+
 			ImGui.text("---" + c.getClass().getSimpleName() + "---");
 			displayFields(c);
 		}
@@ -57,14 +63,10 @@ public class Editor {
 					displayBoolean(name, value, field, obj);
 				} else if (type == Vector3f.class) {
 					displayVector3f(name, value, field, obj);
+				} else if (type == Color.class) {
+					displayColor(name, value, field, obj);
 				}
-	/*			
-				float[] uiColor = color.rgba();
-				if (ImGui.colorPicker4("Color picker: ", uiColor)) {
-					// color.rgba(uiColor);
-					isChanged = true;
-				}
-*/
+
 				if (isPrivate)
 					field.setAccessible(false);
 			}
@@ -104,6 +106,17 @@ public class Editor {
 		if (ImGui.dragFloat3(name + ": ", uiValue)) {
 			val.set(uiValue[0], uiValue[1], uiValue[2]);
 			field.set(obj, val);
+		}
+	}
+
+	private static void displayColor(String name, Object value, Field field, Object obj)
+			throws IllegalArgumentException, IllegalAccessException {
+		if (value instanceof Color color) {
+			float[] uiColor = color.rgba();
+			if (ImGui.colorPicker4(name + ": ", uiColor)) {
+				color.rgba(uiColor);
+				((SpriteRenderer) obj).isChanged(true);
+			}
 		}
 	}
 }

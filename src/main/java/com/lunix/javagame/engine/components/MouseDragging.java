@@ -8,10 +8,13 @@ import com.lunix.javagame.engine.Component;
 import com.lunix.javagame.engine.GameInstance;
 
 public class MouseDragging extends Component {
-	private boolean snapToGrid;
-	private int gridSize;
-
+	private transient boolean snapToGrid;
+	private transient int gridSize;
 	private transient boolean isPicked;
+
+	public MouseDragging() {
+		this.hidden = true;
+	}
 
 	public void pickup() {
 		this.isPicked = true;
@@ -54,7 +57,7 @@ public class MouseDragging extends Component {
 					: offsetZ < (-gridSize / 2) ? newZ - gridSize : newZ;
 		}
 
-		owner.transform().position(worldPos);
+		this.owner.transform().position(worldPos);
 		if (GameInstance.get().mouse().isButtonPressed(GLFW_MOUSE_BUTTON_LEFT)) {
 			place();
 		}

@@ -25,6 +25,7 @@
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
       "id" : 1,
+      "hidden" : false,
       "positionOffset" : {
         "x" : 0.0,
         "y" : 0.0,
@@ -77,6 +78,7 @@
     "com.lunix.javagame.engine.components.Animation" : {
       "@type" : "Animation",
       "id" : 2,
+      "hidden" : false,
       "poses" : [ {
         "textureCoords" : [ {
           "x" : 0.0,
@@ -185,6 +187,7 @@
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
       "id" : 4,
+      "hidden" : false,
       "positionOffset" : {
         "x" : 0.0,
         "y" : 0.0,
@@ -262,6 +265,7 @@
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
       "id" : 6,
+      "hidden" : false,
       "positionOffset" : {
         "x" : 0.0,
         "y" : -50.0,
@@ -314,8 +318,7 @@
     "com.lunix.javagame.engine.components.MouseDragging" : {
       "@type" : "MouseDragging",
       "id" : 7,
-      "snapToGrid" : true,
-      "gridSize" : 100,
+      "hidden" : true,
       "picked" : false
     }
   }
@@ -346,6 +349,7 @@
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
       "id" : 9,
+      "hidden" : false,
       "positionOffset" : {
         "x" : 0.0,
         "y" : -50.0,
@@ -398,8 +402,7 @@
     "com.lunix.javagame.engine.components.MouseDragging" : {
       "@type" : "MouseDragging",
       "id" : 10,
-      "snapToGrid" : true,
-      "gridSize" : 100,
+      "hidden" : true,
       "picked" : false
     }
   }
@@ -430,6 +433,7 @@
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
       "id" : 12,
+      "hidden" : false,
       "positionOffset" : {
         "x" : 0.0,
         "y" : -50.0,
@@ -482,8 +486,7 @@
     "com.lunix.javagame.engine.components.MouseDragging" : {
       "@type" : "MouseDragging",
       "id" : 13,
-      "snapToGrid" : true,
-      "gridSize" : 100,
+      "hidden" : true,
       "picked" : false
     }
   }
@@ -514,6 +517,7 @@
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
       "id" : 15,
+      "hidden" : false,
       "positionOffset" : {
         "x" : 0.0,
         "y" : -50.0,
@@ -566,8 +570,7 @@
     "com.lunix.javagame.engine.components.MouseDragging" : {
       "@type" : "MouseDragging",
       "id" : 16,
-      "snapToGrid" : true,
-      "gridSize" : 100,
+      "hidden" : true,
       "picked" : false
     }
   }
@@ -598,6 +601,7 @@
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
       "id" : 18,
+      "hidden" : false,
       "positionOffset" : {
         "x" : 0.0,
         "y" : -50.0,
@@ -650,8 +654,7 @@
     "com.lunix.javagame.engine.components.MouseDragging" : {
       "@type" : "MouseDragging",
       "id" : 19,
-      "snapToGrid" : true,
-      "gridSize" : 100,
+      "hidden" : true,
       "picked" : false
     }
   }
@@ -682,6 +685,7 @@
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
       "id" : 21,
+      "hidden" : false,
       "positionOffset" : {
         "x" : 0.0,
         "y" : -50.0,
@@ -734,8 +738,7 @@
     "com.lunix.javagame.engine.components.MouseDragging" : {
       "@type" : "MouseDragging",
       "id" : 22,
-      "snapToGrid" : true,
-      "gridSize" : 100,
+      "hidden" : true,
       "picked" : false
     }
   }
@@ -766,6 +769,7 @@
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
       "id" : 24,
+      "hidden" : false,
       "positionOffset" : {
         "x" : 0.0,
         "y" : -50.0,
@@ -818,8 +822,7 @@
     "com.lunix.javagame.engine.components.MouseDragging" : {
       "@type" : "MouseDragging",
       "id" : 25,
-      "snapToGrid" : true,
-      "gridSize" : 100,
+      "hidden" : true,
       "picked" : false
     }
   }
@@ -850,6 +853,7 @@
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
       "id" : 27,
+      "hidden" : false,
       "positionOffset" : {
         "x" : 0.0,
         "y" : -50.0,
@@ -902,8 +906,7 @@
     "com.lunix.javagame.engine.components.MouseDragging" : {
       "@type" : "MouseDragging",
       "id" : 28,
-      "snapToGrid" : true,
-      "gridSize" : 100,
+      "hidden" : true,
       "picked" : false
     }
   }
@@ -934,6 +937,7 @@
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
       "id" : 30,
+      "hidden" : false,
       "positionOffset" : {
         "x" : 0.0,
         "y" : -50.0,
@@ -986,8 +990,7 @@
     "com.lunix.javagame.engine.components.MouseDragging" : {
       "@type" : "MouseDragging",
       "id" : 31,
-      "snapToGrid" : true,
-      "gridSize" : 100,
+      "hidden" : true,
       "picked" : false
     }
   }
@@ -1018,6 +1021,7 @@
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
       "id" : 33,
+      "hidden" : false,
       "positionOffset" : {
         "x" : 0.0,
         "y" : -50.0,
@@ -1070,8 +1074,7 @@
     "com.lunix.javagame.engine.components.MouseDragging" : {
       "@type" : "MouseDragging",
       "id" : 34,
-      "snapToGrid" : true,
-      "gridSize" : 100,
+      "hidden" : true,
       "picked" : false
     }
   }
@@ -1102,6 +1105,7 @@
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
       "id" : 36,
+      "hidden" : false,
       "positionOffset" : {
         "x" : 0.0,
         "y" : -50.0,
@@ -1154,8 +1158,7 @@
     "com.lunix.javagame.engine.components.MouseDragging" : {
       "@type" : "MouseDragging",
       "id" : 37,
-      "snapToGrid" : true,
-      "gridSize" : 100,
+      "hidden" : true,
       "picked" : false
     }
   }
@@ -1186,6 +1189,7 @@
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
       "id" : 39,
+      "hidden" : false,
       "positionOffset" : {
         "x" : 0.0,
         "y" : -50.0,
@@ -1238,8 +1242,7 @@
     "com.lunix.javagame.engine.components.MouseDragging" : {
       "@type" : "MouseDragging",
       "id" : 40,
-      "snapToGrid" : true,
-      "gridSize" : 100,
+      "hidden" : true,
       "picked" : false
     }
   }
@@ -1270,6 +1273,7 @@
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
       "id" : 42,
+      "hidden" : false,
       "positionOffset" : {
         "x" : 0.0,
         "y" : -50.0,
@@ -1322,8 +1326,7 @@
     "com.lunix.javagame.engine.components.MouseDragging" : {
       "@type" : "MouseDragging",
       "id" : 43,
-      "snapToGrid" : true,
-      "gridSize" : 100,
+      "hidden" : true,
       "picked" : false
     }
   }
@@ -1354,6 +1357,7 @@
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
       "id" : 45,
+      "hidden" : false,
       "positionOffset" : {
         "x" : 0.0,
         "y" : -50.0,
@@ -1406,8 +1410,7 @@
     "com.lunix.javagame.engine.components.MouseDragging" : {
       "@type" : "MouseDragging",
       "id" : 46,
-      "snapToGrid" : true,
-      "gridSize" : 100,
+      "hidden" : true,
       "picked" : false
     }
   }
@@ -1438,13 +1441,13 @@
     "com.lunix.javagame.engine.components.MouseDragging" : {
       "@type" : "MouseDragging",
       "id" : 49,
-      "snapToGrid" : true,
-      "gridSize" : 100,
+      "hidden" : true,
       "picked" : false
     },
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
       "id" : 48,
+      "hidden" : false,
       "positionOffset" : {
         "x" : 0.0,
         "y" : -50.0,
@@ -1522,6 +1525,7 @@
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
       "id" : 51,
+      "hidden" : false,
       "positionOffset" : {
         "x" : 0.0,
         "y" : -50.0,
@@ -1574,8 +1578,7 @@
     "com.lunix.javagame.engine.components.MouseDragging" : {
       "@type" : "MouseDragging",
       "id" : 52,
-      "snapToGrid" : true,
-      "gridSize" : 100,
+      "hidden" : true,
       "picked" : false
     }
   }
@@ -1606,13 +1609,13 @@
     "com.lunix.javagame.engine.components.MouseDragging" : {
       "@type" : "MouseDragging",
       "id" : 55,
-      "snapToGrid" : true,
-      "gridSize" : 100,
+      "hidden" : true,
       "picked" : false
     },
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
       "id" : 54,
+      "hidden" : false,
       "positionOffset" : {
         "x" : 0.0,
         "y" : -50.0,
@@ -1690,13 +1693,13 @@
     "com.lunix.javagame.engine.components.MouseDragging" : {
       "@type" : "MouseDragging",
       "id" : 58,
-      "snapToGrid" : true,
-      "gridSize" : 100,
+      "hidden" : true,
       "picked" : false
     },
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
       "id" : 57,
+      "hidden" : false,
       "positionOffset" : {
         "x" : 0.0,
         "y" : -50.0,
@@ -1774,13 +1777,13 @@
     "com.lunix.javagame.engine.components.MouseDragging" : {
       "@type" : "MouseDragging",
       "id" : 61,
-      "snapToGrid" : true,
-      "gridSize" : 100,
+      "hidden" : true,
       "picked" : false
     },
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
       "id" : 60,
+      "hidden" : false,
       "positionOffset" : {
         "x" : 0.0,
         "y" : -50.0,
@@ -1858,13 +1861,13 @@
     "com.lunix.javagame.engine.components.MouseDragging" : {
       "@type" : "MouseDragging",
       "id" : 64,
-      "snapToGrid" : true,
-      "gridSize" : 100,
+      "hidden" : true,
       "picked" : false
     },
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
       "id" : 63,
+      "hidden" : false,
       "positionOffset" : {
         "x" : 0.0,
         "y" : -50.0,
@@ -1942,13 +1945,13 @@
     "com.lunix.javagame.engine.components.MouseDragging" : {
       "@type" : "MouseDragging",
       "id" : 67,
-      "snapToGrid" : true,
-      "gridSize" : 100,
+      "hidden" : true,
       "picked" : false
     },
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
       "id" : 66,
+      "hidden" : false,
       "positionOffset" : {
         "x" : 0.0,
         "y" : -50.0,
@@ -2026,6 +2029,7 @@
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
       "id" : 69,
+      "hidden" : false,
       "positionOffset" : {
         "x" : 0.0,
         "y" : -50.0,
@@ -2078,8 +2082,7 @@
     "com.lunix.javagame.engine.components.MouseDragging" : {
       "@type" : "MouseDragging",
       "id" : 70,
-      "snapToGrid" : true,
-      "gridSize" : 100,
+      "hidden" : true,
       "picked" : false
     }
   }
@@ -2110,6 +2113,7 @@
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
       "id" : 72,
+      "hidden" : false,
       "positionOffset" : {
         "x" : 0.0,
         "y" : -50.0,
@@ -2162,8 +2166,7 @@
     "com.lunix.javagame.engine.components.MouseDragging" : {
       "@type" : "MouseDragging",
       "id" : 73,
-      "snapToGrid" : true,
-      "gridSize" : 100,
+      "hidden" : true,
       "picked" : false
     }
   }
@@ -2194,6 +2197,7 @@
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
       "id" : 75,
+      "hidden" : false,
       "positionOffset" : {
         "x" : 0.0,
         "y" : -50.0,
@@ -2246,8 +2250,7 @@
     "com.lunix.javagame.engine.components.MouseDragging" : {
       "@type" : "MouseDragging",
       "id" : 76,
-      "snapToGrid" : true,
-      "gridSize" : 100,
+      "hidden" : true,
       "picked" : false
     }
   }
@@ -2278,13 +2281,13 @@
     "com.lunix.javagame.engine.components.MouseDragging" : {
       "@type" : "MouseDragging",
       "id" : 79,
-      "snapToGrid" : true,
-      "gridSize" : 100,
+      "hidden" : true,
       "picked" : false
     },
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
       "id" : 78,
+      "hidden" : false,
       "positionOffset" : {
         "x" : 0.0,
         "y" : -50.0,
@@ -2362,13 +2365,13 @@
     "com.lunix.javagame.engine.components.MouseDragging" : {
       "@type" : "MouseDragging",
       "id" : 82,
-      "snapToGrid" : true,
-      "gridSize" : 100,
+      "hidden" : true,
       "picked" : false
     },
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
       "id" : 81,
+      "hidden" : false,
       "positionOffset" : {
         "x" : 0.0,
         "y" : -50.0,
@@ -2446,13 +2449,13 @@
     "com.lunix.javagame.engine.components.MouseDragging" : {
       "@type" : "MouseDragging",
       "id" : 91,
-      "snapToGrid" : true,
-      "gridSize" : 100,
+      "hidden" : true,
       "picked" : false
     },
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
       "id" : 90,
+      "hidden" : false,
       "positionOffset" : {
         "x" : 0.0,
         "y" : -50.0,
@@ -2492,6 +2495,90 @@
           "finite" : true
         }, {
           "x" : 0.75,
+          "y" : 1.0,
+          "finite" : true
+        } ],
+        "texture" : "TILE_BRICK"
+      },
+      "rotate" : 0,
+      "mirrorWidth" : false,
+      "mirrorHeight" : false,
+      "changed" : false
+    }
+  }
+}, {
+  "id" : 92,
+  "name" : "Ground",
+  "transform" : {
+    "position" : {
+      "x" : 200.0,
+      "y" : -200.0,
+      "z" : 0.0,
+      "finite" : true
+    },
+    "facing" : {
+      "x" : 1.0,
+      "y" : 0.0,
+      "z" : 0.0,
+      "finite" : true
+    },
+    "scale" : {
+      "x" : 1.0,
+      "y" : 1.0,
+      "z" : 1.0,
+      "finite" : true
+    }
+  },
+  "components" : {
+    "com.lunix.javagame.engine.components.MouseDragging" : {
+      "@type" : "MouseDragging",
+      "id" : 94,
+      "hidden" : true,
+      "picked" : false
+    },
+    "com.lunix.javagame.engine.components.SpriteRenderer" : {
+      "@type" : "SpriteRenderer",
+      "id" : 93,
+      "hidden" : false,
+      "positionOffset" : {
+        "x" : 0.0,
+        "y" : -50.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "widthDirection" : {
+        "x" : 1.0,
+        "y" : 0.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "heightDirection" : {
+        "x" : 0.0,
+        "y" : 1.0,
+        "z" : 0.0,
+        "finite" : true
+      },
+      "width" : 100,
+      "height" : 100,
+      "color" : {
+        "rgba" : [ 1.0, 1.0, 1.0, 1.0 ]
+      },
+      "shader" : "DEFAULT",
+      "sprite" : {
+        "textureCoords" : [ {
+          "x" : 0.5,
+          "y" : 0.75,
+          "finite" : true
+        }, {
+          "x" : 0.75,
+          "y" : 0.75,
+          "finite" : true
+        }, {
+          "x" : 0.75,
+          "y" : 1.0,
+          "finite" : true
+        }, {
+          "x" : 0.5,
           "y" : 1.0,
           "finite" : true
         } ],

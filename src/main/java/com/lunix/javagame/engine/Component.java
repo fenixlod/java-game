@@ -21,6 +21,7 @@ public abstract class Component {
 	@JsonBackReference
 	protected GameObject owner;
 	private long id = -1;
+	protected boolean hidden;
 
 	public void owner(GameObject owner) {
 		this.owner = owner;
@@ -51,5 +52,9 @@ public abstract class Component {
 
 	public long id() {
 		return this.id;
+	}
+
+	public boolean isHidden() {
+		return this.hidden;
 	}
 }

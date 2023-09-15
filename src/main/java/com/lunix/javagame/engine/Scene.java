@@ -181,4 +181,14 @@ public abstract class Scene {
 		if (objects.remove(object))
 			this.renderer.remove(object);
 	}
+
+	/**
+	 * Get game object by id.
+	 * 
+	 * @param objectID
+	 * @throws Exception
+	 */
+	public GameObject getGameObject(long objectID) {
+		return objects.stream().filter(o -> o.id() == objectID).findFirst().orElse(null);
+	}
 }

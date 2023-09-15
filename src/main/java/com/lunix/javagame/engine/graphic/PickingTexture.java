@@ -56,11 +56,11 @@ public class PickingTexture {
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 	}
 
-	public int readPixel(Vector2i position) {
+	public long readPixel(Vector2i position) {
 		glBindFramebuffer(GL_READ_FRAMEBUFFER, this.fboID);
 		glReadBuffer(GL_COLOR_ATTACHMENT0);
 		float pixels[] = new float[3];
 		glReadPixels(position.x, position.y, 1, 1, GL_RGB, GL_FLOAT, pixels);
-		return ((int) pixels[0]) - 1;
+		return ((long) pixels[0]) - 1;
 	}
 }

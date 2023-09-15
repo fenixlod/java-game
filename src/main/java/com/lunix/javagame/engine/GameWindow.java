@@ -272,7 +272,7 @@ public class GameWindow {
 		glEnable(GL_BLEND);
 	}
 
-	public int pickObject(Vector2i pos) {
+	public long pickObject(Vector2i pos) {
 		return this.pickingTexture.readPixel(pos);
 	}
 }
