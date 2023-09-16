@@ -14,6 +14,7 @@ public class GameObject {
 	private Transform transform;
 	@JsonManagedReference
 	private Map<Class<? extends Component>, Component> components;
+	private transient boolean outlined;
 
 	public GameObject() {	
 		this("");
@@ -113,5 +114,13 @@ public class GameObject {
 
 	public long id() {
 		return this.id;
+	}
+
+	public boolean isOutlined() {
+		return outlined;
+	}
+
+	public void outlined(boolean outlined) {
+		this.outlined = outlined;
 	}
 }

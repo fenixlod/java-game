@@ -8,6 +8,7 @@ import com.lunix.javagame.engine.Editor;
 import com.lunix.javagame.engine.GameInstance;
 import com.lunix.javagame.engine.GameObject;
 import com.lunix.javagame.engine.Scene;
+import com.lunix.javagame.engine.components.SpriteRenderer;
 
 import imgui.ImGui;
 
@@ -34,7 +35,18 @@ public class ObjectInspector {
 		if (GameInstance.get().mouse().isButtonClicked(GLFW_MOUSE_BUTTON_LEFT)) {
 			Vector2i pos = GameInstance.get().mouse().positionInViewPort();
 			long pickedObjID = game.window().pickObject(pos);
+
+			if (inspectedObject != null) {
+				inspectedObject.outlined(false);
+				inspectedObject.getComponent(SpriteRenderer.class).isChanged(true);
+			}
+
 			inspectedObject = currentScene.getGameObject(pickedObjID);
+
+			if (inspectedObject != null) {
+				inspectedObject.outlined(true);
+				inspectedObject.getComponent(SpriteRenderer.class).isChanged(true);
+			}
 		}
 	}
 }

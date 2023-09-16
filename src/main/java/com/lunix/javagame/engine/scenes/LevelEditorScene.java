@@ -5,11 +5,9 @@ import static org.lwjgl.glfw.GLFW.*;
 import java.util.Map.Entry;
 
 import org.joml.Vector2f;
-import org.joml.Vector2i;
 import org.joml.Vector3f;
 
 import com.lunix.javagame.configs.EditorConfigs;
-import com.lunix.javagame.engine.GameInstance;
 import com.lunix.javagame.engine.GameObject;
 import com.lunix.javagame.engine.Prefabs;
 import com.lunix.javagame.engine.ResourcePool;
@@ -57,8 +55,8 @@ public class LevelEditorScene extends Scene {
 		game.camera().position(new Vector3f());
 		game.window().uiLayer().setViewWindow(viewWindow);
 		this.frameBuffer = new FrameBuffer(game.window().windowSize().x, game.window().windowSize().y);
-		ResourcePool.loadResources(ShaderType.DEFAULT, TextureType.PLAYER, TextureType.ENEMY, TextureType.PLAYER_IDLE,
-				TextureType.TILE_BRICK);
+		ResourcePool.loadResources(ShaderType.DEFAULT, ShaderType.PICKING, ShaderType.DEBUG,
+				TextureType.PLAYER, TextureType.ENEMY, TextureType.PLAYER_IDLE, TextureType.TILE_BRICK);
 		
 		Debugger.drawAxis(true);
 		// Debugger.addBox(new Vector3f(10, 10, 0), 20, 20);

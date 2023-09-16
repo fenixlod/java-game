@@ -275,4 +275,13 @@ public class GameWindow {
 	public long pickObject(Vector2i pos) {
 		return this.pickingTexture.readPixel(pos);
 	}
+
+	/**
+	 * Add string suffix to the window title
+	 * 
+	 * @param suffix
+	 */
+	public void setTitleSuffix(String suffix) {
+		glfwSetWindowTitle(this.windowHandle, this.windowConfigs.title() + suffix);
+	}
 }

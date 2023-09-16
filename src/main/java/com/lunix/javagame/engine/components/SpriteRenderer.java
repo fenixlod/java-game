@@ -233,6 +233,8 @@ public class SpriteRenderer extends Component {
 		vertices[offset++] = textureIndex;
 
 		vertices[offset++] = owner.id() + 1;
+
+		vertices[offset++] = owner.isOutlined() ? 1 : 0;
 		return offset;
 	}
 

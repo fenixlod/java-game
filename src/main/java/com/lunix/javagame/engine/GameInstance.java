@@ -96,8 +96,7 @@ public class GameInstance {
 			// Render pass 2. Render the actual game
 			this.window.newFrame(currentScene);
 			Debugger.beginFrame();
-			Debugger.display(false, "Game FPS: {}", 1 / this.timer.deltaTime());
-			Debugger.display(false, this.mouse);
+			Debugger.infoInTitle(true, this);
 			Debugger.display(false, this.keyboard);
 			Debugger.display(false, "Time elapsed: {}", this.timer.elapsedTime());
 			Debugger.display(false, "Delta time: {}", this.timer.deltaTime());
@@ -162,5 +161,9 @@ public class GameInstance {
 
 	public EditorConfigs editorConfig() {
 		return editorConfig;
+	}
+
+	public GameTime timer() {
+		return timer;
 	}
 }
