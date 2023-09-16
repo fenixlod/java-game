@@ -15,6 +15,7 @@ import com.lunix.javagame.engine.Scene;
 import com.lunix.javagame.engine.components.Animation;
 import com.lunix.javagame.engine.components.MouseDragging;
 import com.lunix.javagame.engine.components.SpriteRenderer;
+import com.lunix.javagame.engine.controlls.EditorControlls;
 import com.lunix.javagame.engine.enums.ShaderType;
 import com.lunix.javagame.engine.enums.TextureType;
 import com.lunix.javagame.engine.graphic.Color;
@@ -23,7 +24,6 @@ import com.lunix.javagame.engine.graphic.Sprite;
 import com.lunix.javagame.engine.ui.GameViewWindow;
 import com.lunix.javagame.engine.ui.ObjectInspector;
 import com.lunix.javagame.engine.util.Debugger;
-import com.lunix.javagame.engine.util.VectorUtil;
 
 import imgui.ImGui;
 import imgui.ImGuiViewport;
@@ -40,19 +40,20 @@ public class LevelEditorScene extends Scene {
 	private FrameBuffer frameBuffer;
 	private GameViewWindow viewWindow;
 	private ObjectInspector objInspector;
+	private EditorControlls controlls;
 
 	public LevelEditorScene() {
 		super();
 		this.viewWindow = new GameViewWindow();
 		this.objInspector = new ObjectInspector();
+		this.controlls = new EditorControlls(game.camera());
 	}
 
 	@Override
 	public void init() throws Exception {
 		super.init();
 		editorConfig = game.editorConfig();
-		game.camera().setOrthoProjection();
-		game.camera().position(new Vector3f());
+		this.controlls.init();
 		game.window().uiLayer().setViewWindow(viewWindow);
 		this.frameBuffer = new FrameBuffer(game.window().windowSize().x, game.window().windowSize().y);
 		ResourcePool.loadResources(ShaderType.DEFAULT, ShaderType.PICKING, ShaderType.DEBUG,
@@ -179,30 +180,6 @@ public class LevelEditorScene extends Scene {
 
 	@Override
 	public void update(float deltaTime) throws Exception {
-		Vector3f offset = new Vector3f();
-
-		if (game.keyboard().isKeyPressed(GLFW_KEY_RIGHT))
-			offset.add(VectorUtil.viewX().mul(100f * deltaTime));
-		
-		if (game.keyboard().isKeyPressed(GLFW_KEY_LEFT))
-			offset.add(VectorUtil.viewX().mul(-100f * deltaTime));
-		
-		if (game.keyboard().isKeyPressed(GLFW_KEY_UP))
-			offset.add(VectorUtil.viewY().mul(200f * deltaTime));
-		
-		if (game.keyboard().isKeyPressed(GLFW_KEY_DOWN))
-			offset.add(VectorUtil.viewY().mul(-200f * deltaTime));
-		
-		if (game.keyboard().isKeyPressed(GLFW_KEY_PAGE_UP))
-			offset.add(VectorUtil.viewZ().mul(100f * deltaTime));
-		
-		if (game.keyboard().isKeyPressed(GLFW_KEY_PAGE_DOWN))
-			offset.add(VectorUtil.viewZ().mul(-100f * deltaTime));
-		
-		float zoomChange = (float) game.mouse().scroll().y * 0.2f;
-		if (zoomChange != 0f)
-			game.camera().changeZoom(zoomChange);
-		
 		// Close the game window when escape key is pressed
 		if (game.keyboard().isKeyPressed(GLFW_KEY_ESCAPE)) {
 			if (this.draggingObject != null) {
@@ -213,14 +190,12 @@ public class LevelEditorScene extends Scene {
 				}
 			}
 		}
-
-		//Debugger.display(true, "X={}, Y={}, Z={}", game.camera().position().x, game.camera().position().y,	game.camera().position().z);
-		game.camera().move(offset);
 /*
 		Vector3f worldPosition = game.mouse().worldPositionProjected();
 		System.out.println("Current X=" + worldPosition.x + " Y=" + worldPosition.y + " Z=" + worldPosition.z);
 */
-objInspector.update(deltaTime, this);
+		this.controlls.update(deltaTime);
+		this.objInspector.update(deltaTime, this);
 		super.update(deltaTime);
 	}
 

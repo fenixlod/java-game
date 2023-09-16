@@ -75,7 +75,7 @@ public class Camera {
 	}
 
 	public void changeZoom(float change) {
-		this.zoomFactor = Math.min(Math.max(this.zoomFactor + change, 0.5f), 2f);
+		this.zoomFactor = Math.min(Math.max(this.zoomFactor + change, 0.2f), 2f);
 		calculateViewMatrix();
 	}
 
@@ -85,5 +85,14 @@ public class Camera {
 
 	public Matrix4f inverseView() {
 		return this.inverseView;
+	}
+
+	public float zoomFactor() {
+		return this.zoomFactor;
+	}
+
+	public void zoomFactor(float zoom) {
+		this.zoomFactor = zoom;
+		calculateViewMatrix();
 	}
 }
