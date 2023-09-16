@@ -191,4 +191,8 @@ public abstract class Scene {
 	public GameObject getGameObject(long objectID) {
 		return objects.stream().filter(o -> o.id() == objectID).findFirst().orElse(null);
 	}
+
+	public List<GameObject> objects() {
+		return objects;
+	}
 }

@@ -167,18 +167,7 @@ public class SpriteRenderer extends Component {
 	 * @param textureIndex
 	 */
 	public void getVertexArray(float[] vertices, int offset, int textureIndex) {
-		Vector3f center = this.owner.transform().position().add(this.positionOffset, new Vector3f());
-		Vector3f p1 = new Vector3f(center);
-		Vector3f p2 = new Vector3f(center);
-		Vector3f p3 = new Vector3f(center);
-		Vector3f p4 = new Vector3f(center);
-		Vector3f scaledWidthDirection = this.widthDirection.mul(this.owner.transform().scale(), new Vector3f());
-		Vector3f scaledHeightDirection = this.heightDirection.mul(this.owner.transform().scale(), new Vector3f());
-
-		p1.add(scaledWidthDirection.mul(-this.width / 2f, new Vector3f()));
-		p2.add(scaledWidthDirection.mul(this.width / 2f, new Vector3f()));
-		p4 = p1.add(scaledHeightDirection.mul(this.height, new Vector3f()), new Vector3f());
-		p3 = p2.add(scaledHeightDirection.mul(this.height, new Vector3f()), new Vector3f());
+		Vector3f[] points = getBox();
 		
 		int bottomLeft, bottomRight, topRight, topLeft, tmp;
 		bottomLeft = ((0 - rotate) % 4 + 4) % 4;
@@ -211,10 +200,10 @@ public class SpriteRenderer extends Component {
 				this.sprite.textureCoords()[topLeft] 
 		};
 
-		offset = setVertexInArray(vertices, offset, p1, uvMap[0], textureIndex);
-		offset = setVertexInArray(vertices, offset, p2, uvMap[1], textureIndex);
-		offset = setVertexInArray(vertices, offset, p3, uvMap[2], textureIndex);
-		offset = setVertexInArray(vertices, offset, p4, uvMap[3], textureIndex);
+		offset = setVertexInArray(vertices, offset, points[0], uvMap[0], textureIndex);
+		offset = setVertexInArray(vertices, offset, points[1], uvMap[1], textureIndex);
+		offset = setVertexInArray(vertices, offset, points[2], uvMap[2], textureIndex);
+		offset = setVertexInArray(vertices, offset, points[3], uvMap[3], textureIndex);
 	}
 
 	private int setVertexInArray(float[] vertices, int offset, Vector3f position, Vector2f uv, int textureIndex) {
@@ -233,12 +222,23 @@ public class SpriteRenderer extends Component {
 		vertices[offset++] = textureIndex;
 
 		vertices[offset++] = owner.id() + 1;
-
-		vertices[offset++] = owner.isOutlined() ? 1 : 0;
 		return offset;
 	}
 
 	public TextureType textureType() {
 		return this.sprite.texture();
+	}
+
+	public Vector3f[] getBox() {
+		Vector3f center = this.owner.transform().position().add(this.positionOffset, new Vector3f());
+		Vector3f[] points = { new Vector3f(center), new Vector3f(center), new Vector3f(center), new Vector3f(center) };
+		Vector3f scaledWidthDirection = this.widthDirection.mul(this.owner.transform().scale(), new Vector3f());
+		Vector3f scaledHeightDirection = this.heightDirection.mul(this.owner.transform().scale(), new Vector3f());
+
+		points[0].add(scaledWidthDirection.mul(-this.width / 2f, new Vector3f()));
+		points[1].add(scaledWidthDirection.mul(this.width / 2f, new Vector3f()));
+		points[3] = points[0].add(scaledHeightDirection.mul(this.height, new Vector3f()), new Vector3f());
+		points[2] = points[1].add(scaledHeightDirection.mul(this.height, new Vector3f()), new Vector3f());
+		return points;
 	}
 }

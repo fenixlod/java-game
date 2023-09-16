@@ -48,6 +48,8 @@ public class GameInstance {
 		this.objMapper = new ObjectMapper()
 				.enable(SerializationFeature.INDENT_OUTPUT)
 				.setVisibility(PropertyAccessor.FIELD, Visibility.ANY)
+				.setVisibility(PropertyAccessor.GETTER, Visibility.NONE)
+				.setVisibility(PropertyAccessor.IS_GETTER, Visibility.NONE)
 				.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		this.pathsConfig = pathsConfig;
 		this.editorConfig = editorConfig;
@@ -100,6 +102,7 @@ public class GameInstance {
 			Debugger.display(false, this.keyboard);
 			Debugger.display(false, "Time elapsed: {}", this.timer.elapsedTime());
 			Debugger.display(false, "Delta time: {}", this.timer.deltaTime());
+			Debugger.outlineSelected(true, currentScene);
 			Debugger.draw();
 			this.sceneManager.update(this.timer.deltaTime());
 			this.sceneManager.render();

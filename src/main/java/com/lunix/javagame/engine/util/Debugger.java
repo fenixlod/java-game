@@ -19,6 +19,8 @@ import org.springframework.stereotype.Component;
 
 import com.lunix.javagame.engine.GameInstance;
 import com.lunix.javagame.engine.ResourcePool;
+import com.lunix.javagame.engine.Scene;
+import com.lunix.javagame.engine.components.SpriteRenderer;
 import com.lunix.javagame.engine.enums.ShaderType;
 import com.lunix.javagame.engine.exception.ResourceNotFound;
 import com.lunix.javagame.engine.graphic.Color;
@@ -203,6 +205,13 @@ public class Debugger {
 		lines.add(new Line(p4, p1, color, lifetime));
 	}
 
+	public static void addBox(Vector3f[] box, Color color, int lifetime) {
+		addLine(box[0], box[1], color, lifetime);
+		addLine(box[1], box[2], color, lifetime);
+		addLine(box[2], box[3], color, lifetime);
+		addLine(box[3], box[0], color, lifetime);
+	}
+
 	public static void addBox(Vector3f center, int width, int height, Color color, int lifetime) {
 		addBox(center, VectorUtil.X(), VectorUtil.Y(), width, height, color, lifetime);
 	}
@@ -233,5 +242,14 @@ public class Debugger {
 
 	public static void addCircle(Vector3f center, Vector3f normal, int radius) {
 		addCircle(center, normal, radius, Color.black(), Integer.MAX_VALUE);
+	}
+
+	public static void outlineSelected(boolean enable, Scene currentScene) {
+		currentScene.objects().stream().filter(o -> o.isOutlined()).forEach(o -> {
+			SpriteRenderer r = o.getComponent(SpriteRenderer.class);
+			if (r != null) {
+				addBox(r.getBox(), Color.blue(), 1);
+			}
+		});
 	}
 }
