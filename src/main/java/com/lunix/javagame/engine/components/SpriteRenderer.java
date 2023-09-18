@@ -241,4 +241,12 @@ public class SpriteRenderer extends Component {
 		points[2] = points[1].add(scaledHeightDirection.mul(this.height, new Vector3f()), new Vector3f());
 		return points;
 	}
+
+	public Vector3f widthDirection() {
+		return this.widthDirection;
+	}
+
+	public Vector3f heightDirection() {
+		return this.heightDirection;
+	}
 }

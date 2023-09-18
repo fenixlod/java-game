@@ -57,9 +57,11 @@ public class LevelEditorScene extends Scene {
 		game.window().uiLayer().setViewWindow(viewWindow);
 		this.frameBuffer = new FrameBuffer(game.window().windowSize().x, game.window().windowSize().y);
 		ResourcePool.loadResources(ShaderType.DEFAULT, ShaderType.PICKING, ShaderType.DEBUG,
-				TextureType.PLAYER, TextureType.ENEMY, TextureType.PLAYER_IDLE, TextureType.TILE_BRICK);
+				TextureType.PLAYER, TextureType.ENEMY, TextureType.PLAYER_IDLE, TextureType.TILE_BRICK,
+				TextureType.ARROW);
 		
 		Debugger.drawAxis(true);
+		objInspector.init(this);
 		// Debugger.addBox(new Vector3f(10, 10, 0), 20, 20);
 		// Debugger.addCircle(new Vector3f(40, 40, 0.1f), VectorUtil.Z(), 70);
 

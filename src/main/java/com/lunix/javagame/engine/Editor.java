@@ -24,7 +24,7 @@ public class Editor {
 	 */
 	public static void editObject(GameObject obj) {
 		for (Component c : obj.components()) {
-			if (c.isHidden())
+			if (c.isTemporary())
 				continue;
 
 			ImGui.text("---" + c.getClass().getSimpleName() + "---");

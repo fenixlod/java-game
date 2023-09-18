@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -143,7 +144,13 @@ public abstract class Scene {
 		Path levelsFile = Paths.get(game.pathsConfig().save().get("levels"), "world.json");
 
 		try (FileWriter writer = new FileWriter(levelsFile.toFile())) {
-			writer.write(game.save(this.objects));
+			List<GameObject> filteredObjects = this.objects.stream()
+					.filter(o -> !o.isTemporary())
+					.collect(Collectors.toList());
+			for (GameObject obj : filteredObjects) {
+				obj.removeTemporaryComponents();
+			}
+			writer.write(game.save(filteredObjects));
 		}
 	}
 

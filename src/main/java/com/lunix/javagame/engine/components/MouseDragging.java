@@ -13,7 +13,7 @@ public class MouseDragging extends Component {
 	private transient boolean isPicked;
 
 	public MouseDragging() {
-		this.hidden = true;
+		this.temporary = true;
 	}
 
 	public void pickup() {

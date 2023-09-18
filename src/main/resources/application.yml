@@ -36,6 +36,8 @@ resources:
       path: assets/images/tile_brick.png
       width: 64
       height: 64
+    arrow:
+      path: assets/images/arrow.png
 
 camera:
   ortho:

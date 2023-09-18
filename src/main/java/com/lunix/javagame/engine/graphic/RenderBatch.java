@@ -48,6 +48,7 @@ public class RenderBatch {
 	private int vboID;
 	private int maxBatchSize;
 	private Shader shader;
+	private int framesUntillFullRedraw = 600;
 
 	public RenderBatch(int maxBatchSize, ShaderType shaderType) throws ResourceNotFound, IOException {
 		this.shader = ResourcePool.getShader(shaderType);
@@ -111,16 +112,20 @@ public class RenderBatch {
 
 	public void render(Shader overrideShader) throws Exception {
 		// Update positions
+		framesUntillFullRedraw--;
 		boolean update = false;
 		int index = 0;
 		for (SpriteRenderer spr : this.sprites) {
-			if (spr.isChanged()) {
+			if (spr.isChanged() || framesUntillFullRedraw == 0) {
 				spr.isChanged(false);
 				if (loadVertexProperties(index, spr))
 					update = true;
 			}
 			index++;
 		}
+
+		if (framesUntillFullRedraw <= 0)
+			framesUntillFullRedraw = 600;
 
 		if (update) {
 			// Re-buffer all data

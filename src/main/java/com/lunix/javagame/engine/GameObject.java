@@ -2,6 +2,7 @@ package com.lunix.javagame.engine;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.joml.Vector3f;
@@ -15,6 +16,7 @@ public class GameObject {
 	@JsonManagedReference
 	private Map<Class<? extends Component>, Component> components;
 	private transient boolean outlined;
+	protected transient boolean temporary;
 
 	public GameObject() {	
 		this("");
@@ -122,5 +124,23 @@ public class GameObject {
 
 	public void outlined(boolean outlined) {
 		this.outlined = outlined;
+	}
+
+	public boolean isTemporary() {
+		return temporary;
+	}
+
+	public void temporary(boolean temporary) {
+		this.temporary = temporary;
+	}
+
+	public void removeTemporaryComponents() {
+		for (Iterator<Map.Entry<Class<? extends Component>, Component>> it = this.components.entrySet().iterator(); it
+				.hasNext();) {
+			Map.Entry<Class<? extends Component>, Component> entry = it.next();
+			if (entry.getValue().isTemporary()) {
+				it.remove();
+			}
+		}
 	}
 }
