@@ -2,6 +2,7 @@ package com.lunix.javagame.engine;
 
 import org.joml.Vector3f;
 
+import com.lunix.javagame.engine.components.SnapToGrid;
 import com.lunix.javagame.engine.components.SpriteRenderer;
 import com.lunix.javagame.engine.util.VectorUtil;
 
@@ -23,7 +24,7 @@ public class Prefabs {
 				.widthDirection(VectorUtil.X())
 				.heightDirection(VectorUtil.Y())
 				.sprite(ResourcePool.getSprite(spriteName))
-				.offset(new Vector3f(0f, -height / 2f, 0f))
-		);
+				.offset(new Vector3f(0f, -height / 2f, 0f)))
+		.addComponent(new SnapToGrid(100));
 	}
 }

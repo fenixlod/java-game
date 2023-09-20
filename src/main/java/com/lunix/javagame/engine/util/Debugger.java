@@ -62,7 +62,7 @@ public class Debugger {
 	}
 	
 	public static void infoInTitle(boolean show, GameInstance game) {
-		Vector3f worldPos = game.mouse().worldPositionProjected();
+		Vector3f worldPos = game.mouse().positionInWorldProjected();
 		game.window().setTitleSuffix("FPS: %.2f Mouse[X=%.2f, Y=%.2f, Z=%.2f]".formatted(
 				1 / game.timer().deltaTime(), 
 				worldPos.x, worldPos.y, worldPos.z));

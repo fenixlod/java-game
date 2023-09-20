@@ -1,9 +1,10 @@
 package com.lunix.javagame.engine;
 
+import java.lang.reflect.Method;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.joml.Vector3f;
 
@@ -33,7 +34,18 @@ public class GameObject {
 	public GameObject(String name, Transform transform) {
 		this.name = name;
 		this.transform = transform;
-		this.components = new HashMap<>();
+		this.components = new TreeMap<>((o1, o2) -> {
+			try {
+				Method method1 = o1.getMethod("priority");
+				Method method2 = o2.getMethod("priority");
+				Object result1 = method1.invoke(null);
+				Object result2 = method2.invoke(null);
+				return Integer.compare((int) result1, (int) result2);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return 0;
+			}
+		});
 		this.id = GameInstance.getNextId();
 	}
 
@@ -82,7 +94,9 @@ public class GameObject {
 	 * @param deltaTime
 	 */
 	public void update(float deltaTime) {
-		this.components.values().forEach(c -> c.update(deltaTime));
+		this.components.entrySet().forEach(e -> {
+			e.getValue().update(deltaTime);
+		});
 	}
 
 	/**

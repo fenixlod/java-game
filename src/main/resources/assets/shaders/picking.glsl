@@ -42,7 +42,7 @@ void main()
 	if(textureIdx > 0)
 		texColor = fragmentColor * texture(textures[int(textureIdx)], textureUV);
 		
-	if(texColor.a < 0.9) {
+	if(texColor.a < 0.1) {
 		discard;
 	}
 	

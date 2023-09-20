@@ -4,20 +4,18 @@ import static org.lwjgl.glfw.GLFW.*;
 
 import org.joml.Vector2i;
 
-import com.lunix.javagame.engine.Editor;
 import com.lunix.javagame.engine.GameInstance;
 import com.lunix.javagame.engine.GameObject;
-import com.lunix.javagame.engine.ResourcePool;
 import com.lunix.javagame.engine.Scene;
-import com.lunix.javagame.engine.TranslateGizmo;
-import com.lunix.javagame.engine.enums.TextureType;
+import com.lunix.javagame.engine.editor.Editor;
+import com.lunix.javagame.engine.editor.GizmoTools;
 
 import imgui.ImGui;
 
 public class ObjectInspector {
 	private GameObject inspectedObject;
 	private GameInstance game;
-	private TranslateGizmo mover;
+	private GizmoTools mover;
 
 	public ObjectInspector() {
 		this.game = GameInstance.get();
@@ -36,7 +34,7 @@ public class ObjectInspector {
 	}
 
 	public void init(Scene scene) throws Exception {
-		this.mover = new TranslateGizmo(ResourcePool.getSprite(TextureType.ARROW));
+		this.mover = new GizmoTools();
 		this.mover.init(scene);
 	}
 
@@ -58,6 +56,8 @@ public class ObjectInspector {
 				} else {
 					this.mover.detach();
 				}
+			} else {
+				this.mover.select(pickedObjID);
 			}
 		}
 

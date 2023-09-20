@@ -39,6 +39,6 @@ void main()
 	else
 		color = fragmentColor;
 		
-	if(color.a <= 0.9) // Replacement of glAlphaFunc
+	if(color.a <= 0.1) // Replacement of glAlphaFunc
         discard;
 }

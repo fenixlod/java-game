@@ -1,4 +1,4 @@
-package com.lunix.javagame.engine;
+package com.lunix.javagame.engine.editor;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -7,6 +7,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joml.Vector3f;
 
+import com.lunix.javagame.engine.Component;
+import com.lunix.javagame.engine.GameObject;
 import com.lunix.javagame.engine.components.SpriteRenderer;
 import com.lunix.javagame.engine.graphic.Color;
 

@@ -237,9 +237,7 @@ public class LevelEditorScene extends Scene {
 							editorConfig.gridSize(), editorConfig.gridSize(),
 							entry.getKey());
 					// Attach the ground object to the mouse cursor
-					MouseDragging mouseDragging = new MouseDragging();
-					mouseDragging.snapToGrid(true).gridSize(editorConfig.gridSize()).pickup();
-					groundTile.addComponent(mouseDragging);
+					groundTile.addComponent(new MouseDragging().pickup());
 					this.draggingObject = groundTile;
 					addGameObject(groundTile);
 				}

@@ -66,7 +66,7 @@ public class WorldScene extends Scene {
 		this.playerObject.move(offset);
 		game.camera().position(playerObject.transform().position());
 
-		Vector3f worldPosition = game.mouse().worldPositionProjected();
+		Vector3f worldPosition = game.mouse().positionInWorldProjected();
 		System.out.println("Current X=" + worldPosition.x + " Y=" + worldPosition.y + " Z=" + worldPosition.z);
 		super.update(deltaTime);
 	}

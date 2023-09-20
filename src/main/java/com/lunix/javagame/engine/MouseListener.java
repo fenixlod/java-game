@@ -15,14 +15,19 @@ import com.lunix.javagame.engine.util.VectorUtil;
 public class MouseListener {
 	private Vector2d scroll;
 	private Vector2d positionInWindow;
-	private Vector2d delta;
+	private Vector2d deltaInWindow;
 	private boolean pressedButtons[][] = new boolean[2][5];//Pos[0] = if button is pressed, pos[1] = if it is clicked this frame
 	private boolean dragging;
+	private Vector3f positionInWorld; //Position of the cursor in world coordinates
+	private Vector3f positionInWorldProjected; //Position of the cursor in world coordinates projected on the ground (Z = 0)
+	private Vector3f deltaInWorld;
 
 	public MouseListener() {
 		this.scroll = new Vector2d();
 		this.positionInWindow = new Vector2d();
-		this.delta = new Vector2d();
+		this.deltaInWindow = new Vector2d();
+		this.deltaInWorld = new Vector3f();
+		this.positionInWorldProjected = new Vector3f();
 	}
 
 	/**
@@ -32,16 +37,16 @@ public class MouseListener {
 	 * @param yPos
 	 */
 	public void positionCallback(long window, double xPos, double yPos) {
-		this.delta.x = xPos - this.positionInWindow.x;
-		this.delta.y = yPos - this.positionInWindow.y;
+		this.deltaInWindow.x = xPos - this.positionInWindow.x;
+		this.deltaInWindow.y = yPos - this.positionInWindow.y;
 		this.positionInWindow.x = xPos;
 		this.positionInWindow.y = yPos;
+		Vector3f old = this.positionInWorldProjected;
+		calculateWorldPosition();
+		this.deltaInWorld = this.positionInWorldProjected.sub(old, new Vector3f());
 		
-		for (boolean pressedButton : pressedButtons[0]) {
-			if (pressedButton) {
-				this.dragging = true;
-				break;
-			}
+		if (pressedButtons[0][0] || pressedButtons[0][1]) {
+			this.dragging = true;
 		}
 	}
 
@@ -61,7 +66,9 @@ public class MouseListener {
 			this.pressedButtons[1][button] = true;
 		} else if (action == GLFW_RELEASE) {
 			this.pressedButtons[0][button] = false;
-			this.dragging = false;
+			if (!pressedButtons[0][0] || !pressedButtons[0][1]) {
+				this.dragging = false;
+			}
 		}
 	}
 
@@ -82,10 +89,9 @@ public class MouseListener {
 	 * each frame.
 	 */
 	public void reset() {
-		this.scroll.x = 0.0;
-		this.scroll.y = 0.0;
-		this.delta.x = 0.0;
-		this.delta.y = 0.0;
+		this.scroll.set(0.0);
+		this.deltaInWindow.set(0.0);
+		this.deltaInWorld.set(0);
 
 		for (int i = 0; i < this.pressedButtons[1].length; i++) {
 			this.pressedButtons[1][i] = false;
@@ -114,8 +120,12 @@ public class MouseListener {
 		return this.positionInWindow;
 	}
 
-	public Vector2d delta() {
-		return this.delta;
+	public Vector2d deltaInWindow() {
+		return this.deltaInWindow;
+	}
+
+	public Vector3f deltaInWorld() {
+		return this.deltaInWorld;
 	}
 
 	public boolean dragging() {
@@ -127,7 +137,7 @@ public class MouseListener {
 	 * 
 	 * @return
 	 */
-	public Vector3f worldPosition() {
+	private void calculateWorldPosition() {
 		float cursorX = (float) this.positionInWindow.x;
 		float cursorY = (float) this.positionInWindow.y;
 
@@ -143,22 +153,15 @@ public class MouseListener {
 
 		Vector4f nsc = new Vector4f(cursorX * 2f - 1, 1 - cursorY * 2f, -1, 1);
 		nsc.mul(GameInstance.get().camera().inverseProjection()).mul(GameInstance.get().camera().inverseView());
-		return new Vector3f(nsc.x, nsc.y, nsc.z);
-	}
+		this.positionInWorld = new Vector3f(nsc.x, nsc.y, nsc.z);
 
-	/**
-	 * Get the current mouse position in world coordinates projected on the ground.
-	 * 
-	 * @return
-	 */
-	public Vector3f worldPositionProjected() {
-		Vector3f orig = worldPosition();
+		Vector3f orig = new Vector3f(this.positionInWorld);
 		Vector3f dir = VectorUtil.viewDirection();
-		Vector3f olaneOrg =  new Vector3f();
-		Vector3f olaneNorm = new Vector3f(0, 0, 1);
-		float dist = Intersectionf.intersectRayPlane(orig, dir, olaneOrg, olaneNorm, 1);
+		Vector3f planeOrg = new Vector3f();
+		Vector3f planeNorm = new Vector3f(0, 0, 1);
+		float dist = Intersectionf.intersectRayPlane(orig, dir, planeOrg, planeNorm, 1);
 		orig.add(dir.mul(dist));
-		return orig;
+		this.positionInWorldProjected = orig;
 	}
 
 	public Vector2i positionInViewPort() {
@@ -179,9 +182,17 @@ public class MouseListener {
 		return new Vector2i((int) cursorX, (int) cursorY);
 	}
 
+	public Vector3f positionInWorld() {
+		return this.positionInWorld;
+	}
+
+	public Vector3f positionInWorldProjected() {
+		return this.positionInWorldProjected;
+	}
+
 	@Override
 	public String toString() {
-		return "MouseListener [X=" + positionInWindow.x + ", Y=" + positionInWindow.y + ", dX=" + delta.x + ", dY=" + delta.y +
+		return "MouseListener [X=" + positionInWindow.x + ", Y=" + positionInWindow.y + ", dX=" + deltaInWindow.x + ", dY=" + deltaInWindow.y +
 				", pressedButtons=" + Arrays.toString(pressedButtons[0]) + ", dragging=" + dragging
 				+ 
 				", scrollX=" + scroll.x + ", scrollY=" + scroll.y + "]";
