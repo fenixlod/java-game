@@ -135,8 +135,7 @@ public class RenderBatch {
 
 		Shader currentShader = overrideShader == null ? this.shader : overrideShader;
 		currentShader.use();
-		currentShader.uploadMat4f("projMat", GameInstance.get().camera().projectionMatrix());
-		currentShader.uploadMat4f("viewMat", GameInstance.get().camera().viewMatrix());
+		currentShader.uploadMat4f("viewXProj", GameInstance.get().camera().viewXProjectionMatrix());
 
 		for (Entry<TextureType, Integer> entry : this.textures.entrySet()) {
 			ResourcePool.getTexture(entry.getKey()).bind(entry.getValue());

@@ -53,6 +53,6 @@ public class SnapToGrid extends Component {
 	 * @return
 	 */
 	public static int priority() {
-		return 1000;
+		return 300;
 	}
 }

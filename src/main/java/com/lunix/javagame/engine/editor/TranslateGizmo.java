@@ -6,6 +6,7 @@ import org.joml.Vector3f;
 
 import com.lunix.javagame.engine.GameInstance;
 import com.lunix.javagame.engine.components.SpriteRenderer;
+import com.lunix.javagame.engine.util.VectorUtil;
 
 public class TranslateGizmo extends Gizmo {
 	private Vector3f direction;
@@ -15,7 +16,7 @@ public class TranslateGizmo extends Gizmo {
 		this.direction = direction;
 	}
 
-	private final float DRAG_SENSITIVITY = 0.5f;// .15f;
+	private final float DRAG_SENSITIVITY = 1f;// .15f;
 
 	@Override
 	public void update(float deltaTime) {
@@ -28,7 +29,8 @@ public class TranslateGizmo extends Gizmo {
 			Vector3f offset = GameInstance.get().mouse().deltaInWorld().mul(DRAG_SENSITIVITY, new Vector3f());
 			Vector3f change = direction.mul(offset.dot(direction), new Vector3f());
 			this.transform().move(change);
-			this.attachedTo.transform().move(change);
+			this.attachedTo.transform().position(
+					this.transform().position().add(VectorUtil.viewDirection().mul(-offsetFromObject), new Vector3f()));
 		}
 	}
 }

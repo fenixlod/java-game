@@ -152,7 +152,7 @@ public class MouseListener {
 		}
 
 		Vector4f nsc = new Vector4f(cursorX * 2f - 1, 1 - cursorY * 2f, -1, 1);
-		nsc.mul(GameInstance.get().camera().inverseProjection()).mul(GameInstance.get().camera().inverseView());
+		nsc.mul(GameInstance.get().camera().inverseViewXProjection());
 		this.positionInWorld = new Vector3f(nsc.x, nsc.y, nsc.z);
 
 		Vector3f orig = new Vector3f(this.positionInWorld);

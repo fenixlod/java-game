@@ -25,7 +25,6 @@ public class EditorControlls {
 	}
 
 	public void init() {
-		this.controlledCamera.setOrthoProjection();
 		this.controlledCamera.position(new Vector3f());
 	}
 

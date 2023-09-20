@@ -61,6 +61,6 @@ public class ObjectInspector {
 			}
 		}
 
-		this.mover.update(deltaTime);
+		this.mover.refresh();
 	}
 }

@@ -140,8 +140,7 @@ public class Debugger {
 
 		// use the shader
 		shader.use();
-		shader.uploadMat4f("projMat", GameInstance.get().camera().projectionMatrix());
-		shader.uploadMat4f("viewMat", GameInstance.get().camera().viewMatrix());
+		shader.uploadMat4f("viewXProj", GameInstance.get().camera().viewXProjectionMatrix());
 
 		// Bind the VAO that we are using
 		glBindVertexArray(vaoID);

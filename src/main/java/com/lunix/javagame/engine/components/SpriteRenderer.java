@@ -263,6 +263,6 @@ public class SpriteRenderer extends Component {
 	 * @return
 	 */
 	public static int priority() {
-		return 100;
+		return 500;
 	}
 }

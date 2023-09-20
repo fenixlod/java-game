@@ -82,6 +82,6 @@ public class Animation extends Component {
 	 * @return
 	 */
 	public static int priority() {
-		return 500;
+		return 400;
 	}
 }

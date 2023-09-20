@@ -1,11 +1,11 @@
 [ {
-  "id" : 5,
+  "id" : 6,
   "name" : "Player",
   "transform" : {
     "position" : {
-      "x" : -0.034835815,
-      "y" : -1.8339996,
-      "z" : -1.5258789E-5
+      "x" : 0.0,
+      "y" : 0.0,
+      "z" : 0.0
     },
     "facing" : {
       "x" : 1.0,
@@ -19,54 +19,9 @@
     }
   },
   "components" : {
-    "com.lunix.javagame.engine.components.SpriteRenderer" : {
-      "@type" : "SpriteRenderer",
-      "id" : 6,
-      "temporary" : false,
-      "positionOffset" : {
-        "x" : 0.0,
-        "y" : 0.0,
-        "z" : 0.0
-      },
-      "widthDirection" : {
-        "x" : 0.5773502,
-        "y" : -0.5773502,
-        "z" : 0.0
-      },
-      "heightDirection" : {
-        "x" : 0.33333325,
-        "y" : 0.33333325,
-        "z" : 0.6666665
-      },
-      "width" : 40,
-      "height" : 50,
-      "color" : {
-        "rgba" : [ 1.0, 1.0, 1.0, 1.0 ]
-      },
-      "shader" : "DEFAULT",
-      "sprite" : {
-        "textureCoords" : [ {
-          "x" : 0.25,
-          "y" : 0.0
-        }, {
-          "x" : 0.5,
-          "y" : 0.0
-        }, {
-          "x" : 0.5,
-          "y" : 1.0
-        }, {
-          "x" : 0.25,
-          "y" : 1.0
-        } ],
-        "texture" : "PLAYER_IDLE"
-      },
-      "rotate" : 0,
-      "mirrorWidth" : false,
-      "mirrorHeight" : false
-    },
     "com.lunix.javagame.engine.components.Animation" : {
       "@type" : "Animation",
-      "id" : 7,
+      "id" : 8,
       "temporary" : false,
       "poses" : [ {
         "textureCoords" : [ {
@@ -131,15 +86,60 @@
       } ],
       "changeInterval" : 0.3,
       "startingPose" : 0
+    },
+    "com.lunix.javagame.engine.components.SpriteRenderer" : {
+      "@type" : "SpriteRenderer",
+      "id" : 7,
+      "temporary" : false,
+      "positionOffset" : {
+        "x" : 0.0,
+        "y" : 0.0,
+        "z" : 0.0
+      },
+      "widthDirection" : {
+        "x" : 0.5773502,
+        "y" : -0.5773502,
+        "z" : 0.0
+      },
+      "heightDirection" : {
+        "x" : 0.33333325,
+        "y" : 0.33333325,
+        "z" : 0.6666665
+      },
+      "width" : 40,
+      "height" : 50,
+      "color" : {
+        "rgba" : [ 1.0, 1.0, 1.0, 1.0 ]
+      },
+      "shader" : "DEFAULT",
+      "sprite" : {
+        "textureCoords" : [ {
+          "x" : 0.75,
+          "y" : 0.0
+        }, {
+          "x" : 1.0,
+          "y" : 0.0
+        }, {
+          "x" : 1.0,
+          "y" : 1.0
+        }, {
+          "x" : 0.75,
+          "y" : 1.0
+        } ],
+        "texture" : "PLAYER_IDLE"
+      },
+      "rotate" : 0,
+      "mirrorWidth" : false,
+      "mirrorHeight" : false
     }
   }
 }, {
-  "id" : 8,
+  "id" : 9,
   "name" : "Enemy",
   "transform" : {
     "position" : {
-      "x" : -140.38434,
-      "y" : 41.33436,
+      "x" : -50.0,
+      "y" : 50.0,
       "z" : 0.0
     },
     "facing" : {
@@ -156,7 +156,7 @@
   "components" : {
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
-      "id" : 9,
+      "id" : 10,
       "temporary" : false,
       "positionOffset" : {
         "x" : 0.0,
@@ -201,13 +201,13 @@
     }
   }
 }, {
-  "id" : 10,
+  "id" : 11,
   "name" : "Ground",
   "transform" : {
     "position" : {
-      "x" : 100.25671,
-      "y" : -0.31269836,
-      "z" : -1.5258789E-5
+      "x" : 0.0,
+      "y" : 0.0,
+      "z" : 0.0
     },
     "facing" : {
       "x" : 1.0,
@@ -221,9 +221,15 @@
     }
   },
   "components" : {
+    "com.lunix.javagame.engine.components.SnapToGrid" : {
+      "@type" : "SnapToGrid",
+      "id" : 13,
+      "temporary" : false,
+      "gridSize" : 100
+    },
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
-      "id" : 11,
+      "id" : 12,
       "temporary" : false,
       "positionOffset" : {
         "x" : 0.0,
@@ -268,12 +274,12 @@
     }
   }
 }, {
-  "id" : 14,
+  "id" : 15,
   "name" : "Ground",
   "transform" : {
     "position" : {
       "x" : 100.0,
-      "y" : 100.0,
+      "y" : 0.0,
       "z" : 0.0
     },
     "facing" : {
@@ -288,83 +294,16 @@
     }
   },
   "components" : {
-    "com.lunix.javagame.engine.components.SpriteRenderer" : {
-      "@type" : "SpriteRenderer",
-      "id" : 15,
-      "temporary" : false,
-      "positionOffset" : {
-        "x" : 0.0,
-        "y" : -50.0,
-        "z" : 0.0
-      },
-      "widthDirection" : {
-        "x" : 1.0,
-        "y" : 0.0,
-        "z" : 0.0
-      },
-      "heightDirection" : {
-        "x" : 0.0,
-        "y" : 1.0,
-        "z" : 0.0
-      },
-      "width" : 100,
-      "height" : 100,
-      "color" : {
-        "rgba" : [ 1.0, 1.0, 1.0, 1.0 ]
-      },
-      "shader" : "DEFAULT",
-      "sprite" : {
-        "textureCoords" : [ {
-          "x" : 0.75,
-          "y" : 0.25
-        }, {
-          "x" : 1.0,
-          "y" : 0.25
-        }, {
-          "x" : 1.0,
-          "y" : 0.5
-        }, {
-          "x" : 0.75,
-          "y" : 0.5
-        } ],
-        "texture" : "TILE_BRICK"
-      },
-      "rotate" : 0,
-      "mirrorWidth" : false,
-      "mirrorHeight" : false
-    },
     "com.lunix.javagame.engine.components.SnapToGrid" : {
       "@type" : "SnapToGrid",
+      "id" : 17,
+      "temporary" : false,
+      "gridSize" : 100
+    },
+    "com.lunix.javagame.engine.components.SpriteRenderer" : {
+      "@type" : "SpriteRenderer",
       "id" : 16,
       "temporary" : false,
-      "gridSize" : 100
-    }
-  }
-}, {
-  "id" : 18,
-  "name" : "Ground",
-  "transform" : {
-    "position" : {
-      "x" : 0.0,
-      "y" : 100.0,
-      "z" : 0.0
-    },
-    "facing" : {
-      "x" : 1.0,
-      "y" : 0.0,
-      "z" : 0.0
-    },
-    "scale" : {
-      "x" : 1.0,
-      "y" : 1.0,
-      "z" : 1.0
-    }
-  },
-  "components" : {
-    "com.lunix.javagame.engine.components.SpriteRenderer" : {
-      "@type" : "SpriteRenderer",
-      "id" : 19,
-      "temporary" : false,
       "positionOffset" : {
         "x" : 0.0,
         "y" : -50.0,
@@ -405,21 +344,88 @@
       "rotate" : 0,
       "mirrorWidth" : false,
       "mirrorHeight" : false
+    }
+  }
+}, {
+  "id" : 19,
+  "name" : "Ground",
+  "transform" : {
+    "position" : {
+      "x" : -100.0,
+      "y" : 0.0,
+      "z" : 0.0
     },
+    "facing" : {
+      "x" : 1.0,
+      "y" : 0.0,
+      "z" : 0.0
+    },
+    "scale" : {
+      "x" : 1.0,
+      "y" : 1.0,
+      "z" : 1.0
+    }
+  },
+  "components" : {
     "com.lunix.javagame.engine.components.SnapToGrid" : {
       "@type" : "SnapToGrid",
+      "id" : 21,
+      "temporary" : false,
+      "gridSize" : 100
+    },
+    "com.lunix.javagame.engine.components.SpriteRenderer" : {
+      "@type" : "SpriteRenderer",
       "id" : 20,
       "temporary" : false,
-      "gridSize" : 100
+      "positionOffset" : {
+        "x" : 0.0,
+        "y" : -50.0,
+        "z" : 0.0
+      },
+      "widthDirection" : {
+        "x" : 1.0,
+        "y" : 0.0,
+        "z" : 0.0
+      },
+      "heightDirection" : {
+        "x" : 0.0,
+        "y" : 1.0,
+        "z" : 0.0
+      },
+      "width" : 100,
+      "height" : 100,
+      "color" : {
+        "rgba" : [ 1.0, 1.0, 1.0, 1.0 ]
+      },
+      "shader" : "DEFAULT",
+      "sprite" : {
+        "textureCoords" : [ {
+          "x" : 0.5,
+          "y" : 0.25
+        }, {
+          "x" : 0.75,
+          "y" : 0.25
+        }, {
+          "x" : 0.75,
+          "y" : 0.5
+        }, {
+          "x" : 0.5,
+          "y" : 0.5
+        } ],
+        "texture" : "TILE_BRICK"
+      },
+      "rotate" : 0,
+      "mirrorWidth" : false,
+      "mirrorHeight" : false
     }
   }
 }, {
-  "id" : 22,
+  "id" : 23,
   "name" : "Ground",
   "transform" : {
     "position" : {
       "x" : 0.0,
-      "y" : 0.0,
+      "y" : -100.0,
       "z" : 0.0
     },
     "facing" : {
@@ -434,83 +440,16 @@
     }
   },
   "components" : {
-    "com.lunix.javagame.engine.components.SpriteRenderer" : {
-      "@type" : "SpriteRenderer",
-      "id" : 23,
-      "temporary" : false,
-      "positionOffset" : {
-        "x" : 0.0,
-        "y" : -50.0,
-        "z" : 0.0
-      },
-      "widthDirection" : {
-        "x" : 1.0,
-        "y" : 0.0,
-        "z" : 0.0
-      },
-      "heightDirection" : {
-        "x" : 0.0,
-        "y" : 1.0,
-        "z" : 0.0
-      },
-      "width" : 100,
-      "height" : 100,
-      "color" : {
-        "rgba" : [ 1.0, 1.0, 1.0, 1.0 ]
-      },
-      "shader" : "DEFAULT",
-      "sprite" : {
-        "textureCoords" : [ {
-          "x" : 0.75,
-          "y" : 0.25
-        }, {
-          "x" : 1.0,
-          "y" : 0.25
-        }, {
-          "x" : 1.0,
-          "y" : 0.5
-        }, {
-          "x" : 0.75,
-          "y" : 0.5
-        } ],
-        "texture" : "TILE_BRICK"
-      },
-      "rotate" : 0,
-      "mirrorWidth" : false,
-      "mirrorHeight" : false
-    },
     "com.lunix.javagame.engine.components.SnapToGrid" : {
       "@type" : "SnapToGrid",
+      "id" : 25,
+      "temporary" : false,
+      "gridSize" : 100
+    },
+    "com.lunix.javagame.engine.components.SpriteRenderer" : {
+      "@type" : "SpriteRenderer",
       "id" : 24,
       "temporary" : false,
-      "gridSize" : 100
-    }
-  }
-}, {
-  "id" : 26,
-  "name" : "Ground",
-  "transform" : {
-    "position" : {
-      "x" : -200.0,
-      "y" : 0.0,
-      "z" : 0.0
-    },
-    "facing" : {
-      "x" : 1.0,
-      "y" : 0.0,
-      "z" : 0.0
-    },
-    "scale" : {
-      "x" : 1.0,
-      "y" : 1.0,
-      "z" : 1.0
-    }
-  },
-  "components" : {
-    "com.lunix.javagame.engine.components.SpriteRenderer" : {
-      "@type" : "SpriteRenderer",
-      "id" : 27,
-      "temporary" : false,
       "positionOffset" : {
         "x" : 0.0,
         "y" : -50.0,
@@ -551,39 +490,39 @@
       "rotate" : 0,
       "mirrorWidth" : false,
       "mirrorHeight" : false
+    }
+  }
+}, {
+  "id" : 27,
+  "name" : "Ground",
+  "transform" : {
+    "position" : {
+      "x" : -100.0,
+      "y" : -100.0,
+      "z" : 0.0
     },
+    "facing" : {
+      "x" : 1.0,
+      "y" : 0.0,
+      "z" : 0.0
+    },
+    "scale" : {
+      "x" : 1.0,
+      "y" : 1.0,
+      "z" : 1.0
+    }
+  },
+  "components" : {
     "com.lunix.javagame.engine.components.SnapToGrid" : {
       "@type" : "SnapToGrid",
+      "id" : 29,
+      "temporary" : false,
+      "gridSize" : 100
+    },
+    "com.lunix.javagame.engine.components.SpriteRenderer" : {
+      "@type" : "SpriteRenderer",
       "id" : 28,
       "temporary" : false,
-      "gridSize" : 100
-    }
-  }
-}, {
-  "id" : 30,
-  "name" : "Ground",
-  "transform" : {
-    "position" : {
-      "x" : 200.0,
-      "y" : 0.0,
-      "z" : 0.0
-    },
-    "facing" : {
-      "x" : 1.0,
-      "y" : 0.0,
-      "z" : 0.0
-    },
-    "scale" : {
-      "x" : 1.0,
-      "y" : 1.0,
-      "z" : 1.0
-    }
-  },
-  "components" : {
-    "com.lunix.javagame.engine.components.SpriteRenderer" : {
-      "@type" : "SpriteRenderer",
-      "id" : 31,
-      "temporary" : false,
       "positionOffset" : {
         "x" : 0.0,
         "y" : -50.0,
@@ -607,56 +546,56 @@
       "shader" : "DEFAULT",
       "sprite" : {
         "textureCoords" : [ {
-          "x" : 0.25,
-          "y" : 0.25
-        }, {
-          "x" : 0.5,
-          "y" : 0.25
-        }, {
-          "x" : 0.5,
+          "x" : 0.0,
           "y" : 0.5
         }, {
           "x" : 0.25,
           "y" : 0.5
+        }, {
+          "x" : 0.25,
+          "y" : 0.75
+        }, {
+          "x" : 0.0,
+          "y" : 0.75
         } ],
         "texture" : "TILE_BRICK"
       },
       "rotate" : 0,
       "mirrorWidth" : false,
       "mirrorHeight" : false
+    }
+  }
+}, {
+  "id" : 31,
+  "name" : "Ground",
+  "transform" : {
+    "position" : {
+      "x" : 100.0,
+      "y" : -100.0,
+      "z" : 0.0
     },
+    "facing" : {
+      "x" : 1.0,
+      "y" : 0.0,
+      "z" : 0.0
+    },
+    "scale" : {
+      "x" : 1.0,
+      "y" : 1.0,
+      "z" : 1.0
+    }
+  },
+  "components" : {
     "com.lunix.javagame.engine.components.SnapToGrid" : {
       "@type" : "SnapToGrid",
+      "id" : 33,
+      "temporary" : false,
+      "gridSize" : 100
+    },
+    "com.lunix.javagame.engine.components.SpriteRenderer" : {
+      "@type" : "SpriteRenderer",
       "id" : 32,
       "temporary" : false,
-      "gridSize" : 100
-    }
-  }
-}, {
-  "id" : 34,
-  "name" : "Ground",
-  "transform" : {
-    "position" : {
-      "x" : -200.0,
-      "y" : 100.0,
-      "z" : 0.0
-    },
-    "facing" : {
-      "x" : 1.0,
-      "y" : 0.0,
-      "z" : 0.0
-    },
-    "scale" : {
-      "x" : 1.0,
-      "y" : 1.0,
-      "z" : 1.0
-    }
-  },
-  "components" : {
-    "com.lunix.javagame.engine.components.SpriteRenderer" : {
-      "@type" : "SpriteRenderer",
-      "id" : 35,
-      "temporary" : false,
       "positionOffset" : {
         "x" : 0.0,
         "y" : -50.0,
@@ -697,12 +636,6 @@
       "rotate" : 0,
       "mirrorWidth" : false,
       "mirrorHeight" : false
-    },
-    "com.lunix.javagame.engine.components.SnapToGrid" : {
-      "@type" : "SnapToGrid",
-      "id" : 36,
-      "temporary" : false,
-      "gridSize" : 100
     }
   }
 }, {
@@ -710,7 +643,7 @@
   "name" : "Ground",
   "transform" : {
     "position" : {
-      "x" : 200.0,
+      "x" : 0.0,
       "y" : 100.0,
       "z" : 0.0
     },
@@ -726,6 +659,12 @@
     }
   },
   "components" : {
+    "com.lunix.javagame.engine.components.SnapToGrid" : {
+      "@type" : "SnapToGrid",
+      "id" : 40,
+      "temporary" : false,
+      "gridSize" : 100
+    },
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
       "id" : 39,
@@ -753,38 +692,32 @@
       "shader" : "DEFAULT",
       "sprite" : {
         "textureCoords" : [ {
-          "x" : 0.25,
-          "y" : 0.5
-        }, {
-          "x" : 0.5,
-          "y" : 0.5
-        }, {
-          "x" : 0.5,
-          "y" : 0.75
+          "x" : 0.0,
+          "y" : 0.0
         }, {
           "x" : 0.25,
-          "y" : 0.75
+          "y" : 0.0
+        }, {
+          "x" : 0.25,
+          "y" : 0.25
+        }, {
+          "x" : 0.0,
+          "y" : 0.25
         } ],
         "texture" : "TILE_BRICK"
       },
       "rotate" : 0,
       "mirrorWidth" : false,
       "mirrorHeight" : false
-    },
-    "com.lunix.javagame.engine.components.SnapToGrid" : {
-      "@type" : "SnapToGrid",
-      "id" : 40,
-      "temporary" : false,
-      "gridSize" : 100
     }
   }
 }, {
-  "id" : 48,
+  "id" : 42,
   "name" : "Ground",
   "transform" : {
     "position" : {
       "x" : -100.0,
-      "y" : 0.0,
+      "y" : 100.0,
       "z" : 0.0
     },
     "facing" : {
@@ -799,9 +732,15 @@
     }
   },
   "components" : {
+    "com.lunix.javagame.engine.components.SnapToGrid" : {
+      "@type" : "SnapToGrid",
+      "id" : 44,
+      "temporary" : false,
+      "gridSize" : 100
+    },
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
-      "id" : 49,
+      "id" : 43,
       "temporary" : false,
       "positionOffset" : {
         "x" : 0.0,
@@ -826,38 +765,32 @@
       "shader" : "DEFAULT",
       "sprite" : {
         "textureCoords" : [ {
-          "x" : 0.25,
+          "x" : 0.5,
+          "y" : 0.5
+        }, {
+          "x" : 0.75,
+          "y" : 0.5
+        }, {
+          "x" : 0.75,
           "y" : 0.75
         }, {
           "x" : 0.5,
           "y" : 0.75
-        }, {
-          "x" : 0.5,
-          "y" : 1.0
-        }, {
-          "x" : 0.25,
-          "y" : 1.0
         } ],
         "texture" : "TILE_BRICK"
       },
       "rotate" : 0,
       "mirrorWidth" : false,
       "mirrorHeight" : false
-    },
-    "com.lunix.javagame.engine.components.SnapToGrid" : {
-      "@type" : "SnapToGrid",
-      "id" : 50,
-      "temporary" : false,
-      "gridSize" : 100
     }
   }
 }, {
-  "id" : 58,
+  "id" : 46,
   "name" : "Ground",
   "transform" : {
     "position" : {
-      "x" : -100.0,
-      "y" : -200.0,
+      "x" : 100.0,
+      "y" : 100.0,
       "z" : 0.0
     },
     "facing" : {
@@ -872,9 +805,15 @@
     }
   },
   "components" : {
+    "com.lunix.javagame.engine.components.SnapToGrid" : {
+      "@type" : "SnapToGrid",
+      "id" : 48,
+      "temporary" : false,
+      "gridSize" : 100
+    },
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
-      "id" : 59,
+      "id" : 47,
       "temporary" : false,
       "positionOffset" : {
         "x" : 0.0,
@@ -899,16 +838,16 @@
       "shader" : "DEFAULT",
       "sprite" : {
         "textureCoords" : [ {
+          "x" : 0.0,
+          "y" : 0.5
+        }, {
           "x" : 0.25,
           "y" : 0.5
         }, {
-          "x" : 0.5,
-          "y" : 0.5
-        }, {
-          "x" : 0.5,
+          "x" : 0.25,
           "y" : 0.75
         }, {
-          "x" : 0.25,
+          "x" : 0.0,
           "y" : 0.75
         } ],
         "texture" : "TILE_BRICK"
@@ -916,12 +855,6 @@
       "rotate" : 0,
       "mirrorWidth" : false,
       "mirrorHeight" : false
-    },
-    "com.lunix.javagame.engine.components.SnapToGrid" : {
-      "@type" : "SnapToGrid",
-      "id" : 60,
-      "temporary" : false,
-      "gridSize" : 100
     }
   }
 } ]

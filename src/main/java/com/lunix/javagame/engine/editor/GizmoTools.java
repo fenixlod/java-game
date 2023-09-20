@@ -10,7 +10,7 @@ import com.lunix.javagame.engine.enums.TextureType;
 import com.lunix.javagame.engine.graphic.Color;
 import com.lunix.javagame.engine.util.VectorUtil;
 
-public class GizmoTools extends GameObject {
+public class GizmoTools {
 	private TranslateGizmo xAxis;
 	private TranslateGizmo yAxis;
 	private MoveGizmo move;
@@ -67,12 +67,10 @@ public class GizmoTools extends GameObject {
 		move.detach();
 	}
 
-	@Override
-	public void update(float deltaTime) {
-		super.update(deltaTime);
-		xAxis.update(deltaTime);
-		yAxis.update(deltaTime);
-		move.update(deltaTime);
+	public void refresh() {
+		// xAxis.update(deltaTime);
+		// yAxis.update(deltaTime);
+		// move.update(deltaTime);
 
 		if (xAxis.isSelected) {
 			yAxis.transform().position(new Vector3f(xAxis.transform().position()));

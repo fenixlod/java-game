@@ -6,8 +6,7 @@ layout (location=1) in vec4 color;
 layout (location=2) in vec2 textureMapping;
 layout (location=3) in float textureIndex;
 
-uniform mat4 projMat;
-uniform mat4 viewMat;
+uniform mat4 viewXProj;
 
 out vec4 fragmentColor;
 out vec2 textureUV;
@@ -18,7 +17,7 @@ void main()
 	fragmentColor = color;
 	textureUV = textureMapping;
 	textureIdx = textureIndex;
-	gl_Position = projMat * viewMat * vec4(position, 1.0);
+	gl_Position = viewXProj * vec4(position, 1.0);
 }
 
 #type fragment
