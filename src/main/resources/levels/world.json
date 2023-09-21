@@ -1,5 +1,5 @@
 [ {
-  "id" : 6,
+  "id" : 10,
   "name" : "Player",
   "transform" : {
     "position" : {
@@ -21,7 +21,7 @@
   "components" : {
     "com.lunix.javagame.engine.components.Animation" : {
       "@type" : "Animation",
-      "id" : 8,
+      "id" : 12,
       "temporary" : false,
       "poses" : [ {
         "textureCoords" : [ {
@@ -89,7 +89,7 @@
     },
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
-      "id" : 7,
+      "id" : 11,
       "temporary" : false,
       "positionOffset" : {
         "x" : 0.0,
@@ -134,12 +134,12 @@
     }
   }
 }, {
-  "id" : 9,
-  "name" : "Enemy",
+  "id" : 13,
+  "name" : "r",
   "transform" : {
     "position" : {
-      "x" : -50.0,
-      "y" : 50.0,
+      "x" : -64.53261,
+      "y" : 60.921425,
       "z" : 0.0
     },
     "facing" : {
@@ -156,7 +156,7 @@
   "components" : {
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
-      "id" : 10,
+      "id" : 14,
       "temporary" : false,
       "positionOffset" : {
         "x" : 0.0,
@@ -201,84 +201,11 @@
     }
   }
 }, {
-  "id" : 11,
-  "name" : "Ground",
-  "transform" : {
-    "position" : {
-      "x" : 0.0,
-      "y" : 0.0,
-      "z" : 0.0
-    },
-    "facing" : {
-      "x" : 1.0,
-      "y" : 0.0,
-      "z" : 0.0
-    },
-    "scale" : {
-      "x" : 1.0,
-      "y" : 1.0,
-      "z" : 1.0
-    }
-  },
-  "components" : {
-    "com.lunix.javagame.engine.components.SnapToGrid" : {
-      "@type" : "SnapToGrid",
-      "id" : 13,
-      "temporary" : false,
-      "gridSize" : 100
-    },
-    "com.lunix.javagame.engine.components.SpriteRenderer" : {
-      "@type" : "SpriteRenderer",
-      "id" : 12,
-      "temporary" : false,
-      "positionOffset" : {
-        "x" : 0.0,
-        "y" : -50.0,
-        "z" : 0.0
-      },
-      "widthDirection" : {
-        "x" : 1.0,
-        "y" : 0.0,
-        "z" : 0.0
-      },
-      "heightDirection" : {
-        "x" : 0.0,
-        "y" : 1.0,
-        "z" : 0.0
-      },
-      "width" : 100,
-      "height" : 100,
-      "color" : {
-        "rgba" : [ 1.0, 1.0, 1.0, 1.0 ]
-      },
-      "shader" : "DEFAULT",
-      "sprite" : {
-        "textureCoords" : [ {
-          "x" : 0.0,
-          "y" : 0.25
-        }, {
-          "x" : 0.25,
-          "y" : 0.25
-        }, {
-          "x" : 0.25,
-          "y" : 0.5
-        }, {
-          "x" : 0.0,
-          "y" : 0.5
-        } ],
-        "texture" : "TILE_BRICK"
-      },
-      "rotate" : 0,
-      "mirrorWidth" : false,
-      "mirrorHeight" : false
-    }
-  }
-}, {
   "id" : 15,
   "name" : "Ground",
   "transform" : {
     "position" : {
-      "x" : 100.0,
+      "x" : 0.0,
       "y" : 0.0,
       "z" : 0.0
     },
@@ -327,16 +254,16 @@
       "shader" : "DEFAULT",
       "sprite" : {
         "textureCoords" : [ {
-          "x" : 0.75,
+          "x" : 0.0,
           "y" : 0.25
         }, {
-          "x" : 1.0,
+          "x" : 0.25,
           "y" : 0.25
         }, {
-          "x" : 1.0,
+          "x" : 0.25,
           "y" : 0.5
         }, {
-          "x" : 0.75,
+          "x" : 0.0,
           "y" : 0.5
         } ],
         "texture" : "TILE_BRICK"
@@ -351,8 +278,8 @@
   "name" : "Ground",
   "transform" : {
     "position" : {
-      "x" : -100.0,
-      "y" : 0.0,
+      "x" : 0.0,
+      "y" : -100.0,
       "z" : 0.0
     },
     "facing" : {
@@ -400,17 +327,17 @@
       "shader" : "DEFAULT",
       "sprite" : {
         "textureCoords" : [ {
-          "x" : 0.5,
+          "x" : 0.0,
+          "y" : 0.0
+        }, {
+          "x" : 0.25,
+          "y" : 0.0
+        }, {
+          "x" : 0.25,
           "y" : 0.25
         }, {
-          "x" : 0.75,
+          "x" : 0.0,
           "y" : 0.25
-        }, {
-          "x" : 0.75,
-          "y" : 0.5
-        }, {
-          "x" : 0.5,
-          "y" : 0.5
         } ],
         "texture" : "TILE_BRICK"
       },
@@ -424,8 +351,8 @@
   "name" : "Ground",
   "transform" : {
     "position" : {
-      "x" : 0.0,
-      "y" : -100.0,
+      "x" : -100.0,
+      "y" : 0.0,
       "z" : 0.0
     },
     "facing" : {
@@ -473,16 +400,16 @@
       "shader" : "DEFAULT",
       "sprite" : {
         "textureCoords" : [ {
-          "x" : 0.25,
+          "x" : 0.75,
           "y" : 0.25
         }, {
-          "x" : 0.5,
+          "x" : 1.0,
           "y" : 0.25
         }, {
-          "x" : 0.5,
+          "x" : 1.0,
           "y" : 0.5
         }, {
-          "x" : 0.25,
+          "x" : 0.75,
           "y" : 0.5
         } ],
         "texture" : "TILE_BRICK"
@@ -494,11 +421,11 @@
   }
 }, {
   "id" : 27,
-  "name" : "Ground",
+  "name" : "Player",
   "transform" : {
     "position" : {
-      "x" : -100.0,
-      "y" : -100.0,
+      "x" : 100.0,
+      "y" : 0.0,
       "z" : 0.0
     },
     "facing" : {
@@ -546,17 +473,17 @@
       "shader" : "DEFAULT",
       "sprite" : {
         "textureCoords" : [ {
-          "x" : 0.0,
+          "x" : 0.5,
+          "y" : 0.25
+        }, {
+          "x" : 0.75,
+          "y" : 0.25
+        }, {
+          "x" : 0.75,
           "y" : 0.5
         }, {
-          "x" : 0.25,
+          "x" : 0.5,
           "y" : 0.5
-        }, {
-          "x" : 0.25,
-          "y" : 0.75
-        }, {
-          "x" : 0.0,
-          "y" : 0.75
         } ],
         "texture" : "TILE_BRICK"
       },
@@ -570,8 +497,8 @@
   "name" : "Ground",
   "transform" : {
     "position" : {
-      "x" : 100.0,
-      "y" : -100.0,
+      "x" : 0.0,
+      "y" : 100.0,
       "z" : 0.0
     },
     "facing" : {
@@ -619,90 +546,17 @@
       "shader" : "DEFAULT",
       "sprite" : {
         "textureCoords" : [ {
-          "x" : 0.0,
-          "y" : 0.5
-        }, {
-          "x" : 0.25,
-          "y" : 0.5
-        }, {
-          "x" : 0.25,
-          "y" : 0.75
-        }, {
-          "x" : 0.0,
-          "y" : 0.75
-        } ],
-        "texture" : "TILE_BRICK"
-      },
-      "rotate" : 0,
-      "mirrorWidth" : false,
-      "mirrorHeight" : false
-    }
-  }
-}, {
-  "id" : 38,
-  "name" : "Ground",
-  "transform" : {
-    "position" : {
-      "x" : 0.0,
-      "y" : 100.0,
-      "z" : 0.0
-    },
-    "facing" : {
-      "x" : 1.0,
-      "y" : 0.0,
-      "z" : 0.0
-    },
-    "scale" : {
-      "x" : 1.0,
-      "y" : 1.0,
-      "z" : 1.0
-    }
-  },
-  "components" : {
-    "com.lunix.javagame.engine.components.SnapToGrid" : {
-      "@type" : "SnapToGrid",
-      "id" : 40,
-      "temporary" : false,
-      "gridSize" : 100
-    },
-    "com.lunix.javagame.engine.components.SpriteRenderer" : {
-      "@type" : "SpriteRenderer",
-      "id" : 39,
-      "temporary" : false,
-      "positionOffset" : {
-        "x" : 0.0,
-        "y" : -50.0,
-        "z" : 0.0
-      },
-      "widthDirection" : {
-        "x" : 1.0,
-        "y" : 0.0,
-        "z" : 0.0
-      },
-      "heightDirection" : {
-        "x" : 0.0,
-        "y" : 1.0,
-        "z" : 0.0
-      },
-      "width" : 100,
-      "height" : 100,
-      "color" : {
-        "rgba" : [ 1.0, 1.0, 1.0, 1.0 ]
-      },
-      "shader" : "DEFAULT",
-      "sprite" : {
-        "textureCoords" : [ {
-          "x" : 0.0,
-          "y" : 0.0
-        }, {
-          "x" : 0.25,
-          "y" : 0.0
-        }, {
           "x" : 0.25,
           "y" : 0.25
         }, {
-          "x" : 0.0,
+          "x" : 0.5,
           "y" : 0.25
+        }, {
+          "x" : 0.5,
+          "y" : 0.5
+        }, {
+          "x" : 0.25,
+          "y" : 0.5
         } ],
         "texture" : "TILE_BRICK"
       },
@@ -712,80 +566,7 @@
     }
   }
 }, {
-  "id" : 42,
-  "name" : "Ground",
-  "transform" : {
-    "position" : {
-      "x" : -100.0,
-      "y" : 100.0,
-      "z" : 0.0
-    },
-    "facing" : {
-      "x" : 1.0,
-      "y" : 0.0,
-      "z" : 0.0
-    },
-    "scale" : {
-      "x" : 1.0,
-      "y" : 1.0,
-      "z" : 1.0
-    }
-  },
-  "components" : {
-    "com.lunix.javagame.engine.components.SnapToGrid" : {
-      "@type" : "SnapToGrid",
-      "id" : 44,
-      "temporary" : false,
-      "gridSize" : 100
-    },
-    "com.lunix.javagame.engine.components.SpriteRenderer" : {
-      "@type" : "SpriteRenderer",
-      "id" : 43,
-      "temporary" : false,
-      "positionOffset" : {
-        "x" : 0.0,
-        "y" : -50.0,
-        "z" : 0.0
-      },
-      "widthDirection" : {
-        "x" : 1.0,
-        "y" : 0.0,
-        "z" : 0.0
-      },
-      "heightDirection" : {
-        "x" : 0.0,
-        "y" : 1.0,
-        "z" : 0.0
-      },
-      "width" : 100,
-      "height" : 100,
-      "color" : {
-        "rgba" : [ 1.0, 1.0, 1.0, 1.0 ]
-      },
-      "shader" : "DEFAULT",
-      "sprite" : {
-        "textureCoords" : [ {
-          "x" : 0.5,
-          "y" : 0.5
-        }, {
-          "x" : 0.75,
-          "y" : 0.5
-        }, {
-          "x" : 0.75,
-          "y" : 0.75
-        }, {
-          "x" : 0.5,
-          "y" : 0.75
-        } ],
-        "texture" : "TILE_BRICK"
-      },
-      "rotate" : 0,
-      "mirrorWidth" : false,
-      "mirrorHeight" : false
-    }
-  }
-}, {
-  "id" : 46,
+  "id" : 35,
   "name" : "Ground",
   "transform" : {
     "position" : {
@@ -807,13 +588,13 @@
   "components" : {
     "com.lunix.javagame.engine.components.SnapToGrid" : {
       "@type" : "SnapToGrid",
-      "id" : 48,
+      "id" : 37,
       "temporary" : false,
       "gridSize" : 100
     },
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
-      "id" : 47,
+      "id" : 36,
       "temporary" : false,
       "positionOffset" : {
         "x" : 0.0,
@@ -838,17 +619,236 @@
       "shader" : "DEFAULT",
       "sprite" : {
         "textureCoords" : [ {
-          "x" : 0.0,
-          "y" : 0.5
-        }, {
           "x" : 0.25,
           "y" : 0.5
         }, {
+          "x" : 0.5,
+          "y" : 0.5
+        }, {
+          "x" : 0.5,
+          "y" : 0.75
+        }, {
+          "x" : 0.25,
+          "y" : 0.75
+        } ],
+        "texture" : "TILE_BRICK"
+      },
+      "rotate" : 0,
+      "mirrorWidth" : false,
+      "mirrorHeight" : false
+    }
+  }
+}, {
+  "id" : 39,
+  "name" : "Ground",
+  "transform" : {
+    "position" : {
+      "x" : -100.0,
+      "y" : 100.0,
+      "z" : 0.0
+    },
+    "facing" : {
+      "x" : 1.0,
+      "y" : 0.0,
+      "z" : 0.0
+    },
+    "scale" : {
+      "x" : 1.0,
+      "y" : 1.0,
+      "z" : 1.0
+    }
+  },
+  "components" : {
+    "com.lunix.javagame.engine.components.SnapToGrid" : {
+      "@type" : "SnapToGrid",
+      "id" : 41,
+      "temporary" : false,
+      "gridSize" : 100
+    },
+    "com.lunix.javagame.engine.components.SpriteRenderer" : {
+      "@type" : "SpriteRenderer",
+      "id" : 40,
+      "temporary" : false,
+      "positionOffset" : {
+        "x" : 0.0,
+        "y" : -50.0,
+        "z" : 0.0
+      },
+      "widthDirection" : {
+        "x" : 1.0,
+        "y" : 0.0,
+        "z" : 0.0
+      },
+      "heightDirection" : {
+        "x" : 0.0,
+        "y" : 1.0,
+        "z" : 0.0
+      },
+      "width" : 100,
+      "height" : 100,
+      "color" : {
+        "rgba" : [ 1.0, 1.0, 1.0, 1.0 ]
+      },
+      "shader" : "DEFAULT",
+      "sprite" : {
+        "textureCoords" : [ {
+          "x" : 0.75,
+          "y" : 0.0
+        }, {
+          "x" : 1.0,
+          "y" : 0.0
+        }, {
+          "x" : 1.0,
+          "y" : 0.25
+        }, {
+          "x" : 0.75,
+          "y" : 0.25
+        } ],
+        "texture" : "TILE_BRICK"
+      },
+      "rotate" : 0,
+      "mirrorWidth" : false,
+      "mirrorHeight" : false
+    }
+  }
+}, {
+  "id" : 43,
+  "name" : "Ground",
+  "transform" : {
+    "position" : {
+      "x" : -100.0,
+      "y" : -100.0,
+      "z" : 0.0
+    },
+    "facing" : {
+      "x" : 1.0,
+      "y" : 0.0,
+      "z" : 0.0
+    },
+    "scale" : {
+      "x" : 0.9999982,
+      "y" : 1.0,
+      "z" : 1.0
+    }
+  },
+  "components" : {
+    "com.lunix.javagame.engine.components.SnapToGrid" : {
+      "@type" : "SnapToGrid",
+      "id" : 45,
+      "temporary" : false,
+      "gridSize" : 100
+    },
+    "com.lunix.javagame.engine.components.SpriteRenderer" : {
+      "@type" : "SpriteRenderer",
+      "id" : 44,
+      "temporary" : false,
+      "positionOffset" : {
+        "x" : 0.0,
+        "y" : -50.0,
+        "z" : 0.0
+      },
+      "widthDirection" : {
+        "x" : 1.0,
+        "y" : 0.0,
+        "z" : 0.0
+      },
+      "heightDirection" : {
+        "x" : 0.0,
+        "y" : 1.0,
+        "z" : 0.0
+      },
+      "width" : 100,
+      "height" : 100,
+      "color" : {
+        "rgba" : [ 1.0, 1.0, 1.0, 1.0 ]
+      },
+      "shader" : "DEFAULT",
+      "sprite" : {
+        "textureCoords" : [ {
           "x" : 0.25,
           "y" : 0.75
         }, {
-          "x" : 0.0,
+          "x" : 0.5,
           "y" : 0.75
+        }, {
+          "x" : 0.5,
+          "y" : 1.0
+        }, {
+          "x" : 0.25,
+          "y" : 1.0
+        } ],
+        "texture" : "TILE_BRICK"
+      },
+      "rotate" : 0,
+      "mirrorWidth" : false,
+      "mirrorHeight" : false
+    }
+  }
+}, {
+  "id" : 47,
+  "name" : "Ground",
+  "transform" : {
+    "position" : {
+      "x" : 100.0,
+      "y" : -100.0,
+      "z" : 0.0
+    },
+    "facing" : {
+      "x" : 1.0,
+      "y" : 0.0,
+      "z" : 0.0
+    },
+    "scale" : {
+      "x" : 1.0,
+      "y" : 1.0,
+      "z" : 1.0
+    }
+  },
+  "components" : {
+    "com.lunix.javagame.engine.components.SnapToGrid" : {
+      "@type" : "SnapToGrid",
+      "id" : 49,
+      "temporary" : false,
+      "gridSize" : 100
+    },
+    "com.lunix.javagame.engine.components.SpriteRenderer" : {
+      "@type" : "SpriteRenderer",
+      "id" : 48,
+      "temporary" : false,
+      "positionOffset" : {
+        "x" : 0.0,
+        "y" : -50.0,
+        "z" : 0.0
+      },
+      "widthDirection" : {
+        "x" : 1.0,
+        "y" : 0.0,
+        "z" : 0.0
+      },
+      "heightDirection" : {
+        "x" : 0.0,
+        "y" : 1.0,
+        "z" : 0.0
+      },
+      "width" : 100,
+      "height" : 100,
+      "color" : {
+        "rgba" : [ 1.0, 1.0, 1.0, 1.0 ]
+      },
+      "shader" : "DEFAULT",
+      "sprite" : {
+        "textureCoords" : [ {
+          "x" : 0.5,
+          "y" : 0.0
+        }, {
+          "x" : 0.75,
+          "y" : 0.0
+        }, {
+          "x" : 0.75,
+          "y" : 0.25
+        }, {
+          "x" : 0.5,
+          "y" : 0.25
         } ],
         "texture" : "TILE_BRICK"
       },

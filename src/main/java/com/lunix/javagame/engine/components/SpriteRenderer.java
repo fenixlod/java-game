@@ -265,4 +265,8 @@ public class SpriteRenderer extends Component {
 	public static int priority() {
 		return 500;
 	}
+
+	public Vector3f positionOffset() {
+		return this.positionOffset;
+	}
 }

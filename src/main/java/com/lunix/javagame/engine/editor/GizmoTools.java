@@ -1,5 +1,8 @@
 package com.lunix.javagame.engine.editor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.joml.Vector3f;
 
 import com.lunix.javagame.engine.GameObject;
@@ -11,60 +14,69 @@ import com.lunix.javagame.engine.graphic.Color;
 import com.lunix.javagame.engine.util.VectorUtil;
 
 public class GizmoTools {
-	private TranslateGizmo xAxis;
-	private TranslateGizmo yAxis;
-	private MoveGizmo move;
+	private List<Gizmo> gizmos;
 	private GameObject attachedTo;
 
 	public GizmoTools() {
-		SpriteRenderer xAxisSprite = new SpriteRenderer(50, 20)
+		this.gizmos = new ArrayList<>();
+		
+		SpriteRenderer sprite = new SpriteRenderer(50, 20)
 			.widthDirection(VectorUtil.X())
 			.heightDirection(VectorUtil.Y())
 			.sprite(ResourcePool.getSprite(TextureType.ARROW))
 			.color(Color.red().a(0.5f))
 			.offset(new Vector3f(30, -10, 0));
-		this.xAxis = new TranslateGizmo("TranslateGizmo X Axis", xAxisSprite, VectorUtil.X());
+		this.gizmos.add(new TranslateGizmo("TranslateGizmo X Axis", sprite, VectorUtil.X()));
 		
-		SpriteRenderer yAxisSprite = new SpriteRenderer(20, 50)
+		sprite = new SpriteRenderer(20, 50)
 			.widthDirection(VectorUtil.X())
 			.heightDirection(VectorUtil.Y())
 			.sprite(ResourcePool.getSprite(TextureType.ARROW))
 			.color(Color.blue().a(0.5f))
 			.rotate(1)
 			.offset(new Vector3f(0, 5, 0));
+		this.gizmos.add(new TranslateGizmo("TranslateGizmo Y Axis", sprite, VectorUtil.Y()));
 		
-		this.yAxis = new TranslateGizmo("TranslateGizmo Y Axis", yAxisSprite, VectorUtil.Y());
-		
-		SpriteRenderer freeMoveSprite = new SpriteRenderer(10, 10)
-				.widthDirection(VectorUtil.X())
-				.heightDirection(VectorUtil.Y())
-				.color(Color.green().a(0.5f))
-				.offset(new Vector3f(0, -5, 0));
+		sprite = new SpriteRenderer(10, 10)
+			.widthDirection(VectorUtil.X())
+			.heightDirection(VectorUtil.Y())
+			.color(Color.green().a(0.5f))
+			.offset(new Vector3f(0, -5, 0));
+		this.gizmos.add(new MoveGizmo("Move", sprite));
 			
-			this.move = new MoveGizmo("Move", freeMoveSprite);
+		sprite = new SpriteRenderer(20, 20)
+			.widthDirection(VectorUtil.X())
+			.heightDirection(VectorUtil.Y())
+			.color(Color.magenta().a(0.5f))
+			.offset(new Vector3f(10, -10, 0));
+		this.gizmos.add(new ScaleGizmo("ScaleGizmo X", sprite, VectorUtil.X()));
+			
+		sprite = new SpriteRenderer(20, 20)
+			.widthDirection(VectorUtil.X())
+			.heightDirection(VectorUtil.Y())
+			.color(Color.cyan().a(0.5f))
+			.offset(new Vector3f(0, 0, 0));
+		this.gizmos.add(new ScaleGizmo("ScaleGizmo Y", sprite, VectorUtil.Y()));
 	}
 
 	public void init(Scene scene) throws Exception {
-		xAxis.start();
-		yAxis.start();
-		move.start();
-		scene.addGameObject(xAxis);
-		scene.addGameObject(yAxis);
-		scene.addGameObject(move);
+		for (Gizmo g : gizmos) {
+			scene.addGameObject(g);
+		}
 	}
 
 	public void attach(GameObject object) {
 		this.attachedTo = object;
-		xAxis.attach(object);
-		yAxis.attach(object);
-		move.attach(object);
+		for (Gizmo g : gizmos) {
+			g.attach(object);
+		}
 	}
 
 	public void detach() {
 		this.attachedTo = null;
-		xAxis.detach();
-		yAxis.detach();
-		move.detach();
+		for (Gizmo g : gizmos) {
+			g.detach();
+		}
 	}
 
 	public void refresh() {
@@ -72,15 +84,21 @@ public class GizmoTools {
 		// yAxis.update(deltaTime);
 		// move.update(deltaTime);
 
-		if (xAxis.isSelected) {
-			yAxis.transform().position(new Vector3f(xAxis.transform().position()));
-			move.transform().position(new Vector3f(xAxis.transform().position()));
-		} else if (yAxis.isSelected) {
-			xAxis.transform().position(new Vector3f(yAxis.transform().position()));
-			move.transform().position(new Vector3f(yAxis.transform().position()));
-		} else if (move.isSelected) {
-			xAxis.transform().position(new Vector3f(move.transform().position()));
-			yAxis.transform().position(new Vector3f(move.transform().position()));
+		Gizmo selectedGizmo = null;
+		for (Gizmo g : gizmos) {
+			if (g.isSelected) {
+				selectedGizmo = g;
+				break;
+			}
+		}
+
+		if (selectedGizmo != null) {
+			for (Gizmo g : gizmos) {
+				if (g == selectedGizmo)
+					continue;
+
+				g.transform().position(new Vector3f(selectedGizmo.transform().position()));
+			}
 		}
 	}
 
@@ -88,8 +106,8 @@ public class GizmoTools {
 		if(this.attachedTo == null)
 			return;
 		
-		xAxis.select(id);
-		yAxis.select(id);
-		move.select(id);
+		for (Gizmo g : gizmos) {
+			g.select(id);
+		}
 	}
 }

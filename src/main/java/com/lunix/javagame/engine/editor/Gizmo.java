@@ -9,7 +9,7 @@ import com.lunix.javagame.engine.util.VectorUtil;
 public class Gizmo extends GameObject {
 	protected GameObject attachedTo;
 	protected boolean isSelected;
-	private SpriteRenderer spriteRenderer;
+	protected SpriteRenderer spriteRenderer;
 	protected float offsetFromObject;
 
 	public Gizmo(String name, SpriteRenderer spriteRenderer) {
