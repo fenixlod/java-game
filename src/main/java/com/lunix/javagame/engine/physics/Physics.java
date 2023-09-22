@@ -12,7 +12,7 @@ public class Physics {
 	private short positionIterations;
 
 	public Physics() {
-		gravity = new Vec2(0, -10);
+		gravity = new Vec2(0, 0);
 		world = new World(gravity);
 		physicsTime = 0;
 		physicsTimeStep = 1f / 60;// We target 60 FPS
@@ -23,7 +23,8 @@ public class Physics {
 	public void update(float deltaTime) {
 		physicsTime += deltaTime;
 		if (physicsTime > 0) {
-
+			physicsTime -= physicsTimeStep;
+			world.step(physicsTimeStep, velocityIterations, positionIterations);
 		}
 	}
 }
