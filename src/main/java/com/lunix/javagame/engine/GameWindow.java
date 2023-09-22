@@ -36,10 +36,10 @@ public class GameWindow {
 
 	public GameWindow(WindowConfigs windowConfigs) {
 		this.windowConfigs = windowConfigs;
-		this.windowSize = new Vector2i();
-		this.viewPortSize = new Vector2i();
-		this.viewPortOffset = new Vector2i();
-		this.pickingTexture = new PickingTexture();
+		windowSize = new Vector2i();
+		viewPortSize = new Vector2i();
+		viewPortOffset = new Vector2i();
+		pickingTexture = new PickingTexture();
 	}
 
 	/**
@@ -64,17 +64,18 @@ public class GameWindow {
 		glfwDefaultWindowHints(); // optional, the current window hints are already the default
 		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // the window will stay hidden after creation
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE); // the window will be resizable
-		glfwWindowHint(GLFW_MAXIMIZED, this.windowConfigs.maximized() ? GLFW_TRUE : GLFW_FALSE); // the window will be maximized
+		glfwWindowHint(GLFW_MAXIMIZED, windowConfigs.maximized() ? GLFW_TRUE : GLFW_FALSE); // the window will be
+																							// maximized
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
 		// Create the window
-		this.windowHandle = glfwCreateWindow(this.windowConfigs.width(), this.windowConfigs.height(),
-				this.windowConfigs.title(), NULL, NULL);
-		if (this.windowHandle == NULL)
+		windowHandle = glfwCreateWindow(windowConfigs.width(), windowConfigs.height(), windowConfigs.title(), NULL,
+				NULL);
+		if (windowHandle == NULL)
 			throw new RuntimeException("Failed to create the GLFW window");
 
-		this.windowSize.set(this.windowConfigs.width(), this.windowConfigs.height());
+		windowSize.set(windowConfigs.width(), windowConfigs.height());
 
 		// Get the thread stack and push a new frame
 		try (MemoryStack stack = stackPush()) {
@@ -82,23 +83,23 @@ public class GameWindow {
 			IntBuffer pHeight = stack.mallocInt(1); // int*
 
 			// Get the window size passed to glfwCreateWindow
-			glfwGetWindowSize(this.windowHandle, pWidth, pHeight);
+			glfwGetWindowSize(windowHandle, pWidth, pHeight);
 
 			// Get the resolution of the primary monitor
 			GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
 			// Center the window
-			glfwSetWindowPos(this.windowHandle, (vidmode.width() - pWidth.get(0)) / 2,
+			glfwSetWindowPos(windowHandle, (vidmode.width() - pWidth.get(0)) / 2,
 					(vidmode.height() - pHeight.get(0)) / 2);
 		} // the stack frame is popped automatically
 
 		// Make the OpenGL context current
-		glfwMakeContextCurrent(this.windowHandle);
+		glfwMakeContextCurrent(windowHandle);
 		// Enable v-sync
 		glfwSwapInterval(1);
 
 		// Make the window visible
-		glfwShowWindow(this.windowHandle);
+		glfwShowWindow(windowHandle);
 
 		// This line is critical for LWJGL's interoperation with GLFW's
 		// OpenGL context, or any context that is managed externally.
@@ -118,40 +119,40 @@ public class GameWindow {
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glEnable(GL_ALPHA_TEST);
 
-		this.uiLayer = new UiLayer(this);
-		this.uiLayer.init();
+		uiLayer = new UiLayer(this);
+		uiLayer.init();
 
 		// Setup a mouse button callback. It will be called every time a mouse button is
 		// pressed or released.
-		glfwSetCursorPosCallback(this.windowHandle, mouseListener::positionCallback);
+		glfwSetCursorPosCallback(windowHandle, mouseListener::positionCallback);
 		
-		glfwSetMouseButtonCallback(this.windowHandle, (win, button, action, mod) ->
+		glfwSetMouseButtonCallback(windowHandle, (win, button, action, mod) ->
 			uiLayer.mouseButtonCallback(win, button, action, mod, mouseListener::buttonCallback)
 		);
 		
-		glfwSetScrollCallback(this.windowHandle, (win, xScroll, yScroll) -> 
+		glfwSetScrollCallback(windowHandle, (win, xScroll, yScroll) ->
 			uiLayer.scrollCallback(win, xScroll, yScroll, mouseListener::scrollCallback)
 		);
 
 		// Setup a key callback. It will be called every time a key is pressed, repeated
 		// or released.
-		glfwSetKeyCallback(this.windowHandle, (win, key, sCode, action, mods) ->
+		glfwSetKeyCallback(windowHandle, (win, key, sCode, action, mods) ->
 			uiLayer.keyCallback(win, key, sCode, action, mods, keyboardListener::keyCallback)
 		);
 
 		// Add window resize callback
-		glfwSetWindowSizeCallback(this.windowHandle, (win, newWidth, newHeight) -> {
-			this.windowSize.set(newWidth, newHeight);
+		glfwSetWindowSizeCallback(windowHandle, (win, newWidth, newHeight) -> {
+			windowSize.set(newWidth, newHeight);
 			glViewport(0, 0, newWidth, newHeight);
-			this.viewPortSize.set(this.windowSize);
+			viewPortSize.set(windowSize);
 		});
 
 		IntBuffer width = BufferUtils.createIntBuffer(1), height = BufferUtils.createIntBuffer(1);
-		glfwGetWindowSize(this.windowHandle, width, height);
-		this.windowSize.set(width.get(), height.get());
-		glViewport(0, 0, this.windowSize.x, this.windowSize.y);
-		this.viewPortSize.set(this.windowSize);
-		this.pickingTexture.init(this.windowSize.x, this.windowSize.y);
+		glfwGetWindowSize(windowHandle, width, height);
+		windowSize.set(width.get(), height.get());
+		glViewport(0, 0, windowSize.x, windowSize.y);
+		viewPortSize.set(windowSize);
+		pickingTexture.init(windowSize.x, windowSize.y);
 	}
 
 	/**
@@ -172,7 +173,7 @@ public class GameWindow {
 	 */
 	public void render() {
 		// Swap frame buffers. Fore drawing of all rendered elements
-		glfwSwapBuffers(this.windowHandle); // swap the color buffers
+		glfwSwapBuffers(windowHandle); // swap the color buffers
 	}
 
 	/**
@@ -180,8 +181,8 @@ public class GameWindow {
 	 */
 	public void destroy() {
 		// Free the memory
-		glfwFreeCallbacks(this.windowHandle);
-		glfwDestroyWindow(this.windowHandle);
+		glfwFreeCallbacks(windowHandle);
+		glfwDestroyWindow(windowHandle);
 
 		// Terminate GLFW and free the error callback
 		glfwTerminate();
@@ -192,7 +193,7 @@ public class GameWindow {
 	 * Close the window
 	 */
 	public void close() {
-		glfwSetWindowShouldClose(this.windowHandle, true);
+		glfwSetWindowShouldClose(windowHandle, true);
 	}
 
 	/**
@@ -201,7 +202,7 @@ public class GameWindow {
 	 * @return
 	 */
 	public boolean isOpened() {
-		return !glfwWindowShouldClose(this.windowHandle);
+		return !glfwWindowShouldClose(windowHandle);
 	}
 
 	/**
@@ -217,11 +218,11 @@ public class GameWindow {
 	}
 
 	public long handle() {
-		return this.windowHandle;
+		return windowHandle;
 	}
 
 	public Vector2i windowSize() {
-		return this.windowSize;
+		return windowSize;
 	}
 
 	/**
@@ -232,7 +233,7 @@ public class GameWindow {
 	 */
 	public void update(float dt, Scene currentScene) {
 		currentScene.endFrame();
-		this.uiLayer.update(dt, currentScene);
+		uiLayer.update(dt, currentScene);
 	}
 
 	public UiLayer uiLayer() {
@@ -240,40 +241,40 @@ public class GameWindow {
 	}
 
 	public float targerAspectRatio() {
-		return (float) this.windowConfigs.width() / this.windowConfigs.height();
+		return (float) windowConfigs.width() / windowConfigs.height();
 	}
 	
 	public Vector2i viewPortSize() {
-		return this.viewPortSize;
+		return viewPortSize;
 	}
 
 	public void viewPortSize(int viewPortWidth, int viewPortHeight) {
-		this.viewPortSize.set(viewPortWidth, viewPortHeight);
+		viewPortSize.set(viewPortWidth, viewPortHeight);
 	}
 
 	public Vector2i viewPortOffset() {
-		return this.viewPortOffset;
+		return viewPortOffset;
 	}
 
 	public void viewPortOffset(int viewPortOffsetX, int viewPortOffsetY) {
-		this.viewPortOffset.set(viewPortOffsetX, viewPortOffsetY);
+		viewPortOffset.set(viewPortOffsetX, viewPortOffsetY);
 	}
 
 	public void createPickingTexture(Scene currentScene) throws Exception {
 		glDisable(GL_BLEND);
-		this.pickingTexture.enableWrithing();
-		glViewport(0, 0, this.windowSize.x, this.windowSize.y);
+		pickingTexture.enableWrithing();
+		glViewport(0, 0, windowSize.x, windowSize.y);
 		clearColor(0f, 0f, 0f, 0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the frame buffer
 		Renderer.overrideShader(ResourcePool.getShader(ShaderType.PICKING));
 		currentScene.render();
-		this.pickingTexture.disableWrithing();
+		pickingTexture.disableWrithing();
 		Renderer.overrideShader(null);
 		glEnable(GL_BLEND);
 	}
 
 	public long pickObject(Vector2i pos) {
-		return this.pickingTexture.readPixel(pos);
+		return pickingTexture.readPixel(pos);
 	}
 
 	/**
@@ -282,6 +283,6 @@ public class GameWindow {
 	 * @param suffix
 	 */
 	public void setTitleSuffix(String suffix) {
-		glfwSetWindowTitle(this.windowHandle, this.windowConfigs.title() + suffix);
+		glfwSetWindowTitle(windowHandle, windowConfigs.title() + suffix);
 	}
 }

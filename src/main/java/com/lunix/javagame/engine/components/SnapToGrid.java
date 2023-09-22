@@ -19,14 +19,14 @@ public class SnapToGrid extends Component {
 	@Override
 	public void start() {
 		super.start();
-		this.lastPosition = new Vector3f();
+		lastPosition = new Vector3f();
 	}
 
 	@Override
 	public void update(float deltaTime) {
 		Vector3f worldPos = owner.transform().position();
-//		if(this.lastPosition.equals(worldPos))
-//			return;
+		if (lastPosition.equals(worldPos))
+			return;
 
 		int newX = ((int) worldPos.x / gridSize) * gridSize;
 		int newY = ((int) worldPos.y / gridSize) * gridSize;
@@ -40,8 +40,8 @@ public class SnapToGrid extends Component {
 		worldPos.y = offsetY > (gridSize / 2) ? newY + gridSize : offsetY < (-gridSize / 2) ? newY - gridSize : newY;
 		worldPos.z = offsetZ > (gridSize / 2) ? newZ + gridSize : offsetZ < (-gridSize / 2) ? newZ - gridSize : newZ;
 
-		this.owner.transform().position(worldPos);
-		this.lastPosition = worldPos;
+		owner.transform().position(worldPos);
+		lastPosition = worldPos;
 	}
 
 	/**

@@ -38,14 +38,14 @@ public class GameInstance {
 
 	public GameInstance(WindowConfigs windowConfigs, ResourcePool resources, CameraConfigs cameraConfig,
 			PathsConfigs pathsConfig, EditorConfigs editorConfig) {
-		this.window = new GameWindow(windowConfigs);
-		this.mouse = new MouseListener();
-		this.keyboard = new KeyboardListener();
-		this.timer = new GameTime();
-		this.sceneManager = new SceneManager();
+		window = new GameWindow(windowConfigs);
+		mouse = new MouseListener();
+		keyboard = new KeyboardListener();
+		timer = new GameTime();
+		sceneManager = new SceneManager();
 		this.resources = resources;
-		this.camera = new Camera(cameraConfig);
-		this.objMapper = new ObjectMapper()
+		camera = new Camera(cameraConfig);
+		objMapper = new ObjectMapper()
 				.enable(SerializationFeature.INDENT_OUTPUT)
 				.setVisibility(PropertyAccessor.FIELD, Visibility.ANY)
 				.setVisibility(PropertyAccessor.GETTER, Visibility.NONE)
@@ -74,9 +74,9 @@ public class GameInstance {
 	 */
 	private void init() throws Exception {
 		logger.info("Initializing the game engine...");
-		this.window.create(this.mouse, this.keyboard);
-		this.resources.init();
-		this.sceneManager.changeScene(GameSceneType.EDITOR);
+		window.create(mouse, keyboard);
+		resources.init();
+		sceneManager.changeScene(GameSceneType.EDITOR);
 		Debugger.init();
 		ResourcePool.loadResources(ShaderType.DEBUG);
 	}
@@ -90,28 +90,28 @@ public class GameInstance {
 		logger.info("Starting the game loop...");
 		// Run the rendering loop until the user has attempted to close
 		// the window or has pressed the ESCAPE key.
-		while (this.window.isOpened()) {
-			this.timer.tick();
-			Scene currentScene = this.sceneManager.currentScene();
+		while (window.isOpened()) {
+			timer.tick();
+			Scene currentScene = sceneManager.currentScene();
 			// Render pass 1. Create the picking texture
-			this.window.createPickingTexture(currentScene);
+			window.createPickingTexture(currentScene);
 			// Render pass 2. Render the actual game
-			this.window.newFrame(currentScene);
+			window.newFrame(currentScene);
 			Debugger.beginFrame();
 			Debugger.infoInTitle(true, this);
-			Debugger.display(false, this.keyboard);
-			Debugger.display(false, "Time elapsed: {}", this.timer.elapsedTime());
-			Debugger.display(false, "Delta time: {}", this.timer.deltaTime());
+			Debugger.display(false, keyboard);
+			Debugger.display(false, "Time elapsed: {}", timer.elapsedTime());
+			Debugger.display(false, "Delta time: {}", timer.deltaTime());
 			Debugger.outlineSelected(true, currentScene);
 			Debugger.draw();
-			this.sceneManager.update(this.timer.deltaTime());
-			this.sceneManager.render();
-			this.window.update(this.timer.deltaTime(), currentScene);
-			this.window.render();
-			this.mouse.reset();
+			sceneManager.update(timer.deltaTime());
+			sceneManager.render();
+			window.update(timer.deltaTime(), currentScene);
+			window.render();
+			mouse.reset();
 		}
 
-		this.sceneManager.currentScene().save();
+		sceneManager.currentScene().save();
 	}
 
 	/**
@@ -119,19 +119,19 @@ public class GameInstance {
 	 */
 	private void destroy() {
 		logger.info("Clean before close...");
-		this.window.destroy();
+		window.destroy();
 	}
 
 	public MouseListener mouse() {
-		return this.mouse;
+		return mouse;
 	}
 
 	public KeyboardListener keyboard() {
-		return this.keyboard;
+		return keyboard;
 	}
 
 	public Camera camera() {
-		return this.camera;
+		return camera;
 	}
 
 	public static GameInstance get() {
@@ -139,19 +139,19 @@ public class GameInstance {
 	}
 
 	public GameWindow window() {
-		return this.window;
+		return window;
 	}
 
 	public String save(Object obj) throws IOException {
-		return this.objMapper.writeValueAsString(obj);
+		return objMapper.writeValueAsString(obj);
 	}
 
 	public <T> T load(String value, Class<T> classType) throws IOException {
-		return this.objMapper.readValue(value, classType);
+		return objMapper.readValue(value, classType);
 	}
 
 	public PathsConfigs pathsConfig() {
-		return this.pathsConfig;
+		return pathsConfig;
 	}
 
 	public static long getNextId() {

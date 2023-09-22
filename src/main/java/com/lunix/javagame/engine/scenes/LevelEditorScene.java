@@ -44,17 +44,17 @@ public class LevelEditorScene extends Scene {
 
 	public LevelEditorScene() {
 		super();
-		this.viewWindow = new GameViewWindow();
-		this.objInspector = new ObjectInspector();
-		this.controlls = new EditorControlls(game.camera());
+		viewWindow = new GameViewWindow();
+		objInspector = new ObjectInspector();
+		controlls = new EditorControlls(game.camera());
 	}
 
 	@Override
 	public void init() throws Exception {
 		editorConfig = game.editorConfig();
-		this.controlls.init();
+		controlls.init();
 		game.window().uiLayer().setViewWindow(viewWindow);
-		this.frameBuffer = new FrameBuffer(game.window().windowSize().x, game.window().windowSize().y);
+		frameBuffer = new FrameBuffer(game.window().windowSize().x, game.window().windowSize().y);
 		ResourcePool.loadResources(ShaderType.DEFAULT, ShaderType.PICKING, ShaderType.DEBUG,
 				TextureType.PLAYER, TextureType.ENEMY, TextureType.PLAYER_IDLE, TextureType.TILE_BRICK,
 				TextureType.ARROW);
@@ -70,7 +70,7 @@ public class LevelEditorScene extends Scene {
 		if (loaded)
 			return;
 
-		this.playerObject = new GameObject("Player")
+		playerObject = new GameObject("Player")
 				.addComponent(
 						new SpriteRenderer(40, 50)
 						.sprite(ResourcePool.getSprite(TextureType.PLAYER.name()))
@@ -186,11 +186,11 @@ public class LevelEditorScene extends Scene {
 	public void update(float deltaTime) throws Exception {
 		// Close the game window when escape key is pressed
 		if (game.keyboard().isKeyPressed(GLFW_KEY_ESCAPE)) {
-			if (this.draggingObject != null) {
-				MouseDragging component = this.draggingObject.getComponent(MouseDragging.class);
+			if (draggingObject != null) {
+				MouseDragging component = draggingObject.getComponent(MouseDragging.class);
 				if (component.isPicked()) {
-					removeGameObject(this.draggingObject);
-					this.draggingObject = null;
+					removeGameObject(draggingObject);
+					draggingObject = null;
 				}
 			}
 		}
@@ -198,8 +198,8 @@ public class LevelEditorScene extends Scene {
 		Vector3f worldPosition = game.mouse().worldPositionProjected();
 		System.out.println("Current X=" + worldPosition.x + " Y=" + worldPosition.y + " Z=" + worldPosition.z);
 */
-		this.controlls.update(deltaTime);
-		this.objInspector.update(deltaTime, this);
+controlls.update(deltaTime);
+objInspector.update(deltaTime, this);
 		super.update(deltaTime);
 	}
 
@@ -240,7 +240,7 @@ public class LevelEditorScene extends Scene {
 							entry.getKey());
 					// Attach the ground object to the mouse cursor
 					groundTile.addComponent(new MouseDragging().pickup());
-					this.draggingObject = groundTile;
+					draggingObject = groundTile;
 					addGameObject(groundTile);
 				}
 				ImGui.popID();
@@ -279,14 +279,14 @@ public class LevelEditorScene extends Scene {
 	@Override
 	public void newFrame() {
 		super.newFrame();
-		this.frameBuffer.bind();
+		frameBuffer.bind();
 		game.window().clearColor(1f, 1f, 1f, 1f);
 	}
 
 	@Override
 	public void endFrame() {
 		super.endFrame();
-		this.frameBuffer.unbind();
+		frameBuffer.unbind();
 	}
 
 	private void setupDockspace() {

@@ -40,11 +40,11 @@ public class UiLayer {
 	private final long[] mouseCursors = new long[ImGuiMouseCursor.COUNT];
 
 	public UiLayer(GameWindow window) {
-		this.glfwWindow = window.handle();
+		glfwWindow = window.handle();
 		this.window = window;
-		this.imGuiGlfw = new ImGuiImplGlfw();
-		this.imGuiGl3 = new ImGuiImplGl3();
-		this.glslVersion = "#version 330 core";
+		imGuiGlfw = new ImGuiImplGlfw();
+		imGuiGl3 = new ImGuiImplGl3();
+		glslVersion = "#version 330 core";
 	}
 
 	/**
@@ -54,19 +54,19 @@ public class UiLayer {
 	 */
 	public void init() throws IOException {
 		initImGui();
-		this.imGuiGlfw.init(this.glfwWindow, true);
-		this.imGuiGl3.init(this.glslVersion);
+		imGuiGlfw.init(glfwWindow, true);
+		imGuiGl3.init(glslVersion);
 	}
 
 	/**
 	 * Destroy the UI, free all allocated resources.
 	 */
 	public void destroy() {
-		this.imGuiGlfw.dispose();
-		this.imGuiGl3.dispose();
+		imGuiGlfw.dispose();
+		imGuiGl3.dispose();
 		ImGui.destroyContext();
-		Callbacks.glfwFreeCallbacks(this.glfwWindow);
-		glfwDestroyWindow(this.glfwWindow);
+		Callbacks.glfwFreeCallbacks(glfwWindow);
+		glfwDestroyWindow(glfwWindow);
 		glfwTerminate();
 	}
 
@@ -118,20 +118,20 @@ public class UiLayer {
 
 		// ------------------------------------------------------------
 		// Mouse cursors mapping
-		this.mouseCursors[ImGuiMouseCursor.Arrow] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
-		this.mouseCursors[ImGuiMouseCursor.TextInput] = glfwCreateStandardCursor(GLFW_IBEAM_CURSOR);
-		this.mouseCursors[ImGuiMouseCursor.ResizeAll] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
-		this.mouseCursors[ImGuiMouseCursor.ResizeNS] = glfwCreateStandardCursor(GLFW_VRESIZE_CURSOR);
-		this.mouseCursors[ImGuiMouseCursor.ResizeEW] = glfwCreateStandardCursor(GLFW_HRESIZE_CURSOR);
-		this.mouseCursors[ImGuiMouseCursor.ResizeNESW] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
-		this.mouseCursors[ImGuiMouseCursor.ResizeNWSE] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
-		this.mouseCursors[ImGuiMouseCursor.Hand] = glfwCreateStandardCursor(GLFW_HAND_CURSOR);
-		this.mouseCursors[ImGuiMouseCursor.NotAllowed] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
+		mouseCursors[ImGuiMouseCursor.Arrow] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
+		mouseCursors[ImGuiMouseCursor.TextInput] = glfwCreateStandardCursor(GLFW_IBEAM_CURSOR);
+		mouseCursors[ImGuiMouseCursor.ResizeAll] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
+		mouseCursors[ImGuiMouseCursor.ResizeNS] = glfwCreateStandardCursor(GLFW_VRESIZE_CURSOR);
+		mouseCursors[ImGuiMouseCursor.ResizeEW] = glfwCreateStandardCursor(GLFW_HRESIZE_CURSOR);
+		mouseCursors[ImGuiMouseCursor.ResizeNESW] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
+		mouseCursors[ImGuiMouseCursor.ResizeNWSE] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
+		mouseCursors[ImGuiMouseCursor.Hand] = glfwCreateStandardCursor(GLFW_HAND_CURSOR);
+		mouseCursors[ImGuiMouseCursor.NotAllowed] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
 
 		// ------------------------------------------------------------
 		// GLFW callbacks to handle user input
 
-//		glfwSetCharCallback(this.glfwWindow, (w, c) -> {
+//		glfwSetCharCallback(glfwWindow, (w, c) -> {
 //			if (c != GLFW_KEY_DELETE) {
 //				io.addInputCharacter(c);
 //			}
@@ -200,14 +200,14 @@ public class UiLayer {
 	 */
 	public void update(float dt, Scene currentScene) {
 		startFrame(dt);
-		this.imGuiGlfw.newFrame();
+		imGuiGlfw.newFrame();
 		ImGui.newFrame();
 
 		currentScene.ui();
 		// Any Dear ImGui code SHOULD go between ImGui.newFrame()/ImGui.render() methods
 
 		ImGui.render();
-		this.imGuiGl3.renderDrawData(ImGui.getDrawData());
+		imGuiGl3.renderDrawData(ImGui.getDrawData());
 	}
 
 	/**
@@ -217,12 +217,12 @@ public class UiLayer {
 	 */
 	private void startFrame(final float deltaTime) {
 		// Get window properties and mouse position
-		Vector2i size = this.window.windowSize();
+		Vector2i size = window.windowSize();
 		float[] winWidth = { size.x };
 		float[] winHeight = { size.y };
 		double[] mousePosX = { 0 };
 		double[] mousePosY = { 0 };
-		glfwGetCursorPos(this.glfwWindow, mousePosX, mousePosY);
+		glfwGetCursorPos(glfwWindow, mousePosX, mousePosY);
 
 		// We SHOULD call those methods to update Dear ImGui state for the current frame
 		final ImGuiIO io = ImGui.getIO();
@@ -233,8 +233,8 @@ public class UiLayer {
 
 		// Update the mouse cursor
 		final int imguiCursor = ImGui.getMouseCursor();
-		glfwSetCursor(this.glfwWindow, mouseCursors[imguiCursor]);
-		glfwSetInputMode(this.glfwWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		glfwSetCursor(glfwWindow, mouseCursors[imguiCursor]);
+		glfwSetInputMode(glfwWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 	}
 
 	/**

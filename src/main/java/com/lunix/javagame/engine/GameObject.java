@@ -34,7 +34,7 @@ public class GameObject {
 	public GameObject(String name, Transform transform) {
 		this.name = name;
 		this.transform = transform;
-		this.components = new TreeMap<>((o1, o2) -> {
+		components = new TreeMap<>((o1, o2) -> {
 			try {
 				Method method1 = o1.getMethod("priority");
 				Method method2 = o2.getMethod("priority");
@@ -46,7 +46,7 @@ public class GameObject {
 				return 0;
 			}
 		});
-		this.id = GameInstance.getNextId();
+		id = GameInstance.getNextId();
 	}
 
 	/**
@@ -57,7 +57,7 @@ public class GameObject {
 	 * @return
 	 */
 	public <T extends Component> T getComponent(Class<T> className) {
-		Component object = this.components.get(className);
+		Component object = components.get(className);
 
 		if (object != null)
 			return className.cast(object);
@@ -73,7 +73,7 @@ public class GameObject {
 	 */
 	public GameObject addComponent(Component component) {
 		component.generateId();
-		this.components.put(component.getClass(), component);
+		components.put(component.getClass(), component);
 		component.owner(this);
 		return this;
 	}
@@ -85,7 +85,7 @@ public class GameObject {
 	 * @param className
 	 */
 	public <T extends Component> void removeComponent(Class<T> className) {
-		this.components.remove(className);
+		components.remove(className);
 	}
 
 	/**
@@ -94,7 +94,7 @@ public class GameObject {
 	 * @param deltaTime
 	 */
 	public void update(float deltaTime) {
-		this.components.entrySet().forEach(e -> {
+		components.entrySet().forEach(e -> {
 			e.getValue().update(deltaTime);
 		});
 	}
@@ -103,11 +103,11 @@ public class GameObject {
 	 * Start the object components.
 	 */
 	public void start() {
-		this.components.values().forEach(Component::start);
+		components.values().forEach(Component::start);
 	}
 
 	public String name() {
-		return this.name;
+		return name;
 	}
 
 	public GameObject name(String name) {
@@ -120,7 +120,7 @@ public class GameObject {
 	}
 
 	public GameObject move(Vector3f offset) {
-		this.transform.move(offset);
+		transform.move(offset);
 		return this;
 	}
 
@@ -129,7 +129,7 @@ public class GameObject {
 	}
 
 	public long id() {
-		return this.id;
+		return id;
 	}
 
 	public boolean isOutlined() {
@@ -149,7 +149,7 @@ public class GameObject {
 	}
 
 	public void removeTemporaryComponents() {
-		for (Iterator<Map.Entry<Class<? extends Component>, Component>> it = this.components.entrySet().iterator(); it
+		for (Iterator<Map.Entry<Class<? extends Component>, Component>> it = components.entrySet().iterator(); it
 				.hasNext();) {
 			Map.Entry<Class<? extends Component>, Component> entry = it.next();
 			if (entry.getValue().isTemporary()) {

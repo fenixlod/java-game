@@ -18,28 +18,28 @@ public class KeyboardListener {
 	 * @param modifiers
 	 */
 	public void keyCallback(long window, int key, int scanCode, int action, int modifiers) {
-		if (key >= this.keyPressed.length)
+		if (key >= keyPressed.length)
 			return;
 
 		if (action == GLFW_PRESS)
-			this.keyPressed[key] = true;
+			keyPressed[key] = true;
 		else if (action == GLFW_RELEASE) {
-			this.keyPressed[key] = false;
+			keyPressed[key] = false;
 		}
 	}
 
 	public boolean isKeyPressed(int button) {
-		if (button >= this.keyPressed.length)
+		if (button >= keyPressed.length)
 			throw new IllegalStateException("Invalid keyboard key: " + button);
 
-		return this.keyPressed[button];
+		return keyPressed[button];
 	}
 
 	@Override
 	public String toString() {
 		List<Integer> pressedKeys = new ArrayList<>();
-		for (int key = 0; key < this.keyPressed.length; key++) {
-			if (this.keyPressed[key] == true) {
+		for (int key = 0; key < keyPressed.length; key++) {
+			if (keyPressed[key] == true) {
 				pressedKeys.add(key);
 			}
 		}

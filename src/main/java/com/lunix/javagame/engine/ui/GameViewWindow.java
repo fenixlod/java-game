@@ -27,10 +27,10 @@ public class GameViewWindow {
 		topLeft.x -= ImGui.getScrollX();
 		topLeft.y -= ImGui.getScrollY();
 
-		this.leftX = topLeft.x;
-		this.bottomY = topLeft.y;
-		this.rightX = topLeft.x + windowSize.x;
-		this.topY = topLeft.y + windowSize.y;
+		leftX = topLeft.x;
+		bottomY = topLeft.y;
+		rightX = topLeft.x + windowSize.x;
+		topY = topLeft.y + windowSize.y;
 
 		int textureId = frameBuffer.texture().id();
 		ImGui.image(textureId, windowSize.x, windowSize.y, 0, 1, 1, 0);
@@ -70,7 +70,7 @@ public class GameViewWindow {
 
 	public boolean getWantCaptureMouse() {
 		Vector2d cursorPosition = GameInstance.get().mouse().positionInWindow();
-		return cursorPosition.x >= this.leftX && cursorPosition.x <= this.rightX && cursorPosition.y >= this.bottomY
-				&& cursorPosition.y <= this.topY;
+		return cursorPosition.x >= leftX && cursorPosition.x <= rightX && cursorPosition.y >= bottomY
+				&& cursorPosition.y <= topY;
 	}
 }

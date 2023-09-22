@@ -34,90 +34,90 @@ public class SpriteRenderer extends Component {
 	public SpriteRenderer(int width, int height) {
 		this.height = height;
 		this.width = width;
-		this.color = Color.white();
-		this.widthDirection = VectorUtil.viewX();
-		this.heightDirection = VectorUtil.viewZ();
-		this.shader = ShaderType.DEFAULT;
-		this.positionOffset = new Vector3f();
-		this.isChanged = true;
-		this.sprite = new Sprite();
-		this.rotate = 0;
+		color = Color.white();
+		widthDirection = VectorUtil.viewX();
+		heightDirection = VectorUtil.viewZ();
+		shader = ShaderType.DEFAULT;
+		positionOffset = new Vector3f();
+		isChanged = true;
+		sprite = new Sprite();
+		rotate = 0;
 	}
 
 	@Override
 	public void start() {
 		super.start();
-		this.lastTransform = owner.transform().copy();
+		lastTransform = owner.transform().copy();
 	}
 
 	@Override
 	public void update(float deltaTime) {
-		if (!this.lastTransform.equals(owner.transform())) {
-			this.lastTransform = owner.transform().copy();
-			this.isChanged = true;
+		if (!lastTransform.equals(owner.transform())) {
+			lastTransform = owner.transform().copy();
+			isChanged = true;
 		}
 	}
 
 	public SpriteRenderer offset(Vector3f positionOffset) {
-		if (!positionOffset.equals(this.positionOffset)) {
+		if (!this.positionOffset.equals(positionOffset)) {
 			this.positionOffset = positionOffset;
-			this.isChanged = true;
+			isChanged = true;
 		}
 		return this;
 	}
 
 	public SpriteRenderer width(int width) {
-		if (width != this.width) {
+		if (this.width != width) {
 			this.width = width;
-			this.isChanged = true;
+			isChanged = true;
 		}
 		return this;
 	}
 
 	public SpriteRenderer height(int height) {
-		if (height != this.height) {
+		if (this.height != height) {
 			this.height = height;
-			this.isChanged = true;
+			isChanged = true;
 		}
 		return this;
 	}
 
 	public SpriteRenderer widthDirection(Vector3f widthDirection) {
-		if (!widthDirection.equals(this.widthDirection)) {
+		if (!this.widthDirection.equals(widthDirection)) {
 			this.widthDirection = widthDirection;
-			this.isChanged = true;
+			isChanged = true;
 		}
 		return this;
 	}
 
 	public SpriteRenderer heightDirection(Vector3f heightDirection) {
-		if (!heightDirection.equals(this.heightDirection)) {
+		if (!this.heightDirection.equals(heightDirection)) {
 			this.heightDirection = heightDirection;
-			this.isChanged = true;
+			isChanged = true;
 		}
 		return this;
 	}
 
 	public SpriteRenderer color(Color color) {
-		if (!color.equals(this.color)) {
+		if (!this.color.equals(color)) {
 			this.color = color;
-			this.isChanged = true;
+			isChanged = true;
 		}
 		return this;
 	}
 
 	public SpriteRenderer shader(ShaderType shader) {
-		if (shader != this.shader) {
+		if (this.shader != shader) {
 			this.shader = shader;
-			this.isChanged = true;
+			isChanged = true;
 		}
 		return this;
 	}
 
 	public SpriteRenderer sprite(Sprite sprite) {
-		if (!sprite.equals(this.sprite)) {
+		if (!this.sprite.equals(sprite)) {
 			this.sprite = sprite;
-			this.isChanged = true;
+			isChanged = true;
 		}
 		return this;
 	}
@@ -125,7 +125,7 @@ public class SpriteRenderer extends Component {
 	public SpriteRenderer rotate(int rotate) {
 		if (this.rotate != rotate) {
 			this.rotate = rotate;
-			this.isChanged = true;
+			isChanged = true;
 		}
 		return this;
 	}
@@ -133,7 +133,7 @@ public class SpriteRenderer extends Component {
 	public SpriteRenderer mirrorWidth(boolean mirror) {
 		if (this.mirrorWidth != mirror) {
 			this.mirrorWidth = mirror;
-			this.isChanged = true;
+			isChanged = true;
 		}
 		return this;
 	}
@@ -141,13 +141,13 @@ public class SpriteRenderer extends Component {
 	public SpriteRenderer mirrorHeight(boolean mirror) {
 		if (this.mirrorHeight != mirror) {
 			this.mirrorHeight = mirror;
-			this.isChanged = true;
+			isChanged = true;
 		}
 		return this;
 	}
 
 	public boolean isChanged() {
-		return this.isChanged;
+		return isChanged;
 	}
 
 	public SpriteRenderer isChanged(boolean isChanged) {
@@ -156,7 +156,7 @@ public class SpriteRenderer extends Component {
 	}
 
 	public ShaderType shader() {
-		return this.shader;
+		return shader;
 	}
 
 	/**
@@ -194,10 +194,8 @@ public class SpriteRenderer extends Component {
 		}
 		
 		Vector2f[] uvMap = new Vector2f[] { 
-				this.sprite.textureCoords()[bottomLeft],
-				this.sprite.textureCoords()[bottomRight],
-				this.sprite.textureCoords()[topRight],
-				this.sprite.textureCoords()[topLeft] 
+				sprite.textureCoords()[bottomLeft], sprite.textureCoords()[bottomRight],
+				sprite.textureCoords()[topRight], sprite.textureCoords()[topLeft]
 		};
 
 		offset = setVertexInArray(vertices, offset, points[0], uvMap[0], textureIndex);
@@ -211,10 +209,10 @@ public class SpriteRenderer extends Component {
 		vertices[offset++] = position.y();
 		vertices[offset++] = position.z();
 
-		vertices[offset++] = this.color.r();
-		vertices[offset++] = this.color.g();
-		vertices[offset++] = this.color.b();
-		vertices[offset++] = this.color.a();
+		vertices[offset++] = color.r();
+		vertices[offset++] = color.g();
+		vertices[offset++] = color.b();
+		vertices[offset++] = color.a();
 
 		vertices[offset++] = uv.x;
 		vertices[offset++] = uv.y;
@@ -226,32 +224,32 @@ public class SpriteRenderer extends Component {
 	}
 
 	public TextureType textureType() {
-		return this.sprite.texture();
+		return sprite.texture();
 	}
 
 	public Vector3f[] getBox() {
-		Vector3f center = this.owner.transform().position().add(this.positionOffset, new Vector3f());
+		Vector3f center = owner.transform().position().add(positionOffset, new Vector3f());
 		Vector3f[] points = { new Vector3f(center), new Vector3f(center), new Vector3f(center), new Vector3f(center) };
-		Vector3f scaledWidthDirection = this.widthDirection.mul(this.owner.transform().scale(), new Vector3f());
-		Vector3f scaledHeightDirection = this.heightDirection.mul(this.owner.transform().scale(), new Vector3f());
+		Vector3f scaledWidthDirection = widthDirection.mul(owner.transform().scale(), new Vector3f());
+		Vector3f scaledHeightDirection = heightDirection.mul(owner.transform().scale(), new Vector3f());
 
-		points[0].add(scaledWidthDirection.mul(-this.width / 2f, new Vector3f()));
-		points[1].add(scaledWidthDirection.mul(this.width / 2f, new Vector3f()));
-		points[3] = points[0].add(scaledHeightDirection.mul(this.height, new Vector3f()), new Vector3f());
-		points[2] = points[1].add(scaledHeightDirection.mul(this.height, new Vector3f()), new Vector3f());
+		points[0].add(scaledWidthDirection.mul(-width / 2f, new Vector3f()));
+		points[1].add(scaledWidthDirection.mul(width / 2f, new Vector3f()));
+		points[3] = points[0].add(scaledHeightDirection.mul(height, new Vector3f()), new Vector3f());
+		points[2] = points[1].add(scaledHeightDirection.mul(height, new Vector3f()), new Vector3f());
 		return points;
 	}
 
 	public Vector3f widthDirection() {
-		return this.widthDirection;
+		return widthDirection;
 	}
 
 	public Vector3f heightDirection() {
-		return this.heightDirection;
+		return heightDirection;
 	}
 
 	public Color color() {
-		return this.color;
+		return color;
 	}
 
 	/**
@@ -267,6 +265,6 @@ public class SpriteRenderer extends Component {
 	}
 
 	public Vector3f positionOffset() {
-		return this.positionOffset;
+		return positionOffset;
 	}
 }

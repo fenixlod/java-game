@@ -23,11 +23,11 @@ public class MouseListener {
 	private Vector3f deltaInWorld;
 
 	public MouseListener() {
-		this.scroll = new Vector2d();
-		this.positionInWindow = new Vector2d();
-		this.deltaInWindow = new Vector2d();
-		this.deltaInWorld = new Vector3f();
-		this.positionInWorldProjected = new Vector3f();
+		scroll = new Vector2d();
+		positionInWindow = new Vector2d();
+		deltaInWindow = new Vector2d();
+		deltaInWorld = new Vector3f();
+		positionInWorldProjected = new Vector3f();
 	}
 
 	/**
@@ -37,16 +37,16 @@ public class MouseListener {
 	 * @param yPos
 	 */
 	public void positionCallback(long window, double xPos, double yPos) {
-		this.deltaInWindow.x = xPos - this.positionInWindow.x;
-		this.deltaInWindow.y = yPos - this.positionInWindow.y;
-		this.positionInWindow.x = xPos;
-		this.positionInWindow.y = yPos;
-		Vector3f old = this.positionInWorldProjected;
+		deltaInWindow.x = xPos - positionInWindow.x;
+		deltaInWindow.y = yPos - positionInWindow.y;
+		positionInWindow.x = xPos;
+		positionInWindow.y = yPos;
+		Vector3f old = positionInWorldProjected;
 		calculateWorldPosition();
-		this.deltaInWorld = this.positionInWorldProjected.sub(old, new Vector3f());
+		deltaInWorld = positionInWorldProjected.sub(old, new Vector3f());
 		
 		if (pressedButtons[0][0] || pressedButtons[0][1]) {
-			this.dragging = true;
+			dragging = true;
 		}
 	}
 
@@ -58,16 +58,16 @@ public class MouseListener {
 	 * @param modifiers
 	 */
 	public void buttonCallback(long window, int button, int action, int modifiers) {
-		if (button >= this.pressedButtons[0].length)
+		if (button >= pressedButtons[0].length)
 			return;
 
 		if (action == GLFW_PRESS) {
-			this.pressedButtons[0][button] = true;
-			this.pressedButtons[1][button] = true;
+			pressedButtons[0][button] = true;
+			pressedButtons[1][button] = true;
 		} else if (action == GLFW_RELEASE) {
-			this.pressedButtons[0][button] = false;
+			pressedButtons[0][button] = false;
 			if (!pressedButtons[0][0] || !pressedButtons[0][1]) {
-				this.dragging = false;
+				dragging = false;
 			}
 		}
 	}
@@ -79,8 +79,8 @@ public class MouseListener {
 	 * @param yOffset
 	 */
 	public void scrollCallback(long window, double xOffset, double yOffset) {
-		this.scroll.x = xOffset;
-		this.scroll.y = yOffset;
+		scroll.x = xOffset;
+		scroll.y = yOffset;
 	}
 
 	/**
@@ -89,47 +89,47 @@ public class MouseListener {
 	 * each frame.
 	 */
 	public void reset() {
-		this.scroll.set(0.0);
-		this.deltaInWindow.set(0.0);
-		this.deltaInWorld.set(0);
+		scroll.set(0.0);
+		deltaInWindow.set(0.0);
+		deltaInWorld.set(0);
 
-		for (int i = 0; i < this.pressedButtons[1].length; i++) {
-			this.pressedButtons[1][i] = false;
+		for (int i = 0; i < pressedButtons[1].length; i++) {
+			pressedButtons[1][i] = false;
 		}
 	}
 
 	public boolean isButtonPressed(int button) {
-		if (button >= this.pressedButtons[0].length)
+		if (button >= pressedButtons[0].length)
 			throw new IllegalStateException("Invalid mouse button: " + button);
 
-		return this.pressedButtons[0][button];
+		return pressedButtons[0][button];
 	}
 	
 	public boolean isButtonClicked(int button) {
-		if (button >= this.pressedButtons[1].length)
+		if (button >= pressedButtons[1].length)
 			throw new IllegalStateException("Invalid mouse button: " + button);
 
-		return this.pressedButtons[1][button];
+		return pressedButtons[1][button];
 	}
 
 	public Vector2d scroll() {
-		return this.scroll;
+		return scroll;
 	}
 
 	public Vector2d positionInWindow() {
-		return this.positionInWindow;
+		return positionInWindow;
 	}
 
 	public Vector2d deltaInWindow() {
-		return this.deltaInWindow;
+		return deltaInWindow;
 	}
 
 	public Vector3f deltaInWorld() {
-		return this.deltaInWorld;
+		return deltaInWorld;
 	}
 
 	public boolean dragging() {
-		return this.dragging;
+		return dragging;
 	}
 
 	/**
@@ -138,8 +138,8 @@ public class MouseListener {
 	 * @return
 	 */
 	private void calculateWorldPosition() {
-		float cursorX = (float) this.positionInWindow.x;
-		float cursorY = (float) this.positionInWindow.y;
+		float cursorX = (float) positionInWindow.x;
+		float cursorY = (float) positionInWindow.y;
 
 		if (GameInstance.get().window().viewPortSize().lengthSquared() > 0) {
 			Vector2i offset = GameInstance.get().window().viewPortOffset();
@@ -153,20 +153,20 @@ public class MouseListener {
 
 		Vector4f nsc = new Vector4f(cursorX * 2f - 1, 1 - cursorY * 2f, -1, 1);
 		nsc.mul(GameInstance.get().camera().inverseViewXProjection());
-		this.positionInWorld = new Vector3f(nsc.x, nsc.y, nsc.z);
+		positionInWorld = new Vector3f(nsc.x, nsc.y, nsc.z);
 
-		Vector3f orig = new Vector3f(this.positionInWorld);
+		Vector3f orig = new Vector3f(positionInWorld);
 		Vector3f dir = VectorUtil.viewDirection();
 		Vector3f planeOrg = new Vector3f();
 		Vector3f planeNorm = new Vector3f(0, 0, 1);
 		float dist = Intersectionf.intersectRayPlane(orig, dir, planeOrg, planeNorm, 1);
 		orig.add(dir.mul(dist));
-		this.positionInWorldProjected = orig;
+		positionInWorldProjected = orig;
 	}
 
 	public Vector2i positionInViewPort() {
-		float cursorX = (float) this.positionInWindow.x;
-		float cursorY = (float) this.positionInWindow.y;
+		float cursorX = (float) positionInWindow.x;
+		float cursorY = (float) positionInWindow.y;
 		Vector2i size = GameInstance.get().window().windowSize();
 
 		if (GameInstance.get().window().viewPortSize().lengthSquared() > 0) {
@@ -183,11 +183,11 @@ public class MouseListener {
 	}
 
 	public Vector3f positionInWorld() {
-		return this.positionInWorld;
+		return positionInWorld;
 	}
 
 	public Vector3f positionInWorldProjected() {
-		return this.positionInWorldProjected;
+		return positionInWorldProjected;
 	}
 
 	@Override

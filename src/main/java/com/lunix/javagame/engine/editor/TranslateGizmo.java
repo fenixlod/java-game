@@ -22,15 +22,15 @@ public class TranslateGizmo extends Gizmo {
 	public void update(float deltaTime) {
 		super.update(deltaTime);
 
-		if (this.attachedTo == null || !isSelected)
+		if (attachedTo == null || !isSelected)
 			return;
 
 		if (GameInstance.get().mouse().dragging() && GameInstance.get().mouse().isButtonPressed(GLFW_MOUSE_BUTTON_LEFT)) {
 			Vector3f offset = GameInstance.get().mouse().deltaInWorld().mul(DRAG_SENSITIVITY, new Vector3f());
 			Vector3f change = direction.mul(offset.dot(direction), new Vector3f());
-			this.transform().move(change);
-			this.attachedTo.transform().position(
-					this.transform().position().add(VectorUtil.viewDirection().mul(-offsetFromObject), new Vector3f()));
+			transform().move(change);
+			attachedTo.transform().position(
+					transform().position().add(VectorUtil.viewDirection().mul(-offsetFromObject), new Vector3f()));
 		}
 	}
 }

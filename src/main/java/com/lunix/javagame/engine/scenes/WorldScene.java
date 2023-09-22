@@ -62,7 +62,7 @@ public class WorldScene extends Scene {
 		Debugger.display(false, "X={}, Y={}, Z={}", game.camera().position().x, game.camera().position().y,
 				game.camera().position().z);
 
-		this.playerObject.move(offset);
+		playerObject.move(offset);
 		game.camera().position(playerObject.transform().position());
 
 		Vector3f worldPosition = game.mouse().positionInWorldProjected();

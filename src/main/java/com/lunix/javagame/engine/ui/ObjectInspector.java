@@ -30,7 +30,7 @@ public class ObjectInspector {
 	private GizmoTools mover;
 
 	public ObjectInspector() {
-		this.game = GameInstance.get();
+		game = GameInstance.get();
 	}
 
 	public void show() {
@@ -46,8 +46,8 @@ public class ObjectInspector {
 	}
 
 	public void init(Scene scene) throws Exception {
-		this.mover = new GizmoTools();
-		this.mover.init(scene);
+		mover = new GizmoTools();
+		mover.init(scene);
 	}
 
 	public void update(float deltaTime, Scene currentScene) {
@@ -64,16 +64,16 @@ public class ObjectInspector {
 
 				if (inspectedObject != null) {
 					inspectedObject.outlined(true);
-					this.mover.attach(inspectedObject);
+					mover.attach(inspectedObject);
 				} else {
-					this.mover.detach();
+					mover.detach();
 				}
 			} else {
-				this.mover.select(pickedObjID);
+				mover.select(pickedObjID);
 			}
 		}
 
-		this.mover.refresh();
+		mover.refresh();
 	}
 
 	/**

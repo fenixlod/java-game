@@ -15,7 +15,7 @@ public class Renderer {
 	private static Shader overrideShader;
 
 	public Renderer() {
-		this.batches = new ArrayList<>();
+		batches = new ArrayList<>();
 	}
 
 	/**
@@ -40,7 +40,7 @@ public class Renderer {
 	 * @throws IOException
 	 */
 	private void add(SpriteRenderer sprite) throws ResourceNotFound, IOException {
-		for (RenderBatch batch : this.batches) {
+		for (RenderBatch batch : batches) {
 			if (batch.haveRoom() && sprite.shader() == batch.shader()) {
 				TextureType texture = sprite.textureType();
 				if (texture == TextureType.NONE || batch.hasTexture(texture) || batch.haveTextureRoom()) {
@@ -53,7 +53,7 @@ public class Renderer {
 		RenderBatch newBatch = new RenderBatch(MAX_BATCH_SIZE, sprite.shader());
 		newBatch.start();
 		newBatch.addSprite(sprite);
-		this.batches.add(newBatch);
+		batches.add(newBatch);
 	}
 
 	/**
@@ -81,7 +81,7 @@ public class Renderer {
 	public void remove(GameObject obj) throws ResourceNotFound, IOException {
 		SpriteRenderer sprite = obj.getComponent(SpriteRenderer.class);
 
-		for (RenderBatch batch : this.batches) {
+		for (RenderBatch batch : batches) {
 			if (batch.removeSprite(sprite))
 				break;
 		}

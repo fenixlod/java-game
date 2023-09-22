@@ -30,7 +30,7 @@ public class TestScene extends Scene {
 		
 		ResourcePool.loadResources(ShaderType.DEFAULT, TextureType.PLAYER, TextureType.ENEMY, TextureType.PLAYER_IDLE);
 
-		this.playerObject = new GameObject("Player")
+		playerObject = new GameObject("Player")
 				.addComponent(
 						new SpriteRenderer(40, 50)
 							.sprite(ResourcePool.getSprite(TextureType.PLAYER.name()))
@@ -206,7 +206,7 @@ public class TestScene extends Scene {
 
 		Debugger.display(false, "X={}, Y={}, Z={}", game.camera().position().x, game.camera().position().y,	game.camera().position().z);
 
-		this.playerObject.move(offset);
+		playerObject.move(offset);
 		super.update(deltaTime);
 	}
 }

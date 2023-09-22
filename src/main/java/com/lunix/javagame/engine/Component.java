@@ -30,7 +30,7 @@ public abstract class Component {
 	}
 
 	public GameObject owner() {
-		return this.owner;
+		return owner;
 	}
 
 	/**
@@ -48,15 +48,15 @@ public abstract class Component {
 	}
 
 	public void generateId() {
-		if (this.id == -1)
-			this.id = GameInstance.getNextId();
+		if (id == -1)
+			id = GameInstance.getNextId();
 	}
 
 	public long id() {
-		return this.id;
+		return id;
 	}
 
 	public boolean isTemporary() {
-		return this.temporary;
+		return temporary;
 	}
 }

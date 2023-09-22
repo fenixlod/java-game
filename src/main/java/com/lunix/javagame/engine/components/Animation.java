@@ -20,7 +20,7 @@ public class Animation extends Component {
 	public Animation(List<Sprite> poses, float changeInterval) {
 		this.poses = poses;
 		this.changeInterval = changeInterval;
-		this.startingPose = 0;
+		startingPose = 0;
 	}
 
 	@Override
@@ -63,13 +63,13 @@ public class Animation extends Component {
 
 	public Animation changeInterval(float changeInterval) {
 		this.changeInterval = changeInterval;
-		this.leftTime = changeInterval;
+		leftTime = changeInterval;
 		return this;
 	}
 
 	public Animation startingPose(int startingPose) {
 		this.startingPose = startingPose;
-		this.currentPose = startingPose;
+		currentPose = startingPose;
 		return this;
 	}
 

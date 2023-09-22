@@ -18,13 +18,13 @@ public class MoveGizmo extends Gizmo {
 	public void update(float deltaTime) {
 		super.update(deltaTime);
 
-		if (this.attachedTo == null || !isSelected)
+		if (attachedTo == null || !isSelected)
 			return;
 
 		if (GameInstance.get().mouse().dragging() && GameInstance.get().mouse().isButtonPressed(GLFW_MOUSE_BUTTON_LEFT)) {
 			Vector3f mousePos = new Vector3f(GameInstance.get().mouse().positionInWorldProjected());
-			this.transform().position(mousePos.add(VectorUtil.viewDirection().mul(offsetFromObject), new Vector3f()));
-			this.attachedTo.transform().position(mousePos);
+			transform().position(mousePos.add(VectorUtil.viewDirection().mul(offsetFromObject), new Vector3f()));
+			attachedTo.transform().position(mousePos);
 		}
 	}
 }

@@ -30,30 +30,30 @@ public class Color {
 	}
 
 	public Color r(float red) {
-		this.rgba[0] = red;
+		rgba[0] = red;
 		return this;
 	}
 
 	public Color g(float green) {
-		this.rgba[1] = green;
+		rgba[1] = green;
 		return this;
 	}
 
 	public Color b(float blue) {
-		this.rgba[2] = blue;
+		rgba[2] = blue;
 		return this;
 	}
 
 	public Color a(float alpha) {
-		this.rgba[3] = alpha;
+		rgba[3] = alpha;
 		return this;
 	}
 
 	public Color rgba(float red, float green, float blue, float alpha) {
-		this.rgba[0] = red;
-		this.rgba[1] = green;
-		this.rgba[2] = blue;
-		this.rgba[3] = alpha;
+		rgba[0] = red;
+		rgba[1] = green;
+		rgba[2] = blue;
+		rgba[3] = alpha;
 		return this;
 	}
 
@@ -61,10 +61,10 @@ public class Color {
 		if (color.length != 4)
 			throw new IllegalArgumentException("Color object require 4 float values");
 
-		this.rgba[0] = color[0];
-		this.rgba[1] = color[1];
-		this.rgba[2] = color[2];
-		this.rgba[3] = color[3];
+		rgba[0] = color[0];
+		rgba[1] = color[1];
+		rgba[2] = color[2];
+		rgba[3] = color[3];
 		return this;
 	}
 
@@ -73,23 +73,23 @@ public class Color {
 	}
 
 	public float r() {
-		return this.rgba[0];
+		return rgba[0];
 	}
 
 	public float g() {
-		return this.rgba[1];
+		return rgba[1];
 	}
 
 	public float b() {
-		return this.rgba[2];
+		return rgba[2];
 	}
 
 	public float a() {
-		return this.rgba[3];
+		return rgba[3];
 	}
 
 	public float[] rgba() {
-		return this.rgba;
+		return rgba;
 	}
 
 	@Override
@@ -103,8 +103,8 @@ public class Color {
 			return false;
 
 		if (obj instanceof Color other) {
-			return this.rgba[0] == other.rgba()[0] && this.rgba[1] == other.rgba()[1] && 
-					this.rgba[2] == other.rgba()[2] && this.rgba[3] == other.rgba()[3];
+			return rgba[0] == other.rgba()[0] && rgba[1] == other.rgba()[1] && 
+					rgba[2] == other.rgba()[2] && rgba[3] == other.rgba()[3];
 		} else
 			return false;
 	}

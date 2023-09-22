@@ -14,44 +14,44 @@ public class Gizmo extends GameObject {
 
 	public Gizmo(String name, SpriteRenderer spriteRenderer) {
 		super(name);
-		this.temporary = true;
-		this.isSelected = false;
+		temporary = true;
+		isSelected = false;
 		this.spriteRenderer = spriteRenderer;
 		addComponent(spriteRenderer);
-		this.offsetFromObject = -2;
+		offsetFromObject = -2;
 	}
 
 	@Override
 	public void start() {
 		super.start();
-		this.spriteRenderer.color().a(0);
-		this.spriteRenderer.isChanged(true);
+		spriteRenderer.color().a(0);
+		spriteRenderer.isChanged(true);
 	}
 
 	public void attach(GameObject object) {
-		this.attachedTo = object;
-		this.spriteRenderer.color().a(0.5f);
-		this.spriteRenderer.isChanged(true);
-		this.transform().position(
-				this.attachedTo.transform()
+		attachedTo = object;
+		spriteRenderer.color().a(0.5f);
+		spriteRenderer.isChanged(true);
+		transform().position(
+				attachedTo.transform()
 				.position()
 				.add(VectorUtil.viewDirection().mul(offsetFromObject), new Vector3f())
 		);
 	}
 
 	public void detach() {
-		this.attachedTo = null;
-		this.spriteRenderer.color().a(0);
-		this.spriteRenderer.isChanged(true);
-		this.isSelected = false;
+		attachedTo = null;
+		spriteRenderer.color().a(0);
+		spriteRenderer.isChanged(true);
+		isSelected = false;
 	}
 
 	public void select(long id) {
-		if(this.attachedTo == null)
+		if(attachedTo == null)
 			return;
 		
 		isSelected = id() == id;
-		this.spriteRenderer.color().a(isSelected ? 1f : 0.5f);
-		this.spriteRenderer.isChanged(true);
+		spriteRenderer.color().a(isSelected ? 1f : 0.5f);
+		spriteRenderer.isChanged(true);
 	}
 }

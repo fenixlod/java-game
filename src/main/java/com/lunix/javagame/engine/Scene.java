@@ -24,10 +24,10 @@ public abstract class Scene {
 	protected boolean loaded;
 
 	protected Scene() {
-		this.active = false;
-		this.objects = new ArrayList<>();
-		this.renderer = new Renderer();
-		this.game = GameInstance.get();
+		active = false;
+		objects = new ArrayList<>();
+		renderer = new Renderer();
+		game = GameInstance.get();
 	}
 
 	/**
@@ -48,19 +48,19 @@ public abstract class Scene {
 	 */
 	public void start() throws Exception {
 		// TODO: Hide loading screen?
-		for (GameObject obj : this.objects) {
+		for (GameObject obj : objects) {
 			obj.start();
-			this.renderer.add(obj);
+			renderer.add(obj);
 		}
 
-		this.active = true;
+		active = true;
 	}
 
 	/**
 	 * Stop the scene. This scene will no longer receive updates.
 	 */
 	public void stop() {
-		this.active = false;
+		active = false;
 	}
 
 	/**
@@ -89,7 +89,7 @@ public abstract class Scene {
 
 		if (active) {
 			object.start();
-			this.renderer.add(object);
+			renderer.add(object);
 		}
 	}
 
@@ -121,7 +121,7 @@ public abstract class Scene {
 				if (maxComponentId > maxFoundId)
 					maxFoundId = maxComponentId;
 			}
-			this.loaded = true;
+			loaded = true;
 			sceneLoaded(data);
 			GameInstance.nextId(maxFoundId);
 		}
@@ -144,7 +144,7 @@ public abstract class Scene {
 		Path levelsFile = Paths.get(game.pathsConfig().save().get("levels"), "world.json");
 
 		try (FileWriter writer = new FileWriter(levelsFile.toFile())) {
-			List<GameObject> filteredObjects = this.objects.stream()
+			List<GameObject> filteredObjects = objects.stream()
 					.filter(o -> !o.isTemporary())
 					.collect(Collectors.toList());
 			for (GameObject obj : filteredObjects) {
@@ -175,7 +175,7 @@ public abstract class Scene {
 	 * 
 	 */
 	public void render() throws Exception {
-		this.renderer.render();
+		renderer.render();
 	}
 
 	/**
@@ -186,7 +186,7 @@ public abstract class Scene {
 	 */
 	public void removeGameObject(GameObject object) throws Exception {
 		if (objects.remove(object))
-			this.renderer.remove(object);
+			renderer.remove(object);
 	}
 
 	/**

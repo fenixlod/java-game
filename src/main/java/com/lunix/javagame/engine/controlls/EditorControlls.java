@@ -20,28 +20,28 @@ public class EditorControlls {
 
 	public EditorControlls(Camera cameraToControll) {
 		this.controlledCamera = cameraToControll;
-		this.game = GameInstance.get();
-		this.clickOrigin = new Vector3f();
+		game = GameInstance.get();
+		clickOrigin = new Vector3f();
 	}
 
 	public void init() {
-		this.controlledCamera.position(new Vector3f());
+		controlledCamera.position(new Vector3f());
 	}
 
 	public void update(float deltaTime) {
 		if (game.mouse().dragging() && game.mouse().isButtonPressed(GLFW_MOUSE_BUTTON_RIGHT)) {
-			if (this.drageDebounce > 0) {
-				this.clickOrigin = game.mouse().positionInWorldProjected();
-				this.drageDebounce -= deltaTime;
+			if (drageDebounce > 0) {
+				clickOrigin = game.mouse().positionInWorldProjected();
+				drageDebounce -= deltaTime;
 			} else {
 				Vector3f currentPos = game.mouse().positionInWorldProjected();
-				Vector3f change = currentPos.sub(this.clickOrigin, new Vector3f());
-				this.controlledCamera.move(change.mul(-deltaTime).mul(dragSensitivity));
-				this.clickOrigin.lerp(currentPos, deltaTime);
+				Vector3f change = currentPos.sub(clickOrigin, new Vector3f());
+				controlledCamera.move(change.mul(-deltaTime).mul(dragSensitivity));
+				clickOrigin.lerp(currentPos, deltaTime);
 			}
 		} else {
-			if (this.drageDebounce < 0) {
-				this.drageDebounce = 0.032f;
+			if (drageDebounce < 0) {
+				drageDebounce = 0.032f;
 			}
 		}
 

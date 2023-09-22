@@ -16,7 +16,7 @@ public class Line {
 	}
 
 	public int beginFrame() {
-		return this.lifetime--;
+		return lifetime--;
 	}
 
 	public Vector3f start() {

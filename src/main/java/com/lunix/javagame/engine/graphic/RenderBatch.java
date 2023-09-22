@@ -51,25 +51,25 @@ public class RenderBatch {
 	private int framesUntillFullRedraw = 600;
 
 	public RenderBatch(int maxBatchSize, ShaderType shaderType) throws ResourceNotFound, IOException {
-		this.shader = ResourcePool.getShader(shaderType);
-		this.sprites = new LinkedList<>();
+		shader = ResourcePool.getShader(shaderType);
+		sprites = new LinkedList<>();
 		this.maxBatchSize = maxBatchSize;
-		this.textures = new HashMap<>();
+		textures = new HashMap<>();
 
 		// 4 vertices quads
-		this.vertices = new float[maxBatchSize * 4 * VERTEX_SIZE];
-		this.textureSlots = IntStream.range(0, 32).toArray();
+		vertices = new float[maxBatchSize * 4 * VERTEX_SIZE];
+		textureSlots = IntStream.range(0, 32).toArray();
 	}
 
 	public void start() {
 		// Generate and bind Vertex Array Object
-		this.vaoID = glGenVertexArrays();
+		vaoID = glGenVertexArrays();
 		glBindVertexArray(vaoID);
 
 		// Allocate space for the vertices
-		this.vboID = glGenBuffers();
-		glBindBuffer(GL_ARRAY_BUFFER, this.vboID);
-		glBufferData(GL_ARRAY_BUFFER, this.vertices.length * Float.BYTES, GL_DYNAMIC_DRAW);
+		vboID = glGenBuffers();
+		glBindBuffer(GL_ARRAY_BUFFER, vboID);
+		glBufferData(GL_ARRAY_BUFFER, vertices.length * Float.BYTES, GL_DYNAMIC_DRAW);
 
 		// Create and upload the indices buffer
 		int eboID = glGenBuffers();
@@ -97,8 +97,8 @@ public class RenderBatch {
 	private int[] generateIndices() {
 		// 6 indices per quad (3 per triangle)
 		// 0, 1, 2, 2, 3, 0        4, 5, 6, 6, 7, 4       ...
-		int[] elements = new int[6 * this.maxBatchSize];
-		for (int i = 0; i < this.maxBatchSize; i++) {
+		int[] elements = new int[6 * maxBatchSize];
+		for (int i = 0; i < maxBatchSize; i++) {
 			elements[i * 6] = 4 * i + 0;
 			elements[i * 6 + 1] = 4 * i + 1;
 			elements[i * 6 + 2] = 4 * i + 2;
@@ -115,7 +115,7 @@ public class RenderBatch {
 		framesUntillFullRedraw--;
 		boolean update = false;
 		int index = 0;
-		for (SpriteRenderer spr : this.sprites) {
+		for (SpriteRenderer spr : sprites) {
 			if (spr.isChanged() || framesUntillFullRedraw == 0) {
 				spr.isChanged(false);
 				if (loadVertexProperties(index, spr))
@@ -133,18 +133,18 @@ public class RenderBatch {
 			glBufferSubData(GL_ARRAY_BUFFER, 0, vertices);
 		}
 
-		Shader currentShader = overrideShader == null ? this.shader : overrideShader;
+		Shader currentShader = overrideShader == null ? shader : overrideShader;
 		currentShader.use();
 		currentShader.uploadMat4f("viewXProj", GameInstance.get().camera().viewXProjectionMatrix());
 
-		for (Entry<TextureType, Integer> entry : this.textures.entrySet()) {
+		for (Entry<TextureType, Integer> entry : textures.entrySet()) {
 			ResourcePool.getTexture(entry.getKey()).bind(entry.getValue());
 		}
 
-		currentShader.uploadIntArray("textures", this.textureSlots);
+		currentShader.uploadIntArray("textures", textureSlots);
 
 		// Bind the VAO that we are using
-		glBindVertexArray(this.vaoID);
+		glBindVertexArray(vaoID);
 
 		// Enable vertex attribute pointers
 		glEnableVertexAttribArray(0);
@@ -153,7 +153,7 @@ public class RenderBatch {
 		glEnableVertexAttribArray(3);
 		glEnableVertexAttribArray(4);
 
-		glDrawElements(GL_TRIANGLES, this.sprites.size() * 6, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, sprites.size() * 6, GL_UNSIGNED_INT, 0);
 
 		// Unbind everithing
 		glDisableVertexAttribArray(0);
@@ -169,12 +169,12 @@ public class RenderBatch {
 
 	public void addSprite(SpriteRenderer sprite) {
 		// Get index and add grenderObject
-		int index = this.sprites.size();
-		this.sprites.add(sprite);
+		int index = sprites.size();
+		sprites.add(sprite);
 
 		if (sprite.textureType() != TextureType.NONE) {
-			if (this.textures.get(sprite.textureType()) == null) {
-				this.textures.put(sprite.textureType(), this.textures.size() + 1);
+			if (textures.get(sprite.textureType()) == null) {
+				textures.put(sprite.textureType(), textures.size() + 1);
 			}
 		}
 
@@ -188,41 +188,41 @@ public class RenderBatch {
 		int textureIndex = 0;
 
 		if (sprite.textureType() != TextureType.NONE) {
-			Integer idx = this.textures.get(sprite.textureType());
+			Integer idx = textures.get(sprite.textureType());
 			if (idx != null)
 				textureIndex = idx;
 			else if (haveTextureRoom()) {
-				textureIndex = this.textures.size() + 1;
-				this.textures.put(sprite.textureType(), textureIndex);
+				textureIndex = textures.size() + 1;
+				textures.put(sprite.textureType(), textureIndex);
 			} else {
 				// Use textureIndex = 0, reserved no texture
 			}
 		}
 
 		// Add vertices with appropriate attributes
-		sprite.getVertexArray(this.vertices, offset, textureIndex);
+		sprite.getVertexArray(vertices, offset, textureIndex);
 		return true;
 	}
 
 	public boolean haveRoom() {
-		return this.sprites.size() < this.maxBatchSize;
+		return sprites.size() < maxBatchSize;
 	}
 
 	public boolean haveTextureRoom() {
-		return this.textures.size() < 32;
+		return textures.size() < 32;
 	}
 
 	public ShaderType shader() {
-		return this.shader.type();
+		return shader.type();
 	}
 
 	public boolean hasTexture(TextureType texture) {
-		return this.textures.get(texture) != null;
+		return textures.get(texture) != null;
 	}
 
 	public boolean removeSprite(SpriteRenderer sprite) {
 		// Get index and add grenderObject
-		if (!this.sprites.remove(sprite))
+		if (!sprites.remove(sprite))
 			return false;
 
 		return true;

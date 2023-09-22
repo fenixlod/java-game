@@ -19,49 +19,49 @@ public class TextureSheet {
 	private int spriteHeight;
 
 	public TextureSheet(TextureType type, SpriteSheetData data) {
-		this.texture = new Texture(type, data.path());
-		this.sprites = new ArrayList<>();
-		this.spriteWidth = data.width();
-		this.spriteHeight = data.height();
+		texture = new Texture(type, data.path());
+		sprites = new ArrayList<>();
+		spriteWidth = data.width();
+		spriteHeight = data.height();
 	}
 
 	public TextureSheet load() throws IOException {
-		this.sprites.clear();
+		sprites.clear();
 
 		texture.load();
-		Vector2f total = new Vector2f(this.texture.width(), this.texture.height());
+		Vector2f total = new Vector2f(texture.width(), texture.height());
 
-		if (this.spriteWidth == 0 || this.spriteHeight == 0) {
-			this.spriteWidth = texture.width();
-			this.spriteHeight = texture.height();
+		if (spriteWidth == 0 || spriteHeight == 0) {
+			spriteWidth = texture.width();
+			spriteHeight = texture.height();
 		}
 
-		float currentX = 0, currentY = this.texture.height() - this.spriteHeight;
+		float currentX = 0, currentY = texture.height() - spriteHeight;
 
 		while (true) {
 			Vector2f[] uv = new Vector2f[] { new Vector2f(), new Vector2f(), new Vector2f(), new Vector2f() };
 			uv[0].x = currentX;
 			uv[0].y = currentY;
 
-			uv[1].x = currentX + this.spriteWidth;
+			uv[1].x = currentX + spriteWidth;
 			uv[1].y = currentY;
 
-			uv[2].x = currentX + this.spriteWidth;
-			uv[2].y = currentY + this.spriteHeight;
+			uv[2].x = currentX + spriteWidth;
+			uv[2].y = currentY + spriteHeight;
 
 			uv[3].x = currentX;
-			uv[3].y = currentY + this.spriteHeight;
+			uv[3].y = currentY + spriteHeight;
 
 			uv[0].div(total);
 			uv[1].div(total);
 			uv[2].div(total);
 			uv[3].div(total);
-			this.sprites.add(new Sprite(this.texture.type(), uv));
+			sprites.add(new Sprite(texture.type(), uv));
 
-			currentX += this.spriteWidth;
-			if (currentX + this.spriteWidth > total.x) {
+			currentX += spriteWidth;
+			if (currentX + spriteWidth > total.x) {
 				currentX = 0;
-				currentY -= this.spriteHeight;
+				currentY -= spriteHeight;
 			}
 
 			if (currentY < 0)
@@ -72,17 +72,17 @@ public class TextureSheet {
 	}
 
 	public Sprite get(int index) {
-		if (index < 0 || index >= this.sprites.size()) {
+		if (index < 0 || index >= sprites.size()) {
 			logger.error("Invalid sheet sprite index: {}, texture: {}, sprites count: {}", index, texture,
-					this.sprites.size());
+					sprites.size());
 			index = 0;
 
 		}
-		return this.sprites.get(index);
+		return sprites.get(index);
 	}
 
 	public int size() {
-		return this.sprites.size();
+		return sprites.size();
 	}
 
 	public TextureSheet texture(Texture texture) {
@@ -91,7 +91,7 @@ public class TextureSheet {
 	}
 
 	public Texture texture() {
-		return this.texture;
+		return texture;
 	}
 
 	public TextureSheet spriteWidth(int spriteWidth) {
@@ -105,6 +105,6 @@ public class TextureSheet {
 	}
 
 	public List<Sprite> sprites() {
-		return this.sprites;
+		return sprites;
 	}
 }

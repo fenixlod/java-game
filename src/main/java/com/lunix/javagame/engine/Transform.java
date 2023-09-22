@@ -28,7 +28,7 @@ public class Transform {
 	}
 
 	public Transform position(Vector3f newPosition) {
-		this.position = newPosition;
+		position = newPosition;
 		return this;
 	}
 
@@ -37,7 +37,7 @@ public class Transform {
 	}
 
 	public Transform facing(Vector3f newFacing) {
-		this.facing = newFacing;
+		facing = newFacing;
 		return this;
 	}
 
@@ -46,7 +46,7 @@ public class Transform {
 	}
 
 	public Transform scale(Vector3f newScale) {
-		this.scale = newScale;
+		scale = newScale;
 		return this;
 	}
 
@@ -55,7 +55,7 @@ public class Transform {
 	}
 
 	public Transform move(Vector3f offset) {
-		this.position.add(offset);
+		position.add(offset);
 		return this;
 	}
 
@@ -73,8 +73,7 @@ public class Transform {
 			return false;
 
 		if (obj instanceof Transform trans) {
-			return this.position.equals(trans.position()) && this.facing.equals(trans.facing())
-					&& this.scale.equals(trans.scale());
+			return position.equals(trans.position()) && facing.equals(trans.facing()) && scale.equals(trans.scale());
 		} else
 			return false;
 	}

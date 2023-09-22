@@ -11,16 +11,16 @@ public class MouseDragging extends Component {
 	private transient boolean isPicked;
 
 	public MouseDragging() {
-		this.temporary = true;
+		temporary = true;
 	}
 
 	public MouseDragging pickup() {
-		this.isPicked = true;
+		isPicked = true;
 		return this;
 	}
 
 	public void place() {
-		this.isPicked = false;
+		isPicked = false;
 	}
 
 	@Override
@@ -29,14 +29,14 @@ public class MouseDragging extends Component {
 			return;
 
 		Vector3f worldPos = GameInstance.get().mouse().positionInWorldProjected();
-		this.owner.transform().position(worldPos);
+		owner.transform().position(worldPos);
 		if (GameInstance.get().mouse().isButtonPressed(GLFW_MOUSE_BUTTON_LEFT)) {
 			place();
 		}
 	}
 
 	public boolean isPicked() {
-		return this.isPicked;
+		return isPicked;
 	}
 
 	/**

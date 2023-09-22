@@ -10,7 +10,7 @@ public class Sprite {
 
 	public Sprite(TextureType texture) {
 		this.texture = texture;
-		this.textureCoords = new Vector2f[] {
+		textureCoords = new Vector2f[] {
 				new Vector2f(0f, 0f),
 				new Vector2f(1f, 0f),
 				new Vector2f(1f, 1f),
@@ -28,11 +28,11 @@ public class Sprite {
 	}
 
 	public TextureType texture() {
-		return this.texture;
+		return texture;
 	}
 
 	public Vector2f[] textureCoords() {
-		return this.textureCoords;
+		return textureCoords;
 	}
 
 	@Override
@@ -41,9 +41,9 @@ public class Sprite {
 			return false;
 
 		if (obj instanceof Sprite other) {
-			return this.textureCoords.equals(other.textureCoords())
-					&& ((this.texture == null && other.texture() == null)
-							|| (this.texture == other.texture()));
+			return textureCoords.equals(other.textureCoords())
+					&& ((texture == null && other.texture() == null)
+							|| (texture == other.texture()));
 		} else
 			return false;
 	}

@@ -18,7 +18,7 @@ public class GizmoTools {
 	private GameObject attachedTo;
 
 	public GizmoTools() {
-		this.gizmos = new ArrayList<>();
+		gizmos = new ArrayList<>();
 		
 		SpriteRenderer sprite = new SpriteRenderer(50, 20)
 			.widthDirection(VectorUtil.X())
@@ -26,7 +26,7 @@ public class GizmoTools {
 			.sprite(ResourcePool.getSprite(TextureType.ARROW))
 			.color(Color.red().a(0.5f))
 			.offset(new Vector3f(30, -10, 0));
-		this.gizmos.add(new TranslateGizmo("TranslateGizmo X Axis", sprite, VectorUtil.X()));
+		gizmos.add(new TranslateGizmo("TranslateGizmo X Axis", sprite, VectorUtil.X()));
 		
 		sprite = new SpriteRenderer(20, 50)
 			.widthDirection(VectorUtil.X())
@@ -35,28 +35,28 @@ public class GizmoTools {
 			.color(Color.blue().a(0.5f))
 			.rotate(1)
 			.offset(new Vector3f(0, 5, 0));
-		this.gizmos.add(new TranslateGizmo("TranslateGizmo Y Axis", sprite, VectorUtil.Y()));
+		gizmos.add(new TranslateGizmo("TranslateGizmo Y Axis", sprite, VectorUtil.Y()));
 		
 		sprite = new SpriteRenderer(10, 10)
 			.widthDirection(VectorUtil.X())
 			.heightDirection(VectorUtil.Y())
 			.color(Color.green().a(0.5f))
 			.offset(new Vector3f(0, -5, 0));
-		this.gizmos.add(new MoveGizmo("Move", sprite));
+		gizmos.add(new MoveGizmo("Move", sprite));
 			
 		sprite = new SpriteRenderer(20, 20)
 			.widthDirection(VectorUtil.X())
 			.heightDirection(VectorUtil.Y())
 			.color(Color.magenta().a(0.5f))
 			.offset(new Vector3f(10, -10, 0));
-		this.gizmos.add(new ScaleGizmo("ScaleGizmo X", sprite, VectorUtil.X()));
+		gizmos.add(new ScaleGizmo("ScaleGizmo X", sprite, VectorUtil.X()));
 			
 		sprite = new SpriteRenderer(20, 20)
 			.widthDirection(VectorUtil.X())
 			.heightDirection(VectorUtil.Y())
 			.color(Color.cyan().a(0.5f))
 			.offset(new Vector3f(0, 0, 0));
-		this.gizmos.add(new ScaleGizmo("ScaleGizmo Y", sprite, VectorUtil.Y()));
+		gizmos.add(new ScaleGizmo("ScaleGizmo Y", sprite, VectorUtil.Y()));
 	}
 
 	public void init(Scene scene) throws Exception {
@@ -66,14 +66,14 @@ public class GizmoTools {
 	}
 
 	public void attach(GameObject object) {
-		this.attachedTo = object;
+		attachedTo = object;
 		for (Gizmo g : gizmos) {
 			g.attach(object);
 		}
 	}
 
 	public void detach() {
-		this.attachedTo = null;
+		attachedTo = null;
 		for (Gizmo g : gizmos) {
 			g.detach();
 		}
@@ -103,7 +103,7 @@ public class GizmoTools {
 	}
 
 	public void select(long id) {
-		if(this.attachedTo == null)
+		if (attachedTo == null)
 			return;
 		
 		for (Gizmo g : gizmos) {

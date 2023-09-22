@@ -16,78 +16,77 @@ public class Camera {
 
 	public Camera(CameraConfigs cameraConfig) {
 		this.cameraConfig = cameraConfig;
-		this.offsets = new Vector3f(cameraConfig.xOffset(), cameraConfig.yOffset(), cameraConfig.zOffset());
-		this.zoomFactor = 1f;
-		this.viewXProjectionMatrix = new Matrix4f();
-		this.inverseViewXProjection = new Matrix4f();
-		this.position = new Vector3f();
+		offsets = new Vector3f(cameraConfig.xOffset(), cameraConfig.yOffset(), cameraConfig.zOffset());
+		zoomFactor = 1f;
+		viewXProjectionMatrix = new Matrix4f();
+		inverseViewXProjection = new Matrix4f();
+		position = new Vector3f();
 		VectorUtil.setView(offsets);
-		this.calculateViewXProjectionMatrix();
+		calculateViewXProjectionMatrix();
 	}
 
 //	public void setOrthoProjection() {
-//		this.projectionMatrix.identity();
-//		this.projectionMatrix.ortho(-this.cameraConfig.ortho().width() / 2, this.cameraConfig.ortho().width() / 2,
-//				-this.cameraConfig.ortho().height() / 2, this.cameraConfig.ortho().height() / 2,
-//				this.cameraConfig.zNear(), this.cameraConfig.zFar());
+//		projectionMatrix.identity();
+//		projectionMatrix.ortho(-cameraConfig.ortho().width() / 2, cameraConfig.ortho().width() / 2,
+//				-cameraConfig.ortho().height() / 2, cameraConfig.ortho().height() / 2,
+//				cameraConfig.zNear(), cameraConfig.zFar());
 //
-//		this.projectionMatrix.invert(this.inverseProjection);
+//		projectionMatrix.invert(inverseProjection);
 //	}
 //
 //	public void setPerspectiveProjection(float aspect) {
-//		this.projectionMatrix.identity();
-//		this.projectionMatrix.perspective((float) Math.toRadians(this.cameraConfig.prespective().fieldOfView()), aspect,
-//				this.cameraConfig.zNear(), this.cameraConfig.zFar());
+//		projectionMatrix.identity();
+//		projectionMatrix.perspective((float) Math.toRadians(cameraConfig.prespective().fieldOfView()), aspect,
+//				cameraConfig.zNear(), cameraConfig.zFar());
 //
-//		this.projectionMatrix.invert(this.inverseProjection);
+//		projectionMatrix.invert(inverseProjection);
 //	}
 //
 //	private void calculateViewMatrix() {
-//		this.viewMatrix.identity();
-//		this.viewMatrix = this.viewMatrix.lookAt(this.offsets, new Vector3f(), VectorUtil.Z());
-//		this.viewMatrix.scale(this.zoomFactor);
-//		this.viewMatrix.translate(this.position.mul(-1, new Vector3f()));
-//		this.viewMatrix.invert(this.inverseView);
+//		viewMatrix.identity();
+//		viewMatrix = viewMatrix.lookAt(offsets, new Vector3f(), VectorUtil.Z());
+//		viewMatrix.scale(zoomFactor);
+//		viewMatrix.translate(position.mul(-1, new Vector3f()));
+//		viewMatrix.invert(inverseView);
 //	}
 
 	public void position(Vector3f pos) {
-		this.position = pos;
+		position = pos;
 		calculateViewXProjectionMatrix();
 	}
 
 	public void move(Vector3f change) {
-		this.position.add(change);
+		position.add(change);
 		calculateViewXProjectionMatrix();
 	}
 
 	public Vector3f position() {
-		return this.position;
+		return position;
 	}
 
 	public void changeZoom(float change) {
-		this.zoomFactor = Math.min(Math.max(this.zoomFactor + change, 0.2f), 2f);
+		zoomFactor = Math.min(Math.max(zoomFactor + change, 0.2f), 2f);
 		calculateViewXProjectionMatrix();
 	}
 
 	public float zoomFactor() {
-		return this.zoomFactor;
+		return zoomFactor;
 	}
 
 	public void zoomFactor(float zoom) {
-		this.zoomFactor = zoom;
+		zoomFactor = zoom;
 		calculateViewXProjectionMatrix();
 	}
 	
 	private void calculateViewXProjectionMatrix() {
-		this.viewXProjectionMatrix
+		viewXProjectionMatrix
 				.identity()
-				.ortho(-this.cameraConfig.ortho().width() / 2, this.cameraConfig.ortho().width() / 2,
-					-this.cameraConfig.ortho().height() / 2, this.cameraConfig.ortho().height() / 2,
-					this.cameraConfig.zNear(), this.cameraConfig.zFar())
-				.lookAt(this.offsets, new Vector3f(), VectorUtil.Z())
-				.scale(this.zoomFactor)
-				.translate(this.position.mul(-1, new Vector3f()));
-		this.viewXProjectionMatrix.invert(this.inverseViewXProjection);
+				.ortho(-cameraConfig.ortho().width() / 2, cameraConfig.ortho().width() / 2,
+						-cameraConfig.ortho().height() / 2, cameraConfig.ortho().height() / 2, cameraConfig.zNear(),
+						cameraConfig.zFar())
+				.lookAt(offsets, new Vector3f(), VectorUtil.Z()).scale(zoomFactor)
+				.translate(position.mul(-1, new Vector3f()));
+		viewXProjectionMatrix.invert(inverseViewXProjection);
 	}
 
 	public Matrix4f inverseViewXProjection() {

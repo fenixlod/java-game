@@ -27,37 +27,37 @@ public class Texture {
 	private transient int textureID;
 
 	public Texture() {
-		this.filePath = "";
-		this.type = TextureType.NONE;
+		filePath = "";
+		type = TextureType.NONE;
 	}
 
 	public Texture(TextureType type, String filePath) {
 		this.type = type;
 		this.filePath = filePath;
-		this.loaded = false;
-		this.width = 0;
-		this.height = 0;
+		loaded = false;
+		width = 0;
+		height = 0;
 	}
 
 	public Texture(int width, int height) {
-		this.filePath = "";
-		this.type = TextureType.FRAMEBUFFER;
+		filePath = "";
+		type = TextureType.FRAMEBUFFER;
 		// Generate texture on GPU
-		this.textureID = glGenTextures();
-		glBindTexture(GL_TEXTURE_2D, this.textureID);
+		textureID = glGenTextures();
+		glBindTexture(GL_TEXTURE_2D, textureID);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
 	}
 
 	public void load() throws IOException {
-		if (this.loaded)
+		if (loaded)
 			return;
 
 		Path resourcePath = new ClassPathResource(filePath).getFile().toPath();
 
 		// Generate texture on GPU
-		this.textureID = glGenTextures();
+		textureID = glGenTextures();
 		glBindTexture(GL_TEXTURE_2D, this.textureID);
 		// Set texture parameters
 		// Strech the texture if needed
@@ -82,24 +82,24 @@ public class Texture {
 			else
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width.get(0), height.get(0), 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
 		} else {
-			logger.error("Cannot load image: {}", this.filePath);
-			throw new IOException("Cannot load image: " + this.filePath);
+			logger.error("Cannot load image: {}", filePath);
+			throw new IOException("Cannot load image: " + filePath);
 		}
 
 		// Free the memory
 		stbi_image_free(image);
-		this.loaded = true;
+		loaded = true;
 	}
 
 	public void bind(int slot) {
-		if (!this.loaded) {
+		if (!loaded) {
 			logger.error("Texture: {} not loaded!", type);
 			return;
 		}
 		// Set the current texture slot to slot number
 		glActiveTexture(GL_TEXTURE0 + slot);
 		// Bind texture to the current slot
-		glBindTexture(GL_TEXTURE_2D, this.textureID);
+		glBindTexture(GL_TEXTURE_2D, textureID);
 	}
 
 	public static void unbind() {
@@ -107,22 +107,22 @@ public class Texture {
 	}
 
 	public int id() {
-		return this.textureID;
+		return textureID;
 	}
 
 	public TextureType type() {
-		return this.type;
+		return type;
 	}
 
 	public int width() {
-		return this.width;
+		return width;
 	}
 
 	public int height() {
-		return this.height;
+		return height;
 	}
 
 	public boolean isLoaded() {
-		return this.loaded;
+		return loaded;
 	}
 }

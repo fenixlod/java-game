@@ -18,7 +18,7 @@ public class SceneManager {
 	private Map<GameSceneType, Scene> scenes;
 
 	public SceneManager() {
-		this.scenes = new HashMap<>();
+		scenes = new HashMap<>();
 	}
 
 	/**
@@ -29,19 +29,19 @@ public class SceneManager {
 	 */
 	public void changeScene(GameSceneType newSceneType) throws Exception {
 		logger.info("Changing scene to: " + newSceneType.toString());
-		Scene newScene = this.scenes.get(newSceneType);
+		Scene newScene = scenes.get(newSceneType);
 
 		if (newScene == null) {
 			newScene = createNewScene(newSceneType);
 			newScene.init();
 			newScene.start();
-			this.scenes.put(newSceneType, newScene);
+			scenes.put(newSceneType, newScene);
 		}
 
-		if (this.currentScene != null)
-			this.currentScene.stop();
+		if (currentScene != null)
+			currentScene.stop();
 
-		this.currentScene = newScene;
+		currentScene = newScene;
 	}
 
 	/**
@@ -67,11 +67,11 @@ public class SceneManager {
 	 * @throws Exception
 	 */
 	public void update(float deltaTime) throws Exception {
-		this.currentScene.update(deltaTime);
+		currentScene.update(deltaTime);
 	}
 
 	public Scene currentScene() {
-		return this.currentScene;
+		return currentScene;
 	}
 
 	/**
@@ -81,6 +81,6 @@ public class SceneManager {
 	 * @throws Exception
 	 */
 	public void render() throws Exception {
-		this.currentScene.render();
+		currentScene.render();
 	}
 }
