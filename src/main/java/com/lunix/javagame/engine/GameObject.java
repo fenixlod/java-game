@@ -75,6 +75,7 @@ public class GameObject {
 		component.generateId();
 		components.put(component.getClass(), component);
 		component.owner(this);
+		component.start();
 		return this;
 	}
 

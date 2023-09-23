@@ -1,8 +1,6 @@
 package com.lunix.javagame.engine.components;
 
-import com.lunix.javagame.engine.Component;
-
-public class CircleCollider extends Component {
+public class CircleCollider extends Collider {
 	private float radius;
 
 	public CircleCollider() {

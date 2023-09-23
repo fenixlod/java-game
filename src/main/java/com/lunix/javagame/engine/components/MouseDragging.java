@@ -7,7 +7,7 @@ import org.joml.Vector3f;
 import com.lunix.javagame.engine.Component;
 import com.lunix.javagame.engine.GameInstance;
 
-public class MouseDragging extends Component {
+public final class MouseDragging extends Component {
 	private transient boolean isPicked;
 
 	public MouseDragging() {

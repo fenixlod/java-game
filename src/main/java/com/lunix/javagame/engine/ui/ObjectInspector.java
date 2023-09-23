@@ -4,6 +4,7 @@ import static org.lwjgl.glfw.GLFW.*;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,17 +21,23 @@ import com.lunix.javagame.engine.Transform;
 import com.lunix.javagame.engine.components.SpriteRenderer;
 import com.lunix.javagame.engine.editor.GizmoTools;
 import com.lunix.javagame.engine.graphic.Color;
+import com.lunix.javagame.engine.struct.ComponentMenuItem;
+import com.lunix.javagame.engine.util.Helper;
 
 import imgui.ImGui;
+import imgui.flag.ImGuiCol;
+import imgui.flag.ImGuiTreeNodeFlags;
 
 public class ObjectInspector {
 	private static final Logger logger = LogManager.getLogger(ObjectInspector.class);
 	private GameObject inspectedObject;
 	private GameInstance game;
 	private GizmoTools mover;
+	private List<ComponentMenuItem> allComponents;
 
 	public ObjectInspector() {
 		game = GameInstance.get();
+		allComponents = Helper.getAllComponentClasses();
 	}
 
 	public void show() {
@@ -38,11 +45,47 @@ public class ObjectInspector {
 			return;
 
 		ImGui.begin("Object properties");
-		ImGui.text("Name: %s, ID: %d".formatted(inspectedObject.name(), inspectedObject.id()));
+		if (ImGui.beginPopupContextWindow("ComponentAdder")) {
+			for(ComponentMenuItem item: allComponents) {
+				if(item.childs().isEmpty()) {
+					Component component = inspectedObject.getComponent(item.type());
+					if(component == null) {
+						addMenuItem(item.name(), item.type());
+					}
+				} else {
+					boolean haveChild = false;
+					for (Class<? extends Component> clazz : item.childs()) {
+						Component component = inspectedObject.getComponent(clazz);
+						if (component != null) {
+							haveChild = true;
+							break;
+						}
+					}
+
+					if (!haveChild) {
+						if (ImGui.beginMenu("Add " + item.name())) {
+							item.childs().forEach((child) -> addMenuItem(child.getSimpleName(), child));
+							ImGui.endMenu();
+						}
+					}
+				}
+			}
+			ImGui.endPopup();
+		}
 		editObject(inspectedObject);
 		// currentObject.ui();
 		// Add ui for gizmos?
 		ImGui.end();
+	}
+
+	private void addMenuItem(String name, Class<? extends Component> type) {
+		if (ImGui.menuItem("Add " + name)) {
+			try {
+				inspectedObject.addComponent(type.getDeclaredConstructor().newInstance());
+			} catch (Exception e) {
+				logger.error("Error while creating object properties contex menu", e);
+			}
+		}
 	}
 
 	public void init(Scene scene) throws Exception {
@@ -91,13 +134,34 @@ public class ObjectInspector {
 			UIWidget.vect3Control("Facing", transform.facing());
 		}
 
+		Class<? extends Component> markedForDelete = null;
 		for (Component c : obj.components()) {
 			if (c.isTemporary())
 				continue;
 
-			if (ImGui.collapsingHeader(c.getClass().getSimpleName()))
+			float width = ImGui.calcItemWidth();
+			boolean opened = ImGui.collapsingHeader(c.getClass().getSimpleName(), ImGuiTreeNodeFlags.AllowItemOverlap);
+			ImGui.sameLine(width + 115);
+			ImGui.pushStyleColor(ImGuiCol.Text, 1f, 0f, 0f, 1f);
+			ImGui.pushStyleColor(ImGuiCol.Button, 0f, 0f, 0f, 0f);
+			ImGui.pushStyleColor(ImGuiCol.ButtonActive, 0f, 0f, 0f, 0f);
+			ImGui.pushStyleColor(ImGuiCol.ButtonHovered, 0f, 0f, 0f, 0f);
+			ImGui.pushID(c.getClass().getSimpleName() + "Remove");
+			if (ImGui.button("x")) {
+				markedForDelete = c.getClass();
+			}
+			ImGui.popID();
+			ImGui.popStyleColor(4);
+			if (ImGui.isItemHovered())
+				ImGui.setTooltip("Remove component");
+
+			if (opened) {
 				displayFields(c);
+			}
 		}
+
+		if (markedForDelete != null)
+			obj.removeComponent(markedForDelete);
 	}
 
 	/**
