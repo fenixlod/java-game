@@ -198,8 +198,8 @@ public class LevelEditorScene extends Scene {
 		Vector3f worldPosition = game.mouse().worldPositionProjected();
 		System.out.println("Current X=" + worldPosition.x + " Y=" + worldPosition.y + " Z=" + worldPosition.z);
 */
-controlls.update(deltaTime);
-objInspector.update(deltaTime, this);
+		controlls.update(deltaTime);
+		objInspector.update(deltaTime, this);
 		super.update(deltaTime);
 	}
 
@@ -261,7 +261,7 @@ objInspector.update(deltaTime, this);
 
 		ImGui.end();
 
-		viewWindow.show(frameBuffer);
+		viewWindow.show(frameBuffer, this);
 		ImGui.showDemoWindow();
 		ImGui.end();
 	}

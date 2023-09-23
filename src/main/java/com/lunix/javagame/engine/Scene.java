@@ -142,7 +142,7 @@ public abstract class Scene {
 	 */
 	public void save() throws IOException {
 		Path levelsFile = Paths.get(game.pathsConfig().save().get("levels"), "world.json");
-
+		logger.info("Save current level to: {}", levelsFile);
 		try (FileWriter writer = new FileWriter(levelsFile.toFile())) {
 			List<GameObject> filteredObjects = objects.stream()
 					.filter(o -> !o.isTemporary())

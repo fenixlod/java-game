@@ -15,13 +15,17 @@ import com.lunix.javagame.configs.CameraConfigs;
 import com.lunix.javagame.configs.EditorConfigs;
 import com.lunix.javagame.configs.PathsConfigs;
 import com.lunix.javagame.configs.WindowConfigs;
+import com.lunix.javagame.engine.enums.EventType;
 import com.lunix.javagame.engine.enums.GameSceneType;
 import com.lunix.javagame.engine.enums.ShaderType;
+import com.lunix.javagame.engine.observers.Event;
+import com.lunix.javagame.engine.observers.EventSystem;
+import com.lunix.javagame.engine.observers.Observer;
 import com.lunix.javagame.engine.util.Debugger;
 import com.lunix.javagame.engine.util.GameTime;
 
 @Component
-public class GameInstance {
+public class GameInstance implements Observer {
 	private static final Logger logger = LogManager.getLogger(GameInstance.class);
 	private final MouseListener mouse;
 	private final KeyboardListener keyboard;
@@ -74,6 +78,7 @@ public class GameInstance {
 	 */
 	private void init() throws Exception {
 		logger.info("Initializing the game engine...");
+		EventSystem.addObserver(this);
 		window.create(mouse, keyboard);
 		resources.init();
 		sceneManager.changeScene(GameSceneType.EDITOR);
@@ -110,8 +115,6 @@ public class GameInstance {
 			window.render();
 			mouse.reset();
 		}
-
-		sceneManager.currentScene().save();
 	}
 
 	/**
@@ -168,5 +171,14 @@ public class GameInstance {
 
 	public GameTime timer() {
 		return timer;
+	}
+
+	@Override
+	public void onNotify(Event e) {
+		if (e.type() == EventType.GAME_START_PLAY) {
+			System.out.println("Game started");
+		} else if (e.type() == EventType.GAME_END_PLAY) {
+			System.out.println("Game stopped");
+		}
 	}
 }
