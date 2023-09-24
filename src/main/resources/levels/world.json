@@ -862,7 +862,7 @@
   "name" : "Ground",
   "transform" : {
     "position" : {
-      "x" : -100.0,
+      "x" : 100.0,
       "y" : 200.0,
       "z" : 0.0
     },

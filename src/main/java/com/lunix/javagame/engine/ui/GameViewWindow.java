@@ -24,7 +24,6 @@ public class GameViewWindow {
 	private float topY;
 	private float bottomY;
 	private GameInstance game;
-	private boolean isPlaying;
 
 	public GameViewWindow() {
 		game = GameInstance.get();
@@ -35,7 +34,7 @@ public class GameViewWindow {
 				ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse | ImGuiWindowFlags.MenuBar);
 
 		ImGui.beginMenuBar();
-		if (ImGui.menuItem("SAVE", "CTRL+S", isPlaying, !isPlaying)) {
+		if (ImGui.menuItem("SAVE", "CTRL+S", !currentScene.isActive(), currentScene.isActive())) {
 			try {
 				currentScene.save();
 			} catch (IOException e) {
@@ -43,15 +42,13 @@ public class GameViewWindow {
 			}
 		}
 
-		if (ImGui.menuItem("PLAY", "ALT+P", isPlaying, !isPlaying)) {
-			isPlaying = true;
+		if (ImGui.menuItem("PLAY", "ALT+P", !currentScene.isActive(), currentScene.isActive())) {
 			EventSystem.notify(new Event(EventType.GAME_START_PLAY));
 		}
 
-		if (ImGui.menuItem("STOP", "ALT+S", !isPlaying, isPlaying)) {
-			isPlaying = false;
-			EventSystem.notify(new Event(EventType.GAME_END_PLAY));
-		}
+//		if (ImGui.menuItem("STOP", "ALT+S", currentScene.isActive(), !currentScene.isActive())) {
+//			EventSystem.notify(new Event(EventType.GAME_END_PLAY));
+//		}
 
 		ImGui.endMenuBar();
 

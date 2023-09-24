@@ -50,7 +50,8 @@ public class LevelEditorScene extends Scene {
 	}
 
 	@Override
-	public void init() throws Exception {
+	public void init(boolean doLoad) throws Exception {
+		super.init(false);
 		editorConfig = game.editorConfig();
 		controlls.init();
 		game.window().uiLayer().setViewWindow(viewWindow);
@@ -59,9 +60,8 @@ public class LevelEditorScene extends Scene {
 				TextureType.PLAYER, TextureType.ENEMY, TextureType.PLAYER_IDLE, TextureType.TILE_BRICK,
 				TextureType.ARROW);
 		
-		Debugger.drawAxis(true);
 		objInspector.init(this);
-		super.init();// TODO: loading game objects need to be after initialization of gizmo tools for
+		load();// TODO: loading game objects need to be after initialization of gizmo tools for
 						// now otherwise they are not going to work correctly. After implementing of
 						// event based system this will not be needed anymore
 		// Debugger.addBox(new Vector3f(10, 10, 0), 20, 20);
@@ -201,6 +201,8 @@ public class LevelEditorScene extends Scene {
 		controlls.update(deltaTime);
 		objInspector.update(deltaTime, this);
 		super.update(deltaTime);
+		Debugger.drawAxis(true);
+		Debugger.outlineSelected(true, this);
 	}
 
 	@Override
@@ -311,5 +313,11 @@ public class LevelEditorScene extends Scene {
 	public void stop() {
 		super.stop();
 		game.window().uiLayer().setViewWindow(null);
+	}
+
+	@Override
+	public void resume() {
+		super.resume();
+		game.window().uiLayer().setViewWindow(viewWindow);
 	}
 }

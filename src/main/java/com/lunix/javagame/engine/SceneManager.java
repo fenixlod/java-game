@@ -33,9 +33,11 @@ public class SceneManager {
 
 		if (newScene == null) {
 			newScene = createNewScene(newSceneType);
-			newScene.init();
+			newScene.init(true);
 			newScene.start();
 			scenes.put(newSceneType, newScene);
+		} else {
+			newScene.resume();
 		}
 
 		if (currentScene != null)
@@ -82,5 +84,20 @@ public class SceneManager {
 	 */
 	public void render() throws Exception {
 		currentScene.render();
+	}
+
+	/**
+	 * Copy all game objects from scene to scene
+	 * 
+	 * @param from
+	 * @param to
+	 * @throws Exception
+	 */
+	public void copyObjects(GameSceneType from, GameSceneType to) throws Exception {
+		Scene fromScene = scenes.get(from);
+		Scene toScene = scenes.get(to);
+		toScene.init(false);
+		toScene.deserialize(fromScene.serialize());
+		toScene.start();
 	}
 }

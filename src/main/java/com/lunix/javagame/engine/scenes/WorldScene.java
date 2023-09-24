@@ -7,8 +7,11 @@ import org.joml.Vector3f;
 import com.lunix.javagame.engine.GameObject;
 import com.lunix.javagame.engine.ResourcePool;
 import com.lunix.javagame.engine.Scene;
+import com.lunix.javagame.engine.enums.EventType;
 import com.lunix.javagame.engine.enums.ShaderType;
 import com.lunix.javagame.engine.enums.TextureType;
+import com.lunix.javagame.engine.observers.Event;
+import com.lunix.javagame.engine.observers.EventSystem;
 import com.lunix.javagame.engine.util.Debugger;
 
 public class WorldScene extends Scene {
@@ -20,8 +23,8 @@ public class WorldScene extends Scene {
 	}
 
 	@Override
-	public void init() throws Exception {
-		super.init();
+	public void init(boolean doLoad) throws Exception {
+		super.init(doLoad);
 		game.camera().position(new Vector3f());
 		ResourcePool.loadResources(ShaderType.DEFAULT, TextureType.PLAYER, TextureType.ENEMY, TextureType.PLAYER_IDLE,
 				TextureType.TILE_BRICK);
@@ -53,12 +56,6 @@ public class WorldScene extends Scene {
 		if (zoomChange != 0f)
 			game.camera().changeZoom(zoomChange);
 
-		// Close the game window when escape key is pressed
-		if (game.keyboard().isKeyPressed(GLFW_KEY_ESCAPE)) {
-			game.window().close();
-			logger.info("Escape button pressed. Close the game window");
-		}
-
 		Debugger.display(false, "X={}, Y={}, Z={}", game.camera().position().x, game.camera().position().y,
 				game.camera().position().z);
 
@@ -68,6 +65,12 @@ public class WorldScene extends Scene {
 		Vector3f worldPosition = game.mouse().positionInWorldProjected();
 		System.out.println("Current X=" + worldPosition.x + " Y=" + worldPosition.y + " Z=" + worldPosition.z);
 		super.update(deltaTime);
+
+		// Go to level editor when escape key is pressed
+		if (game.keyboard().isKeyPressed(GLFW_KEY_ESCAPE)) {
+			logger.info("Escape button pressed. Exith the world scene");
+			EventSystem.notify(new Event(EventType.GAME_END_PLAY));
+		}
 	}
 
 	@Override

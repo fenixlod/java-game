@@ -178,9 +178,9 @@ public class Debugger {
 		if (!show)
 			return;
 
-		addLine(VectorUtil.X().mul(-10_000), VectorUtil.X().mul(10_000), Color.blue());
-		addLine(VectorUtil.Y().mul(-10_000), VectorUtil.Y().mul(10_000), Color.red());
-		addLine(VectorUtil.Z().mul(-10_000), VectorUtil.Z().mul(10_000), Color.green());
+		addLine(VectorUtil.X().mul(-10_000), VectorUtil.X().mul(10_000), Color.blue(), 1);
+		addLine(VectorUtil.Y().mul(-10_000), VectorUtil.Y().mul(10_000), Color.red(), 1);
+		addLine(VectorUtil.Z().mul(-10_000), VectorUtil.Z().mul(10_000), Color.green(), 1);
 	}
 
 	public static void addBox(Vector3f center, Vector3f widthDirection, Vector3f heightDirection, int width, int height,

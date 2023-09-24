@@ -35,10 +35,16 @@ public abstract class Scene {
 	 * 
 	 * @throws Exception
 	 */
-	public void init() throws Exception {
+	public void init(boolean doLoad) throws Exception {
 		logger.info("Start initializing scene");
 		// TODO: Display loading screen?
-		load();
+		renderer.init();
+		objects.clear();
+		loaded = false;
+		active = false;
+
+		if (doLoad)
+			load();
 	}
 
 	/**
@@ -110,21 +116,26 @@ public abstract class Scene {
 		String json = new String(Files.readAllBytes(levelsFile));
 
 		if (StringUtils.hasText(json)) {
-			long maxFoundId = -1;
-			GameObject[] data = game.load(json, GameObject[].class);
-			for (GameObject obj : data) {
-				addGameObject(obj);
-				if (obj.id() > maxFoundId)
-					maxFoundId = obj.id();
-
-				long maxComponentId = obj.components().stream().mapToLong(Component::id).max().getAsLong();
-				if (maxComponentId > maxFoundId)
-					maxFoundId = maxComponentId;
-			}
+			deserialize(json);
 			loaded = true;
-			sceneLoaded(data);
-			GameInstance.nextId(maxFoundId);
 		}
+	}
+
+	public void deserialize(String json) throws Exception {
+		long maxFoundId = -1;
+		GameObject[] data = game.load(json, GameObject[].class);
+		for (GameObject obj : data) {
+			addGameObject(obj);
+			if (obj.id() > maxFoundId)
+				maxFoundId = obj.id();
+
+			long maxComponentId = obj.components().stream().mapToLong(Component::id).max().getAsLong();
+			if (maxComponentId > maxFoundId)
+				maxFoundId = maxComponentId;
+		}
+
+		GameInstance.nextId(maxFoundId);
+		sceneLoaded(data);
 	}
 
 	/**
@@ -144,14 +155,25 @@ public abstract class Scene {
 		Path levelsFile = Paths.get(game.pathsConfig().save().get("levels"), "world.json");
 		logger.info("Save current level to: {}", levelsFile);
 		try (FileWriter writer = new FileWriter(levelsFile.toFile())) {
-			List<GameObject> filteredObjects = objects.stream()
-					.filter(o -> !o.isTemporary())
-					.collect(Collectors.toList());
-			for (GameObject obj : filteredObjects) {
-				obj.removeTemporaryComponents();
-			}
-			writer.write(game.save(filteredObjects));
+			writer.write(serialize());
 		}
+	}
+
+	/**
+	 * Serialize this scene game objects.
+	 * 
+	 * @return
+	 * @throws IOException
+	 */
+	public String serialize() throws IOException {
+		List<GameObject> filteredObjects = objects.stream()
+				.filter(o -> !o.isTemporary())
+				.collect(Collectors.toList());
+		
+		for (GameObject obj : filteredObjects) {
+			obj.removeTemporaryComponents();
+		}
+		return game.save(filteredObjects);
 	}
 
 	/**
@@ -201,5 +223,13 @@ public abstract class Scene {
 
 	public List<GameObject> objects() {
 		return objects;
+	}
+
+	public void resume() {
+		active = true;
+	}
+
+	public boolean isActive() {
+		return active;
 	}
 }

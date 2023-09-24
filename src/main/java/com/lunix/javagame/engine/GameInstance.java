@@ -107,7 +107,6 @@ public class GameInstance implements Observer {
 			Debugger.display(false, keyboard);
 			Debugger.display(false, "Time elapsed: {}", timer.elapsedTime());
 			Debugger.display(false, "Delta time: {}", timer.deltaTime());
-			Debugger.outlineSelected(true, currentScene);
 			Debugger.draw();
 			sceneManager.update(timer.deltaTime());
 			sceneManager.render();
@@ -177,8 +176,19 @@ public class GameInstance implements Observer {
 	public void onNotify(Event e) {
 		if (e.type() == EventType.GAME_START_PLAY) {
 			System.out.println("Game started");
+			try {
+				sceneManager.changeScene(GameSceneType.WORLD);
+				sceneManager.copyObjects(GameSceneType.EDITOR, GameSceneType.WORLD);
+			} catch (Exception e1) {
+				logger.error("Unable to start the game", e);
+			}
 		} else if (e.type() == EventType.GAME_END_PLAY) {
 			System.out.println("Game stopped");
+			try {
+				sceneManager.changeScene(GameSceneType.EDITOR);
+			} catch (Exception e1) {
+				logger.error("Unable to stop the game", e);
+			}
 		}
 	}
 }

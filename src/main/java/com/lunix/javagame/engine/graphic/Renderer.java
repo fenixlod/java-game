@@ -19,6 +19,13 @@ public class Renderer {
 	}
 
 	/**
+	 * Initialize the renderer
+	 */
+	public void init() {
+		batches.clear();
+	}
+
+	/**
 	 * Add game object for drawing.
 	 * 
 	 * @param obj

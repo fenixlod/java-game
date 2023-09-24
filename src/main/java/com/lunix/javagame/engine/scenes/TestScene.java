@@ -23,8 +23,8 @@ public class TestScene extends Scene {
 	}
 
 	@Override
-	public void init() throws Exception {
-		super.init();
+	public void init(boolean doLoad) throws Exception {
+		super.init(doLoad);
 		game.window().clearColor(1f, 1f, 1f, 1f);
 		game.camera().position(new Vector3f());
 		
