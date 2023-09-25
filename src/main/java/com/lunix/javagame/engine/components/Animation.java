@@ -39,7 +39,7 @@ public class Animation extends Component {
 	}
 
 	@Override
-	public void update(float deltaTime) {
+	public void update(float deltaTime, boolean isPlaying) {
 		leftTime -= deltaTime;
 
 		if (leftTime <= 0f) {

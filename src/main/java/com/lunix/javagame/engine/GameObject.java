@@ -2,8 +2,8 @@ package com.lunix.javagame.engine;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import org.joml.Vector3f;
@@ -18,6 +18,7 @@ public class GameObject {
 	private Map<Class<? extends Component>, Component> components;
 	private transient boolean outlined;
 	protected transient boolean temporary;
+	protected transient boolean destroyed;
 
 	public GameObject() {	
 		this("");
@@ -47,6 +48,38 @@ public class GameObject {
 			}
 		});
 		id = GameInstance.getNextId();
+	}
+
+	/**
+	 * Start the object components.
+	 */
+	public void start() {
+		components.values().forEach(Component::start);
+	}
+
+	/**
+	 * Update this object components animations, AI etc.
+	 * 
+	 * @param deltaTime
+	 */
+	public void update(float deltaTime, boolean isPlaying) {
+		if (destroyed)
+			return;
+
+		Class<? extends Component> destroyedComponent = null;
+		for (Entry<Class<? extends Component>, Component> entry : components.entrySet()) {
+			entry.getValue().update(deltaTime, isPlaying);
+			if (entry.getValue().isDestroyed())
+				destroyedComponent = entry.getKey();
+		}
+
+		if (destroyedComponent != null)
+			removeComponent(destroyedComponent);
+	}
+
+	public void destroy() {
+		destroyed = true;
+		components.values().forEach(Component::destroy);
 	}
 
 	/**
@@ -87,24 +120,6 @@ public class GameObject {
 	 */
 	public <T extends Component> void removeComponent(Class<T> className) {
 		components.remove(className);
-	}
-
-	/**
-	 * Update this object components animations, AI etc.
-	 * 
-	 * @param deltaTime
-	 */
-	public void update(float deltaTime) {
-		components.entrySet().forEach(e -> {
-			e.getValue().update(deltaTime);
-		});
-	}
-
-	/**
-	 * Start the object components.
-	 */
-	public void start() {
-		components.values().forEach(Component::start);
 	}
 
 	public String name() {
@@ -149,13 +164,7 @@ public class GameObject {
 		this.temporary = temporary;
 	}
 
-	public void removeTemporaryComponents() {
-		for (Iterator<Map.Entry<Class<? extends Component>, Component>> it = components.entrySet().iterator(); it
-				.hasNext();) {
-			Map.Entry<Class<? extends Component>, Component> entry = it.next();
-			if (entry.getValue().isTemporary()) {
-				it.remove();
-			}
-		}
+	public boolean isDestriyed() {
+		return destroyed;
 	}
 }

@@ -51,7 +51,7 @@ public class SpriteRenderer extends Component {
 	}
 
 	@Override
-	public void update(float deltaTime) {
+	public void update(float deltaTime, boolean isPlaying) {
 		if (!lastTransform.equals(owner.transform())) {
 			lastTransform = owner.transform().copy();
 			isChanged = true;

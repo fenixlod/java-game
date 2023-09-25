@@ -136,9 +136,6 @@ public class ObjectInspector {
 
 		Class<? extends Component> markedForDelete = null;
 		for (Component c : obj.components()) {
-			if (c.isTemporary())
-				continue;
-
 			float width = ImGui.calcItemWidth();
 			boolean opened = ImGui.collapsingHeader(c.getClass().getSimpleName(), ImGuiTreeNodeFlags.AllowItemOverlap);
 			ImGui.sameLine(width + 115);

@@ -172,7 +172,7 @@ public class TestScene extends Scene {
 	}
 
 	@Override
-	public void update(float deltaTime) throws Exception {
+	public void update(float deltaTime, boolean isPlaying) throws Exception {
 		Vector3f offset = new Vector3f();
 
 		if (game.keyboard().isKeyPressed(GLFW_KEY_RIGHT))
@@ -207,6 +207,6 @@ public class TestScene extends Scene {
 		Debugger.display(false, "X={}, Y={}, Z={}", game.camera().position().x, game.camera().position().y,	game.camera().position().z);
 
 		playerObject.move(offset);
-		super.update(deltaTime);
+		super.update(deltaTime, isPlaying);
 	}
 }

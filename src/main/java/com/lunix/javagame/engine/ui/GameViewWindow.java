@@ -1,24 +1,15 @@
 package com.lunix.javagame.engine.ui;
 
-import java.io.IOException;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.joml.Vector2d;
 
 import com.lunix.javagame.engine.GameInstance;
-import com.lunix.javagame.engine.Scene;
-import com.lunix.javagame.engine.enums.EventType;
 import com.lunix.javagame.engine.graphic.FrameBuffer;
-import com.lunix.javagame.engine.observers.Event;
-import com.lunix.javagame.engine.observers.EventSystem;
 
 import imgui.ImGui;
 import imgui.ImVec2;
 import imgui.flag.ImGuiWindowFlags;
 
 public class GameViewWindow {
-	private static final Logger logger = LogManager.getLogger(GameViewWindow.class);
 	private float leftX;
 	private float rightX;
 	private float topY;
@@ -29,29 +20,9 @@ public class GameViewWindow {
 		game = GameInstance.get();
 	}
 
-	public void show(FrameBuffer frameBuffer, Scene currentScene) {
+	public void show(FrameBuffer frameBuffer) {
 		ImGui.begin("Game viewport",
 				ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse | ImGuiWindowFlags.MenuBar);
-
-		ImGui.beginMenuBar();
-		if (ImGui.menuItem("SAVE", "CTRL+S", !currentScene.isActive(), currentScene.isActive())) {
-			try {
-				currentScene.save();
-			} catch (IOException e) {
-				logger.error("Unable to save current lavel", e);
-			}
-		}
-
-		if (ImGui.menuItem("PLAY", "ALT+P", !currentScene.isActive(), currentScene.isActive())) {
-			EventSystem.notify(new Event(EventType.GAME_START_PLAY));
-		}
-
-//		if (ImGui.menuItem("STOP", "ALT+S", currentScene.isActive(), !currentScene.isActive())) {
-//			EventSystem.notify(new Event(EventType.GAME_END_PLAY));
-//		}
-
-		ImGui.endMenuBar();
-
 		ImVec2 windowSize = getLargestSizeForViewport();
 		ImVec2 windowPosition = getCenteredPositionForViewoirt(windowSize);
 

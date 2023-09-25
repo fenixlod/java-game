@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.util.StringUtils;
 
 import com.lunix.javagame.engine.graphic.Renderer;
+import com.lunix.javagame.engine.physics.Physics;
 
 public abstract class Scene {
 	protected static final Logger logger = LogManager.getLogger(Scene.class);
@@ -22,12 +23,14 @@ public abstract class Scene {
 	private final Renderer renderer;
 	protected final GameInstance game;
 	protected boolean loaded;
+	private Physics physics;
 
 	protected Scene() {
 		active = false;
 		objects = new ArrayList<>();
 		renderer = new Renderer();
 		game = GameInstance.get();
+		physics = new Physics();
 	}
 
 	/**
@@ -36,12 +39,11 @@ public abstract class Scene {
 	 * @throws Exception
 	 */
 	public void init(boolean doLoad) throws Exception {
-		logger.info("Start initializing scene");
+		logger.info("Start initializing scene: {}", this.getClass().getSimpleName());
 		// TODO: Display loading screen?
-		renderer.init();
-		objects.clear();
 		loaded = false;
 		active = false;
+		// physics.init();
 
 		if (doLoad)
 			load();
@@ -57,9 +59,36 @@ public abstract class Scene {
 		for (GameObject obj : objects) {
 			obj.start();
 			renderer.add(obj);
+			physics.addGameObject(obj);
 		}
 
 		active = true;
+	}
+
+	/**
+	 * Update the scene.
+	 * 
+	 * @param deltaTime
+	 * @throws Exception
+	 */
+	public void update(float deltaTime, boolean isPlaying) throws Exception {
+		if (!active)
+			return;
+
+		physics.update(deltaTime, isPlaying);
+		GameObject objectToRemove = null;
+		for (GameObject obj : objects) {
+			obj.update(deltaTime, isPlaying);
+			if (obj.isDestriyed())
+				objectToRemove = obj;
+		}
+
+		if (objectToRemove != null) {
+			if (objects.remove(objectToRemove)) {
+				renderer.remove(objectToRemove);
+				physics.removeGameObject(objectToRemove);
+			}
+		}
 	}
 
 	/**
@@ -70,18 +99,20 @@ public abstract class Scene {
 	}
 
 	/**
-	 * Update the scene.
-	 * 
-	 * @param deltaTime
-	 * @throws Exception
+	 * Resume the scene. This scene will start receiving updates again.
 	 */
-	public void update(float deltaTime) throws Exception {
-		if (!active)
-			return;
+	public void resume() {
+		active = true;
+	}
 
-		for (GameObject obj : objects) {
-			obj.update(deltaTime);
-		}
+	/**
+	 * Destroy the scene.
+	 */
+	public void destroy() {
+		logger.info("Destroyng scene : {}", this.getClass().getSimpleName());
+		objects.forEach(GameObject::destroy);
+		objects.clear();
+		renderer.destroy();
 	}
 
 	/**
@@ -96,6 +127,7 @@ public abstract class Scene {
 		if (active) {
 			object.start();
 			renderer.add(object);
+			physics.addGameObject(object);
 		}
 	}
 
@@ -170,9 +202,6 @@ public abstract class Scene {
 				.filter(o -> !o.isTemporary())
 				.collect(Collectors.toList());
 		
-		for (GameObject obj : filteredObjects) {
-			obj.removeTemporaryComponents();
-		}
 		return game.save(filteredObjects);
 	}
 
@@ -201,17 +230,6 @@ public abstract class Scene {
 	}
 
 	/**
-	 * Remove game object from the scene.
-	 * 
-	 * @param object
-	 * @throws Exception
-	 */
-	public void removeGameObject(GameObject object) throws Exception {
-		if (objects.remove(object))
-			renderer.remove(object);
-	}
-
-	/**
 	 * Get game object by id.
 	 * 
 	 * @param objectID
@@ -223,10 +241,6 @@ public abstract class Scene {
 
 	public List<GameObject> objects() {
 		return objects;
-	}
-
-	public void resume() {
-		active = true;
 	}
 
 	public boolean isActive() {

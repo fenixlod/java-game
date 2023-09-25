@@ -12,7 +12,7 @@ public class FontRenderer extends Component {
 	}
 
 	@Override
-	public void update(float deltaTime) {
+	public void update(float deltaTime, boolean isPlaying) {
 		if (firstTime) {
 			logger.info("[{}] Font renderer is updating!", owner.name());
 			firstTime = false;

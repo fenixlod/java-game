@@ -24,10 +24,10 @@ public class ScaleGizmo extends Gizmo {
 	private final float SCALE_SENSITIVITY = 0.1f;// .15f;
 
 	@Override
-	public void update(float deltaTime) {
-		super.update(deltaTime);
+	public void update(float deltaTime, boolean isPlaying) {
+		super.update(deltaTime, isPlaying);
 
-		if (attachedTo == null || !isSelected)
+		if (attachedTo == null || !isSelected || isPlaying)
 			return;
 
 		if (GameInstance.get().mouse().dragging() && GameInstance.get().mouse().isButtonPressed(GLFW_MOUSE_BUTTON_LEFT)) {

@@ -1,5 +1,6 @@
 package com.lunix.javagame.engine;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,18 +8,23 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.lunix.javagame.engine.enums.GameSceneType;
+import com.lunix.javagame.engine.observers.Event;
+import com.lunix.javagame.engine.observers.EventSystem;
+import com.lunix.javagame.engine.observers.Observer;
 import com.lunix.javagame.engine.scenes.LevelEditorScene;
 import com.lunix.javagame.engine.scenes.MainMenuScene;
 import com.lunix.javagame.engine.scenes.TestScene;
 import com.lunix.javagame.engine.scenes.WorldScene;
 
-public class SceneManager {
+public class SceneManager implements Observer {
 	private static final Logger logger = LogManager.getLogger(GameWindow.class);
 	private Scene currentScene;
+	private GameSceneType currentSceneType;
 	private Map<GameSceneType, Scene> scenes;
 
 	public SceneManager() {
 		scenes = new HashMap<>();
+		EventSystem.addObserver(this);
 	}
 
 	/**
@@ -44,6 +50,7 @@ public class SceneManager {
 			currentScene.stop();
 
 		currentScene = newScene;
+		currentSceneType = newSceneType;
 	}
 
 	/**
@@ -69,7 +76,7 @@ public class SceneManager {
 	 * @throws Exception
 	 */
 	public void update(float deltaTime) throws Exception {
-		currentScene.update(deltaTime);
+		currentScene.update(deltaTime, GameSceneType.EDITOR != currentSceneType);
 	}
 
 	public Scene currentScene() {
@@ -94,10 +101,50 @@ public class SceneManager {
 	 * @throws Exception
 	 */
 	public void copyObjects(GameSceneType from, GameSceneType to) throws Exception {
+		logger.info("Copy all game ofjects from: {} -> {}", from, to);
 		Scene fromScene = scenes.get(from);
 		Scene toScene = scenes.get(to);
+		toScene.destroy();
 		toScene.init(false);
 		toScene.deserialize(fromScene.serialize());
 		toScene.start();
+	}
+
+	@Override
+	public void onNotify(Event e) {
+		switch (e.type()) {
+		case GAME_START_PLAY:
+			try {
+				logger.info("Start playing the game...");
+				changeScene(GameSceneType.WORLD);
+				// The proper way to sync between the 2 scenes will be save/load
+				// Now we do not have to make multiple saves so this variant is better
+				copyObjects(GameSceneType.EDITOR, GameSceneType.WORLD);
+			} catch (Exception e1) {
+				logger.error("Unable to start the game", e1);
+			}
+			break;
+		case GAME_END_PLAY:
+			try {
+				logger.info("Stop playing the game...");
+				changeScene(GameSceneType.EDITOR);
+			} catch (Exception e1) {
+				logger.error("Unable to stop the game", e1);
+			}
+			break;
+		case LOAD_LEVEL:
+			break;
+		case SAVE_LEVEL:
+			try {
+				currentScene.save();
+			} catch (IOException e1) {
+				logger.error("Unable to save lavel", e1);
+			}
+			break;
+		case USER_EVENT:
+			break;
+		default:
+			break;
+		}
 	}
 }

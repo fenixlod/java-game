@@ -19,9 +19,9 @@ public class Renderer {
 	}
 
 	/**
-	 * Initialize the renderer
+	 * Destroy the renderer
 	 */
-	public void init() {
+	public void destroy() {
 		batches.clear();
 	}
 

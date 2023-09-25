@@ -31,7 +31,7 @@ public class WorldScene extends Scene {
 	}
 
 	@Override
-	public void update(float deltaTime) throws Exception {
+	public void update(float deltaTime, boolean isPlaying) throws Exception {
 		Vector3f offset = new Vector3f();
 
 		if (game.keyboard().isKeyPressed(GLFW_KEY_RIGHT))
@@ -62,9 +62,7 @@ public class WorldScene extends Scene {
 		playerObject.move(offset);
 		game.camera().position(playerObject.transform().position());
 
-		Vector3f worldPosition = game.mouse().positionInWorldProjected();
-		System.out.println("Current X=" + worldPosition.x + " Y=" + worldPosition.y + " Z=" + worldPosition.z);
-		super.update(deltaTime);
+		super.update(deltaTime, isPlaying);
 
 		// Go to level editor when escape key is pressed
 		if (game.keyboard().isKeyPressed(GLFW_KEY_ESCAPE)) {

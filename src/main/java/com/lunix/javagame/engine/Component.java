@@ -7,7 +7,10 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.lunix.javagame.engine.components.Animation;
+import com.lunix.javagame.engine.components.BoxCollider;
+import com.lunix.javagame.engine.components.CircleCollider;
 import com.lunix.javagame.engine.components.MouseDragging;
+import com.lunix.javagame.engine.components.RigidBody;
 import com.lunix.javagame.engine.components.SnapToGrid;
 import com.lunix.javagame.engine.components.SpriteRenderer;
 
@@ -16,6 +19,9 @@ import com.lunix.javagame.engine.components.SpriteRenderer;
 		@JsonSubTypes.Type(name = "Animation", value = Animation.class),
 		@JsonSubTypes.Type(name = "SpriteRenderer", value = SpriteRenderer.class),
 		@JsonSubTypes.Type(name = "MouseDragging", value = MouseDragging.class),
+		@JsonSubTypes.Type(name = "BoxCollider", value = BoxCollider.class),
+		@JsonSubTypes.Type(name = "CircleCollider", value = CircleCollider.class),
+		@JsonSubTypes.Type(name = "RigidBody", value = RigidBody.class),
 		@JsonSubTypes.Type(name = "SnapToGrid", value = SnapToGrid.class)
 })
 public abstract class Component {
@@ -23,14 +29,12 @@ public abstract class Component {
 	@JsonBackReference
 	protected GameObject owner;
 	private long id = -1;
-	protected boolean temporary;
+	protected transient boolean destroyed;
 
-	public void owner(GameObject owner) {
-		this.owner = owner;
-	}
-
-	public GameObject owner() {
-		return owner;
+	/**
+	 * Initialize the component.
+	 */
+	public void start() {
 	}
 
 	/**
@@ -38,13 +42,13 @@ public abstract class Component {
 	 * 
 	 * @param deltaTime
 	 */
-	public void update(float deltaTime) {
+	public void update(float deltaTime, boolean isPlaying) {
 	}
 
 	/**
-	 * Initialize the component.
+	 * Destroy the component. Free any allocated resources.
 	 */
-	public void start() {
+	public void destroy() {
 	}
 
 	public void generateId() {
@@ -56,7 +60,15 @@ public abstract class Component {
 		return id;
 	}
 
-	public boolean isTemporary() {
-		return temporary;
+	public void owner(GameObject owner) {
+		this.owner = owner;
+	}
+
+	public GameObject owner() {
+		return owner;
+	}
+
+	public boolean isDestroyed() {
+		return destroyed;
 	}
 }

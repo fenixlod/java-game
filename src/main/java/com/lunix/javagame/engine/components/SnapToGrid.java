@@ -23,7 +23,7 @@ public class SnapToGrid extends Component {
 	}
 
 	@Override
-	public void update(float deltaTime) {
+	public void update(float deltaTime, boolean isPlaying) {
 		Vector3f worldPos = owner.transform().position();
 		if (lastPosition.equals(worldPos))
 			return;

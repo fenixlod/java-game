@@ -183,7 +183,7 @@ public class Debugger {
 		addLine(VectorUtil.Z().mul(-10_000), VectorUtil.Z().mul(10_000), Color.green(), 1);
 	}
 
-	public static void addBox(Vector3f center, Vector3f widthDirection, Vector3f heightDirection, int width, int height,
+	public static void addBoxCentered(Vector3f center, Vector3f widthDirection, Vector3f heightDirection, float width, float height,
 			Color color, int lifetime) {
 		if (lines.size() + 4 > MAX_LINES)
 			return;
@@ -195,6 +195,9 @@ public class Debugger {
 
 		p1.add(widthDirection.mul(-width / 2f, new Vector3f()));
 		p2.add(widthDirection.mul(width / 2f, new Vector3f()));
+
+		p1.add(heightDirection.mul(-height / 2f, new Vector3f()));
+		p2.add(heightDirection.mul(-height / 2f, new Vector3f()));
 		p4 = p1.add(heightDirection.mul(height, new Vector3f()), new Vector3f());
 		p3 = p2.add(heightDirection.mul(height, new Vector3f()), new Vector3f());
 
@@ -211,24 +214,26 @@ public class Debugger {
 		addLine(box[3], box[0], color, lifetime);
 	}
 
-	public static void addBox(Vector3f center, int width, int height, Color color, int lifetime) {
-		addBox(center, VectorUtil.X(), VectorUtil.Y(), width, height, color, lifetime);
+	public static void addBoxCentered(Vector3f center, float width, float height, Color color, int lifetime) {
+		addBoxCentered(center, VectorUtil.X(), VectorUtil.Y(), width, height, color, lifetime);
 	}
 
-	public static void addBox(Vector3f center, int width, int height) {
-		addBox(center, VectorUtil.X(), VectorUtil.Y(), width, height, Color.black(), Integer.MAX_VALUE);
+	public static void addBoxCentered(Vector3f center, float width, float height) {
+		addBoxCentered(center, width, height, Color.black(), Integer.MAX_VALUE);
 	}
 
-	public static void addCircle(Vector3f center, Vector3f normal, int radius, Color color, int lifetime) {
+	public static void addCircle(Vector3f center, Vector3f normal, float radius, Color color, int lifetime) {
 		if (lines.size() + 12 > MAX_LINES)
 			return;
 
+		Vector3f zero = new Vector3f();
 		Vector3f direction = new Vector3f().orthogonalize(normal);
 		Vector3f prevCp = null;
 		for (int i = 0; i <= 12; i++) {
-			Vector3f cp = center.add(direction.mul(radius, new Vector3f()), new Vector3f())
+			Vector3f cp = zero.add(direction.mul(radius, new Vector3f()), new Vector3f())
 					.rotateAxis((float) Math.toRadians(i * 30), normal.x, normal.y, normal.z);
 
+			cp.add(center);
 			if (prevCp == null) {
 				prevCp = cp;
 				continue;
@@ -239,7 +244,7 @@ public class Debugger {
 		}
 	}
 
-	public static void addCircle(Vector3f center, Vector3f normal, int radius) {
+	public static void addCircle(Vector3f center, Vector3f normal, float radius) {
 		addCircle(center, normal, radius, Color.black(), Integer.MAX_VALUE);
 	}
 

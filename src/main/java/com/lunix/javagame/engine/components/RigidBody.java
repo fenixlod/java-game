@@ -14,21 +14,20 @@ public class RigidBody extends Component {
 	private BodyType bodyType;
 	private boolean fixedRotation;
 	private boolean continiousCollision;
-	private Body rawBody;
+	private transient Body rawBody;
 
 	public RigidBody() {
 		velocity = new Vector3f();
 		angularDamping = 0.8f;
 		linearDamping = 0.9f;
-		mass = 1;
+		mass = 0;
 		bodyType = BodyType.STATIC;
 		fixedRotation = false;
 		continiousCollision = true;
 	}
 
 	@Override
-	public void update(float deltaTime) {
-		super.update(deltaTime);
+	public void update(float deltaTime, boolean isPlaying) {
 		if (rawBody != null) {
 			owner.transform().position(new Vector3f(rawBody.getPosition().x, rawBody.getPosition().y, 0));
 			// Math.toDegrees(rawBody.getAngle());
@@ -106,5 +105,17 @@ public class RigidBody extends Component {
 	public RigidBody rawBody(Body rawBody) {
 		this.rawBody = rawBody;
 		return this;
+	}
+
+	/**
+	 * All Components needs to implement this method. This value determine the order
+	 * of execution of components within a game object. The lower the priority value
+	 * = the sooner this component will be executed. Priority of 1 - first to
+	 * execute, 1000 - last to execute.
+	 * 
+	 * @return
+	 */
+	public static int priority() {
+		return 50;
 	}
 }

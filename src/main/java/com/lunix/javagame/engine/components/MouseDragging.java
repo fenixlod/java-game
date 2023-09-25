@@ -10,10 +10,6 @@ import com.lunix.javagame.engine.GameInstance;
 public final class MouseDragging extends Component {
 	private transient boolean isPicked;
 
-	public MouseDragging() {
-		temporary = true;
-	}
-
 	public MouseDragging pickup() {
 		isPicked = true;
 		return this;
@@ -21,10 +17,11 @@ public final class MouseDragging extends Component {
 
 	public void place() {
 		isPicked = false;
+		destroyed = true;
 	}
 
 	@Override
-	public void update(float deltaTime) {
+	public void update(float deltaTime, boolean isPlaying) {
 		if (!isPicked)
 			return;
 
@@ -32,6 +29,8 @@ public final class MouseDragging extends Component {
 		owner.transform().position(worldPos);
 		if (GameInstance.get().mouse().isButtonPressed(GLFW_MOUSE_BUTTON_LEFT)) {
 			place();
+		} else if (GameInstance.get().keyboard().isKeyPressed(GLFW_KEY_ESCAPE)) {
+			owner.destroy();
 		}
 	}
 

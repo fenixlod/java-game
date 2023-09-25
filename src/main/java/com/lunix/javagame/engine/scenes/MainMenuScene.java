@@ -9,6 +9,6 @@ public class MainMenuScene extends Scene {
 	}
 
 	@Override
-	public void update(float deltaTime) {
+	public void update(float deltaTime, boolean isPlaying) {
 	}
 }

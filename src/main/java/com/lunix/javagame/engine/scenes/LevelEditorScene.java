@@ -1,7 +1,5 @@
 package com.lunix.javagame.engine.scenes;
 
-import static org.lwjgl.glfw.GLFW.*;
-
 import java.util.Map.Entry;
 
 import org.joml.Vector2f;
@@ -21,6 +19,7 @@ import com.lunix.javagame.engine.enums.TextureType;
 import com.lunix.javagame.engine.graphic.Color;
 import com.lunix.javagame.engine.graphic.FrameBuffer;
 import com.lunix.javagame.engine.graphic.Sprite;
+import com.lunix.javagame.engine.ui.EditorMenuBar;
 import com.lunix.javagame.engine.ui.GameViewWindow;
 import com.lunix.javagame.engine.ui.ObjectInspector;
 import com.lunix.javagame.engine.util.Debugger;
@@ -34,19 +33,19 @@ import imgui.flag.ImGuiWindowFlags;
 import imgui.type.ImBoolean;
 
 public class LevelEditorScene extends Scene {
-	private GameObject playerObject;
-	private GameObject draggingObject;
 	private EditorConfigs editorConfig;
 	private FrameBuffer frameBuffer;
 	private GameViewWindow viewWindow;
 	private ObjectInspector objInspector;
 	private EditorControlls controlls;
+	private EditorMenuBar menuBar;
 
 	public LevelEditorScene() {
 		super();
 		viewWindow = new GameViewWindow();
 		objInspector = new ObjectInspector();
 		controlls = new EditorControlls(game.camera());
+		menuBar = new EditorMenuBar();
 	}
 
 	@Override
@@ -70,13 +69,13 @@ public class LevelEditorScene extends Scene {
 		if (loaded)
 			return;
 
-		playerObject = new GameObject("Player")
-				.addComponent(
-						new SpriteRenderer(40, 50)
-						.sprite(ResourcePool.getSprite(TextureType.PLAYER.name()))
-				);
+		GameObject playerObject = new GameObject("Player")
+			.addComponent(
+				new SpriteRenderer(40, 50)
+				.sprite(ResourcePool.getSprite(TextureType.PLAYER.name()))
+			);
 		playerObject.addComponent(new Animation(ResourcePool.getSprites(TextureType.PLAYER_IDLE), 0.3f));
-			addGameObject(playerObject);
+		addGameObject(playerObject);
 			
 
 		GameObject enemy = new GameObject("Enemy", new Vector3f(-50f, 50f, 0f))
@@ -183,24 +182,10 @@ public class LevelEditorScene extends Scene {
 	}
 
 	@Override
-	public void update(float deltaTime) throws Exception {
-		// Close the game window when escape key is pressed
-		if (game.keyboard().isKeyPressed(GLFW_KEY_ESCAPE)) {
-			if (draggingObject != null) {
-				MouseDragging component = draggingObject.getComponent(MouseDragging.class);
-				if (component.isPicked()) {
-					removeGameObject(draggingObject);
-					draggingObject = null;
-				}
-			}
-		}
-/*
-		Vector3f worldPosition = game.mouse().worldPositionProjected();
-		System.out.println("Current X=" + worldPosition.x + " Y=" + worldPosition.y + " Z=" + worldPosition.z);
-*/
+	public void update(float deltaTime, boolean isPlaying) throws Exception {
 		controlls.update(deltaTime);
 		objInspector.update(deltaTime, this);
-		super.update(deltaTime);
+		super.update(deltaTime, isPlaying);
 		Debugger.drawAxis(true);
 		Debugger.outlineSelected(true, this);
 	}
@@ -208,7 +193,7 @@ public class LevelEditorScene extends Scene {
 	@Override
 	public void ui() {
 		setupDockspace();
-
+		menuBar.show();
 		objInspector.show();
 		ImGui.begin("World Editor");
 
@@ -242,7 +227,6 @@ public class LevelEditorScene extends Scene {
 							entry.getKey());
 					// Attach the ground object to the mouse cursor
 					groundTile.addComponent(new MouseDragging().pickup());
-					draggingObject = groundTile;
 					addGameObject(groundTile);
 				}
 				ImGui.popID();
@@ -263,19 +247,9 @@ public class LevelEditorScene extends Scene {
 
 		ImGui.end();
 
-		viewWindow.show(frameBuffer, this);
+		viewWindow.show(frameBuffer);
 		ImGui.showDemoWindow();
 		ImGui.end();
-	}
-
-	@Override
-	protected void sceneLoaded(GameObject[] loadedData) {
-		for (GameObject obj : loadedData) {
-			if (obj.name().equals("Player")) {
-				playerObject = obj;
-				return;
-			}
-		}
 	}
 
 	@Override
