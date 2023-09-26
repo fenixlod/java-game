@@ -30,7 +30,7 @@ public class TranslateGizmo extends Gizmo {
 			Vector3f change = direction.mul(offset.dot(direction), new Vector3f());
 			transform().move(change);
 			attachedTo.transform().position(
-					transform().position().add(VectorUtil.viewDirection().mul(-offsetFromObject), new Vector3f()));
+					transform().positionCopy().add(VectorUtil.viewDirection().mul(-offsetFromObject)));
 		}
 	}
 }

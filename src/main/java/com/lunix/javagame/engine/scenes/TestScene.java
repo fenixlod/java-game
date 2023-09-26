@@ -206,7 +206,7 @@ public class TestScene extends Scene {
 
 		Debugger.display(false, "X={}, Y={}, Z={}", game.camera().position().x, game.camera().position().y,	game.camera().position().z);
 
-		playerObject.move(offset);
+		playerObject.transform().move(offset);
 		super.update(deltaTime, isPlaying);
 	}
 }

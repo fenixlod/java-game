@@ -38,14 +38,14 @@ public class ScaleGizmo extends Gizmo {
 
 			change.set(Float.parseFloat(df.format(change.x)), Float.parseFloat(df.format(change.y)),
 					Float.parseFloat(df.format(change.z)));
-			attachedTo.transform().scale().add(change);
+			attachedTo.transform().scale(attachedTo.transform().scaleCopy().add(change));
 		}
 	}
 
 	@Override
 	public void attach(GameObject object) {
 		super.attach(object);
-		Vector3f change = direction.mul(attachedTo.transform().scale().dot(direction), new Vector3f())
+		Vector3f change = direction.mul(attachedTo.transform().scaleCopy().dot(direction), new Vector3f())
 				.mul(2.5f / SCALE_SENSITIVITY);
 		spriteRenderer.offset(baseOffset.add(change, new Vector3f()));
 	}

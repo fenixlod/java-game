@@ -59,8 +59,8 @@ public class WorldScene extends Scene {
 		Debugger.display(false, "X={}, Y={}, Z={}", game.camera().position().x, game.camera().position().y,
 				game.camera().position().z);
 
-		playerObject.move(offset);
-		game.camera().position(playerObject.transform().position());
+		playerObject.transform().move(offset);
+		game.camera().position(playerObject.transform().positionCopy());
 
 		super.update(deltaTime, isPlaying);
 

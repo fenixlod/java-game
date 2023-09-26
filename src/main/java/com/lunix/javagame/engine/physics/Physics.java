@@ -8,9 +8,9 @@ import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.World;
+import org.joml.Vector3f;
 
 import com.lunix.javagame.engine.GameObject;
-import com.lunix.javagame.engine.Transform;
 import com.lunix.javagame.engine.components.BoxCollider;
 import com.lunix.javagame.engine.components.CircleCollider;
 import com.lunix.javagame.engine.components.RigidBody;
@@ -35,10 +35,10 @@ public class Physics {
 	public void addGameObject(GameObject object) {
 		RigidBody rigidBody = object.getComponent(RigidBody.class);
 		if (rigidBody != null && rigidBody.rawBody() == null) {
-			Transform transform = object.transform();
+			Vector3f position = object.transform().positionCopy();
 			BodyDef bodyDefinition = new BodyDef();
 			bodyDefinition.angle = 0f;
-			bodyDefinition.position.set(transform.position().x, transform.position().y);
+			bodyDefinition.position.set(position.x, position.y);
 			bodyDefinition.angularDamping = rigidBody.angularDamping();
 			bodyDefinition.linearDamping = rigidBody.linearDamping();
 			bodyDefinition.fixedRotation = rigidBody.isFixedRotation();

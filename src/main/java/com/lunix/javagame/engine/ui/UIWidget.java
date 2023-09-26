@@ -43,7 +43,10 @@ public class UIWidget {
 		ImGui.popStyleColor(3);
 		ImGui.sameLine();
 		float[] vectValuesX = { value.x };
-		ImGui.dragFloat("##x", vectValuesX, 0.1f, 0, 0, "%.2f");
+		if (ImGui.dragFloat("##x", vectValuesX, 0.1f, 0, 0, "%.2f")) {
+			value.x = vectValuesX[0];
+			valueChanged = true;
+		}
 		ImGui.popItemWidth();
 
 		ImGui.sameLine();
@@ -58,7 +61,10 @@ public class UIWidget {
 		ImGui.popStyleColor(3);
 		ImGui.sameLine();
 		float[] vectValuesY = { value.y };
-		ImGui.dragFloat("##y", vectValuesY, 0.1f, 0, 0, "%.2f");
+		if (ImGui.dragFloat("##y", vectValuesY, 0.1f, 0, 0, "%.2f")) {
+			value.y = vectValuesY[0];
+			valueChanged = true;
+		}
 		ImGui.popItemWidth();
 
 		ImGui.sameLine();
@@ -73,15 +79,12 @@ public class UIWidget {
 		ImGui.popStyleColor(3);
 		ImGui.sameLine();
 		float[] vectValuesZ = { value.z };
-		ImGui.dragFloat("##z", vectValuesZ, 0.1f, 0, 0, "%.2f");
+		if (ImGui.dragFloat("##z", vectValuesZ, 0.1f, 0, 0, "%.2f")) {
+			value.z = vectValuesZ[0];
+			valueChanged = true;
+		}
 		ImGui.popItemWidth();
-
 		ImGui.nextColumn();
-
-		value.x = vectValuesX[0];
-		value.y = vectValuesY[0];
-		value.z = vectValuesZ[0];
-
 		ImGui.popStyleVar();
 		ImGui.columns(1);
 		ImGui.popID();

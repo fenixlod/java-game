@@ -13,6 +13,7 @@ import com.lunix.javagame.engine.components.MouseDragging;
 import com.lunix.javagame.engine.components.RigidBody;
 import com.lunix.javagame.engine.components.SnapToGrid;
 import com.lunix.javagame.engine.components.SpriteRenderer;
+import com.lunix.javagame.engine.enums.ObjectEventType;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 @JsonSubTypes({
@@ -70,5 +71,8 @@ public abstract class Component {
 
 	public boolean isDestroyed() {
 		return destroyed;
+	}
+
+	protected void onNotify(ObjectEventType e) {
 	}
 }

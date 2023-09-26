@@ -4,7 +4,7 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import com.lunix.javagame.engine.Component;
-import com.lunix.javagame.engine.Transform;
+import com.lunix.javagame.engine.enums.ObjectEventType;
 import com.lunix.javagame.engine.enums.ShaderType;
 import com.lunix.javagame.engine.enums.TextureType;
 import com.lunix.javagame.engine.graphic.Color;
@@ -24,7 +24,6 @@ public class SpriteRenderer extends Component {
 	private boolean mirrorWidth;
 	private boolean mirrorHeight;
 
-	private transient Transform lastTransform;
 	private transient boolean isChanged;
 
 	public SpriteRenderer() {
@@ -47,15 +46,16 @@ public class SpriteRenderer extends Component {
 	@Override
 	public void start() {
 		super.start();
-		lastTransform = owner.transform().copy();
 	}
 
 	@Override
-	public void update(float deltaTime, boolean isPlaying) {
-		if (!lastTransform.equals(owner.transform())) {
-			lastTransform = owner.transform().copy();
-			isChanged = true;
-		}
+	protected void onNotify(ObjectEventType e) {
+		if (e != ObjectEventType.POSITION_CHANGED &&
+			e != ObjectEventType.SCALE_CHANGED &&
+			e != ObjectEventType.FACING_CHANGED)
+			return;
+
+		isChanged = true;
 	}
 
 	public SpriteRenderer offset(Vector3f positionOffset) {
@@ -228,10 +228,10 @@ public class SpriteRenderer extends Component {
 	}
 
 	public Vector3f[] getBox() {
-		Vector3f center = owner.transform().position().add(positionOffset, new Vector3f());
+		Vector3f center = owner.transform().positionCopy().add(positionOffset);
 		Vector3f[] points = { new Vector3f(center), new Vector3f(center), new Vector3f(center), new Vector3f(center) };
-		Vector3f scaledWidthDirection = widthDirection.mul(owner.transform().scale(), new Vector3f());
-		Vector3f scaledHeightDirection = heightDirection.mul(owner.transform().scale(), new Vector3f());
+		Vector3f scaledWidthDirection = widthDirection.mul(owner.transform().scaleCopy(), new Vector3f());
+		Vector3f scaledHeightDirection = heightDirection.mul(owner.transform().scaleCopy(), new Vector3f());
 
 		points[0].add(scaledWidthDirection.mul(-width / 2f, new Vector3f()));
 		points[1].add(scaledWidthDirection.mul(width / 2f, new Vector3f()));
@@ -250,18 +250,6 @@ public class SpriteRenderer extends Component {
 
 	public Color color() {
 		return color;
-	}
-
-	/**
-	 * All Components needs to implement this method. This value determine the order
-	 * of execution of components within a game object. The lower the priority value
-	 * = the sooner this component will be executed. Priority of 1 - first to
-	 * execute, 1000 - last to execute.
-	 * 
-	 * @return
-	 */
-	public static int priority() {
-		return 500;
 	}
 
 	public Vector3f positionOffset() {

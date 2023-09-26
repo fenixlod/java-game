@@ -37,16 +37,4 @@ public final class MouseDragging extends Component {
 	public boolean isPicked() {
 		return isPicked;
 	}
-
-	/**
-	 * All Components needs to implement this method. This value determine the order
-	 * of execution of components within a game object. The lower the priority value
-	 * = the sooner this component will be executed. Priority of 1 - first to
-	 * execute, 1000 - last to execute.
-	 * 
-	 * @return
-	 */
-	public static int priority() {
-		return 200;
-	}
 }

@@ -50,7 +50,7 @@ public class LevelEditorScene extends Scene {
 
 	@Override
 	public void init(boolean doLoad) throws Exception {
-		super.init(false);
+		super.init(doLoad);
 		editorConfig = game.editorConfig();
 		controlls.init();
 		game.window().uiLayer().setViewWindow(viewWindow);
@@ -60,11 +60,6 @@ public class LevelEditorScene extends Scene {
 				TextureType.ARROW);
 		
 		objInspector.init(this);
-		load();// TODO: loading game objects need to be after initialization of gizmo tools for
-						// now otherwise they are not going to work correctly. After implementing of
-						// event based system this will not be needed anymore
-		// Debugger.addBox(new Vector3f(10, 10, 0), 20, 20);
-		// Debugger.addCircle(new Vector3f(40, 40, 0.1f), VectorUtil.Z(), 70);
 
 		if (loaded)
 			return;

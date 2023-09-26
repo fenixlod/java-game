@@ -28,19 +28,7 @@ public class CircleCollider extends Collider {
 
 	@Override
 	public void update(float deltaTime, boolean isPlaying) {
-		Vector3f center = owner.transform().position().add(offset(), new Vector3f());
+		Vector3f center = owner.transform().positionCopy().add(offset());
 		Debugger.addCircle(center, VectorUtil.Z(), radius, Color.black(), 1);
-	}
-
-	/**
-	 * All Components needs to implement this method. This value determine the order
-	 * of execution of components within a game object. The lower the priority value
-	 * = the sooner this component will be executed. Priority of 1 - first to
-	 * execute, 1000 - last to execute.
-	 * 
-	 * @return
-	 */
-	public static int priority() {
-		return 50;
 	}
 }

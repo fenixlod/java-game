@@ -17,7 +17,6 @@ import com.lunix.javagame.engine.Component;
 import com.lunix.javagame.engine.GameInstance;
 import com.lunix.javagame.engine.GameObject;
 import com.lunix.javagame.engine.Scene;
-import com.lunix.javagame.engine.Transform;
 import com.lunix.javagame.engine.components.SpriteRenderer;
 import com.lunix.javagame.engine.editor.GizmoTools;
 import com.lunix.javagame.engine.graphic.Color;
@@ -127,11 +126,18 @@ public class ObjectInspector {
 	public void editObject(GameObject obj) {
 		displayFields(obj);
 
-		Transform transform = obj.transform();
 		if (ImGui.collapsingHeader("Transform")) {
-			UIWidget.vect3Control("Position", transform.position());
-			UIWidget.vect3Control("Scale", transform.scale(), 1);
-			UIWidget.vect3Control("Facing", transform.facing());
+			Vector3f position = obj.transform().positionCopy();
+			if (UIWidget.vect3Control("Position", position))
+				obj.transform().position(position);
+
+			Vector3f scale = obj.transform().scaleCopy();
+			if (UIWidget.vect3Control("Scale", scale, 1))
+				obj.transform().scale(scale);
+
+			Vector3f facing = obj.transform().facingCopy();
+			if (UIWidget.vect3Control("Facing", facing))
+				obj.transform().facing(facing);
 		}
 
 		Class<? extends Component> markedForDelete = null;

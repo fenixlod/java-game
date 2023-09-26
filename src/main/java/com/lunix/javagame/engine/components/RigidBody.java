@@ -28,7 +28,7 @@ public class RigidBody extends Component {
 
 	@Override
 	public void update(float deltaTime, boolean isPlaying) {
-		if (rawBody != null) {
+		if (rawBody != null && isPlaying) {
 			owner.transform().position(new Vector3f(rawBody.getPosition().x, rawBody.getPosition().y, 0));
 			// Math.toDegrees(rawBody.getAngle());
 			// owner.transform().facing(velocity);
@@ -105,17 +105,5 @@ public class RigidBody extends Component {
 	public RigidBody rawBody(Body rawBody) {
 		this.rawBody = rawBody;
 		return this;
-	}
-
-	/**
-	 * All Components needs to implement this method. This value determine the order
-	 * of execution of components within a game object. The lower the priority value
-	 * = the sooner this component will be executed. Priority of 1 - first to
-	 * execute, 1000 - last to execute.
-	 * 
-	 * @return
-	 */
-	public static int priority() {
-		return 50;
 	}
 }

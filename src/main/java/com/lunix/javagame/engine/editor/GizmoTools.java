@@ -97,7 +97,7 @@ public class GizmoTools {
 				if (g == selectedGizmo)
 					continue;
 
-				g.transform().position(new Vector3f(selectedGizmo.transform().position()));
+				g.transform().position(selectedGizmo.transform().positionCopy());
 			}
 		}
 	}

@@ -1,14 +1,14 @@
 package com.lunix.javagame.engine;
 
-import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.TreeMap;
 
 import org.joml.Vector3f;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.lunix.javagame.engine.enums.ObjectEventType;
 
 public class GameObject {
 	private long id = -1;
@@ -35,18 +35,7 @@ public class GameObject {
 	public GameObject(String name, Transform transform) {
 		this.name = name;
 		this.transform = transform;
-		components = new TreeMap<>((o1, o2) -> {
-			try {
-				Method method1 = o1.getMethod("priority");
-				Method method2 = o2.getMethod("priority");
-				Object result1 = method1.invoke(null);
-				Object result2 = method2.invoke(null);
-				return Integer.compare((int) result1, (int) result2);
-			} catch (Exception e) {
-				e.printStackTrace();
-				return 0;
-			}
-		});
+		components = new HashMap<>();
 		id = GameInstance.getNextId();
 	}
 
@@ -54,6 +43,7 @@ public class GameObject {
 	 * Start the object components.
 	 */
 	public void start() {
+		transform.owner(this);
 		components.values().forEach(Component::start);
 	}
 
@@ -122,6 +112,10 @@ public class GameObject {
 		components.remove(className);
 	}
 
+	protected void sendEvent(ObjectEventType e) {
+		components.values().forEach((c) -> c.onNotify(e));
+	}
+
 	public String name() {
 		return name;
 	}
@@ -133,11 +127,6 @@ public class GameObject {
 
 	public Transform transform() {
 		return transform;
-	}
-
-	public GameObject move(Vector3f offset) {
-		transform.move(offset);
-		return this;
 	}
 
 	public Collection<Component> components() {

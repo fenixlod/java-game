@@ -1,7 +1,5 @@
 package com.lunix.javagame.engine.editor;
 
-import org.joml.Vector3f;
-
 import com.lunix.javagame.engine.GameObject;
 import com.lunix.javagame.engine.components.SpriteRenderer;
 import com.lunix.javagame.engine.util.VectorUtil;
@@ -34,8 +32,8 @@ public class Gizmo extends GameObject {
 		spriteRenderer.isChanged(true);
 		transform().position(
 				attachedTo.transform()
-				.position()
-				.add(VectorUtil.viewDirection().mul(offsetFromObject), new Vector3f())
+					.positionCopy()
+					.add(VectorUtil.viewDirection().mul(offsetFromObject))
 		);
 	}
 
