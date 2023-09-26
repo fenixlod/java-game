@@ -12,7 +12,7 @@ public class EditorControlls {
 	private GameInstance game;
 	private Vector3f clickOrigin;
 	private float drageDebounce = 0.032f;
-	private float dragSensitivity = 30f;
+	private float dragSensitivity = 3f;
 	private float scrollSensitivity = 0.05f;
 	private float resetSpeed = 3;
 	private float lerpTime = 0f;

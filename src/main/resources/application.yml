@@ -41,13 +41,13 @@ resources:
 
 camera:
   ortho:
-    width: 480
-    height: 270
+    width: 48
+    height: 27
   prespective:
     field-of-view: 45
-  x-offset: -130
-  y-offset: -130
-  z-offset: 130
+  x-offset: -13
+  y-offset: -13
+  z-offset: 13
   z-near: 1
   z-far: 5000
 
@@ -56,5 +56,5 @@ paths:
     levels: src/main/resources/levels
     
 editor:
-  grid_size: 100
+  grid_size: 10
 

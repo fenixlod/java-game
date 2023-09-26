@@ -21,7 +21,7 @@ public class ScaleGizmo extends Gizmo {
 		baseOffset = new Vector3f(spriteRenderer.positionOffset());
 	}
 
-	private final float SCALE_SENSITIVITY = 0.1f;// .15f;
+	private final float SCALE_SENSITIVITY = 1f;// .15f;
 
 	@Override
 	public void update(float deltaTime, boolean isPlaying) {

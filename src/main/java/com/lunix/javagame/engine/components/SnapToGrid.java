@@ -9,7 +9,7 @@ public class SnapToGrid extends Component {
 	private int gridSize;
 
 	public SnapToGrid() {
-		this(100);
+		this(10);
 	}
 
 	public SnapToGrid(int gridSize) {

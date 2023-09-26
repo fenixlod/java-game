@@ -20,38 +20,38 @@ public class GizmoTools {
 	public GizmoTools() {
 		gizmos = new ArrayList<>();
 		
-		SpriteRenderer sprite = new SpriteRenderer(50, 20)
+		SpriteRenderer sprite = new SpriteRenderer(5, 2)
 			.widthDirection(VectorUtil.X())
 			.heightDirection(VectorUtil.Y())
 			.sprite(ResourcePool.getSprite(TextureType.ARROW))
 			.color(Color.red().a(0.5f))
-			.offset(new Vector3f(30, -10, 0));
+			.offset(new Vector3f(3, -1, 0));
 		gizmos.add(new TranslateGizmo("TranslateGizmo X Axis", sprite, VectorUtil.X()));
 		
-		sprite = new SpriteRenderer(20, 50)
+		sprite = new SpriteRenderer(2, 5)
 			.widthDirection(VectorUtil.X())
 			.heightDirection(VectorUtil.Y())
 			.sprite(ResourcePool.getSprite(TextureType.ARROW))
 			.color(Color.blue().a(0.5f))
 			.rotate(1)
-			.offset(new Vector3f(0, 5, 0));
+			.offset(new Vector3f(0, 0.5f, 0));
 		gizmos.add(new TranslateGizmo("TranslateGizmo Y Axis", sprite, VectorUtil.Y()));
 		
-		sprite = new SpriteRenderer(10, 10)
+		sprite = new SpriteRenderer(1, 1)
 			.widthDirection(VectorUtil.X())
 			.heightDirection(VectorUtil.Y())
 			.color(Color.green().a(0.5f))
-			.offset(new Vector3f(0, -5, 0));
+			.offset(new Vector3f(0, -0.5f, 0));
 		gizmos.add(new MoveGizmo("Move", sprite));
 			
-		sprite = new SpriteRenderer(20, 20)
+		sprite = new SpriteRenderer(2, 2)
 			.widthDirection(VectorUtil.X())
 			.heightDirection(VectorUtil.Y())
 			.color(Color.magenta().a(0.5f))
-			.offset(new Vector3f(10, -10, 0));
+			.offset(new Vector3f(1, -1, 0));
 		gizmos.add(new ScaleGizmo("ScaleGizmo X", sprite, VectorUtil.X()));
 			
-		sprite = new SpriteRenderer(20, 20)
+		sprite = new SpriteRenderer(2, 2)
 			.widthDirection(VectorUtil.X())
 			.heightDirection(VectorUtil.Y())
 			.color(Color.cyan().a(0.5f))

@@ -35,22 +35,22 @@ public class WorldScene extends Scene {
 		Vector3f offset = new Vector3f();
 
 		if (game.keyboard().isKeyPressed(GLFW_KEY_RIGHT))
-			offset.x += 50f * deltaTime;
+			offset.x += 5f * deltaTime;
 
 		if (game.keyboard().isKeyPressed(GLFW_KEY_LEFT))
-			offset.x -= 50f * deltaTime;
+			offset.x -= 5f * deltaTime;
 
 		if (game.keyboard().isKeyPressed(GLFW_KEY_UP))
-			offset.y += 50f * deltaTime;
+			offset.y += 5f * deltaTime;
 
 		if (game.keyboard().isKeyPressed(GLFW_KEY_DOWN))
-			offset.y -= 50f * deltaTime;
+			offset.y -= 5f * deltaTime;
 
 		if (game.keyboard().isKeyPressed(GLFW_KEY_PAGE_UP))
-			offset.z += 50f * deltaTime;
+			offset.z += 5f * deltaTime;
 
 		if (game.keyboard().isKeyPressed(GLFW_KEY_PAGE_DOWN))
-			offset.z -= 50f * deltaTime;
+			offset.z -= 5f * deltaTime;
 
 		float zoomChange = (float) game.mouse().scroll().y * 0.1f;
 		if (zoomChange != 0f)

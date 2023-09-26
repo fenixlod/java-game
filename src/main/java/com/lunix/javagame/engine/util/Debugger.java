@@ -69,9 +69,6 @@ public class Debugger {
 	}
 
 	public static void start() {
-		if (!active)
-			return;
-
 		// Generate vao
 		vaoID = glGenVertexArrays();
 		glBindVertexArray(vaoID);
@@ -93,9 +90,6 @@ public class Debugger {
 	}
 
 	public static void beginFrame() {
-		if (!active)
-			return;
-
 		if (!started) {
 			start();
 			started = true;
@@ -111,9 +105,6 @@ public class Debugger {
 	}
 
 	public static void draw() {
-		if (!active)
-			return;
-
 		if (lines.size() <= 0)
 			return;
 
@@ -178,9 +169,9 @@ public class Debugger {
 		if (!show)
 			return;
 
-		addLine(VectorUtil.X().mul(-10_000), VectorUtil.X().mul(10_000), Color.blue(), 1);
-		addLine(VectorUtil.Y().mul(-10_000), VectorUtil.Y().mul(10_000), Color.red(), 1);
-		addLine(VectorUtil.Z().mul(-10_000), VectorUtil.Z().mul(10_000), Color.green(), 1);
+		addLine(VectorUtil.X().mul(-1_000), VectorUtil.X().mul(1_000), Color.blue(), 1);
+		addLine(VectorUtil.Y().mul(-1_000), VectorUtil.Y().mul(1_000), Color.red(), 1);
+		addLine(VectorUtil.Z().mul(-1_000), VectorUtil.Z().mul(1_000), Color.green(), 1);
 	}
 
 	public static void addBoxCentered(Vector3f center, Vector3f widthDirection, Vector3f heightDirection, float width, float height,

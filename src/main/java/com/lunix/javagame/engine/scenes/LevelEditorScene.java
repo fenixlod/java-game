@@ -66,16 +66,16 @@ public class LevelEditorScene extends Scene {
 
 		GameObject playerObject = new GameObject("Player")
 			.addComponent(
-				new SpriteRenderer(40, 50)
+						new SpriteRenderer(4, 5)
 				.sprite(ResourcePool.getSprite(TextureType.PLAYER.name()))
 			);
 		playerObject.addComponent(new Animation(ResourcePool.getSprites(TextureType.PLAYER_IDLE), 0.3f));
 		addGameObject(playerObject);
 			
 
-		GameObject enemy = new GameObject("Enemy", new Vector3f(-50f, 50f, 0f))
+		GameObject enemy = new GameObject("Enemy", new Vector3f(-5f, 5f, 0f))
 			.addComponent(
-				new SpriteRenderer(20, 40)
+						new SpriteRenderer(2, 4)
 					.color(Color.red())
 			);
 		addGameObject(enemy);

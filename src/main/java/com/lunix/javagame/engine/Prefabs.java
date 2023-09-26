@@ -25,6 +25,6 @@ public class Prefabs {
 				.heightDirection(VectorUtil.Y())
 				.sprite(ResourcePool.getSprite(spriteName))
 				.offset(new Vector3f(0f, -height / 2f, 0f)))
-		.addComponent(new SnapToGrid(100));
+		.addComponent(new SnapToGrid(10));
 	}
 }

@@ -32,7 +32,7 @@ public class TestScene extends Scene {
 
 		playerObject = new GameObject("Player")
 				.addComponent(
-						new SpriteRenderer(40, 50)
+						new SpriteRenderer(4, 5)
 							.sprite(ResourcePool.getSprite(TextureType.PLAYER.name()))
 				);
 		playerObject.addComponent(new Animation(ResourcePool.getSprites(TextureType.PLAYER_IDLE), 0.3f));
@@ -54,18 +54,18 @@ public class TestScene extends Scene {
 			}
 		}
 		
-		GameObject enemy = new GameObject("Enemy", new Vector3f(-50f, 50f, 0f))
+		GameObject enemy = new GameObject("Enemy", new Vector3f(-5f, 5f, 0f))
 			.addComponent(
-				new SpriteRenderer(20, 40)
+						new SpriteRenderer(2, 4)
 					.color(Color.red())
 			);
 		addGameObject(enemy);
 		
 		// draw cuboid with dimensions: x=20, y=20, z=20
 		// front
-		GameObject rectangle = new GameObject("Cube1", new Vector3f(10f, 0f, 0f))
+		GameObject rectangle = new GameObject("Cube1", new Vector3f(1f, 0f, 0f))
 			.addComponent(
-				new SpriteRenderer(20, 20)
+						new SpriteRenderer(2, 2)
 					.color(Color.blue())
 					.widthDirection(VectorUtil.X())
 					.heightDirection(VectorUtil.Z())
@@ -73,9 +73,9 @@ public class TestScene extends Scene {
 		addGameObject(rectangle);
 		
 		// right
-		rectangle = new GameObject("Cube2", new Vector3f(20f, 10f, 0f))
+		rectangle = new GameObject("Cube2", new Vector3f(2f, 1f, 0f))
 			.addComponent(
-				new SpriteRenderer(20, 20)
+						new SpriteRenderer(2, 2)
 					.color(Color.red())
 					.widthDirection(VectorUtil.Y())
 					.heightDirection(VectorUtil.Z())
@@ -83,9 +83,9 @@ public class TestScene extends Scene {
 		addGameObject(rectangle);
 
 		//back
-		rectangle = new GameObject("Cube3", new Vector3f(10f, 20f, 0f))
+		rectangle = new GameObject("Cube3", new Vector3f(1f, 2f, 0f))
 			.addComponent(
-				new SpriteRenderer(20, 20)
+						new SpriteRenderer(2, 2)
 					.color(Color.black())
 					.widthDirection(VectorUtil.minusX())
 					.heightDirection(VectorUtil.Z())
@@ -93,9 +93,9 @@ public class TestScene extends Scene {
 		addGameObject(rectangle);
 		
 		//left
-		rectangle = new GameObject("Cube4", new Vector3f(0f, 10f, 0f))
+		rectangle = new GameObject("Cube4", new Vector3f(0f, 1f, 0f))
 			.addComponent(
-				new SpriteRenderer(20, 20)
+						new SpriteRenderer(2, 2)
 					.color(Color.yellow())
 					.widthDirection(VectorUtil.minusY())
 					.heightDirection(VectorUtil.Z())
@@ -103,9 +103,9 @@ public class TestScene extends Scene {
 		addGameObject(rectangle);
 		
 		//top
-		rectangle = new GameObject("Cube5", new Vector3f(10f, 0f, 20f))
+		rectangle = new GameObject("Cube5", new Vector3f(1f, 0f, 2f))
 			.addComponent(
-				new SpriteRenderer(20, 20)
+						new SpriteRenderer(2, 2)
 					.color(Color.cyan())
 					.widthDirection(VectorUtil.X())
 					.heightDirection(VectorUtil.Y())
@@ -114,18 +114,18 @@ public class TestScene extends Scene {
 		
 		
 		//bottom
-		rectangle = new GameObject("Cube6", new Vector3f(10f, 20f, 0f))
+		rectangle = new GameObject("Cube6", new Vector3f(1f, 2f, 0f))
 			.addComponent(
-				new SpriteRenderer(20, 20)
+						new SpriteRenderer(2, 2)
 					.color(Color.magenta())
 					.widthDirection(VectorUtil.minusX())
 					.heightDirection(VectorUtil.minusY())
 			);
 		addGameObject(rectangle);
 		
-		enemy = new GameObject("Enemy1", new Vector3f(0f, -100f, 0f))
+		enemy = new GameObject("Enemy1", new Vector3f(0f, -10f, 0f))
 				.addComponent(
-					new SpriteRenderer(50, 100)
+						new SpriteRenderer(5, 10)
 						.color(Color.red())
 						.widthDirection(VectorUtil.viewX())
 						.heightDirection(VectorUtil.viewY())
@@ -133,9 +133,9 @@ public class TestScene extends Scene {
 				);
 		addGameObject(enemy);
 		
-		enemy = new GameObject("Enemy2", new Vector3f(100f, -100f, 0f))
+		enemy = new GameObject("Enemy2", new Vector3f(10f, -10f, 0f))
 				.addComponent(
-					new SpriteRenderer(50, 100)
+						new SpriteRenderer(5, 10)
 						.color(Color.green())
 						.widthDirection(VectorUtil.viewX())
 						.heightDirection(VectorUtil.viewY())
@@ -143,9 +143,9 @@ public class TestScene extends Scene {
 				);
 		addGameObject(enemy);
 		
-		enemy = new GameObject("Enemy3", new Vector3f(200f, -100f, 0f))
+		enemy = new GameObject("Enemy3", new Vector3f(20f, -10f, 0f))
 				.addComponent(
-					new SpriteRenderer(50, 100)
+						new SpriteRenderer(5, 10)
 						.color(Color.blue())
 						.widthDirection(VectorUtil.viewX())
 						.heightDirection(VectorUtil.viewY())
@@ -176,22 +176,22 @@ public class TestScene extends Scene {
 		Vector3f offset = new Vector3f();
 
 		if (game.keyboard().isKeyPressed(GLFW_KEY_RIGHT))
-			offset.x += 50f * deltaTime;
+			offset.x += 5f * deltaTime;
 		
 		if (game.keyboard().isKeyPressed(GLFW_KEY_LEFT))
-			offset.x -= 50f * deltaTime;
+			offset.x -= 5f * deltaTime;
 		
 		if (game.keyboard().isKeyPressed(GLFW_KEY_UP))
-			offset.y += 50f * deltaTime;
+			offset.y += 5f * deltaTime;
 		
 		if (game.keyboard().isKeyPressed(GLFW_KEY_DOWN))
-			offset.y -= 50f * deltaTime;
+			offset.y -= 5f * deltaTime;
 		
 		if (game.keyboard().isKeyPressed(GLFW_KEY_PAGE_UP))
-			offset.z += 50f * deltaTime;
+			offset.z += 5f * deltaTime;
 		
 		if (game.keyboard().isKeyPressed(GLFW_KEY_PAGE_DOWN))
-			offset.z -= 50f * deltaTime;
+			offset.z -= 5f * deltaTime;
 		
 		float zoomChange = (float) game.mouse().scroll().y * 0.1f;
 		game.camera().move(offset);
