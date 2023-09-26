@@ -204,7 +204,10 @@ public class ObjectInspector {
 					displayString(name, value, field, obj);
 				} else if (type == long.class) {
 					displayLong(name, value, field, obj);
+				} else if (type.isEnum()) {
+					displayEnum(name, value, field, obj);
 				}
+
 
 				if (isPrivate)
 					field.setAccessible(false);
@@ -269,6 +272,14 @@ public class ObjectInspector {
 		String newString = UIWidget.stringControl(StringUtils.capitalize(name), (String) value);
 		if (newString != null) {
 			field.set(obj, newString);
+		}
+	}
+
+	private void displayEnum(String name, Object value, Field field, Object obj)
+			throws IllegalArgumentException, IllegalAccessException {
+		Enum<?> newValue = UIWidget.enumControl(StringUtils.capitalize(name), (Enum<?>) value);
+		if (newValue != null) {
+			field.set(obj, newValue);
 		}
 	}
 }

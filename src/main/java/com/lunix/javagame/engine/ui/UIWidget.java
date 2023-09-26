@@ -251,4 +251,42 @@ public class UIWidget {
 		ImGui.popID();
 		return changed;
 	}
+
+	public static Enum<?> enumControl(String label, Enum<?> value) {
+		Enum<?> newValue = null;
+		ImGui.pushID(label);
+
+		ImGui.columns(2);
+		ImGui.setColumnWidth(0, DEFAULT_COLUMN_WIDTH);
+		ImGui.text(label);
+		ImGui.nextColumn();
+
+		ImGui.pushStyleVar(ImGuiStyleVar.ItemSpacing, 0, 0);
+		ImGui.pushItemWidth(-1);
+
+		String[] labels = new String[value.getClass().getEnumConstants().length];
+		int idx = 0, current = 0;
+		for (Enum<?> enm : value.getClass().getEnumConstants()) {
+			String enumValue = enm.toString();
+			labels[idx] = enumValue;
+			if (value.equals(enm))
+				current = idx;
+
+			idx++;
+		}
+
+		ImInt uiValue = new ImInt(current);
+		if (ImGui.combo("", uiValue, labels)) {
+			newValue = value.getClass().getEnumConstants()[uiValue.get()];
+		}
+		ImGui.popItemWidth();
+
+		ImGui.nextColumn();
+
+		ImGui.popStyleVar();
+		ImGui.columns(1);
+		ImGui.popID();
+		return newValue;
+	}
+
 }
