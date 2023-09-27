@@ -20,6 +20,7 @@ public abstract class Scene {
 	protected static final Logger logger = LogManager.getLogger(Scene.class);
 	private boolean active = false;
 	private final List<GameObject> objects;
+	private final List<GameObject> pendingObjects;
 	private final Renderer renderer;
 	protected final GameInstance game;
 	protected boolean loaded;
@@ -28,6 +29,7 @@ public abstract class Scene {
 	protected Scene() {
 		active = false;
 		objects = new ArrayList<>();
+		pendingObjects = new ArrayList<>();
 		renderer = new Renderer();
 		game = GameInstance.get();
 		physics = new Physics();
@@ -75,6 +77,11 @@ public abstract class Scene {
 		if (!active)
 			return;
 
+		for (GameObject go : pendingObjects) {
+			insertGameObject(go);
+		}
+
+		pendingObjects.clear();
 		physics.update(deltaTime, isPlaying);
 		GameObject objectToRemove = null;
 		for (GameObject obj : objects) {
@@ -121,7 +128,7 @@ public abstract class Scene {
 	 * @param object
 	 * @throws Exception
 	 */
-	public void addGameObject(GameObject object) throws Exception {
+	private void insertGameObject(GameObject object) throws Exception {
 		objects.add(object);
 
 		if (active) {
@@ -129,6 +136,17 @@ public abstract class Scene {
 			renderer.add(object);
 			physics.addGameObject(object);
 		}
+	}
+
+	/**
+	 * Add game object to the scene pending objects list. These objects will be
+	 * inserted at the tart of the next update
+	 * 
+	 * @param object
+	 * @throws Exception
+	 */
+	public void addGameObject(GameObject object) throws Exception {
+		pendingObjects.add(object);
 	}
 
 	public void ui() {

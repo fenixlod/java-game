@@ -44,7 +44,7 @@ public class LevelEditorScene extends Scene {
 		super();
 		viewWindow = new GameViewWindow();
 		objInspector = new ObjectInspector();
-		controlls = new EditorControlls(game.camera());
+		controlls = new EditorControlls(game.camera(), this);
 		menuBar = new EditorMenuBar();
 	}
 

@@ -2,12 +2,22 @@ package com.lunix.javagame.engine.controlls;
 
 import static org.lwjgl.glfw.GLFW.*;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.joml.Vector3f;
 
 import com.lunix.javagame.engine.Camera;
 import com.lunix.javagame.engine.GameInstance;
+import com.lunix.javagame.engine.GameObject;
+import com.lunix.javagame.engine.Scene;
+import com.lunix.javagame.engine.components.MouseDragging;
+import com.lunix.javagame.engine.enums.EventType;
+import com.lunix.javagame.engine.observers.Event;
+import com.lunix.javagame.engine.observers.EventSystem;
+import com.lunix.javagame.engine.observers.Observer;
 
-public class EditorControlls {
+public class EditorControlls implements Observer {
+	private static final Logger logger = LogManager.getLogger(EditorControlls.class);
 	private Camera controlledCamera;
 	private GameInstance game;
 	private Vector3f clickOrigin;
@@ -17,11 +27,14 @@ public class EditorControlls {
 	private float resetSpeed = 3;
 	private float lerpTime = 0f;
 	private boolean reset;
+	private Scene currentScene;
 
-	public EditorControlls(Camera cameraToControll) {
+	public EditorControlls(Camera cameraToControll, Scene currentScene) {
 		this.controlledCamera = cameraToControll;
 		game = GameInstance.get();
 		clickOrigin = new Vector3f();
+		EventSystem.addObserver(this);
+		this.currentScene = currentScene;
 	}
 
 	public void init() {
@@ -74,6 +87,24 @@ public class EditorControlls {
 				lerpTime = 0f;
 				controlledCamera.zoomFactor(1f);
 			}
+		}
+	}
+
+	@Override
+	public void onNotify(Event e) {
+		if (e.type() != EventType.OBJECT_PLACED)
+			return;
+
+		try {
+			if (game.keyboard().isKeyPressed(GLFW_KEY_LEFT_SHIFT)
+					|| game.keyboard().isKeyPressed(GLFW_KEY_RIGHT_SHIFT)) {
+				GameObject copy = game.load(game.save(e.target()), GameObject.class);
+				copy.regenerateId();
+				copy.getComponent(MouseDragging.class).pickup();
+				currentScene.addGameObject(copy);
+			}
+		} catch (Exception e1) {
+			logger.error("Unable to cop object", e1);
 		}
 	}
 }

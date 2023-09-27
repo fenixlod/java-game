@@ -75,4 +75,8 @@ public abstract class Component {
 
 	protected void onNotify(ObjectEventType e) {
 	}
+
+	public void regenerateId() {
+		id = GameInstance.getNextId();
+	}
 }

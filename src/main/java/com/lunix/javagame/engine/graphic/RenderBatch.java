@@ -225,6 +225,7 @@ public class RenderBatch {
 		if (!sprites.remove(sprite))
 			return false;
 
+		framesUntillFullRedraw = 1;
 		return true;
 	}
 }

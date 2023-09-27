@@ -156,4 +156,9 @@ public class GameObject {
 	public boolean isDestriyed() {
 		return destroyed;
 	}
+
+	public void regenerateId() {
+		id = GameInstance.getNextId();
+		components.values().forEach(Component::regenerateId);
+	}
 }

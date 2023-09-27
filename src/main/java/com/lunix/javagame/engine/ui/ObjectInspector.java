@@ -115,6 +115,12 @@ public class ObjectInspector {
 			}
 		}
 
+		if (inspectedObject != null && GameInstance.get().keyboard().isKeyPressed(GLFW_KEY_DELETE)) {
+			inspectedObject.destroy();
+			inspectedObject = null;
+			mover.detach();
+		}
+
 		mover.refresh();
 	}
 
