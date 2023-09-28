@@ -231,9 +231,9 @@ public class GameWindow {
 	 * @param dt
 	 * @param currentScene
 	 */
-	public void update(float dt, Scene currentScene) {
+	public void update(Scene currentScene) {
 		currentScene.endFrame();
-		uiLayer.update(dt, currentScene);
+		uiLayer.update(currentScene);
 	}
 
 	public UiLayer uiLayer() {

@@ -3,8 +3,8 @@
   "name" : "Player",
   "transform" : {
     "position" : {
-      "x" : 0.0,
-      "y" : 0.0,
+      "x" : 0.041083336,
+      "y" : 0.22689152,
       "z" : 0.0
     },
     "facing" : {
@@ -253,7 +253,7 @@
   }
 }, {
   "id" : 15,
-  "name" : "Ground",
+  "name" : "Ground 11",
   "transform" : {
     "position" : {
       "x" : 0.0,
@@ -324,7 +324,7 @@
   }
 }, {
   "id" : 19,
-  "name" : "Ground",
+  "name" : "Ground 10",
   "transform" : {
     "position" : {
       "x" : 0.0,
@@ -395,7 +395,7 @@
   }
 }, {
   "id" : 23,
-  "name" : "Ground",
+  "name" : "Ground 2",
   "transform" : {
     "position" : {
       "x" : -10.0,
@@ -466,7 +466,7 @@
   }
 }, {
   "id" : 27,
-  "name" : "Player",
+  "name" : "Ground 8",
   "transform" : {
     "position" : {
       "x" : 10.0,
@@ -537,7 +537,7 @@
   }
 }, {
   "id" : 31,
-  "name" : "Ground",
+  "name" : "Ground 12",
   "transform" : {
     "position" : {
       "x" : 0.0,
@@ -608,7 +608,7 @@
   }
 }, {
   "id" : 35,
-  "name" : "Ground",
+  "name" : "Ground 7",
   "transform" : {
     "position" : {
       "x" : 10.0,
@@ -679,7 +679,7 @@
   }
 }, {
   "id" : 39,
-  "name" : "Ground",
+  "name" : "Ground 3",
   "transform" : {
     "position" : {
       "x" : -10.0,
@@ -750,7 +750,7 @@
   }
 }, {
   "id" : 43,
-  "name" : "Ground",
+  "name" : "Ground 1",
   "transform" : {
     "position" : {
       "x" : -10.0,
@@ -821,7 +821,7 @@
   }
 }, {
   "id" : 47,
-  "name" : "Ground",
+  "name" : "Ground 9",
   "transform" : {
     "position" : {
       "x" : 10.0,
@@ -892,7 +892,7 @@
   }
 }, {
   "id" : 50,
-  "name" : "Ground",
+  "name" : "Ground 6",
   "transform" : {
     "position" : {
       "x" : 10.0,
@@ -963,7 +963,7 @@
   }
 }, {
   "id" : 53,
-  "name" : "Ground",
+  "name" : "Ground 4",
   "transform" : {
     "position" : {
       "x" : -10.0,
@@ -1034,7 +1034,7 @@
   }
 }, {
   "id" : 71,
-  "name" : "Ground",
+  "name" : "Ground 5",
   "transform" : {
     "position" : {
       "x" : 0.0,

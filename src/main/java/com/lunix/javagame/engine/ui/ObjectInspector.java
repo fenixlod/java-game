@@ -40,40 +40,39 @@ public class ObjectInspector {
 	}
 
 	public void show() {
-		if (inspectedObject == null)
-			return;
-
 		ImGui.begin("Object properties");
-		if (ImGui.beginPopupContextWindow("ComponentAdder")) {
-			for(ComponentMenuItem item: allComponents) {
-				if(item.childs().isEmpty()) {
-					Component component = inspectedObject.getComponent(item.type());
-					if(component == null) {
-						addMenuItem(item.name(), item.type());
-					}
-				} else {
-					boolean haveChild = false;
-					for (Class<? extends Component> clazz : item.childs()) {
-						Component component = inspectedObject.getComponent(clazz);
-						if (component != null) {
-							haveChild = true;
-							break;
+		if (inspectedObject != null) {
+			if (ImGui.beginPopupContextWindow("ComponentAdder")) {
+				for (ComponentMenuItem item : allComponents) {
+					if (item.childs().isEmpty()) {
+						Component component = inspectedObject.getComponent(item.type());
+						if (component == null) {
+							addMenuItem(item.name(), item.type());
 						}
-					}
+					} else {
+						boolean haveChild = false;
+						for (Class<? extends Component> clazz : item.childs()) {
+							Component component = inspectedObject.getComponent(clazz);
+							if (component != null) {
+								haveChild = true;
+								break;
+							}
+						}
 
-					if (!haveChild) {
-						if (ImGui.beginMenu("Add " + item.name())) {
-							item.childs().forEach((child) -> addMenuItem(child.getSimpleName(), child));
-							ImGui.endMenu();
+						if (!haveChild) {
+							if (ImGui.beginMenu("Add " + item.name())) {
+								item.childs().forEach((child) -> addMenuItem(child.getSimpleName(), child));
+								ImGui.endMenu();
+							}
 						}
 					}
 				}
+				ImGui.endPopup();
 			}
-			ImGui.endPopup();
+			editObject(inspectedObject);
+			// currentObject.ui();
+			// Add ui for gizmos?
 		}
-		editObject(inspectedObject);
-		// currentObject.ui();
-		// Add ui for gizmos?
 		ImGui.end();
 	}
 

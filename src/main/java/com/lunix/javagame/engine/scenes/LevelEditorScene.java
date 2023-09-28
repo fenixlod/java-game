@@ -22,6 +22,7 @@ import com.lunix.javagame.engine.graphic.Sprite;
 import com.lunix.javagame.engine.ui.EditorMenuBar;
 import com.lunix.javagame.engine.ui.GameViewWindow;
 import com.lunix.javagame.engine.ui.ObjectInspector;
+import com.lunix.javagame.engine.ui.SceneHierarchyWindow;
 import com.lunix.javagame.engine.util.Debugger;
 
 import imgui.ImGui;
@@ -37,6 +38,7 @@ public class LevelEditorScene extends Scene {
 	private FrameBuffer frameBuffer;
 	private GameViewWindow viewWindow;
 	private ObjectInspector objInspector;
+	private SceneHierarchyWindow sceneHierarchy;
 	private EditorControlls controlls;
 	private EditorMenuBar menuBar;
 
@@ -46,6 +48,7 @@ public class LevelEditorScene extends Scene {
 		objInspector = new ObjectInspector();
 		controlls = new EditorControlls(game.camera(), this);
 		menuBar = new EditorMenuBar();
+		sceneHierarchy = new SceneHierarchyWindow();
 	}
 
 	@Override
@@ -189,6 +192,7 @@ public class LevelEditorScene extends Scene {
 	public void ui() {
 		setupDockspace();
 		menuBar.show();
+		sceneHierarchy.show(this);
 		objInspector.show();
 		ImGui.begin("World Editor");
 
@@ -243,7 +247,7 @@ public class LevelEditorScene extends Scene {
 		ImGui.end();
 
 		viewWindow.show(frameBuffer);
-		ImGui.showDemoWindow();
+		// ImGui.showDemoWindow();
 		ImGui.end();
 	}
 

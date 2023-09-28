@@ -105,7 +105,7 @@ public class GameInstance {
 			Debugger.draw();
 			sceneManager.update(timer.deltaTime());
 			sceneManager.render();
-			window.update(timer.deltaTime(), currentScene);
+			window.update(currentScene);
 			window.render();
 			mouse.reset();
 		}
