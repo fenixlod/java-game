@@ -107,7 +107,7 @@ public class UIWidget {
 		ImGui.pushStyleVar(ImGuiStyleVar.ItemSpacing, 0, 0);
 		ImGui.pushItemWidth(-1);
 
-		ImString val = new ImString(value, 20);
+		ImString val = new ImString(value, 64);
 		if (ImGui.inputText("", val)) {
 			newValue = val.get();
 		}

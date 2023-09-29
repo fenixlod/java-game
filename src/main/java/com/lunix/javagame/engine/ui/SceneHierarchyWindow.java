@@ -24,6 +24,20 @@ public class SceneHierarchyWindow {
 					obj.name());
 			ImGui.popID();
 
+			if (ImGui.beginDragDropSource()) {
+				ImGui.setDragDropPayload(obj);
+				ImGui.text(obj.name());
+				ImGui.endDragDropSource();
+			}
+
+			if (ImGui.beginDragDropTarget()) {
+				GameObject payload = ImGui.acceptDragDropPayload(GameObject.class);
+				if (payload != null) {
+					System.out.println("Droped:" + payload.name());
+				}
+				ImGui.endDragDropTarget();
+			}
+
 			if (treeIsOpened) {
 				ImGui.treePop();
 			}
