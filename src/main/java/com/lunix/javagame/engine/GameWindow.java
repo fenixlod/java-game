@@ -22,6 +22,7 @@ import com.lunix.javagame.configs.WindowConfigs;
 import com.lunix.javagame.engine.enums.ShaderType;
 import com.lunix.javagame.engine.graphic.PickingTexture;
 import com.lunix.javagame.engine.graphic.Renderer;
+import com.lunix.javagame.engine.scenes.SceneExecutor;
 import com.lunix.javagame.engine.ui.UiLayer;
 
 public class GameWindow {
@@ -159,8 +160,8 @@ public class GameWindow {
 	 * Indicate the start of new frame. This function should be called at the start
 	 * of the new game cycle.
 	 */
-	public void newFrame(Scene currentScene) {
-		currentScene.newFrame();
+	public void newFrame(SceneExecutor currentSceneExecutor) {
+		currentSceneExecutor.newFrame();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the frame buffer
 
 		// Poll for window events. The key callback above will only be
@@ -231,9 +232,9 @@ public class GameWindow {
 	 * @param dt
 	 * @param currentScene
 	 */
-	public void update(Scene currentScene) {
-		currentScene.endFrame();
-		uiLayer.update(currentScene);
+	public void update(SceneExecutor currentSceneExecutor) {
+		currentSceneExecutor.endFrame();
+		uiLayer.update(currentSceneExecutor);
 	}
 
 	public UiLayer uiLayer() {

@@ -29,7 +29,7 @@ public class GameObject {
 	}
 
 	public GameObject(String name, Vector3f position) {
-		this(name, new Transform().position(position));
+		this(name, new Transform(position));
 	}
 
 	public GameObject(String name, Transform transform) {

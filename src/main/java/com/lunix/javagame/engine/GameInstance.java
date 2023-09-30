@@ -1,6 +1,7 @@
 package com.lunix.javagame.engine;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,8 +16,10 @@ import com.lunix.javagame.configs.CameraConfigs;
 import com.lunix.javagame.configs.EditorConfigs;
 import com.lunix.javagame.configs.PathsConfigs;
 import com.lunix.javagame.configs.WindowConfigs;
+import com.lunix.javagame.engine.enums.GameSceneMode;
 import com.lunix.javagame.engine.enums.GameSceneType;
 import com.lunix.javagame.engine.enums.ShaderType;
+import com.lunix.javagame.engine.scenes.SceneExecutor;
 import com.lunix.javagame.engine.util.Debugger;
 import com.lunix.javagame.engine.util.GameTime;
 
@@ -76,7 +79,7 @@ public class GameInstance {
 		logger.info("Initializing the game engine...");
 		window.create(mouse, keyboard);
 		resources.init();
-		sceneManager.changeScene(GameSceneType.EDITOR);
+		sceneManager.changeScene(GameSceneType.WORLD, GameSceneMode.EDIT, Optional.of("world.json"));
 		Debugger.init();
 		ResourcePool.loadResources(ShaderType.DEBUG);
 	}
@@ -92,11 +95,11 @@ public class GameInstance {
 		// the window or has pressed the ESCAPE key.
 		while (window.isOpened()) {
 			timer.tick();
-			Scene currentScene = sceneManager.currentScene();
+			SceneExecutor currentSceneExecutor = sceneManager.currentExecutor();
 			// Render pass 1. Create the picking texture
-			window.createPickingTexture(currentScene);
+			window.createPickingTexture(currentSceneExecutor.currentScene());
 			// Render pass 2. Render the actual game
-			window.newFrame(currentScene);
+			window.newFrame(currentSceneExecutor);
 			Debugger.beginFrame();
 			Debugger.infoInTitle(true, this);
 			Debugger.display(false, keyboard);
@@ -104,8 +107,7 @@ public class GameInstance {
 			Debugger.display(false, "Delta time: {}", timer.deltaTime());
 			Debugger.draw();
 			sceneManager.update(timer.deltaTime());
-			sceneManager.render();
-			window.update(currentScene);
+			window.update(currentSceneExecutor);
 			window.render();
 			mouse.reset();
 		}
@@ -165,5 +167,9 @@ public class GameInstance {
 
 	public GameTime timer() {
 		return timer;
+	}
+
+	public SceneManager sceneManager() {
+		return sceneManager;
 	}
 }

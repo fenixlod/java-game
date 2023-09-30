@@ -7,14 +7,15 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.util.StringUtils;
 
+import com.lunix.javagame.engine.enums.SceneEventType;
 import com.lunix.javagame.engine.graphic.Renderer;
-import com.lunix.javagame.engine.physics.Physics;
 
 public abstract class Scene {
 	protected static final Logger logger = LogManager.getLogger(Scene.class);
@@ -23,8 +24,8 @@ public abstract class Scene {
 	private final List<GameObject> pendingObjects;
 	private final Renderer renderer;
 	protected final GameInstance game;
-	protected boolean loaded;
-	private Physics physics;
+	protected boolean sceneLoaded;
+	protected String fileName;
 
 	protected Scene() {
 		active = false;
@@ -32,7 +33,6 @@ public abstract class Scene {
 		pendingObjects = new ArrayList<>();
 		renderer = new Renderer();
 		game = GameInstance.get();
-		physics = new Physics();
 	}
 
 	/**
@@ -40,15 +40,36 @@ public abstract class Scene {
 	 * 
 	 * @throws Exception
 	 */
-	public void init(boolean doLoad) throws Exception {
-		logger.info("Start initializing scene: {}", this.getClass().getSimpleName());
+	public void init(Optional<String> loadFile) throws Exception {
 		// TODO: Display loading screen?
-		loaded = false;
+		logger.info("Start initializing scene: {}", this.getClass().getSimpleName());
+		objects.clear();
+		pendingObjects.clear();
+		renderer.destroy();
+		sceneLoaded = false;
 		active = false;
-		// physics.init();
 
-		if (doLoad)
-			load();
+		if (loadFile.isPresent())
+			load(loadFile.get());
+	}
+
+	/**
+	 * Load the scene from saved file.
+	 * 
+	 * @throws Exception
+	 */
+	private void load(String fileName) throws Exception {
+		Path levelsFile = Paths.get(game.pathsConfig().save().get("levels"), fileName);
+
+		if (!levelsFile.toFile().exists())
+			return;
+
+		String json = new String(Files.readAllBytes(levelsFile));
+
+		if (StringUtils.hasText(json)) {
+			deserialize(json);
+			sceneLoaded = true;
+		}
 	}
 
 	/**
@@ -57,14 +78,16 @@ public abstract class Scene {
 	 * @throws Exception
 	 */
 	public void start() throws Exception {
-		// TODO: Hide loading screen?
+		objects.addAll(pendingObjects);
+		pendingObjects.clear();
 		for (GameObject obj : objects) {
 			obj.start();
 			renderer.add(obj);
-			physics.addGameObject(obj);
+			notify(SceneEventType.OBJECT_STARTED, obj);
 		}
 
 		active = true;
+		// TODO: Hide loading screen?
 	}
 
 	/**
@@ -73,7 +96,7 @@ public abstract class Scene {
 	 * @param deltaTime
 	 * @throws Exception
 	 */
-	public void update(float deltaTime, boolean isPlaying) throws Exception {
+	public final void update(float deltaTime, boolean isPlaying) throws Exception {
 		if (!active)
 			return;
 
@@ -82,7 +105,8 @@ public abstract class Scene {
 		}
 
 		pendingObjects.clear();
-		physics.update(deltaTime, isPlaying);
+
+		scenePreUpdate(deltaTime, isPlaying);
 		GameObject objectToRemove = null;
 		for (GameObject obj : objects) {
 			obj.update(deltaTime, isPlaying);
@@ -93,23 +117,16 @@ public abstract class Scene {
 		if (objectToRemove != null) {
 			if (objects.remove(objectToRemove)) {
 				renderer.remove(objectToRemove);
-				physics.removeGameObject(objectToRemove);
+				notify(SceneEventType.OBJECT_REMOVED, objectToRemove);
 			}
 		}
+		scenePostUpdate(deltaTime, isPlaying);
 	}
 
-	/**
-	 * Stop the scene. This scene will no longer receive updates.
-	 */
-	public void stop() {
-		active = false;
+	protected void scenePreUpdate(float deltaTime, boolean isPlaying) throws Exception {
 	}
 
-	/**
-	 * Resume the scene. This scene will start receiving updates again.
-	 */
-	public void resume() {
-		active = true;
+	protected void scenePostUpdate(float deltaTime, boolean isPlaying) throws Exception {
 	}
 
 	/**
@@ -119,7 +136,9 @@ public abstract class Scene {
 		logger.info("Destroyng scene : {}", this.getClass().getSimpleName());
 		objects.forEach(GameObject::destroy);
 		objects.clear();
+		pendingObjects.clear();
 		renderer.destroy();
+		active = false;
 	}
 
 	/**
@@ -134,7 +153,7 @@ public abstract class Scene {
 		if (active) {
 			object.start();
 			renderer.add(object);
-			physics.addGameObject(object);
+			notify(SceneEventType.OBJECT_ADDED, object);
 		}
 	}
 
@@ -149,29 +168,7 @@ public abstract class Scene {
 		pendingObjects.add(object);
 	}
 
-	public void ui() {
-	}
-
-	/**
-	 * Load the scene from saved file.
-	 * 
-	 * @throws Exception
-	 */
-	public void load() throws Exception {
-		Path levelsFile = Paths.get(game.pathsConfig().save().get("levels"), "world.json");
-
-		if (!levelsFile.toFile().exists())
-			return;
-
-		String json = new String(Files.readAllBytes(levelsFile));
-
-		if (StringUtils.hasText(json)) {
-			deserialize(json);
-			loaded = true;
-		}
-	}
-
-	public void deserialize(String json) throws Exception {
+	private void deserialize(String json) throws Exception {
 		long maxFoundId = -1;
 		GameObject[] data = game.load(json, GameObject[].class);
 		for (GameObject obj : data) {
@@ -185,15 +182,6 @@ public abstract class Scene {
 		}
 
 		GameInstance.nextId(maxFoundId);
-		sceneLoaded(data);
-	}
-
-	/**
-	 * This function will be called when the scene is loaded from file.
-	 * 
-	 * @param loadedData
-	 */
-	protected void sceneLoaded(GameObject[] loadedData) {
 	}
 
 	/**
@@ -201,8 +189,8 @@ public abstract class Scene {
 	 * 
 	 * @throws IOException
 	 */
-	public void save() throws IOException {
-		Path levelsFile = Paths.get(game.pathsConfig().save().get("levels"), "world.json");
+	public void save(Optional<String> fileName) throws IOException {
+		Path levelsFile = Paths.get(game.pathsConfig().save().get("levels"), fileName.orElse("world.json"));
 		logger.info("Save current level to: {}", levelsFile);
 		try (FileWriter writer = new FileWriter(levelsFile.toFile())) {
 			writer.write(serialize());
@@ -215,7 +203,7 @@ public abstract class Scene {
 	 * @return
 	 * @throws IOException
 	 */
-	public String serialize() throws IOException {
+	private String serialize() throws IOException {
 		List<GameObject> filteredObjects = objects.stream()
 				.filter(o -> !o.isTemporary())
 				.collect(Collectors.toList());
@@ -228,6 +216,12 @@ public abstract class Scene {
 	 * 
 	 */
 	public void newFrame() {
+	}
+
+	/**
+	 * Display scene specific UI.
+	 */
+	public void ui() {
 	}
 
 	/**
@@ -263,5 +257,12 @@ public abstract class Scene {
 
 	public boolean isActive() {
 		return active;
+	}
+
+	protected void notify(SceneEventType eventType, GameObject object) {
+	}
+
+	public String fileName() {
+		return fileName;
 	}
 }

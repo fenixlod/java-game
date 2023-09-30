@@ -96,4 +96,9 @@ public class Camera {
 	public Matrix4f viewXProjectionMatrix() {
 		return viewXProjectionMatrix;
 	}
+
+	public void offsets(Vector3f offsets) {
+		this.offsets = offsets;
+		calculateViewXProjectionMatrix();
+	}
 }

@@ -16,7 +16,7 @@ public class GameViewWindow {
 	private float bottomY;
 	private GameInstance game;
 
-	public GameViewWindow() {
+	public void init() {
 		game = GameInstance.get();
 	}
 

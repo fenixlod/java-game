@@ -29,15 +29,18 @@ public class EditorControlls implements Observer {
 	private boolean reset;
 	private Scene currentScene;
 
-	public EditorControlls(Camera cameraToControll, Scene currentScene) {
-		this.controlledCamera = cameraToControll;
-		game = GameInstance.get();
+	public EditorControlls() {
 		clickOrigin = new Vector3f();
 		EventSystem.addObserver(this);
-		this.currentScene = currentScene;
 	}
 
 	public void init() {
+		game = GameInstance.get();
+	}
+
+	public void start(Camera cameraToControll, Scene currentScene) {
+		this.controlledCamera = cameraToControll;
+		this.currentScene = currentScene;
 		controlledCamera.position(new Vector3f());
 	}
 

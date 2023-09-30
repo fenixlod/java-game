@@ -29,6 +29,8 @@ public class CircleCollider extends Collider {
 	@Override
 	public void update(float deltaTime, boolean isPlaying) {
 		Vector3f center = owner.transform().positionCopy().add(offset());
-		Debugger.addCircle(center, VectorUtil.Z(), radius, Color.black(), 1);
+
+		if (!isPlaying)
+			Debugger.addCircle(center, VectorUtil.Z(), radius, Color.black(), 1);
 	}
 }

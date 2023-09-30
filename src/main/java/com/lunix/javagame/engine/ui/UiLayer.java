@@ -11,7 +11,7 @@ import org.lwjgl.glfw.GLFWScrollCallbackI;
 import org.springframework.core.io.ClassPathResource;
 
 import com.lunix.javagame.engine.GameWindow;
-import com.lunix.javagame.engine.Scene;
+import com.lunix.javagame.engine.scenes.SceneExecutor;
 
 import imgui.ImFontAtlas;
 import imgui.ImFontConfig;
@@ -147,11 +147,11 @@ public class UiLayer {
 	 * @param dt
 	 * @param currentScene
 	 */
-	public void update(Scene currentScene) {
+	public void update(SceneExecutor currentSceneExecutor) {
 		imGuiGlfw.newFrame();
 		ImGui.newFrame();
 
-		currentScene.ui();
+		currentSceneExecutor.ui();
 		// Any Dear ImGui code SHOULD go between ImGui.newFrame()/ImGui.render() methods
 
 		ImGui.render();

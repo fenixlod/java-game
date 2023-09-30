@@ -6,9 +6,10 @@ public class MainMenuScene extends Scene {
 
 	public MainMenuScene() {
 		super();
+		fileName = "menu.json";
 	}
 
 	@Override
-	public void update(float deltaTime, boolean isPlaying) {
+	protected void scenePreUpdate(float deltaTime, boolean isPlaying) throws Exception {
 	}
 }

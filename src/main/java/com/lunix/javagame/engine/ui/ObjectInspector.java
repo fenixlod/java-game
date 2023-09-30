@@ -35,8 +35,11 @@ public class ObjectInspector {
 	private List<ComponentMenuItem> allComponents;
 
 	public ObjectInspector() {
-		game = GameInstance.get();
 		allComponents = Helper.getAllComponentClasses();
+	}
+
+	public void init() {
+		game = GameInstance.get();
 	}
 
 	public void show() {
@@ -86,7 +89,7 @@ public class ObjectInspector {
 		}
 	}
 
-	public void init(Scene scene) throws Exception {
+	public void start(Scene scene) throws Exception {
 		mover = new GizmoTools();
 		mover.init(scene);
 	}

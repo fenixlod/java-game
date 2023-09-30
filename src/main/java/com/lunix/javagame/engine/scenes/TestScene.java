@@ -1,6 +1,6 @@
 package com.lunix.javagame.engine.scenes;
 
-import static org.lwjgl.glfw.GLFW.*;
+import java.util.Optional;
 
 import org.joml.Vector3f;
 
@@ -12,7 +12,6 @@ import com.lunix.javagame.engine.components.SpriteRenderer;
 import com.lunix.javagame.engine.enums.ShaderType;
 import com.lunix.javagame.engine.enums.TextureType;
 import com.lunix.javagame.engine.graphic.Color;
-import com.lunix.javagame.engine.util.Debugger;
 import com.lunix.javagame.engine.util.VectorUtil;
 
 public class TestScene extends Scene {
@@ -20,15 +19,19 @@ public class TestScene extends Scene {
 
 	public TestScene() {
 		super();
+		fileName = "test.json";
 	}
 
 	@Override
-	public void init(boolean doLoad) throws Exception {
-		super.init(doLoad);
+	public void init(Optional<String> loadFile) throws Exception {
+		super.init(loadFile);
 		game.window().clearColor(1f, 1f, 1f, 1f);
 		game.camera().position(new Vector3f());
 		
 		ResourcePool.loadResources(ShaderType.DEFAULT, TextureType.PLAYER, TextureType.ENEMY, TextureType.PLAYER_IDLE);
+
+		if (sceneLoaded)
+			return;
 
 		playerObject = new GameObject("Player")
 				.addComponent(
@@ -152,61 +155,5 @@ public class TestScene extends Scene {
 						.sprite(ResourcePool.getSprite(TextureType.ENEMY.name() + 2))
 				);
 		addGameObject(enemy);
-		
-//		logger.info("Creating game objects...");
-//		for (int i = 0; i < 200; i++) {
-//			float yPos = (100 - i) * 100f;
-//			for(int j = 0; j < 200; j++) {
-//				float xPos = (100 - j) * 100f;
-//				GameObject ground = new GameObject("Ground " + i + " - " + j, new Vector3f(xPos, yPos, 0f))
-//						.addComponent(
-//							new SpriteRenderer(100, 100)
-//								.heightDirection(VectorUtil.Y())
-//								.color(new Color(0f, 1f, 0f, 0.5f))
-//								.shader(ShaderType.DEFAULT)
-//								.isStatic(true)
-//						);
-//				addGameObject(ground);
-//			}
-//		}
-	}
-
-	@Override
-	public void update(float deltaTime, boolean isPlaying) throws Exception {
-		Vector3f offset = new Vector3f();
-
-		if (game.keyboard().isKeyPressed(GLFW_KEY_RIGHT))
-			offset.x += 5f * deltaTime;
-		
-		if (game.keyboard().isKeyPressed(GLFW_KEY_LEFT))
-			offset.x -= 5f * deltaTime;
-		
-		if (game.keyboard().isKeyPressed(GLFW_KEY_UP))
-			offset.y += 5f * deltaTime;
-		
-		if (game.keyboard().isKeyPressed(GLFW_KEY_DOWN))
-			offset.y -= 5f * deltaTime;
-		
-		if (game.keyboard().isKeyPressed(GLFW_KEY_PAGE_UP))
-			offset.z += 5f * deltaTime;
-		
-		if (game.keyboard().isKeyPressed(GLFW_KEY_PAGE_DOWN))
-			offset.z -= 5f * deltaTime;
-		
-		float zoomChange = (float) game.mouse().scroll().y * 0.1f;
-		game.camera().move(offset);
-		if (zoomChange != 0f)
-			game.camera().changeZoom(zoomChange);
-		
-		// Close the game window when escape key is pressed
-		if (game.keyboard().isKeyPressed(GLFW_KEY_ESCAPE)) {
-			game.window().close();
-			logger.info("Escape button pressed. Close the game window");
-		}
-
-		Debugger.display(false, "X={}, Y={}, Z={}", game.camera().position().x, game.camera().position().y,	game.camera().position().z);
-
-		playerObject.transform().move(offset);
-		super.update(deltaTime, isPlaying);
 	}
 }

@@ -10,13 +10,10 @@ import com.lunix.javagame.engine.GameObject;
 import com.lunix.javagame.engine.Prefabs;
 import com.lunix.javagame.engine.ResourcePool;
 import com.lunix.javagame.engine.Scene;
-import com.lunix.javagame.engine.components.Animation;
 import com.lunix.javagame.engine.components.MouseDragging;
-import com.lunix.javagame.engine.components.SpriteRenderer;
 import com.lunix.javagame.engine.controlls.EditorControlls;
 import com.lunix.javagame.engine.enums.ShaderType;
 import com.lunix.javagame.engine.enums.TextureType;
-import com.lunix.javagame.engine.graphic.Color;
 import com.lunix.javagame.engine.graphic.FrameBuffer;
 import com.lunix.javagame.engine.graphic.Sprite;
 import com.lunix.javagame.engine.ui.EditorMenuBar;
@@ -33,7 +30,7 @@ import imgui.flag.ImGuiStyleVar;
 import imgui.flag.ImGuiWindowFlags;
 import imgui.type.ImBoolean;
 
-public class LevelEditorScene extends Scene {
+public class SceneEditor extends SceneExecutor {
 	private EditorConfigs editorConfig;
 	private FrameBuffer frameBuffer;
 	private GameViewWindow viewWindow;
@@ -42,157 +39,64 @@ public class LevelEditorScene extends Scene {
 	private EditorControlls controlls;
 	private EditorMenuBar menuBar;
 
-	public LevelEditorScene() {
+	public SceneEditor() {
 		super();
 		viewWindow = new GameViewWindow();
 		objInspector = new ObjectInspector();
-		controlls = new EditorControlls(game.camera(), this);
+		controlls = new EditorControlls();
 		menuBar = new EditorMenuBar();
 		sceneHierarchy = new SceneHierarchyWindow();
 	}
 
 	@Override
-	public void init(boolean doLoad) throws Exception {
-		super.init(doLoad);
-		editorConfig = game.editorConfig();
+	public void init() throws Exception {
+		super.init();
+		viewWindow.init();
+		objInspector.init();
 		controlls.init();
-		game.window().uiLayer().setViewWindow(viewWindow);
+		editorConfig = game.editorConfig();
 		frameBuffer = new FrameBuffer(game.window().windowSize().x, game.window().windowSize().y);
-		ResourcePool.loadResources(ShaderType.DEFAULT, ShaderType.PICKING, ShaderType.DEBUG,
-				TextureType.PLAYER, TextureType.ENEMY, TextureType.PLAYER_IDLE, TextureType.TILE_BRICK,
-				TextureType.ARROW);
-		
-		objInspector.init(this);
-
-		if (loaded)
-			return;
-
-		GameObject playerObject = new GameObject("Player")
-			.addComponent(
-						new SpriteRenderer(4, 5)
-				.sprite(ResourcePool.getSprite(TextureType.PLAYER.name()))
-			);
-		playerObject.addComponent(new Animation(ResourcePool.getSprites(TextureType.PLAYER_IDLE), 0.3f));
-		addGameObject(playerObject);
-			
-
-		GameObject enemy = new GameObject("Enemy", new Vector3f(-5f, 5f, 0f))
-			.addComponent(
-						new SpriteRenderer(2, 4)
-					.color(Color.red())
-			);
-		addGameObject(enemy);
-
-/*		
-		// draw cuboid with dimensions: x=20, y=20, z=20
-		// front
-		GameObject rectangle = new GameObject("Cube1", new Vector3f(10f, 0f, 0f))
-			.addComponent(
-				new SpriteRenderer(20, 20)
-					.color(Color.blue())
-					.widthDirection(VectorUtil.X())
-					.heightDirection(VectorUtil.Z())
-			);
-		addGameObject(rectangle);
-		
-		// right
-		rectangle = new GameObject("Cube2", new Vector3f(20f, 10f, 0f))
-			.addComponent(
-				new SpriteRenderer(20, 20)
-					.color(Color.red())
-					.widthDirection(VectorUtil.Y())
-					.heightDirection(VectorUtil.Z())
-			);
-		addGameObject(rectangle);
-
-		//back
-		rectangle = new GameObject("Cube3", new Vector3f(10f, 20f, 0f))
-			.addComponent(
-				new SpriteRenderer(20, 20)
-					.color(Color.black())
-					.widthDirection(VectorUtil.minusX())
-					.heightDirection(VectorUtil.Z())
-			);
-		addGameObject(rectangle);
-		
-		//left
-		rectangle = new GameObject("Cube4", new Vector3f(0f, 10f, 0f))
-			.addComponent(
-				new SpriteRenderer(20, 20)
-					.color(Color.yellow())
-					.widthDirection(VectorUtil.minusY())
-					.heightDirection(VectorUtil.Z())
-					);
-		addGameObject(rectangle);
-		
-		//top
-		rectangle = new GameObject("Cube5", new Vector3f(10f, 0f, 20f))
-			.addComponent(
-				new SpriteRenderer(20, 20)
-					.color(Color.cyan())
-					.widthDirection(VectorUtil.X())
-					.heightDirection(VectorUtil.Y())
-			);
-		addGameObject(rectangle);
-		
-		
-		//bottom
-		rectangle = new GameObject("Cube6", new Vector3f(10f, 20f, 0f))
-			.addComponent(
-				new SpriteRenderer(20, 20)
-					.color(Color.magenta())
-					.widthDirection(VectorUtil.minusX())
-					.heightDirection(VectorUtil.minusY())
-			);
-		addGameObject(rectangle);
-*/
-/*		
-		enemy = new GameObject("Enemy1", new Vector3f(0f, -100f, 0f))
-				.addComponent(
-					new SpriteRenderer(50, 100)
-						.color(Color.red())
-						.widthDirection(VectorUtil.viewX())
-						.heightDirection(VectorUtil.viewY())
-						.sprite(ResourcePool.getSprite(TextureType.ENEMY, 0))
-				);
-		addGameObject(enemy);
-		
-		enemy = new GameObject("Enemy2", new Vector3f(100f, -100f, 0f))
-				.addComponent(
-					new SpriteRenderer(50, 100)
-						.color(Color.green())
-						.widthDirection(VectorUtil.viewX())
-						.heightDirection(VectorUtil.viewY())
-						.sprite(ResourcePool.getSprite(TextureType.ENEMY, 1))
-				);
-		addGameObject(enemy);
-		
-		enemy = new GameObject("Enemy3", new Vector3f(200f, -100f, 0f))
-				.addComponent(
-					new SpriteRenderer(50, 100)
-						.color(Color.blue())
-						.widthDirection(VectorUtil.viewX())
-						.heightDirection(VectorUtil.viewY())
-						.sprite(ResourcePool.getSprite(TextureType.ENEMY, 2))
-				);
-		addGameObject(enemy);
-*/
+		ResourcePool.loadResources(ShaderType.PICKING, ShaderType.DEBUG, TextureType.ARROW);
 	}
 
 	@Override
-	public void update(float deltaTime, boolean isPlaying) throws Exception {
+	public void start(Scene scene) throws Exception {
+		currentScene = scene;
+		controlls.start(game.camera(), currentScene);
+		objInspector.start(currentScene);
+		currentScene.start();
+		game.window().uiLayer().setViewWindow(viewWindow);
+	}
+
+	@Override
+	public void destroy() {
+		super.destroy();
+		game.window().uiLayer().setViewWindow(null);
+	}
+
+	@Override
+	public void update(float deltaTime) throws Exception {
 		controlls.update(deltaTime);
-		objInspector.update(deltaTime, this);
-		super.update(deltaTime, isPlaying);
+		objInspector.update(deltaTime, currentScene);
+		currentScene.update(deltaTime, false);
 		Debugger.drawAxis(true);
-		Debugger.outlineSelected(true, this);
+		Debugger.outlineSelected(true, currentScene);
+		currentScene.render();
+	}
+
+
+	@Override
+	public void newFrame() {
+		super.newFrame();
+		frameBuffer.bind();
+		game.window().clearColor(1f, 1f, 1f, 1f);
 	}
 
 	@Override
 	public void ui() {
 		setupDockspace();
 		menuBar.show();
-		sceneHierarchy.show(this);
+		sceneHierarchy.show(currentScene);
 		objInspector.show();
 		ImGui.begin("World Editor");
 
@@ -226,7 +130,7 @@ public class LevelEditorScene extends Scene {
 							entry.getKey());
 					// Attach the ground object to the mouse cursor
 					groundTile.addComponent(new MouseDragging().pickup());
-					addGameObject(groundTile);
+					currentScene.addGameObject(groundTile);
 				}
 				ImGui.popID();
 
@@ -252,13 +156,6 @@ public class LevelEditorScene extends Scene {
 	}
 
 	@Override
-	public void newFrame() {
-		super.newFrame();
-		frameBuffer.bind();
-		game.window().clearColor(1f, 1f, 1f, 1f);
-	}
-
-	@Override
 	public void endFrame() {
 		super.endFrame();
 		frameBuffer.unbind();
@@ -280,17 +177,5 @@ public class LevelEditorScene extends Scene {
 
 		// Dockspace
 		ImGui.dockSpace(ImGui.getID("Dockspace"));
-	}
-
-	@Override
-	public void stop() {
-		super.stop();
-		game.window().uiLayer().setViewWindow(null);
-	}
-
-	@Override
-	public void resume() {
-		super.resume();
-		game.window().uiLayer().setViewWindow(viewWindow);
 	}
 }

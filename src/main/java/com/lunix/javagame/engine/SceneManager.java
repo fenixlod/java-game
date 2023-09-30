@@ -1,30 +1,34 @@
 package com.lunix.javagame.engine;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.lunix.javagame.engine.enums.GameSceneMode;
 import com.lunix.javagame.engine.enums.GameSceneType;
 import com.lunix.javagame.engine.observers.Event;
 import com.lunix.javagame.engine.observers.EventSystem;
 import com.lunix.javagame.engine.observers.Observer;
-import com.lunix.javagame.engine.scenes.LevelEditorScene;
 import com.lunix.javagame.engine.scenes.MainMenuScene;
+import com.lunix.javagame.engine.scenes.SceneEditor;
+import com.lunix.javagame.engine.scenes.SceneExecutor;
+import com.lunix.javagame.engine.scenes.ScenePlayer;
 import com.lunix.javagame.engine.scenes.TestScene;
 import com.lunix.javagame.engine.scenes.WorldScene;
 
 public class SceneManager implements Observer {
-	private static final Logger logger = LogManager.getLogger(GameWindow.class);
-	private Scene currentScene;
+	private static final Logger logger = LogManager.getLogger(SceneManager.class);
+	private SceneExecutor currentSceneExecutor;
+	private SceneEditor sceneEditor;
+	private ScenePlayer scenePlayer;
 	private GameSceneType currentSceneType;
-	private Map<GameSceneType, Scene> scenes;
+	private GameSceneMode currentSceneMode;
 
 	public SceneManager() {
-		scenes = new HashMap<>();
 		EventSystem.addObserver(this);
+		sceneEditor = new SceneEditor();
+		scenePlayer = new ScenePlayer();
 	}
 
 	/**
@@ -33,26 +37,31 @@ public class SceneManager implements Observer {
 	 * @param newSceneType
 	 * @throws Exception
 	 */
-	public void changeScene(GameSceneType newSceneType) throws Exception {
-		logger.info("Changing scene to: " + newSceneType.toString());
-		Scene newScene = scenes.get(newSceneType);
+	public void changeScene(GameSceneType newSceneType, GameSceneMode sceneMode, Optional<String> fileName)
+			throws Exception {
+		logger.info("Changing scene to: {}", newSceneType.toString());
+		
+		if (currentSceneExecutor != null)
+			currentSceneExecutor.destroy();
 
-		if (newScene == null) {
-			newScene = createNewScene(newSceneType);
-			newScene.init(true);
-			newScene.start();
-			scenes.put(newSceneType, newScene);
-		} else {
-			newScene.resume();
-		}
+		currentSceneExecutor = getSceneExecutor(sceneMode);
+		if (!currentSceneExecutor.isInitialized())
+			currentSceneExecutor.init();
 
-		if (currentScene != null)
-			currentScene.stop();
-
-		currentScene = newScene;
+		Scene newScene = createNewScene(newSceneType);
+		newScene.init(fileName);
+		currentSceneExecutor.start(newScene);
 		currentSceneType = newSceneType;
+		currentSceneMode = sceneMode;
 	}
 
+	private SceneExecutor getSceneExecutor(GameSceneMode sceneMode) {
+		return switch(sceneMode) {
+			case EDIT -> sceneEditor;
+			case PLAY -> scenePlayer;
+			default -> throw new IllegalStateException("Unknown scene mode: " + sceneMode.toString());
+		};
+	}
 	/**
 	 * Create new scene of given type.
 	 * 
@@ -64,50 +73,32 @@ public class SceneManager implements Observer {
 			case MAIN_MENU -> new MainMenuScene();
 			case WORLD -> new WorldScene();
 			case TEST -> new TestScene();
-			case EDITOR -> new LevelEditorScene();
 			default -> throw new IllegalStateException("Unknown scene with type: " + newSceneType.toString());
 		};
 	}
 
+	private void playScene() throws Exception {
+		Scene currentScene = currentSceneExecutor.currentScene();
+		currentScene.save(Optional.of("tmp.json"));
+		changeScene(currentSceneType, GameSceneMode.PLAY, Optional.of("tmp.json"));
+	}
+
+	private void editScene() throws Exception {
+		changeScene(currentSceneType, GameSceneMode.EDIT, Optional.of("tmp.json"));
+	}
+
 	/**
-	 * Update the current scene
+	 * Update and render the current scene.
 	 * 
 	 * @param deltaTime
 	 * @throws Exception
 	 */
 	public void update(float deltaTime) throws Exception {
-		currentScene.update(deltaTime, GameSceneType.EDITOR != currentSceneType);
+		currentSceneExecutor.update(deltaTime);
 	}
 
-	public Scene currentScene() {
-		return currentScene;
-	}
-
-	/**
-	 * Render the current scene
-	 * 
-	 * @param deltaTime
-	 * @throws Exception
-	 */
-	public void render() throws Exception {
-		currentScene.render();
-	}
-
-	/**
-	 * Copy all game objects from scene to scene
-	 * 
-	 * @param from
-	 * @param to
-	 * @throws Exception
-	 */
-	public void copyObjects(GameSceneType from, GameSceneType to) throws Exception {
-		logger.info("Copy all game ofjects from: {} -> {}", from, to);
-		Scene fromScene = scenes.get(from);
-		Scene toScene = scenes.get(to);
-		toScene.destroy();
-		toScene.init(false);
-		toScene.deserialize(fromScene.serialize());
-		toScene.start();
+	public SceneExecutor currentExecutor() {
+		return currentSceneExecutor;
 	}
 
 	@Override
@@ -115,36 +106,69 @@ public class SceneManager implements Observer {
 		switch (e.type()) {
 		case GAME_START_PLAY:
 			try {
-				logger.info("Start playing the game...");
-				changeScene(GameSceneType.WORLD);
-				// The proper way to sync between the 2 scenes will be save/load
-				// Now we do not have to make multiple saves so this variant is better
-				copyObjects(GameSceneType.EDITOR, GameSceneType.WORLD);
+				logger.info("Start playing the scene {} ...", currentSceneType.toString());
+				playScene();
 			} catch (Exception e1) {
 				logger.error("Unable to start the game", e1);
 			}
 			break;
 		case GAME_END_PLAY:
 			try {
-				logger.info("Stop playing the game...");
-				changeScene(GameSceneType.EDITOR);
+				logger.info("Stop playing the scene {} ...", currentSceneType.toString());
+				editScene();
 			} catch (Exception e1) {
 				logger.error("Unable to stop the game", e1);
 			}
 			break;
 		case LOAD_LEVEL:
+			try {
+				changeScene(currentSceneType, currentSceneMode,
+						Optional.of(currentSceneExecutor.currentScene().fileName()));
+				logger.info("Load current level {} ...", currentSceneType.toString());
+			} catch (Exception e1) {
+				logger.error("Unable to load lavel", e1);
+			}
 			break;
 		case SAVE_LEVEL:
 			try {
-				currentScene.save();
-			} catch (IOException e1) {
+				logger.info("Save current level {} ...", currentSceneType.toString());
+				currentSceneExecutor.currentScene().save(Optional.empty());
+			} catch (Exception e1) {
 				logger.error("Unable to save lavel", e1);
 			}
 			break;
 		case USER_EVENT:
 			break;
+		case SET_SCENE_WORLD:
+			try {
+				logger.info("Change current level to {} ...", GameSceneType.WORLD.toString());
+				changeScene(GameSceneType.WORLD, currentSceneMode, Optional.of("world.json"));
+			} catch (Exception e1) {
+				logger.error("Unable to change lavel", e1);
+			}
+			break;
+		case SET_SCENE_MAIN_MENU:
+			try {
+				logger.info("Change current level to {} ...", GameSceneType.MAIN_MENU.toString());
+				changeScene(GameSceneType.MAIN_MENU, currentSceneMode, Optional.of("menu.json"));
+			} catch (Exception e1) {
+				logger.error("Unable to change lavel", e1);
+			}
+			break;
+		case SET_SCENE_TEST:
+			try {
+				logger.info("Change current level to {} ...", GameSceneType.TEST.toString());
+				changeScene(GameSceneType.TEST, currentSceneMode, Optional.of("test.json"));
+			} catch (Exception e1) {
+				logger.error("Unable to change lavel", e1);
+			}
+			break;
 		default:
 			break;
 		}
+	}
+
+	public GameSceneType currentSceneType() {
+		return currentSceneType;
 	}
 }

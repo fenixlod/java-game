@@ -28,6 +28,8 @@ public class BoxCollider extends Collider {
 	@Override
 	public void update(float deltaTime, boolean isPlaying) {
 		Vector3f center = owner.transform().positionCopy().add(offset());
-		Debugger.addBoxCentered(center, size.x, size.y, Color.black(), 1);
+
+		if (!isPlaying)
+			Debugger.addBoxCentered(center, size.x, size.y, Color.black(), 1);
 	}
 }

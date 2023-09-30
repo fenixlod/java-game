@@ -1,90 +1,86 @@
 package com.lunix.javagame.engine.scenes;
 
-import static org.lwjgl.glfw.GLFW.*;
+import java.util.Optional;
 
 import org.joml.Vector3f;
 
 import com.lunix.javagame.engine.GameObject;
 import com.lunix.javagame.engine.ResourcePool;
 import com.lunix.javagame.engine.Scene;
-import com.lunix.javagame.engine.enums.EventType;
+import com.lunix.javagame.engine.components.Animation;
+import com.lunix.javagame.engine.components.SpriteRenderer;
+import com.lunix.javagame.engine.enums.SceneEventType;
 import com.lunix.javagame.engine.enums.ShaderType;
 import com.lunix.javagame.engine.enums.TextureType;
-import com.lunix.javagame.engine.observers.Event;
-import com.lunix.javagame.engine.observers.EventSystem;
-import com.lunix.javagame.engine.util.Debugger;
+import com.lunix.javagame.engine.graphic.Color;
+import com.lunix.javagame.engine.physics.Physics;
 
 public class WorldScene extends Scene {
-	private GameObject playerObject;
-	protected GameObject currentObject;
+	private Physics physics;
 
 	public WorldScene() {
 		super();
+		fileName = "world.json";
+		physics = new Physics();
 	}
 
 	@Override
-	public void init(boolean doLoad) throws Exception {
-		super.init(doLoad);
+	public void init(Optional<String> loadFile) throws Exception {
+		super.init(loadFile);
+		// physics.init();
 		game.camera().position(new Vector3f());
+		// Probably collect all resources from objects list and load them
 		ResourcePool.loadResources(ShaderType.DEFAULT, TextureType.PLAYER, TextureType.ENEMY, TextureType.PLAYER_IDLE,
 				TextureType.TILE_BRICK);
+
+		if (sceneLoaded)
+			return;
+
+		GameObject playerObject = new GameObject("Player")
+			.addComponent(
+						new SpriteRenderer(4, 5)
+				.sprite(ResourcePool.getSprite(TextureType.PLAYER.name()))
+			);
+		playerObject.addComponent(new Animation(ResourcePool.getSprites(TextureType.PLAYER_IDLE), 0.3f));
+		addGameObject(playerObject);
+			
+
+		GameObject enemy = new GameObject("Enemy", new Vector3f(-5f, 5f, 0f))
+			.addComponent(
+						new SpriteRenderer(2, 4)
+					.color(Color.red())
+			);
+		addGameObject(enemy);
 	}
 
 	@Override
-	public void update(float deltaTime, boolean isPlaying) throws Exception {
-		Vector3f offset = new Vector3f();
-
-		if (game.keyboard().isKeyPressed(GLFW_KEY_RIGHT))
-			offset.x += 5f * deltaTime;
-
-		if (game.keyboard().isKeyPressed(GLFW_KEY_LEFT))
-			offset.x -= 5f * deltaTime;
-
-		if (game.keyboard().isKeyPressed(GLFW_KEY_UP))
-			offset.y += 5f * deltaTime;
-
-		if (game.keyboard().isKeyPressed(GLFW_KEY_DOWN))
-			offset.y -= 5f * deltaTime;
-
-		if (game.keyboard().isKeyPressed(GLFW_KEY_PAGE_UP))
-			offset.z += 5f * deltaTime;
-
-		if (game.keyboard().isKeyPressed(GLFW_KEY_PAGE_DOWN))
-			offset.z -= 5f * deltaTime;
-
-		float zoomChange = (float) game.mouse().scroll().y * 0.1f;
-		if (zoomChange != 0f)
-			game.camera().changeZoom(zoomChange);
-
-		Debugger.display(false, "X={}, Y={}, Z={}", game.camera().position().x, game.camera().position().y,
-				game.camera().position().z);
-
-		playerObject.transform().move(offset);
-		game.camera().position(playerObject.transform().positionCopy());
-
-		super.update(deltaTime, isPlaying);
-
-		// Go to level editor when escape key is pressed
-		if (game.keyboard().isKeyPressed(GLFW_KEY_ESCAPE)) {
-			logger.info("Escape button pressed. Exith the world scene");
-			EventSystem.notify(new Event(EventType.GAME_END_PLAY));
-		}
+	public void start() throws Exception {
+		super.start();
 	}
 
 	@Override
-	protected void sceneLoaded(GameObject[] loadedData) {
-		for (GameObject obj : loadedData) {
-			if (obj.name().equals("Player")) {
-				playerObject = obj;
-				currentObject = obj;
-				return;
-			}
-		}
+	protected void scenePreUpdate(float deltaTime, boolean isPlaying) throws Exception {
+		physics.update(deltaTime, isPlaying);
 	}
 
 	@Override
 	public void newFrame() {
 		super.newFrame();
 		game.window().clearColor(1f, 1f, 1f, 1f);
+	}
+
+	@Override
+	protected void notify(SceneEventType eventType, GameObject object) {
+		switch(eventType) {
+			case OBJECT_ADDED:
+				physics.addGameObject(object);
+				break;
+			case OBJECT_STARTED:
+				physics.addGameObject(object);
+				break;
+			case OBJECT_REMOVED:
+				physics.removeGameObject(object);
+				break;
+		}
 	}
 }
