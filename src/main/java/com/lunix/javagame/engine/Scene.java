@@ -190,7 +190,7 @@ public abstract class Scene {
 	 * @throws IOException
 	 */
 	public void save(Optional<String> fileName) throws IOException {
-		Path levelsFile = Paths.get(game.pathsConfig().save().get("levels"), fileName.orElse("world.json"));
+		Path levelsFile = Paths.get(game.pathsConfig().save().get("levels"), fileName.orElse(fileName()));
 		logger.info("Save current level to: {}", levelsFile);
 		try (FileWriter writer = new FileWriter(levelsFile.toFile())) {
 			writer.write(serialize());
