@@ -26,8 +26,7 @@ public class TestScene extends Scene {
 	public void init(Optional<String> loadFile) throws Exception {
 		super.init(loadFile);
 		game.window().clearColor(1f, 1f, 1f, 1f);
-		game.camera().position(new Vector3f());
-		
+		game.camera().reset();
 		ResourcePool.loadResources(ShaderType.DEFAULT, TextureType.PLAYER, TextureType.ENEMY, TextureType.PLAYER_IDLE);
 
 		if (sceneLoaded)

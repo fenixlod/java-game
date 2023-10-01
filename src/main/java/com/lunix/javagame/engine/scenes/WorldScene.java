@@ -28,7 +28,7 @@ public class WorldScene extends Scene {
 	public void init(Optional<String> loadFile) throws Exception {
 		super.init(loadFile);
 		// physics.init();
-		game.camera().position(new Vector3f());
+		game.camera().reset();
 		// Probably collect all resources from objects list and load them
 		ResourcePool.loadResources(ShaderType.DEFAULT, TextureType.PLAYER, TextureType.ENEMY, TextureType.PLAYER_IDLE,
 				TextureType.TILE_BRICK);

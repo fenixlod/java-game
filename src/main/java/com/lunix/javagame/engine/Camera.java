@@ -16,13 +16,9 @@ public class Camera {
 
 	public Camera(CameraConfigs cameraConfig) {
 		this.cameraConfig = cameraConfig;
-		offsets = new Vector3f(cameraConfig.xOffset(), cameraConfig.yOffset(), cameraConfig.zOffset());
-		zoomFactor = 1f;
 		viewXProjectionMatrix = new Matrix4f();
 		inverseViewXProjection = new Matrix4f();
-		position = new Vector3f();
-		VectorUtil.setView(offsets);
-		calculateViewXProjectionMatrix();
+		reset();
 	}
 
 //	public void setOrthoProjection() {
@@ -79,12 +75,18 @@ public class Camera {
 	}
 	
 	private void calculateViewXProjectionMatrix() {
+		Vector3f up = offsets.cross(VectorUtil.Z(), new Vector3f());
+		if (up.isFinite() && up.lengthSquared() > 0)
+			up = VectorUtil.Z();
+		else
+			up = VectorUtil.Y();
+
 		viewXProjectionMatrix
 				.identity()
 				.ortho(-cameraConfig.ortho().width() / 2, cameraConfig.ortho().width() / 2,
 						-cameraConfig.ortho().height() / 2, cameraConfig.ortho().height() / 2, cameraConfig.zNear(),
 						cameraConfig.zFar())
-				.lookAt(offsets, new Vector3f(), VectorUtil.Z()).scale(zoomFactor)
+				.lookAt(offsets, new Vector3f(), up).scale(zoomFactor)
 				.translate(position.mul(-1, new Vector3f()));
 		viewXProjectionMatrix.invert(inverseViewXProjection);
 	}
@@ -100,5 +102,18 @@ public class Camera {
 	public void offsets(Vector3f offsets) {
 		this.offsets = offsets;
 		calculateViewXProjectionMatrix();
+		VectorUtil.setView(offsets);
+	}
+
+	public Vector3f offsets() {
+		return offsets;
+	}
+
+	public void reset() {
+		offsets = new Vector3f(cameraConfig.xOffset(), cameraConfig.yOffset(), cameraConfig.zOffset());
+		zoomFactor = 1f;
+		position = new Vector3f();
+		calculateViewXProjectionMatrix();
+		VectorUtil.setView(offsets);
 	}
 }
