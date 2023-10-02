@@ -22,6 +22,7 @@ public final class MouseDragging extends Component {
 		EventSystem.notify(new Event(EventType.OBJECT_PLACED, owner));
 		isPicked = false;
 		destroyed = true;
+		owner.getComponent(SpriteRenderer.class).color().a(1);
 	}
 
 	@Override

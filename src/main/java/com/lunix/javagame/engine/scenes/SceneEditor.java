@@ -3,14 +3,9 @@ package com.lunix.javagame.engine.scenes;
 import java.util.Map.Entry;
 
 import org.joml.Vector2f;
-import org.joml.Vector3f;
 
-import com.lunix.javagame.configs.EditorConfigs;
-import com.lunix.javagame.engine.GameObject;
-import com.lunix.javagame.engine.Prefabs;
 import com.lunix.javagame.engine.ResourcePool;
 import com.lunix.javagame.engine.Scene;
-import com.lunix.javagame.engine.components.MouseDragging;
 import com.lunix.javagame.engine.controlls.EditorControlls;
 import com.lunix.javagame.engine.enums.ShaderType;
 import com.lunix.javagame.engine.enums.TextureType;
@@ -31,7 +26,6 @@ import imgui.flag.ImGuiWindowFlags;
 import imgui.type.ImBoolean;
 
 public class SceneEditor extends SceneExecutor {
-	private EditorConfigs editorConfig;
 	private FrameBuffer frameBuffer;
 	private GameViewWindow viewWindow;
 	private ObjectInspector objInspector;
@@ -54,7 +48,6 @@ public class SceneEditor extends SceneExecutor {
 		viewWindow.init();
 		objInspector.init();
 		controlls.init();
-		editorConfig = game.editorConfig();
 		frameBuffer = new FrameBuffer(game.window().windowSize().x, game.window().windowSize().y);
 		ResourcePool.loadResources(ShaderType.PICKING, ShaderType.DEBUG, TextureType.ARROW);
 	}
@@ -124,13 +117,7 @@ public class SceneEditor extends SceneExecutor {
 				ImGui.pushID(i);
 				if (ImGui.imageButton(id, spriteWidth, spriteHeight, textureCoords[3].x, textureCoords[3].y,
 						textureCoords[1].x, textureCoords[1].y)) {
-					logger.info("Sprite {} clicked", entry.getKey());
-					GameObject groundTile = Prefabs.groundTile(new Vector3f(0f, 0f, 0f),
-							editorConfig.gridSize(), editorConfig.gridSize(),
-							entry.getKey());
-					// Attach the ground object to the mouse cursor
-					groundTile.addComponent(new MouseDragging().pickup());
-					currentScene.addGameObject(groundTile);
+					controlls.placeGround(entry.getKey());
 				}
 				ImGui.popID();
 

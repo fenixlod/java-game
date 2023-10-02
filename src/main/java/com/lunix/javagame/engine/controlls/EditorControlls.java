@@ -6,11 +6,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joml.Vector3f;
 
+import com.lunix.javagame.configs.EditorConfigs;
 import com.lunix.javagame.engine.Camera;
 import com.lunix.javagame.engine.GameInstance;
 import com.lunix.javagame.engine.GameObject;
+import com.lunix.javagame.engine.Prefabs;
 import com.lunix.javagame.engine.Scene;
 import com.lunix.javagame.engine.components.MouseDragging;
+import com.lunix.javagame.engine.components.SpriteRenderer;
 import com.lunix.javagame.engine.enums.EventType;
 import com.lunix.javagame.engine.observers.Event;
 import com.lunix.javagame.engine.observers.EventSystem;
@@ -18,6 +21,7 @@ import com.lunix.javagame.engine.observers.Observer;
 
 public class EditorControlls implements Observer {
 	private static final Logger logger = LogManager.getLogger(EditorControlls.class);
+	private EditorConfigs editorConfig;
 	private Camera controlledCamera;
 	private GameInstance game;
 	private Vector3f clickOrigin;
@@ -28,6 +32,7 @@ public class EditorControlls implements Observer {
 	private float lerpTime = 0f;
 	private boolean reset;
 	private Scene currentScene;
+	private GameObject holdingObject;
 
 	public EditorControlls() {
 		clickOrigin = new Vector3f();
@@ -36,6 +41,7 @@ public class EditorControlls implements Observer {
 
 	public void init() {
 		game = GameInstance.get();
+		editorConfig = game.editorConfig();
 	}
 
 	public void start(Camera cameraToControll, Scene currentScene) {
@@ -93,21 +99,38 @@ public class EditorControlls implements Observer {
 		}
 	}
 
+	public void placeGround(String spriteName) throws Exception {
+		if (holdingObject != null) {
+			holdingObject.destroy();
+			holdingObject = null;
+		}
+
+		GameObject groundTile = Prefabs.groundTile(new Vector3f(0f, 0f, 0f), editorConfig.gridSize(),
+				editorConfig.gridSize(), spriteName);
+		// Attach the ground object to the mouse cursor
+		groundTile.addComponent(new MouseDragging().pickup());
+		groundTile.getComponent(SpriteRenderer.class).color().a(0.5f);
+		currentScene.addGameObject(groundTile);
+		holdingObject = groundTile;
+	}
+
 	@Override
 	public void onNotify(Event e) {
 		if (e.type() != EventType.OBJECT_PLACED)
 			return;
 
 		try {
+			holdingObject = null;
 			if (game.keyboard().isKeyPressed(GLFW_KEY_LEFT_SHIFT)
 					|| game.keyboard().isKeyPressed(GLFW_KEY_RIGHT_SHIFT)) {
 				GameObject copy = game.load(game.save(e.target()), GameObject.class);
 				copy.regenerateId();
 				copy.getComponent(MouseDragging.class).pickup();
 				currentScene.addGameObject(copy);
+				holdingObject = copy;
 			}
 		} catch (Exception e1) {
-			logger.error("Unable to cop object", e1);
+			logger.error("Unable to copy object", e1);
 		}
 	}
 }
