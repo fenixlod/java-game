@@ -1,75 +1,149 @@
 package com.lunix.javagame.engine.components;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.KeyDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.lunix.javagame.engine.Component;
-import com.lunix.javagame.engine.graphic.Sprite;
+import com.lunix.javagame.engine.enums.AnimationStateTriggerType;
+import com.lunix.javagame.engine.enums.AnimationStateType;
+import com.lunix.javagame.engine.struct.AnimationState;
 
 public class Animation extends Component {
-	private List<Sprite> poses;
-	private float changeInterval;
-	private int startingPose;
+	@JsonDeserialize(keyUsing = StateTriggerDeserializer.class)
+	private Map<StateTrigger, AnimationStateType> stateTransfers;
+	private List<AnimationState> states;
+	private AnimationStateType defaultState;
 
-	private transient float leftTime;
-	private transient int currentPose;
+	private transient AnimationState currentState;
 
 	public Animation() {
-		this(null, 0);
-	}
-
-	public Animation(List<Sprite> poses, float changeInterval) {
-		this.poses = poses;
-		this.changeInterval = changeInterval;
-		startingPose = 0;
+		stateTransfers = new HashMap<>();
+		states = new ArrayList<>();
+		defaultState = AnimationStateType.NONE;
 	}
 
 	@Override
 	public void start() {
-		SpriteRenderer renderer = owner.getComponent(SpriteRenderer.class);
-		currentPose = startingPose;
-		leftTime = changeInterval;
-		if (renderer != null) {
-			if (currentPose >= poses.size() || currentPose < 0) {
-				logger.warn("Starting pose is out of bounds. Current value:{}, bounds: 0 - {}", currentPose,
-						poses.size());
-				currentPose = 0;
+		for (AnimationState state : states) {
+			if (state.stateType == defaultState) {
+				currentState = state;
+				break;
 			}
-			renderer.sprite(poses.get(currentPose));
 		}
 	}
 
 	@Override
 	public void update(float deltaTime, boolean isPlaying) {
-		leftTime -= deltaTime;
-
-		if (leftTime <= 0f) {
-			leftTime = changeInterval;
-			currentPose++;
-
-			if (currentPose >= poses.size()) {
-				currentPose = 0;
+		if (currentState != null) {
+			currentState.update(deltaTime);
+			SpriteRenderer sprite = owner.getComponent(SpriteRenderer.class);
+			if (sprite != null) {
+				sprite.sprite(currentState.currentSprite());
 			}
-
-			SpriteRenderer renderer = owner.getComponent(SpriteRenderer.class);
-			if (renderer != null)
-				renderer.sprite(poses.get(currentPose));
 		}
 	}
 
-	public Animation poses(List<Sprite> poses) {
-		this.poses = poses;
+
+	public Animation addState(AnimationState state) {
+		states.add(state);
 		return this;
 	}
 
-	public Animation changeInterval(float changeInterval) {
-		this.changeInterval = changeInterval;
-		leftTime = changeInterval;
+	public void addStateTrigger(AnimationStateType from, AnimationStateType to, AnimationStateTriggerType trigger) {
+		stateTransfers.put(new StateTrigger(from, trigger), to);
+	}
+
+	public void trigger(AnimationStateTriggerType trigger) {
+		AnimationStateType stateToChange = stateTransfers.get(new StateTrigger(currentState.stateType(), trigger));
+		if (stateToChange != null) {
+			for (AnimationState state : states) {
+				if (state.stateType == stateToChange) {
+					currentState = state;
+					return;
+				}
+			}
+		}
+
+		logger.error("Unable to find trigger: {}", trigger);
+	}
+
+	public Animation defaultState(AnimationStateType defaultState) {
+		this.defaultState = defaultState;
+		return this;
+	}
+}
+
+class StateTrigger {
+	private AnimationStateType state;
+	private AnimationStateTriggerType trigger;
+
+	public StateTrigger() {
+	}
+
+	public StateTrigger(String key) {
+		String[] split = key.split("-");
+		state = AnimationStateType.valueOf(split[0]);
+		trigger = AnimationStateTriggerType.valueOf(split[1]);
+	}
+
+	public StateTrigger(AnimationStateType state, AnimationStateTriggerType trigger) {
+		this.state = state;
+		this.trigger = trigger;
+	}
+
+	public AnimationStateType state() {
+		return state;
+	}
+
+	public StateTrigger state(AnimationStateType state) {
+		this.state = state;
 		return this;
 	}
 
-	public Animation startingPose(int startingPose) {
-		this.startingPose = startingPose;
-		currentPose = startingPose;
+	public AnimationStateTriggerType trigger() {
+		return trigger;
+	}
+
+	public StateTrigger trigger(AnimationStateTriggerType trigger) {
+		this.trigger = trigger;
 		return this;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null)
+			return false;
+
+		if (obj instanceof StateTrigger stateTrigger) {
+			return state == stateTrigger.state && trigger == stateTrigger.trigger;
+		}
+
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(state, trigger);
+	}
+
+	@Override
+	public String toString() {
+		return state.toString() + "-" + trigger.toString();
+	}
+}
+
+class StateTriggerDeserializer extends KeyDeserializer {
+	@Override
+	public StateTrigger deserializeKey(String key, DeserializationContext ctxt)
+			throws IOException, JsonProcessingException {
+		return new StateTrigger(key);
 	}
 }

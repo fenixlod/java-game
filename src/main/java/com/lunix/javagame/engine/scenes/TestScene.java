@@ -37,7 +37,7 @@ public class TestScene extends Scene {
 						new SpriteRenderer(4, 5)
 							.sprite(ResourcePool.getSprite(TextureType.PLAYER.name()))
 				);
-		playerObject.addComponent(new Animation(ResourcePool.getSprites(TextureType.PLAYER_IDLE), 0.3f));
+		playerObject.addComponent(new Animation());
 			addGameObject(playerObject);
 			
 		for (int j = 0; j < 4; j++) {

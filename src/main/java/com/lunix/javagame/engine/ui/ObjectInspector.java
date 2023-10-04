@@ -152,7 +152,7 @@ public class ObjectInspector {
 		for (Component c : obj.components()) {
 			float width = ImGui.calcItemWidth();
 			boolean opened = ImGui.collapsingHeader(c.getClass().getSimpleName(), ImGuiTreeNodeFlags.AllowItemOverlap);
-			ImGui.sameLine(width + 115);
+			ImGui.sameLine(width + 100);
 			ImGui.pushStyleColor(ImGuiCol.Text, 1f, 0f, 0f, 1f);
 			ImGui.pushStyleColor(ImGuiCol.Button, 0f, 0f, 0f, 0f);
 			ImGui.pushStyleColor(ImGuiCol.ButtonActive, 0f, 0f, 0f, 0f);
@@ -214,6 +214,8 @@ public class ObjectInspector {
 					displayLong(name, value, field, obj);
 				} else if (type.isEnum()) {
 					displayEnum(name, value, field, obj);
+				} else if (type == List.class) {
+					displayList(name, value, field, obj);
 				}
 
 
@@ -288,6 +290,31 @@ public class ObjectInspector {
 		Enum<?> newValue = UIWidget.enumControl(StringUtils.capitalize(name), (Enum<?>) value);
 		if (newValue != null) {
 			field.set(obj, newValue);
+		}
+	}
+
+	private void displayList(String name, Object value, Field field, Object obj)
+			throws IllegalArgumentException, IllegalAccessException {
+		List<?> list = (List<?>) value;
+
+		int id = 1;
+		if (ImGui.treeNodeEx(name, ImGuiTreeNodeFlags.DefaultOpen | ImGuiTreeNodeFlags.FramePadding
+				| ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth, StringUtils.capitalize(name))) {
+			for (Object o : list) {
+				ImGui.pushID(id);
+				boolean treeIsOpened = ImGui.treeNodeEx(o.getClass().getSimpleName(),
+						ImGuiTreeNodeFlags.DefaultOpen | ImGuiTreeNodeFlags.FramePadding
+								| ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth,
+						"Item " + id);
+				ImGui.popID();
+
+				if (treeIsOpened) {
+					displayFields(o);
+					ImGui.treePop();
+				}
+				id++;
+			}
+			ImGui.treePop();
 		}
 	}
 }

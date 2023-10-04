@@ -114,6 +114,20 @@ public class EditorControlls implements Observer {
 		holdingObject = groundTile;
 	}
 
+	public void placePlayer() throws Exception {
+		if (holdingObject != null) {
+			holdingObject.destroy();
+			holdingObject = null;
+		}
+
+		GameObject player = Prefabs.player(new Vector3f(0f, 0f, 0f));
+		// Attach the ground object to the mouse cursor
+		player.addComponent(new MouseDragging().pickup());
+		player.getComponent(SpriteRenderer.class).color().a(0.5f);
+		currentScene.addGameObject(player);
+		holdingObject = player;
+	}
+
 	@Override
 	public void onNotify(Event e) {
 		if (e.type() != EventType.OBJECT_PLACED)

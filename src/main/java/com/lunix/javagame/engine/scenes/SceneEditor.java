@@ -1,7 +1,5 @@
 package com.lunix.javagame.engine.scenes;
 
-import java.util.Map.Entry;
-
 import org.joml.Vector2f;
 
 import com.lunix.javagame.engine.ResourcePool;
@@ -93,46 +91,70 @@ public class SceneEditor extends SceneExecutor {
 		objInspector.show();
 		ImGui.begin("World Editor");
 
-		ImVec2 windowPos = new ImVec2();
-		ImGui.getWindowPos(windowPos);
-		ImVec2 windowSize = new ImVec2();
-		ImGui.getWindowSize(windowSize);
-		ImVec2 itemSpacing = new ImVec2();
-		ImGui.getStyle().getItemSpacing(itemSpacing);
-		float windowX2 = windowPos.x + windowSize.x;
-		int i = 0;
-		for (Entry<String, Sprite> entry : ResourcePool.sprites().entrySet()) {
-			try {
-				Sprite sp = entry.getValue();
-				TextureType textureType = sp.texture();
+		if (ImGui.beginTabBar("WindowTabBar")) {
+			if (ImGui.beginTabItem("Ground")) {
+				ImVec2 windowPos = new ImVec2();
+				ImGui.getWindowPos(windowPos);
+				ImVec2 windowSize = new ImVec2();
+				ImGui.getWindowSize(windowSize);
+				ImVec2 itemSpacing = new ImVec2();
+				ImGui.getStyle().getItemSpacing(itemSpacing);
+				float windowX2 = windowPos.x + windowSize.x;
+				int i = 0;
+				for (Sprite sp : ResourcePool.getSprites(TextureType.TILE_BRICK)) {
+					try {
+						TextureType textureType = sp.texture();
 
-				if (textureType == TextureType.NONE)
-					continue;
+						if (textureType == TextureType.NONE)
+							continue;
 
-				float spriteWidth = 60;
-				float spriteHeight = 60;
-				int id = ResourcePool.getTexture(textureType).id();
-				Vector2f[] textureCoords = sp.textureCoords();
+						float spriteWidth = 60;
+						float spriteHeight = 60;
+						int id = ResourcePool.getTexture(textureType).id();
+						Vector2f[] textureCoords = sp.textureCoords();
 
-				ImGui.pushID(i);
-				if (ImGui.imageButton(id, spriteWidth, spriteHeight, textureCoords[3].x, textureCoords[3].y,
-						textureCoords[1].x, textureCoords[1].y)) {
-					controlls.placeGround(entry.getKey());
+						ImGui.pushID(i);
+						if (ImGui.imageButton(id, spriteWidth, spriteHeight, textureCoords[3].x, textureCoords[3].y,
+								textureCoords[1].x, textureCoords[1].y)) {
+							controlls.placeGround(TextureType.TILE_BRICK.toString() + "_" + i);
+						}
+						ImGui.popID();
+
+						ImVec2 lastButtonPos = new ImVec2();
+						ImGui.getItemRectMax(lastButtonPos);
+						float lastButtonX2 = lastButtonPos.x;
+						float nextButtonX2 = lastButtonX2 + itemSpacing.x + spriteWidth;
+
+						if (i + 1 < ResourcePool.sprites().size() && nextButtonX2 < windowX2) {
+							ImGui.sameLine();
+						}
+						i++;
+					} catch (Exception e) {
+						logger.error(e);
+					}
 				}
-				ImGui.popID();
-
-				ImVec2 lastButtonPos = new ImVec2();
-				ImGui.getItemRectMax(lastButtonPos);
-				float lastButtonX2 = lastButtonPos.x;
-				float nextButtonX2 = lastButtonX2 + itemSpacing.x + spriteWidth;
-
-				if (i + 1 < ResourcePool.sprites().size() && nextButtonX2 < windowX2) {
-					ImGui.sameLine();
-				}
-				i++;
-			} catch (Exception e) {
-				logger.error(e);
+				ImGui.endTabItem();
 			}
+			if (ImGui.beginTabItem("Prefabs")) {
+				try {
+					Sprite sp = ResourcePool.getSprite(TextureType.PLAYER_IDLE, 0);
+					float spriteWidth = 60;
+					float spriteHeight = 60;
+					int id = ResourcePool.getTexture(sp.texture()).id();
+					Vector2f[] textureCoords = sp.textureCoords();
+					if (ImGui.imageButton(id, spriteWidth, spriteHeight, textureCoords[3].x, textureCoords[3].y,
+							textureCoords[1].x, textureCoords[1].y)) {
+						controlls.placePlayer();
+					}
+				} catch (Exception e) {
+					logger.error(e);
+				}
+				ImGui.sameLine();
+
+				ImGui.endTabItem();
+			}
+
+			ImGui.endTabBar();
 		}
 
 		ImGui.end();

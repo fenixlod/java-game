@@ -95,7 +95,7 @@ public class GameObject {
 	 * @return
 	 */
 	public GameObject addComponent(Component component) {
-		component.generateId();
+		component.generateId(false);
 		components.put(component.getClass(), component);
 		component.owner(this);
 		component.start();
@@ -159,6 +159,6 @@ public class GameObject {
 
 	public void regenerateId() {
 		id = GameInstance.getNextId();
-		components.values().forEach(Component::regenerateId);
+		components.values().forEach(c -> c.generateId(true));
 	}
 }

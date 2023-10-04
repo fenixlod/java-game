@@ -52,8 +52,8 @@ public abstract class Component {
 	public void destroy() {
 	}
 
-	public void generateId() {
-		if (id == -1)
+	public void generateId(boolean replace) {
+		if (id == -1 || replace)
 			id = GameInstance.getNextId();
 	}
 
@@ -74,9 +74,5 @@ public abstract class Component {
 	}
 
 	protected void onNotify(ObjectEventType e) {
-	}
-
-	public void regenerateId() {
-		id = GameInstance.getNextId();
 	}
 }

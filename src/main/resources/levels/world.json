@@ -19,73 +19,6 @@
     }
   },
   "components" : {
-    "com.lunix.javagame.engine.components.Animation" : {
-      "@type" : "Animation",
-      "id" : 12,
-      "poses" : [ {
-        "textureCoords" : [ {
-          "x" : 0.0,
-          "y" : 0.0
-        }, {
-          "x" : 0.25,
-          "y" : 0.0
-        }, {
-          "x" : 0.25,
-          "y" : 1.0
-        }, {
-          "x" : 0.0,
-          "y" : 1.0
-        } ],
-        "texture" : "PLAYER_IDLE"
-      }, {
-        "textureCoords" : [ {
-          "x" : 0.25,
-          "y" : 0.0
-        }, {
-          "x" : 0.5,
-          "y" : 0.0
-        }, {
-          "x" : 0.5,
-          "y" : 1.0
-        }, {
-          "x" : 0.25,
-          "y" : 1.0
-        } ],
-        "texture" : "PLAYER_IDLE"
-      }, {
-        "textureCoords" : [ {
-          "x" : 0.5,
-          "y" : 0.0
-        }, {
-          "x" : 0.75,
-          "y" : 0.0
-        }, {
-          "x" : 0.75,
-          "y" : 1.0
-        }, {
-          "x" : 0.5,
-          "y" : 1.0
-        } ],
-        "texture" : "PLAYER_IDLE"
-      }, {
-        "textureCoords" : [ {
-          "x" : 0.75,
-          "y" : 0.0
-        }, {
-          "x" : 1.0,
-          "y" : 0.0
-        }, {
-          "x" : 1.0,
-          "y" : 1.0
-        }, {
-          "x" : 0.75,
-          "y" : 1.0
-        } ],
-        "texture" : "PLAYER_IDLE"
-      } ],
-      "changeInterval" : 0.3,
-      "startingPose" : 0
-    },
     "com.lunix.javagame.engine.components.SpriteRenderer" : {
       "@type" : "SpriteRenderer",
       "id" : 11,
@@ -112,16 +45,16 @@
       "shader" : "DEFAULT",
       "sprite" : {
         "textureCoords" : [ {
-          "x" : 0.25,
-          "y" : 0.0
-        }, {
           "x" : 0.5,
           "y" : 0.0
         }, {
-          "x" : 0.5,
+          "x" : 0.75,
+          "y" : 0.0
+        }, {
+          "x" : 0.75,
           "y" : 1.0
         }, {
-          "x" : 0.25,
+          "x" : 0.5,
           "y" : 1.0
         } ],
         "texture" : "PLAYER_IDLE"
@@ -129,6 +62,89 @@
       "rotate" : 0,
       "mirrorWidth" : false,
       "mirrorHeight" : false
+    },
+    "com.lunix.javagame.engine.components.Animation" : {
+      "@type" : "Animation",
+      "id" : 110,
+      "stateTransfers" : { },
+      "states" : [ {
+        "stateType" : "IDLE",
+        "animationFrames" : [ {
+          "pose" : {
+            "textureCoords" : [ {
+              "x" : 0.0,
+              "y" : 0.0
+            }, {
+              "x" : 0.25,
+              "y" : 0.0
+            }, {
+              "x" : 0.25,
+              "y" : 1.0
+            }, {
+              "x" : 0.0,
+              "y" : 1.0
+            } ],
+            "texture" : "PLAYER_IDLE"
+          },
+          "poseDuration" : 0.3
+        }, {
+          "pose" : {
+            "textureCoords" : [ {
+              "x" : 0.25,
+              "y" : 0.0
+            }, {
+              "x" : 0.5,
+              "y" : 0.0
+            }, {
+              "x" : 0.5,
+              "y" : 1.0
+            }, {
+              "x" : 0.25,
+              "y" : 1.0
+            } ],
+            "texture" : "PLAYER_IDLE"
+          },
+          "poseDuration" : 0.3
+        }, {
+          "pose" : {
+            "textureCoords" : [ {
+              "x" : 0.5,
+              "y" : 0.0
+            }, {
+              "x" : 0.75,
+              "y" : 0.0
+            }, {
+              "x" : 0.75,
+              "y" : 1.0
+            }, {
+              "x" : 0.5,
+              "y" : 1.0
+            } ],
+            "texture" : "PLAYER_IDLE"
+          },
+          "poseDuration" : 0.3
+        }, {
+          "pose" : {
+            "textureCoords" : [ {
+              "x" : 0.75,
+              "y" : 0.0
+            }, {
+              "x" : 1.0,
+              "y" : 0.0
+            }, {
+              "x" : 1.0,
+              "y" : 1.0
+            }, {
+              "x" : 0.75,
+              "y" : 1.0
+            } ],
+            "texture" : "PLAYER_IDLE"
+          },
+          "poseDuration" : 0.3
+        } ],
+        "looping" : true
+      } ],
+      "defaultState" : "IDLE"
     },
     "com.lunix.javagame.engine.components.RigidBody" : {
       "@type" : "RigidBody",

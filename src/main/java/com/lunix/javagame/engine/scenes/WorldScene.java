@@ -9,11 +9,13 @@ import com.lunix.javagame.engine.ResourcePool;
 import com.lunix.javagame.engine.Scene;
 import com.lunix.javagame.engine.components.Animation;
 import com.lunix.javagame.engine.components.SpriteRenderer;
+import com.lunix.javagame.engine.enums.AnimationStateType;
 import com.lunix.javagame.engine.enums.SceneEventType;
 import com.lunix.javagame.engine.enums.ShaderType;
 import com.lunix.javagame.engine.enums.TextureType;
 import com.lunix.javagame.engine.graphic.Color;
 import com.lunix.javagame.engine.physics.Physics;
+import com.lunix.javagame.engine.struct.AnimationState;
 
 public class WorldScene extends Scene {
 	private Physics physics;
@@ -35,13 +37,21 @@ public class WorldScene extends Scene {
 
 		if (sceneLoaded)
 			return;
-
+		
 		GameObject playerObject = new GameObject("Player")
 			.addComponent(
 						new SpriteRenderer(4, 5)
 				.sprite(ResourcePool.getSprite(TextureType.PLAYER.name()))
 			);
-		playerObject.addComponent(new Animation(ResourcePool.getSprites(TextureType.PLAYER_IDLE), 0.3f));
+		playerObject.addComponent(new Animation()
+				.defaultState(AnimationStateType.IDLE)
+				.addState(new AnimationState(AnimationStateType.IDLE)
+						.addFrame(ResourcePool.getSprite(TextureType.PLAYER_IDLE, 0), 0.3f)
+						.addFrame(ResourcePool.getSprite(TextureType.PLAYER_IDLE, 1), 0.3f)
+						.addFrame(ResourcePool.getSprite(TextureType.PLAYER_IDLE, 2), 0.3f)
+						.addFrame(ResourcePool.getSprite(TextureType.PLAYER_IDLE, 3), 0.3f)
+				)
+		);
 		addGameObject(playerObject);
 			
 
