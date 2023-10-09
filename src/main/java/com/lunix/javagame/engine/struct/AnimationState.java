@@ -55,6 +55,9 @@ public class AnimationState {
 	}
 
 	public Sprite currentSprite() {
+		if (currentPose >= animationFrames.size())
+			currentPose = 0;
+
 		if (currentPose < animationFrames.size())
 			return animationFrames.get(currentPose).pose();
 

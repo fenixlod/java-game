@@ -41,9 +41,11 @@ public class Sprite {
 			return false;
 
 		if (obj instanceof Sprite other) {
-			return textureCoords.equals(other.textureCoords())
-					&& ((texture == null && other.texture() == null)
-							|| (texture == other.texture()));
+			return textureCoords[0].equals(other.textureCoords()[0])
+					&& textureCoords[1].equals(other.textureCoords()[1])
+					&& textureCoords[2].equals(other.textureCoords()[2])
+					&& textureCoords[3].equals(other.textureCoords()[3])
+					&& ((texture == null && other.texture() == null) || (texture == other.texture()));
 		} else
 			return false;
 	}

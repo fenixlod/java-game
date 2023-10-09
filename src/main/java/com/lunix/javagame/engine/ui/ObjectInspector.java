@@ -3,7 +3,11 @@ package com.lunix.javagame.engine.ui;
 import static org.lwjgl.glfw.GLFW.*;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -20,6 +24,7 @@ import com.lunix.javagame.engine.Scene;
 import com.lunix.javagame.engine.components.SpriteRenderer;
 import com.lunix.javagame.engine.editor.GizmoTools;
 import com.lunix.javagame.engine.graphic.Color;
+import com.lunix.javagame.engine.graphic.Sprite;
 import com.lunix.javagame.engine.struct.ComponentMenuItem;
 import com.lunix.javagame.engine.util.Helper;
 
@@ -152,7 +157,7 @@ public class ObjectInspector {
 		for (Component c : obj.components()) {
 			float width = ImGui.calcItemWidth();
 			boolean opened = ImGui.collapsingHeader(c.getClass().getSimpleName(), ImGuiTreeNodeFlags.AllowItemOverlap);
-			ImGui.sameLine(width + 100);
+			ImGui.sameLine(width + 90);
 			ImGui.pushStyleColor(ImGuiCol.Text, 1f, 0f, 0f, 1f);
 			ImGui.pushStyleColor(ImGuiCol.Button, 0f, 0f, 0f, 0f);
 			ImGui.pushStyleColor(ImGuiCol.ButtonActive, 0f, 0f, 0f, 0f);
@@ -182,21 +187,24 @@ public class ObjectInspector {
 	 */
 	private void displayFields(Object obj) {
 		try {
-			Field[] fields = obj.getClass().getDeclaredFields();
+			List<Field> fields = getAllFieldsOfClass(obj.getClass());
 			for (Field field : fields) {
 				int modifiers = field.getModifiers();
 
-				if (Modifier.isTransient(modifiers))
+				if (Modifier.isTransient(modifiers) || Modifier.isFinal(modifiers))
 					continue;
 
-				boolean isPrivate = Modifier.isPrivate(modifiers);
+				boolean isPrivate = Modifier.isPrivate(modifiers) || Modifier.isProtected(modifiers);
+				String name = field.getName();
+
+				if (name.equals("id"))
+					continue;
 
 				if (isPrivate)
 					field.setAccessible(true);
 
-				Class<?> type = field.getType();
 				Object value = field.get(obj);
-				String name = field.getName();
+				Class<?> type = field.getType();
 
 				if (type == int.class) {
 					displayInt(name, value, field, obj);
@@ -216,6 +224,8 @@ public class ObjectInspector {
 					displayEnum(name, value, field, obj);
 				} else if (type == List.class) {
 					displayList(name, value, field, obj);
+				} else if (type == Sprite.class) {
+					displaySprite(name, value, field, obj);
 				}
 
 
@@ -227,11 +237,24 @@ public class ObjectInspector {
 		}
 	}
 
+	private List<Field> getAllFieldsOfClass(Class<?> clazz) {
+		List<Field> fields = new ArrayList<>();
+		Class<?> cls = clazz;
+		while (cls != null) {
+			fields.addAll(Arrays.asList(cls.getDeclaredFields()));
+			cls = cls.getSuperclass();
+		}
+		return fields;
+	}
+
 	private void displayInt(String name, Object value, Field field, Object obj)
 			throws IllegalArgumentException, IllegalAccessException {
 		Integer newValue = UIWidget.intControl(StringUtils.capitalize(name), (int) value);
 		if (newValue != null) {
 			field.set(obj, newValue.intValue());
+			if (obj instanceof SpriteRenderer sr) {
+				sr.isChanged(true);
+			}
 		}
 	}
 
@@ -240,6 +263,9 @@ public class ObjectInspector {
 		Long newValue = UIWidget.longControl(StringUtils.capitalize(name), (long) value);
 		if (newValue != null) {
 			field.set(obj, newValue.longValue());
+			if (obj instanceof SpriteRenderer sr) {
+				sr.isChanged(true);
+			}
 		}
 	}
 
@@ -248,6 +274,9 @@ public class ObjectInspector {
 		Float newValue = UIWidget.floatControl(StringUtils.capitalize(name), (float) value);
 		if (newValue != null) {
 			field.set(obj, newValue.floatValue());
+			if (obj instanceof SpriteRenderer sr) {
+				sr.isChanged(true);
+			}
 		}
 	}
 
@@ -256,13 +285,20 @@ public class ObjectInspector {
 		Boolean newValue = UIWidget.boolControl(StringUtils.capitalize(name), (boolean) value);
 		if (newValue != null) {
 			field.set(obj, newValue.booleanValue());
+			if (obj instanceof SpriteRenderer sr) {
+				sr.isChanged(true);
+			}
 		}
 	}
 
 	private void displayVector3f(String name, Object value, Field field, Object obj)
 			throws IllegalArgumentException, IllegalAccessException {
 		Vector3f val = (Vector3f) value;
-		UIWidget.vect3Control(StringUtils.capitalize(name), val);
+		if (UIWidget.vect3Control(StringUtils.capitalize(name), val)) {
+			if (obj instanceof SpriteRenderer sr) {
+				sr.isChanged(true);
+			}
+		}
 	}
 
 	private void displayColor(String name, Object value, Field field, Object obj)
@@ -282,6 +318,9 @@ public class ObjectInspector {
 		String newString = UIWidget.stringControl(StringUtils.capitalize(name), (String) value);
 		if (newString != null) {
 			field.set(obj, newString);
+			if (obj instanceof SpriteRenderer sr) {
+				sr.isChanged(true);
+			}
 		}
 	}
 
@@ -290,23 +329,69 @@ public class ObjectInspector {
 		Enum<?> newValue = UIWidget.enumControl(StringUtils.capitalize(name), (Enum<?>) value);
 		if (newValue != null) {
 			field.set(obj, newValue);
+			if (obj instanceof SpriteRenderer sr) {
+				sr.isChanged(true);
+			}
 		}
 	}
 
-	private void displayList(String name, Object value, Field field, Object obj)
+	@SuppressWarnings("unchecked")
+	private <E> void displayList(String name, Object value, Field field, Object obj)
 			throws IllegalArgumentException, IllegalAccessException {
-		List<?> list = (List<?>) value;
+		List<E> list = (List<E>) value;
 
-		int id = 1;
-		if (ImGui.treeNodeEx(name, ImGuiTreeNodeFlags.DefaultOpen | ImGuiTreeNodeFlags.FramePadding
-				| ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth, StringUtils.capitalize(name))) {
+		int id = 1, delItem = -1;
+		float width = ImGui.calcItemWidth();
+		boolean listIsOpened = ImGui.treeNodeEx(name, ImGuiTreeNodeFlags.DefaultOpen | ImGuiTreeNodeFlags.FramePadding
+				| ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth
+				| ImGuiTreeNodeFlags.AllowItemOverlap, StringUtils.capitalize(name));
+
+		ImGui.sameLine(width + 90);
+		ImGui.pushStyleColor(ImGuiCol.Text, 0f, 1f, 0f, 1f);
+		ImGui.pushStyleColor(ImGuiCol.Button, 0f, 0f, 0f, 0f);
+		ImGui.pushStyleColor(ImGuiCol.ButtonActive, 0f, 0f, 0f, 0f);
+		ImGui.pushStyleColor(ImGuiCol.ButtonHovered, 0f, 0f, 0f, 0f);
+		ImGui.pushID("Add item" + id);
+		if (ImGui.button("+")) {
+			ParameterizedType genericType = (ParameterizedType) field.getGenericType();
+			Class<?> genericClass = (Class<?>) genericType.getActualTypeArguments()[0];
+			try {
+				Object newObject = genericClass.getDeclaredConstructor().newInstance();
+				list.add((E) newObject);
+			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+				logger.error("Unable to add new element in list", e);
+			}
+		}
+		ImGui.popID();
+		ImGui.popStyleColor(4);
+		if (ImGui.isItemHovered())
+			ImGui.setTooltip("Add item");
+
+		if (listIsOpened) {
 			for (Object o : list) {
 				ImGui.pushID(id);
+				width = ImGui.calcItemWidth();
 				boolean treeIsOpened = ImGui.treeNodeEx(o.getClass().getSimpleName(),
 						ImGuiTreeNodeFlags.DefaultOpen | ImGuiTreeNodeFlags.FramePadding
-								| ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth,
+								| ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth
+								| ImGuiTreeNodeFlags.AllowItemOverlap,
 						"Item " + id);
 				ImGui.popID();
+
+				ImGui.sameLine(width + 90);
+				ImGui.pushStyleColor(ImGuiCol.Text, 1f, 0f, 0f, 1f);
+				ImGui.pushStyleColor(ImGuiCol.Button, 0f, 0f, 0f, 0f);
+				ImGui.pushStyleColor(ImGuiCol.ButtonActive, 0f, 0f, 0f, 0f);
+				ImGui.pushStyleColor(ImGuiCol.ButtonHovered, 0f, 0f, 0f, 0f);
+				ImGui.pushID("Remove item" + id);
+				if (ImGui.button("x")) {
+					delItem = id - 1;
+				}
+				ImGui.popID();
+				ImGui.popStyleColor(4);
+				if (ImGui.isItemHovered())
+					ImGui.setTooltip("Remove item");
 
 				if (treeIsOpened) {
 					displayFields(o);
@@ -315,6 +400,20 @@ public class ObjectInspector {
 				id++;
 			}
 			ImGui.treePop();
+		}
+
+		if (delItem != -1)
+			list.remove(delItem);
+	}
+
+	private void displaySprite(String name, Object value, Field field, Object obj)
+			throws IllegalArgumentException, IllegalAccessException {
+		Sprite newValue = UIWidget.spriteControl(StringUtils.capitalize(name), (Sprite) value);
+		if (newValue != null) {
+			field.set(obj, newValue);
+			if (obj instanceof SpriteRenderer sr) {
+				sr.isChanged(true);
+			}
 		}
 	}
 }

@@ -1,10 +1,20 @@
 package com.lunix.javagame.engine.ui;
 
+import java.io.IOException;
+import java.util.Map.Entry;
+
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
+import com.lunix.javagame.engine.ResourcePool;
+import com.lunix.javagame.engine.enums.TextureType;
+import com.lunix.javagame.engine.exception.ResourceNotFound;
+import com.lunix.javagame.engine.graphic.Sprite;
+
+import imgui.ImDrawList;
 import imgui.ImGui;
+import imgui.ImVec2;
 import imgui.flag.ImGuiCol;
 import imgui.flag.ImGuiColorEditFlags;
 import imgui.flag.ImGuiDataType;
@@ -289,4 +299,80 @@ public class UIWidget {
 		return newValue;
 	}
 
+	public static Sprite spriteControl(String label, Sprite value) {
+		Sprite newValue = null;
+		ImGui.pushID(label);
+
+		ImGui.columns(2);
+		ImGui.setColumnWidth(0, DEFAULT_COLUMN_WIDTH);
+		ImGui.text(label);
+		ImGui.nextColumn();
+
+		ImGui.pushStyleVar(ImGuiStyleVar.ItemSpacing, 0, 0);
+		ImGui.pushItemWidth(-1);
+
+		String selecedName = "";
+		for (Entry<String, Sprite> sp : ResourcePool.sprites().entrySet()) {
+			if (value.equals(sp.getValue())) {
+				selecedName = sp.getKey();
+				break;
+			}
+		}
+
+		float button_sz = ImGui.getFrameHeight();
+		if (ImGui.beginCombo("##sprite combo", "      " + selecedName)) {
+			for (Entry<String, Sprite> sp : ResourcePool.sprites().entrySet()) {
+				boolean isSelected = false;
+				String enumValue = sp.getKey();
+				if (value.equals(sp.getValue())) {
+					isSelected = true;
+				}
+		
+               // bool is_selected = (current_item == items[n]);
+                ImDrawList drawList = ImGui.getWindowDrawList();
+
+				if (ImGui.selectable("       " + enumValue, isSelected)) {
+                	newValue = ResourcePool.getSprite(enumValue);
+                }
+                
+                ImVec2 rect_min = ImGui.getItemRectMin();
+                ImVec2 rect_max = ImGui.getItemRectMax();
+				rect_max.x = rect_min.x + button_sz - 3;
+				int textId = 0;
+				try {
+					if (sp.getValue().texture() != TextureType.NONE)
+						textId = ResourcePool.getTexture(sp.getValue().texture()).id();
+				} catch (ResourceNotFound | IOException e) {
+				}
+				drawList.addImage(textId, rect_min.x, rect_min.y, rect_max.x, rect_max.y,
+						sp.getValue().textureCoords()[3].x, sp.getValue().textureCoords()[3].y,
+						sp.getValue().textureCoords()[1].x, sp.getValue().textureCoords()[1].y);
+				if (isSelected)
+					ImGui.setItemDefaultFocus();
+            }
+			ImGui.endCombo();
+		} else {
+			ImVec2 rect_min = ImGui.getItemRectMin();
+			ImVec2 rect_max = ImGui.getItemRectMax();
+			rect_max.x = rect_min.x + ImGui.getFrameHeight();
+			ImDrawList drawList = ImGui.getWindowDrawList();
+			int textId = 0;
+			try {
+				if (value.texture() != TextureType.NONE)
+					textId = ResourcePool.getTexture(value.texture()).id();
+			} catch (ResourceNotFound | IOException e) {
+			}
+			drawList.addImage(textId, rect_min.x, rect_min.y, rect_max.x, rect_max.y, value.textureCoords()[3].x,
+					value.textureCoords()[3].y, value.textureCoords()[1].x, value.textureCoords()[1].y);
+        }
+		
+		ImGui.popItemWidth();
+
+		ImGui.nextColumn();
+
+		ImGui.popStyleVar();
+		ImGui.columns(1);
+		ImGui.popID();
+		return newValue;
+	}
 }
