@@ -22,12 +22,6 @@ resources:
     debug: assets/shaders/debug.glsl
     picking: assets/shaders/picking.glsl
   textures:
-    player:
-      path: assets/images/Player.png
-    enemy:
-      path: assets/images/Enemy.png
-      width: 152
-      height: 512
     player_idle:
       path: assets/images/player_idle.png
       width: 40
@@ -38,6 +32,10 @@ resources:
       height: 64
     arrow:
       path: assets/images/arrow.png
+  sounds:
+    player_hit:
+      path: assets/sounds/player_hit.ogg
+      loops: false
 
 camera:
   ortho:

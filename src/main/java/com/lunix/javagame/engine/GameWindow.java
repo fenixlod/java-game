@@ -2,6 +2,7 @@ package com.lunix.javagame.engine;
 
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.openal.ALC10.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
@@ -15,6 +16,10 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
+import org.lwjgl.openal.AL;
+import org.lwjgl.openal.ALC;
+import org.lwjgl.openal.ALCCapabilities;
+import org.lwjgl.openal.ALCapabilities;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 
@@ -34,6 +39,9 @@ public class GameWindow {
 	private Vector2i viewPortOffset;
 	private UiLayer uiLayer;
 	private PickingTexture pickingTexture;
+	private long audioContext;
+	private long audioDevice;
+
 
 	public GameWindow(WindowConfigs windowConfigs) {
 		this.windowConfigs = windowConfigs;
@@ -102,6 +110,7 @@ public class GameWindow {
 		// Make the window visible
 		glfwShowWindow(windowHandle);
 
+		initSound();
 		// This line is critical for LWJGL's interoperation with GLFW's
 		// OpenGL context, or any context that is managed externally.
 		// LWJGL detects the context that is current in the current thread,
@@ -181,6 +190,10 @@ public class GameWindow {
 	 * Destroy the current window.
 	 */
 	public void destroy() {
+		// Destroy the audio context
+		alcDestroyContext(audioContext);
+		alcCloseDevice(audioDevice);
+
 		// Free the memory
 		glfwFreeCallbacks(windowHandle);
 		glfwDestroyWindow(windowHandle);
@@ -285,5 +298,21 @@ public class GameWindow {
 	 */
 	public void setTitleSuffix(String suffix) {
 		glfwSetWindowTitle(windowHandle, windowConfigs.title() + suffix);
+	}
+
+	private void initSound() throws Exception {
+		// Initialize audio device
+		//AL10;
+		String defaultDeviceName = alcGetString(0, ALC_DEFAULT_DEVICE_SPECIFIER);
+		audioDevice = alcOpenDevice(defaultDeviceName);
+		int[] attributes = { 0 };
+		audioContext = alcCreateContext(audioDevice, attributes);
+		alcMakeContextCurrent(audioContext);
+		ALCCapabilities alcCapabilities = ALC.createCapabilities(audioDevice);
+		ALCapabilities alCapabilities = AL.createCapabilities(alcCapabilities);
+
+		if (!alCapabilities.OpenAL10) {
+			throw new Exception("Audio library not suported");
+		}
 	}
 }

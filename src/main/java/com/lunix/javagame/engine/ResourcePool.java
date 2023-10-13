@@ -12,9 +12,12 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import com.lunix.javagame.configs.ResourceConfigs;
+import com.lunix.javagame.configs.ResourceConfigs.SoundData;
 import com.lunix.javagame.configs.ResourceConfigs.SpriteSheetData;
+import com.lunix.javagame.engine.audio.Sound;
 import com.lunix.javagame.engine.enums.ResourceType;
 import com.lunix.javagame.engine.enums.ShaderType;
+import com.lunix.javagame.engine.enums.SoundType;
 import com.lunix.javagame.engine.enums.TextureType;
 import com.lunix.javagame.engine.exception.ResourceNotFound;
 import com.lunix.javagame.engine.graphic.Shader;
@@ -29,11 +32,13 @@ public class ResourcePool {
 	private static final Map<ShaderType, Shader> shaders;
 	private static final Map<TextureType, TextureSheet> textures;
 	private static final Map<String, Sprite> sprites;
+	private static final Map<SoundType, Sound> sounds;
 
 	static {
 		shaders = new HashMap<>();
 		textures = new HashMap<>();
 		sprites = new HashMap<>();
+		sounds = new HashMap<>();
 	}
 
 	public ResourcePool(ResourceConfigs resourceConfig) {
@@ -43,6 +48,7 @@ public class ResourcePool {
 	public void init() throws IOException, ResourceNotFound {
 		initShaders(resourceConfig.shaders());
 		initTextures(resourceConfig.textures());
+		initSounds(resourceConfig.sounds());
 	}
 
 	private void initShaders(Map<ShaderType, String> shadersToLoad) {
@@ -64,12 +70,24 @@ public class ResourcePool {
 		sprites.put(TextureType.NONE.name(), new Sprite());
 	}
 
+	private void initSounds(Map<SoundType, SoundData> soundData) {
+		logger.info("Loading sounds...");
+		for (Entry<SoundType, SoundData> entry : soundData.entrySet()) {
+			logger.debug("Loading sound: {}", entry.getValue().path());
+			Sound sound = new Sound(entry.getValue().path(), entry.getValue().loops());
+			sounds.put(entry.getKey(), sound);
+		}
+		sounds.put(SoundType.NONE, new Sound());
+	}
+
 	public static void loadResources(ResourceType... resources) throws ResourceNotFound, IOException {
 		for (ResourceType resource : resources) {
 			if (resource instanceof ShaderType shader) {
 				getShader(shader);
 			} else if (resource instanceof TextureType texture) {
 				getTexture(texture);
+			} else if (resource instanceof SoundType sound) {
+				getSound(sound);
 			}
 		}
 	}
@@ -132,5 +150,20 @@ public class ResourcePool {
 
 	public static Map<String, Sprite> sprites() {
 		return sprites;
+	}
+
+	public static Sound getSound(SoundType soundName) throws ResourceNotFound, IOException {
+		Sound sound = sounds.get(soundName);
+		if (sound == null) {
+			logger.warn("Unable to find sound: {}", soundName);
+			throw new ResourceNotFound("Sound not found: " + soundName);
+		}
+
+		sound.load();
+		return sound;
+	}
+
+	public static Map<SoundType, Sound> sounds() {
+		return sounds;
 	}
 }

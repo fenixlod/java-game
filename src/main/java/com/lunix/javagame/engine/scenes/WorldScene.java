@@ -12,6 +12,7 @@ import com.lunix.javagame.engine.components.SpriteRenderer;
 import com.lunix.javagame.engine.enums.AnimationStateType;
 import com.lunix.javagame.engine.enums.SceneEventType;
 import com.lunix.javagame.engine.enums.ShaderType;
+import com.lunix.javagame.engine.enums.SoundType;
 import com.lunix.javagame.engine.enums.TextureType;
 import com.lunix.javagame.engine.graphic.Color;
 import com.lunix.javagame.engine.physics.Physics;
@@ -32,8 +33,8 @@ public class WorldScene extends Scene {
 		// physics.init();
 		game.camera().reset();
 		// Probably collect all resources from objects list and load them
-		ResourcePool.loadResources(ShaderType.DEFAULT, TextureType.PLAYER, TextureType.ENEMY, TextureType.PLAYER_IDLE,
-				TextureType.TILE_BRICK);
+		ResourcePool.loadResources(ShaderType.DEFAULT, TextureType.PLAYER_IDLE, TextureType.TILE_BRICK,
+				SoundType.PLAYER_HIT);
 
 		if (sceneLoaded)
 			return;

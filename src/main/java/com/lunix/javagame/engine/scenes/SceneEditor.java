@@ -1,11 +1,15 @@
 package com.lunix.javagame.engine.scenes;
 
+import java.util.Map.Entry;
+
 import org.joml.Vector2f;
 
 import com.lunix.javagame.engine.ResourcePool;
 import com.lunix.javagame.engine.Scene;
+import com.lunix.javagame.engine.audio.Sound;
 import com.lunix.javagame.engine.controlls.EditorControlls;
 import com.lunix.javagame.engine.enums.ShaderType;
+import com.lunix.javagame.engine.enums.SoundType;
 import com.lunix.javagame.engine.enums.TextureType;
 import com.lunix.javagame.engine.graphic.FrameBuffer;
 import com.lunix.javagame.engine.graphic.Sprite;
@@ -135,6 +139,7 @@ public class SceneEditor extends SceneExecutor {
 				}
 				ImGui.endTabItem();
 			}
+
 			if (ImGui.beginTabItem("Prefabs")) {
 				try {
 					Sprite sp = ResourcePool.getSprite(TextureType.PLAYER_IDLE, 0);
@@ -151,6 +156,32 @@ public class SceneEditor extends SceneExecutor {
 				}
 				ImGui.sameLine();
 
+				ImGui.endTabItem();
+			}
+
+			if (ImGui.beginTabItem("Sounds")) {
+				for (Entry<SoundType, Sound> sp : ResourcePool.sounds().entrySet()) {
+					try {
+						SoundType soundType = sp.getKey();
+
+						if (soundType == SoundType.NONE)
+							continue;
+
+						if (ImGui.button(soundType.value())) {
+							if (!sp.getValue().isPlaying()) {
+								sp.getValue().play();
+							} else {
+								sp.getValue().stop();
+							}
+						}
+
+						if (ImGui.getContentRegionAvailX() > 100) {
+							ImGui.sameLine();
+						}
+					} catch (Exception e) {
+						logger.error(e);
+					}
+				}
 				ImGui.endTabItem();
 			}
 
